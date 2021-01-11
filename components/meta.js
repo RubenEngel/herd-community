@@ -1,6 +1,7 @@
 import Head from 'next/head'
+import { CMS_NAME, HOME_OG_IMAGE_URL } from '../lib/constants'
 
-const Meta = () => {
+export default function Meta() {
   return (
     <Head>
       <link
@@ -20,7 +21,7 @@ const Meta = () => {
         sizes="16x16"
         href="/favicon/favicon-16x16.png"
       />
-      {/* <link rel="manifest" href="/favicon/site.webmanifest" />
+      <link rel="manifest" href="/favicon/site.webmanifest" />
       <link
         rel="mask-icon"
         href="/favicon/safari-pinned-tab.svg"
@@ -33,11 +34,9 @@ const Meta = () => {
       <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
       <meta
         name="description"
-        content={`A community-led online platform where the stories and articles you read will be crafted by members of our community.`}
+        content={`A statically generated blog example using Next.js and ${CMS_NAME}.`}
       />
-      <meta property="og:image" content={HOME_OG_IMAGE_URL} /> */}
+      <meta property="og:image" content={HOME_OG_IMAGE_URL} />
     </Head>
   )
 }
-
-export default Meta
