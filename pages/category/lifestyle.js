@@ -6,6 +6,8 @@ import Layout from '../../components/layout'
 import { getAllPostsForCategory } from '../../lib/api'
 import Header from '../../components/header'
 
+const category = 'lifestyle'
+
 export default function Category({ allPosts: { edges }, preview }) {
   const heroPost = edges[0]?.node
   const morePosts = edges.slice(1)
@@ -36,7 +38,7 @@ export default function Category({ allPosts: { edges }, preview }) {
 }
 
 export async function getStaticProps({ preview = false }) {
-  const allPosts = await getAllPostsForCategory('lifestyle', preview)
+  const allPosts = await getAllPostsForCategory(category, preview)
   return {
     props: { allPosts, preview },
   }

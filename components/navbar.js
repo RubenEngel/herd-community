@@ -48,12 +48,6 @@ export default function Navbar() {
             <li className="nav-item">
               <Link href="/category/climate"><a>Climate</a></Link>
             </li>
-            {/* <li className="nav-item">
-              <Link href="/category/work"><a>Work</a></Link>
-            </li>
-            <li className="nav-item">
-              <Link href="/category/misc"><a>Misc</a></Link>
-            </li> */}
           </ul>
         </nav>
               

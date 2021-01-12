@@ -9,7 +9,7 @@ import Header from '../components/header'
 export default function Index({ allPosts: { edges }, preview }) {
 
   const heroPost = edges[0]?.node
-  const morePosts = edges.slice(1, 10)
+  const morePosts = edges.slice(1)
 
   return (
     <>
