@@ -1,10 +1,12 @@
-import PostPreview from '../components/post-preview'
+import PostPreview from './post-preview'
+// import { useStateValue } from './ProvideState'
 
 export default function MoreStories({ posts }) {
+
   return (
     <section>
       <h2 className="mb-8 text-6xl md:text-7xl font-bold tracking-tighter leading-tight">
-        More Stories
+        Latest Stories
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 md:col-gap-16 lg:col-gap-32 row-gap-20 md:row-gap-32 mb-32">
         {posts.map(({ node }) => (
@@ -19,6 +21,16 @@ export default function MoreStories({ posts }) {
           />
         ))}
       </div>
+      {/* <div className="mb-16 text-center ">
+        <h2 
+        className="text-4xl cursor-pointer hover:opacity-75"
+        onClick={() => {
+          dispatch({
+            type: 'LOAD_MORE_POSTS'
+          })
+        }}
+        >Load More Stories.</h2>
+      </div> */}
     </section>
   )
 }

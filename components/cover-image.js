@@ -5,13 +5,13 @@ export default function CoverImage({ title, coverImage, slug }) {
   const image = (
     <img
       src={coverImage?.sourceUrl}
-      className={cn('shadow-small', {
+      className={cn('shadow-small m-auto', {
         'hover:shadow-medium transition-shadow duration-200': slug,
       })}
     />
   )
   return (
-    <div className="sm:mx-0">
+    <div className="sm:mx-0" >
       {slug ? (
         <Link as={`/posts/${slug}`} href="/posts/[slug]">
           <a aria-label={title}>{image}</a>

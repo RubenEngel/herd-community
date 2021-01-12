@@ -1,12 +1,18 @@
 import Link from 'next/link'
+import Navbar from './navbar'
 
 export default function Header() {
   return (
-    <h2 className="text-2xl md:text-4xl font-bold tracking-tight md:tracking-tighter leading-tight mb-20 mt-8">
-      <Link href="/">
-        <a className="hover:underline">HERD</a>
-      </Link>
-      .
-    </h2>
+    <section>
+      <h1 className="text-8xl font-bold tracking-tight md:tracking-tighter leading-tight text-center mt-6">
+        <Link href="/">
+          <a>HERD.</a>
+        </Link>
+      </h1>
+      <Navbar/>
+   
+    </section>
+    
+    
   )
 }
