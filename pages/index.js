@@ -3,7 +3,7 @@ import Container from '../components/container'
 import MoreStories from '../components/more-stories.js'
 import HeroPost from '../components/hero-post'
 import Layout from '../components/layout'
-import { getAllPostsForHome } from '../lib/api'
+import { getPostsForHome } from '../lib/api'
 import Header from '../components/header'
 
 export default function Index({ allPosts: { edges }, preview }) {
@@ -37,7 +37,7 @@ export default function Index({ allPosts: { edges }, preview }) {
 }
 
 export async function getStaticProps({ preview = false }) {
-  const allPosts = await getAllPostsForHome(preview)
+  const allPosts = await getPostsForHome(preview)
   return {
     props: { allPosts, preview },
   }

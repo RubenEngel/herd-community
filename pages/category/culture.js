@@ -3,7 +3,7 @@ import Container from '../../components/container'
 import MoreStories from '../../components/more-stories'
 import HeroPost from '../../components/hero-post'
 import Layout from '../../components/layout'
-import { getAllPostsForCategory } from '../../lib/api'
+import { getPostsForCategory } from '../../lib/api'
 import Header from '../../components/header'
 
 const category = 'culture'
@@ -38,7 +38,7 @@ export default function Category({ allPosts: { edges }, preview }) {
 }
 
 export async function getStaticProps({ preview = false }) {
-  const allPosts = await getAllPostsForCategory(category, preview)
+  const allPosts = await getPostsForCategory(category, preview)
   return {
     props: { allPosts, preview },
   }
