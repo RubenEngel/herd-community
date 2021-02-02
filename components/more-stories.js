@@ -1,7 +1,17 @@
 import PostPreview from './post-preview'
-// import { useStateValue } from './ProvideState'
+import { useSWRInfinite } from "swr";
+
+const fetcher = url => fetch(url).then(res => res.json());
+const PAGE_SIZE = 5;
 
 export default function MoreStories({ posts }) {
+
+  const { data, error, size, setSize } = useSWRInfinite(
+    index =>
+      `https://api.github.com/repos/${repo}/issues?per_page=${PAGE_SIZE}&page=${index +
+        1}`,
+    fetcher
+  );
 
   return (
     <section>
@@ -21,16 +31,14 @@ export default function MoreStories({ posts }) {
           />
         ))}
       </div>
-      {/* <div className="mb-16 text-center ">
+      <div className="mb-16 text-center ">
         <h2 
         className="text-4xl cursor-pointer hover:opacity-75"
         onClick={() => {
-          dispatch({
-            type: 'LOAD_MORE_POSTS'
-          })
+
         }}
-        >Load More Stories.</h2>
-      </div> */}
+        >Load More.</h2>
+      </div>
     </section>
   )
 }

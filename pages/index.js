@@ -4,7 +4,6 @@ import MoreStories from '../components/more-stories.js'
 import HeroPost from '../components/hero-post'
 import Layout from '../components/layout'
 import { getPostsForHome } from '../lib/api'
-import Header from '../components/header'
 
 export default function Index({ allPosts: { edges }, preview }) {
 
@@ -18,7 +17,6 @@ export default function Index({ allPosts: { edges }, preview }) {
           <title>HERD</title>
         </Head>
         <Container>
-          <Header/>
           {heroPost && (
             <HeroPost
               title={heroPost.title}
