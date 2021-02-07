@@ -40,3 +40,11 @@ h3 {
   @apply px-2 py-1 text-lg flex items-center uppercase font-bold leading-snug;
   
 }
+
+.h-75-screen{
+  height: 75vh;
+}
+
+.h-50-screen{
+  height: 50vh;
+}

@@ -6,7 +6,7 @@ import { Waypoint } from 'react-waypoint';
 
 const GET_POSTS = gql`
 query getPosts($after: String) {
-  posts(first: 10, after: $after) {
+  posts(first: 6, after: $after) {
     edges {
       cursor
       node {
@@ -64,7 +64,8 @@ export default function StoryList() {
   return (
     
     !data ? 
-    <div className='h-screen flex justify-center items-center'>
+
+    <div className='h-75-screen flex justify-center items-center'>
     <Loading/>
     </div>
     

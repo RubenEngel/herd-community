@@ -11,6 +11,7 @@
 
 .content a {
   @apply underline;
+  word-wrap: break-word;
 }
 
 .content ul,
