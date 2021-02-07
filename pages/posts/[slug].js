@@ -49,8 +49,8 @@ export default function Post({ post, posts, preview }) {
               </footer>
             </article>
 
-            {/* <SectionSeparator /> */}
-            {/* {morePosts.length > 0 && <StoryList posts={morePosts} />} */}
+            <SectionSeparator />
+
           </>
         )}
       </Container>

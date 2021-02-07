@@ -13,12 +13,14 @@
     "@fortawesome/react-fontawesome": "^0.1.14",
     "classnames": "2.2.6",
     "date-fns": "2.14.0",
+    "framer-motion": "^3.3.0",
     "graphql": "^15.5.0",
     "graphql-request": "^3.4.0",
     "next": "latest",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-icons": "^4.1.0",
+    "react-waypoint": "^9.0.3",
     "swr": "^0.4.1"
   },
   "devDependencies": {

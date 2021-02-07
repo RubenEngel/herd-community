@@ -1,6 +1,8 @@
 import PostPreview from './post-preview'
 // import useSWR from "swr";
 import { useQuery, gql } from '@apollo/client';
+import Loading from './loading';
+import { Waypoint } from 'react-waypoint';
 
 const GET_POSTS = gql`
 query getPosts($after: String) {
@@ -46,7 +48,7 @@ query getPosts($after: String) {
   }
 }`
 
-export default function StoryList({ posts }) {
+export default function StoryList() {
 
   const { loading, error, data, fetchMore } = useQuery(
     GET_POSTS, 
@@ -60,25 +62,20 @@ export default function StoryList({ posts }) {
   console.log( stories )
 
   return (
+    
+    !data ? 
+    <div className='h-screen flex justify-center items-center'>
+    <Loading/>
+    </div>
+    
+    :
+
     <section>
       <div className="grid grid-cols-1 md:grid-cols-2 md:col-gap-16 lg:col-gap-32 row-gap-20 md:row-gap-32 mb-32">
-        {/* {posts.map(({ node }) => (
-          <PostPreview
-            key={node.slug}
-            title={node.title}
-            coverImage={node.featuredImage?.node}
-            date={node.date}
-            author={node.author?.node}
-            slug={node.slug}
-            excerpt={node.excerpt}
-          />
-          
-        ))} */}
-        {loading && <h1 className='text-4xl text-center'>Loading..</h1>}
         
         {error && <h1 className='text-4xl text-center'>Error Occurred</h1>}
         
-        {data && stories.map(({node}) => (
+        {stories.map(({node}) => (
             <PostPreview
             key={node.slug}
             title={node.title}
@@ -88,22 +85,20 @@ export default function StoryList({ posts }) {
             slug={node.slug}
             excerpt={node.excerpt}
           />
-          ))
-          }
+          ))}
+          
+          <Waypoint onEnter={() => {
+            const endCursor = data.posts.pageInfo.endCursor
+            fetchMore({
+              variables: {after: endCursor}
+            })
+          }}
+          />
+
       </div>
-      
-      {data && 
-      <div className="mb-16 text-center ">
-        <h2 
-        className="text-4xl cursor-pointer hover:opacity-75"
-        onClick={() => {
-          const endCursor = data.posts.pageInfo.endCursor
-          fetchMore({
-            variables: {after: endCursor}
-          })
-        }}
-        >{loading ? 'Loading' : 'Load More'}</h2>
-      </div>}
+
+      <div className='mb-40'>{loading ? <Loading/> : null}</div>
+
 
     </section>
   )

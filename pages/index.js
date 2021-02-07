@@ -7,8 +7,6 @@ import { getPostsForHome } from '../lib/api'
 
 export default function Index() {
 
-  // const heroPost = edges[0]?.node
-  // const morePosts = edges.slice(0)
 
   return (
     <>
@@ -23,10 +21,3 @@ export default function Index() {
     </>
   )
 }
-
-// export async function getStaticProps({ preview = false }) {
-//   const allPosts = await getPostsForHome(preview)
-//   return {
-//     props: { allPosts, preview },
-//   }
-// }
