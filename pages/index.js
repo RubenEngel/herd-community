@@ -5,38 +5,28 @@ import HeroPost from '../components/hero-post'
 import Layout from '../components/layout'
 import { getPostsForHome } from '../lib/api'
 
-export default function Index({ allPosts: { edges }, preview }) {
+export default function Index() {
 
   // const heroPost = edges[0]?.node
-  const morePosts = edges.slice(0)
+  // const morePosts = edges.slice(0)
 
   return (
     <>
-      <Layout preview={preview}>
+      <Layout>
         <Head>
           <title>HERD</title>
         </Head>
         <Container>
-          {/* {heroPost && (
-            <HeroPost
-              title={heroPost.title}
-              coverImage={heroPost.featuredImage?.node}
-              date={heroPost.date}
-              author={heroPost.author?.node}
-              slug={heroPost.slug}
-              excerpt={heroPost.excerpt}
-            />
-          )} */}
-          {morePosts.length > 0 && <StoryList posts={morePosts} />}
+          <StoryList />
         </Container>
       </Layout>
     </>
   )
 }
 
-export async function getStaticProps({ preview = false }) {
-  const allPosts = await getPostsForHome(preview)
-  return {
-    props: { allPosts, preview },
-  }
-}
+// export async function getStaticProps({ preview = false }) {
+//   const allPosts = await getPostsForHome(preview)
+//   return {
+//     props: { allPosts, preview },
+//   }
+// }
