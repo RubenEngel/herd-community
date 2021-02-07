@@ -1,25 +1,63 @@
 import PostPreview from './post-preview'
-import { useSWRInfinite } from "swr";
+import useSWR from "swr";
+import { useQuery, gql } from '@apollo/client';
 
-const fetcher = url => fetch(url).then(res => res.json());
-const PAGE_SIZE = 5;
+const GET_POSTS = gql`
+query getPosts($after: String) {
+  posts(first: 5, after: $after) {
+    edges {
+      cursor
+      node {
+        title
+        excerpt
+        author {
+          node {
+            firstName
+            lastName
+          }
+        }
+        slug
+        date
+        featuredImage {
+          node {
+            sourceUrl
+          }
+        }
+        categories {
+          edges {
+            node {
+              name
+            }
+          }
+        }
+        tags {
+          edges {
+            node {
+              name
+            }
+          }
+        }
+      }
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+  }
+}`
 
 export default function MoreStories({ posts }) {
 
-  const { data, error, size, setSize } = useSWRInfinite(
-    index =>
-      `https://api.github.com/repos/${repo}/issues?per_page=${PAGE_SIZE}&page=${index +
-        1}`,
-    fetcher
-  );
+  const { loading, error, data, fetchMore } = useQuery(GET_POSTS, {variables: {after: ""}});
+
+  const stories = data ? data.posts.edges : [];
+
+  console.log( stories )
 
   return (
     <section>
-      <h2 className="mb-8 text-6xl md:text-7xl font-bold tracking-tighter leading-tight">
-        Latest Stories
-      </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 md:col-gap-16 lg:col-gap-32 row-gap-20 md:row-gap-32 mb-32">
-        {posts.map(({ node }) => (
+        {/* {posts.map(({ node }) => (
           <PostPreview
             key={node.slug}
             title={node.title}
@@ -29,16 +67,44 @@ export default function MoreStories({ posts }) {
             slug={node.slug}
             excerpt={node.excerpt}
           />
-        ))}
+          
+        ))} */}
+        {loading && <h1 className='text-4xl text-center'>Loading..</h1>}
+        
+        {error && <h1 className='text-4xl text-center'>Error Occurred</h1>}
+        
+        {data && stories.map(({node}) => (
+            <PostPreview
+            key={node.slug}
+            title={node.title}
+            coverImage={node.featuredImage?.node}
+            date={node.date}
+            author={node.author?.node}
+            slug={node.slug}
+            excerpt={node.excerpt}
+          />
+          ))
+          }
       </div>
+      
+      {data && 
       <div className="mb-16 text-center ">
         <h2 
         className="text-4xl cursor-pointer hover:opacity-75"
         onClick={() => {
-
+          const endCursor = data.posts.pageInfo.endCursor
+          
+          fetchMore({
+            variables: {after: endCursor},
+            updateQuery: (prevResult, {fetchMoreResult}) => {
+              console.log(prevResult)
+              console.log(fetchMoreResult)
+            }
+          })
         }}
         >Load More.</h2>
-      </div>
+      </div>}
+
     </section>
   )
 }

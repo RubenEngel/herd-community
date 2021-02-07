@@ -15,7 +15,7 @@ export default function Header() {
           </Link>
         </h1>
         
-        <div className='flex mt-2'>
+        <div className='flex mt-2 md:mr-8'>
           <FaSearch className='text-3xl mx-3'/>
           <FaPencilAlt className='text-3xl'/>
           <FaUser className='text-3xl ml-2'/>

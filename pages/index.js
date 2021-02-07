@@ -7,8 +7,8 @@ import { getPostsForHome } from '../lib/api'
 
 export default function Index({ allPosts: { edges }, preview }) {
 
-  const heroPost = edges[0]?.node
-  const morePosts = edges.slice(1)
+  // const heroPost = edges[0]?.node
+  const morePosts = edges.slice(0)
 
   return (
     <>
@@ -17,7 +17,7 @@ export default function Index({ allPosts: { edges }, preview }) {
           <title>HERD</title>
         </Head>
         <Container>
-          {heroPost && (
+          {/* {heroPost && (
             <HeroPost
               title={heroPost.title}
               coverImage={heroPost.featuredImage?.node}
@@ -26,7 +26,7 @@ export default function Index({ allPosts: { edges }, preview }) {
               slug={heroPost.slug}
               excerpt={heroPost.excerpt}
             />
-          )}
+          )} */}
           {morePosts.length > 0 && <MoreStories posts={morePosts} />}
         </Container>
       </Layout>
