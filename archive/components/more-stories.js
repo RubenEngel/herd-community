@@ -2,7 +2,7 @@ import PostPreview from './post-preview'
 import useSWR, {useSWRInfinite} from "swr";
 import { request } from 'graphql-request'
 
-export default function MoreStories({ posts }) {
+export default function StoryList({ posts }) {
 
   const query = (first, after) => (`{
     posts(first:${first}, after:"${after}") {

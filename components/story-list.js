@@ -1,10 +1,10 @@
 import PostPreview from './post-preview'
-import useSWR from "swr";
+// import useSWR from "swr";
 import { useQuery, gql } from '@apollo/client';
 
 const GET_POSTS = gql`
 query getPosts($after: String) {
-  posts(first: 5, after: $after) {
+  posts(first: 10, after: $after) {
     edges {
       cursor
       node {
@@ -46,9 +46,14 @@ query getPosts($after: String) {
   }
 }`
 
-export default function MoreStories({ posts }) {
+export default function StoryList({ posts }) {
 
-  const { loading, error, data, fetchMore } = useQuery(GET_POSTS, {variables: {after: ""}});
+  const { loading, error, data, fetchMore } = useQuery(
+    GET_POSTS, 
+    {variables: {after: ""},
+    notifyOnNetworkStatusChange: true,
+    }
+    );
 
   const stories = data ? data.posts.edges : [];
 
@@ -93,16 +98,11 @@ export default function MoreStories({ posts }) {
         className="text-4xl cursor-pointer hover:opacity-75"
         onClick={() => {
           const endCursor = data.posts.pageInfo.endCursor
-          
           fetchMore({
-            variables: {after: endCursor},
-            updateQuery: (prevResult, {fetchMoreResult}) => {
-              console.log(prevResult)
-              console.log(fetchMoreResult)
-            }
+            variables: {after: endCursor}
           })
         }}
-        >Load More.</h2>
+        >{loading ? 'Loading' : 'Load More'}</h2>
       </div>}
 
     </section>

@@ -2,7 +2,7 @@ import { useRouter } from 'next/router'
 import ErrorPage from 'next/error'
 import Container from '../../components/container'
 import PostBody from '../../components/post-body'
-import MoreStories from '../../components/more-stories'
+import StoryList from '../../components/story-list'
 import PostHeader from '../../components/post-header'
 import SectionSeparator from '../../components/section-separator'
 import Layout from '../../components/layout'
@@ -50,7 +50,7 @@ export default function Post({ post, posts, preview }) {
             </article>
 
             <SectionSeparator />
-            {morePosts.length > 0 && <MoreStories posts={morePosts} />}
+            {morePosts.length > 0 && <StoryList posts={morePosts} />}
           </>
         )}
       </Container>
@@ -58,7 +58,7 @@ export default function Post({ post, posts, preview }) {
   )
 }
 
-export async function getStaticProps({ params, preview = false, previewData }) {
+export async function getServerSideProps({ params, preview = false, previewData }) {
   const data = await getPostAndMorePosts(params.slug, preview, previewData)
 
   return {
@@ -66,16 +66,15 @@ export async function getStaticProps({ params, preview = false, previewData }) {
       preview,
       post: data.post,
       posts: data.posts,
-    },
-    revalidate: 1
+    }
   }
 }
 
-export async function getStaticPaths() {
-  const allPosts = await getAllPostsWithSlug()
+// export async function getStaticPaths() {
+//   const allPosts = await getAllPostsWithSlug()
 
-  return {
-    paths: allPosts.edges.map(({ node }) => `/posts/${node.slug}`) || [],
-    fallback: true,
-  }
-}
+//   return {
+//     paths: allPosts.edges.map(({ node }) => `/posts/${node.slug}`) || [],
+//     fallback: true,
+//   }
+// }

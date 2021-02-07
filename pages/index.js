@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import Container from '../components/container'
-import MoreStories from '../components/more-stories.js'
+import StoryList from '../components/story-list.js'
 import HeroPost from '../components/hero-post'
 import Layout from '../components/layout'
 import { getPostsForHome } from '../lib/api'
@@ -27,7 +27,7 @@ export default function Index({ allPosts: { edges }, preview }) {
               excerpt={heroPost.excerpt}
             />
           )} */}
-          {morePosts.length > 0 && <MoreStories posts={morePosts} />}
+          {morePosts.length > 0 && <StoryList posts={morePosts} />}
         </Container>
       </Layout>
     </>
