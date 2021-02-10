@@ -1,27 +1,30 @@
 import '../styles/index.css'
 import "@fortawesome/fontawesome-svg-core/styles.css"; // import Font Awesome CSS
 import { config } from "@fortawesome/fontawesome-svg-core";
-import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
+import { ApolloProvider } from '@apollo/client';
+import { useApollo } from "../lib/apolloClient"
 import { useRouter } from 'next/router';
-import { relayStylePagination } from "@apollo/client/utilities";
+// import { relayStylePagination } from "@apollo/client/utilities";
 import { useState, useEffect } from 'react';
 import Loading from '../components/loading';
 config.autoAddCss = false;
 
-const client = new ApolloClient({
-  uri: 'https://www.herdcommunity.co.uk/graphql',
-  cache: new InMemoryCache({
-    typePolicies: {
-      Query: {
-        fields: {
-          posts: relayStylePagination()
-        },
-      },
-    },
-  })
-});
+// const client = new ApolloClient({
+//   uri: 'https://www.herdcommunity.co.uk/graphql',
+//   cache: new InMemoryCache({
+//     typePolicies: {
+//       Query: {
+//         fields: {
+//           posts: relayStylePagination()
+//         },
+//       },
+//     },
+//   })
+// });
 
 function MyApp({ Component, pageProps }) {
+
+  const apolloClient = useApollo(pageProps)
 
   const router = useRouter()
   const [pageLoading, setPageLoading] = useState(false)
@@ -35,7 +38,7 @@ function MyApp({ Component, pageProps }) {
   }, [router])
 
   return (
-    <ApolloProvider client={client}>
+    <ApolloProvider client={apolloClient}>
         {pageLoading ?
         <div className=' h-75-screen flex flex-col justify-center items-center '>
           <Loading/>

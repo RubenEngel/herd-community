@@ -1,5 +1,4 @@
 import Head from 'next/head'
-import { CMS_NAME, HOME_OG_IMAGE_URL } from '../lib/constants'
 
 export default function Meta() {
   return (
@@ -34,9 +33,9 @@ export default function Meta() {
       <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
       <meta
         name="description"
-        content={`A statically generated blog example using Next.js and ${CMS_NAME}.`}
+        content={`HERD Community - We are a community-led online platform where the stories and articles you read will be crafted by members of our community. The content of this platform will be generated for you and your friends, with the core aim of creating a more meaningful and relatable thread of news and stories.`}
       />
-      <meta property="og:image" content={HOME_OG_IMAGE_URL} />
+      {/* <meta property="og:image" content={} /> */}
     </Head>
   )
 }

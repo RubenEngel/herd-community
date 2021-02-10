@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import Container from '../../components/container'
-import StoryList from '../../components/more-stories'
+import PostList from '../../components/more-stories'
 import HeroPost from '../../components/hero-post'
 import Layout from '../../components/layout'
 import { getPostsForCategory } from '../../lib/api'
@@ -30,7 +30,7 @@ export default function Category({ allPosts: { edges }, preview }) {
               excerpt={heroPost.excerpt}
             />
           )}
-          {morePosts.length > 0 && <StoryList posts={morePosts} />}
+          {morePosts.length > 0 && <PostList posts={morePosts} />}
         </Container>
       </Layout>
     </>

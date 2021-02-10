@@ -1,12 +1,13 @@
 import Head from 'next/head'
 import Container from '../components/container'
-import StoryList from '../components/story-list.js'
-import HeroPost from '../components/hero-post'
+import PostList from '../components/post-list.js'
 import Layout from '../components/layout'
-import { getPostsForHome } from '../lib/api'
+import { initializeApollo, addApolloState } from '../lib/apolloClient'
+import { GET_POSTS } from '../lib/apolloQueries';
 
-export default function Index() {
+export default function Index( {posts} ) {
 
+console.log(posts)
 
   return (
     <>
@@ -15,9 +16,26 @@ export default function Index() {
           <title>HERD</title>
         </Head>
         <Container>
-          <StoryList />
+          <PostList first={6} after=""/>
         </Container>
       </Layout>
     </>
   )
+
 }
+
+export async function getServerSideProps() {
+  const apolloClient = initializeApollo()
+
+    const response = await apolloClient.query({
+      query: GET_POSTS,
+      variables: {first: 10, after: ""}
+    })
+  
+    return addApolloState(apolloClient, {
+      props: {
+        posts: response.data.posts.edges
+      },
+    })
+
+  }

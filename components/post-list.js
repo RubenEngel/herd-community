@@ -1,65 +1,25 @@
 import PostPreview from './post-preview'
-// import useSWR from "swr";
-import { useQuery, gql } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import Loading from './loading';
 import { Waypoint } from 'react-waypoint';
+import { GET_POSTS } from '../lib/apolloQueries';
 
-const GET_POSTS = gql`
-query getPosts($after: String) {
-  posts(first: 6, after: $after) {
-    edges {
-      cursor
-      node {
-        title
-        excerpt
-        author {
-          node {
-            firstName
-            lastName
-          }
-        }
-        slug
-        date
-        featuredImage {
-          node {
-            sourceUrl
-          }
-        }
-        categories {
-          edges {
-            node {
-              name
-            }
-          }
-        }
-        tags {
-          edges {
-            node {
-              name
-            }
-          }
-        }
-      }
-    }
-    pageInfo {
-      endCursor
-      hasNextPage
-    }
-  }
-}`
-
-export default function StoryList() {
+export default function PostList({first, after}) {
 
   const { loading, error, data, fetchMore } = useQuery(
     GET_POSTS, 
-    {variables: {after: ""},
-    notifyOnNetworkStatusChange: true,
+    {
+      variables: {
+        first: first,
+        after: after
+      },
+      notifyOnNetworkStatusChange: true,
     }
     );
 
   const stories = data ? data.posts.edges : [];
 
-  console.log( stories )
+  // console.log( stories )
 
   return (
     
