@@ -4,23 +4,10 @@ import { config } from "@fortawesome/fontawesome-svg-core";
 import { ApolloProvider } from '@apollo/client';
 import { useApollo } from "../lib/apolloClient"
 import { useRouter } from 'next/router';
-// import { relayStylePagination } from "@apollo/client/utilities";
 import { useState, useEffect } from 'react';
 import Loading from '../components/loading';
 config.autoAddCss = false;
 
-// const client = new ApolloClient({
-//   uri: 'https://www.herdcommunity.co.uk/graphql',
-//   cache: new InMemoryCache({
-//     typePolicies: {
-//       Query: {
-//         fields: {
-//           posts: relayStylePagination()
-//         },
-//       },
-//     },
-//   })
-// });
 
 function MyApp({ Component, pageProps }) {
 

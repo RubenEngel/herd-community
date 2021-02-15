@@ -5,9 +5,9 @@ import Layout from '../components/layout'
 import { initializeApollo, addApolloState } from '../lib/apolloClient'
 import { GET_POSTS } from '../lib/apolloQueries';
 
-export default function Index( {posts} ) {
+export default function Index() {
 
-console.log(posts)
+// console.log(posts)
 
   return (
     <>
@@ -24,18 +24,19 @@ console.log(posts)
 
 }
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   const apolloClient = initializeApollo()
 
     const response = await apolloClient.query({
       query: GET_POSTS,
       variables: {first: 10, after: ""}
     })
-  
+    const posts = await response.data.posts.edges
     return addApolloState(apolloClient, {
       props: {
-        posts: response.data.posts.edges
+        posts
       },
+      revalidate: 1
     })
 
   }
