@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import Container from '../components/container'
+// import Container from '../components/container'
 import PostList from '../components/post-list.js'
 import Layout from '../components/layout'
 import { initializeApollo, addApolloState } from '../lib/apolloClient'
@@ -15,9 +15,9 @@ export default function Index() {
         <Head>
           <title>HERD</title>
         </Head>
-        <Container>
+        {/* <Container> */}
           <PostList first={6} after=""/>
-        </Container>
+        {/* </Container> */}
       </Layout>
     </>
   )

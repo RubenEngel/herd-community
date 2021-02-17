@@ -11,17 +11,15 @@ import PostTitle from '../../components/post-title'
 import Head from 'next/head'
 import Tags from '../../components/tags'
 
-export default function Post({ post, posts, preview }) {
+export default function Post({ post }) {
   const router = useRouter()
-  const morePosts = posts?.edges
 
   if (!router.isFallback && !post?.slug) {
     return <ErrorPage statusCode={404} />
   }
 
   return (
-    <Layout preview={preview}>
-      <Container>
+    <Layout>
         {router.isFallback ? (
           <PostTitle>Loading…</PostTitle>
         ) : (
@@ -51,21 +49,21 @@ export default function Post({ post, posts, preview }) {
 
             <SectionSeparator />
 
+            {/* <PostList first={3} /> */}
+
           </>
         )}
-      </Container>
     </Layout>
   )
 }
 
 export async function getServerSideProps({ params, preview = false, previewData }) {
+  
   const data = await getPostAndMorePosts(params.slug, preview, previewData)
 
   return {
     props: {
-      preview,
       post: data.post,
-      posts: data.posts,
     }
   }
 }
