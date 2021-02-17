@@ -10,7 +10,7 @@ export default function Avatar({ author }) {
   return (
     <>
       {author && (
-        <div className="flex items-center justify-center">
+        <div className="flex items-center">
           {/* <img
             src={author.avatar.url}
             className="w-12 h-12 rounded-full mr-4"

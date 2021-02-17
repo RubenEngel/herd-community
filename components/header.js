@@ -27,7 +27,7 @@ export default function Header() {
         </div>
         
         <div>
-          <h1 className="text-6xl lg:text-7xl font-bold leading-tight text-center">
+          <h1 className="text-6xl font-bold leading-tight text-center">
             <Link scroll={false} href="/">
               <a>HERD.</a>
             </Link>

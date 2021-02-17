@@ -8,7 +8,7 @@ export default function PostPreview({
   title,
   coverImage,
   date,
-  // excerpt,
+  excerpt,
   categories,
   author,
   slug,
@@ -19,8 +19,12 @@ export default function PostPreview({
       <div className="mb-5">
         <CoverImage title={title} coverImage={coverImage} slug={slug} />
       </div>
+      {/* Categories */}
+      <div>
+        <Categories categories={categories}/>
+      </div>
       {/* Title */}
-      <h3 className="text-center text-xl mb-3 leading-snug">
+        <h3 className="text-xl mb-2">
         <Link as={`/posts/${slug}`} href="/posts/[slug]">
           <a
             className="hover:underline"
@@ -29,18 +33,13 @@ export default function PostPreview({
         </Link>
       </h3>
       {/* Date and Author */}
-      <div className='text-center'> 
-      <Avatar author={author} />
-        
-      </div>
-      <div className="flex flex-row justify-between items-center mt-2">
-        <Categories categories={categories}/>
+      <div className="flex flex-row justify-between items-center">
+        <Avatar author={author} />
         <Date dateString={date} />
       </div>
-
       {/* Excerpt */}
       {/* <div
-        className="text-md leading-relaxed mb-4"
+        className="text-md leading-relaxed mt-4"
         dangerouslySetInnerHTML={{ __html: excerpt }}
       /> */}
     </div>

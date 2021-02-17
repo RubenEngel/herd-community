@@ -7,11 +7,9 @@ export default function Layout({ children }) {
     <>
       <Meta />
         <Header/>
-        {/* <Container> */}
-          <div className='px-2 mt-10'>
-            <main>{children}</main>
-          </div>
-        {/* </Container> */}
+        <div className='px-2 mt-6'>
+          <main>{children}</main>
+        </div>
     </>
   )
 }
