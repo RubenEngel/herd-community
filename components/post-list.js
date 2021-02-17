@@ -19,8 +19,6 @@ export default function PostList({first, after}) {
 
   const stories = data ? data.posts.edges : [];
 
-  // console.log( stories )
-
   return (
     
     !data ? 
@@ -32,7 +30,7 @@ export default function PostList({first, after}) {
     :
 
     <section>
-      <div className="grid grid-cols-1 md:grid-cols-2 md:col-gap-16 lg:col-gap-32 row-gap-20 md:row-gap-32 mb-32">
+      <div className="grid grid-cols-1 col-gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 row-gap-8 mb-32">
         
         {error && <h1 className='text-4xl text-center'>Error Occurred</h1>}
         
@@ -45,6 +43,7 @@ export default function PostList({first, after}) {
             author={node.author?.node}
             slug={node.slug}
             excerpt={node.excerpt}
+            categories={node.categories}
           />
           ))}
           

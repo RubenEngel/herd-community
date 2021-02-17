@@ -1,8 +1,7 @@
 import Link from 'next/link'
-// import Navbar from '../archive/components/navbar'
 import { FaSearch, FaUserCircle, FaFacebookF, FaInstagram, FaTwitter, FaLinkedin } from 'react-icons/fa'
-// import { ImPencil } from "react-icons/im";
 import { BiMenuAltLeft } from "react-icons/bi";
+import { RiArrowDropDownFill } from "react-icons/ri";
 
 export default function Header() {
   return (
@@ -18,10 +17,13 @@ export default function Header() {
         <h3 className="text-md relative">17th February 2021</h3>
       </div>
   
-      <div className='sticky top-0 text-white bg-black px-6 py-2 w-screen flex justify-between items-center'> {/*flex justify-between*/}
+      <div className='sticky top-0 text-white bg-black px-6 py-2 w-screen flex justify-between items-center'>
         
         <div>
-          <BiMenuAltLeft className='text-4xl'/>
+          <button className='focus:outline-none'>
+            <BiMenuAltLeft className='text-5xl'/>
+          </button>
+          
         </div>
         
         <div>
@@ -33,16 +35,13 @@ export default function Header() {
         </div>
           
         <div>
-          <FaUserCircle className='text-3xl '/>
+          <button className='flex flex-row items-center focus:outline-none'>
+            <FaUserCircle className='text-3xl '/>
+            <RiArrowDropDownFill className='text-3xl'/>
+          </button>
         </div>
      
       </div>
   </>
   )
 }
-
-{/* <div className='flex mt-2 md:mr-8'>
-          <FaSearch className='text-2xl mr-2'/>
-          <ImPencil className='text-2xl mx-2'/>
-          <FaUserCircle className='text-2xl '/>
-        </div> */}

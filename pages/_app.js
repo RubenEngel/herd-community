@@ -6,6 +6,7 @@ import { useApollo } from "../lib/apolloClient"
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import Loading from '../components/loading';
+// import { firebase } from '../lib/firebaseConfig'
 config.autoAddCss = false;
 
 

@@ -7,17 +7,13 @@ import { GET_POSTS } from '../lib/apolloQueries';
 
 export default function Index() {
 
-// console.log(posts)
-
   return (
     <>
       <Layout>
         <Head>
           <title>HERD</title>
         </Head>
-        {/* <Container> */}
           <PostList first={6} after=""/>
-        {/* </Container> */}
       </Layout>
     </>
   )
