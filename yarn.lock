@@ -1824,6 +1824,11 @@
     "defined" "^1.0.0"
     "minimist" "^1.1.1"
 
+"dialog-polyfill@^0.4.7":
+  "integrity" "sha512-j5yGMkP8T00UFgyO+78OxiN5vC5dzRQF3BEio+LhNvDbyfxWBsi3sfPArDm54VloaJwy2hm3erEiDWqHRC8rzw=="
+  "resolved" "https://registry.npmjs.org/dialog-polyfill/-/dialog-polyfill-0.4.10.tgz"
+  "version" "0.4.10"
+
 "diffie-hellman@^5.0.0":
   "integrity" "sha512-kqag/Nl+f3GwyK25fhUMYj81BUOrZ9IuJsjIcDE5icNM9FJHAVm3VcUDxdLPoQtTuUylWm6ZIknYJwwaPxsUzg=="
   "resolved" "https://registry.npmjs.org/diffie-hellman/-/diffie-hellman-5.0.3.tgz"
@@ -2176,7 +2181,7 @@
     "locate-path" "^5.0.0"
     "path-exists" "^4.0.0"
 
-"firebase@^8.2.7":
+"firebase@^8.2.7", "firebase@>=8.2.4":
   "integrity" "sha512-HSfaOQjSA//VKxPmPfjKmv8HMH5DwdckaKXKpBJCHSkBkqqFehP5dG9I7+06X1GTycXgg6U6i1zqqBSt6zWTxw=="
   "resolved" "https://registry.npmjs.org/firebase/-/firebase-8.2.7.tgz"
   "version" "8.2.7"
@@ -2195,6 +2200,14 @@
     "@firebase/remote-config" "0.1.30"
     "@firebase/storage" "0.4.2"
     "@firebase/util" "0.3.4"
+
+"firebaseui@^4.7.3":
+  "integrity" "sha512-KKeZQS2fO2SrZFIsEmG6GrTm/+Na8Vk+OM9wnNgP8FtUw6h4S5oCPtebBREr9ETlDFvIK88gaHvp5bvF96yogA=="
+  "resolved" "https://registry.npmjs.org/firebaseui/-/firebaseui-4.7.3.tgz"
+  "version" "4.7.3"
+  dependencies:
+    "dialog-polyfill" "^0.4.7"
+    "material-design-lite" "^1.2.0"
 
 "flatten@^1.0.2":
   "integrity" "sha512-dVsPA/UwQ8+2uoFe5GHtiBMu48dWLTdsuEd7CKGlZlD78r1TTWBvDuFaFGKCo/ZfEr95Uk56vZoX86OsHkUeIg=="
@@ -3081,6 +3094,11 @@
   "version" "1.0.0"
   dependencies:
     "object-visit" "^1.0.0"
+
+"material-design-lite@^1.2.0":
+  "integrity" "sha1-0ATOP+6Zoe63Sni4oyUTSl8RcdM="
+  "resolved" "https://registry.npmjs.org/material-design-lite/-/material-design-lite-1.3.0.tgz"
+  "version" "1.3.0"
 
 "md5.js@^1.3.4":
   "integrity" "sha512-xitP+WxNPcTTOgnTJcrhM0xvdPepipPSf3I8EIpGKeFLjt3PlJLIDG3u8EX53ZIubkb+5U2+3rELYpEhHhzdkg=="
