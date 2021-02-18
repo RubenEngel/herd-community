@@ -9,7 +9,6 @@ import Loading from '../components/loading';
 // import { firebase } from '../lib/firebaseConfig'
 config.autoAddCss = false;
 
-
 function MyApp({ Component, pageProps }) {
 
   const apolloClient = useApollo(pageProps)
