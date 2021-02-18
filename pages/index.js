@@ -13,7 +13,7 @@ export default function Index() {
         <Head>
           <title>HERD</title>
         </Head>
-          <PostList first={6} after=""/>
+          <PostList first={8} after=""/>
       </Layout>
     </>
   )

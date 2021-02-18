@@ -12,20 +12,20 @@ export default function PostHeader({
   categories,
 }) {
   return (
-    <>
-      <PostTitle>{title}</PostTitle>
-      <div className="text-xl mb-8 mx-auto items-center text-center">
-        <Avatar author={author} />
+    <div className="max-w-4xl mx-auto px-4">
+      <div className="">
+        <PostTitle>{title}</PostTitle>
       </div>
-      <div className="mb-8 mx-8">
+      <div className="my-6">
+        <Categories categories={categories} />
+      </div>
+      <div className="mb-8">
         <CoverImage title={title} coverImage={coverImage} />
       </div>
-      <div className="mx-auto text-center">
-        <div className="mb-6 text-lg">
-          <div className='mb-4'>Posted <Date dateString={date} /> </div>
-          <Categories categories={categories} />
-        </div>
+      <div className='flex flex-row justify-between mb-6'>
+          <Avatar author={author} />
+          <Date dateString={date}/>
       </div>
-    </>
+    </div>
   )
 }

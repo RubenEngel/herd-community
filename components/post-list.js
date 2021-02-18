@@ -30,7 +30,7 @@ export default function PostList({first, after}) {
     :
 
     <section>
-      <div className="grid grid-cols-1 col-gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 row-gap-8 mb-32">
+      <div className="grid grid-cols-1 col-gap-8 md:grid-cols-2 lg:grid-cols-3 row-gap-8 mb-32">
         
         {error && <h1 className='text-4xl text-center'>Error Occurred</h1>}
         
