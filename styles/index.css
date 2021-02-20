@@ -37,7 +37,7 @@ h3 {
 .nav-item{
   font-family: 'Adamina', serif;
 
-  @apply px-2 py-1 text-lg flex items-center uppercase font-bold leading-snug;
+  @apply mx-2 my-3 text-lg items-center uppercase font-bold leading-snug;
   
 }
 

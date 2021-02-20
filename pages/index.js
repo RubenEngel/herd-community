@@ -13,7 +13,7 @@ export default function Index() {
         <Head>
           <title>HERD</title>
         </Head>
-          <PostList first={8} after=""/>
+          <PostList first={6} after=""/>
       </Layout>
     </>
   )
@@ -25,7 +25,7 @@ export async function getStaticProps() {
 
     const response = await apolloClient.query({
       query: GET_POSTS,
-      variables: {first: 10, after: ""}
+      variables: {first: 6, after: ""}
     })
     const posts = await response.data.posts.edges
     return addApolloState(apolloClient, {

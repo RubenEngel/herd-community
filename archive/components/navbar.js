@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 export default function Navbar() {
 
-  const [navbarOpen, setNavbarOpen] = useState(false);
+  const [menuNavbarOpen, setMenuNavbarOpen] = useState(false);
   
   return (
     <>
@@ -24,13 +24,13 @@ export default function Navbar() {
           <button
             className="nav-item uppercase font-bold cursor-pointer text-xl p-6 leading-none rounded md:hidden focus:outline-none"
             type="button"
-            onClick={() => setNavbarOpen(!navbarOpen)}>
+            onClick={() => setMenuNavbarOpen(!menuNavbarOpen)}>
             Categories
           </button>
         </div>
 
         <nav className={"container relative md:flex md:flex-row items-center justify-center px-2 py-3 mb-3 " 
-        + (navbarOpen ? "block" : "hidden")}
+        + (menuNavbarOpen ? "block" : "hidden")}
         >
           <ul className="md:flex md:flex-row">
             <li className="nav-item">
