@@ -6,7 +6,7 @@ import { useApollo } from "../lib/apolloClient"
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import Loading from '../components/loading';
-// import { firebase } from '../lib/firebaseConfig'
+import {motion} from 'framer-motion'
 config.autoAddCss = false;
 
 function MyApp({ Component, pageProps }) {
@@ -26,12 +26,17 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <ApolloProvider client={apolloClient}>
+        
         {pageLoading ?
-        <div className='h-75-screen flex flex-col justify-center items-center '>
+        <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.3 }}
+        className='h-75-screen flex flex-col justify-center items-center '>
           <Loading/>
-        </div>
+        </motion.div>
         :
-        <Component {...pageProps}/>
+          <Component {...pageProps}/>      
         }
        
     </ApolloProvider>

@@ -3,6 +3,7 @@ import Date from '../components/date'
 import CoverImage from './cover-image'
 import Link from 'next/link'
 import Categories from './categories';
+import {motion} from 'framer-motion'
 
 export default function PostPreview({
   title,
@@ -14,7 +15,10 @@ export default function PostPreview({
   slug,
 }) {
   return (
-    <div className='flex max-w-4xl mx-auto flex-col justify-center p-4 rounded-2xl shadow-lg'>
+    <motion.div 
+    initial={ { y: '-50%', opacity: 0 } }
+    animate= { { y: 0, opacity: 1 } }
+    className='flex max-w-4xl mx-auto flex-col justify-center p-4 rounded-2xl shadow-lg'>
       {/* Image */}
       <div className="mb-5">
         <CoverImage title={title} coverImage={coverImage} slug={slug} />
@@ -42,6 +46,6 @@ export default function PostPreview({
         className="text-md leading-relaxed mt-4"
         dangerouslySetInnerHTML={{ __html: excerpt }}
       /> */}
-    </div>
+    </motion.div>
   )
 }

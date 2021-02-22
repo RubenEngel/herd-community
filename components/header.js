@@ -5,6 +5,8 @@ import { BiMenuAltLeft } from "react-icons/bi";
 import { RiArrowDropDownFill } from "react-icons/ri";
 import { format } from 'date-fns'
 import { motion } from 'framer-motion'
+import MenuDropdown from './menu-dropdown';
+import ProfileDropdown from './profile-dropdown';
 
 export default function Header() {
 
@@ -13,9 +15,10 @@ export default function Header() {
   const [menuNavbarOpen, setMenuNavbarOpen] = useState(false);
   const [profileNavbarOpen, setProfileNavbarOpen] = useState(false)
 
+
   return (
     <>
-      <div className="bg-black text-white text-center uppercase font-light flex justify-between items-center py-2 px-4 md:px-16">
+      <div className="bg-black text-white text-center uppercase font-light flex justify-between items-center py-2 px-4 md:px-16 z-10">
         <div className="flex flex-row justify-center">
           <h3 className="hidden md:block mr-6 text-md">Follow Us</h3>
           <FaFacebookF className='mx-1 text-xl '/>
@@ -29,7 +32,7 @@ export default function Header() {
         </h3>
       </div>
   
-      <div className='sticky top-0 text-white bg-black px-6 py-2 w-screen '>
+      <div className='sticky top-0 text-white bg-black px-6 py-2 w-screen z-10'>
         
         <div className="flex justify-between items-center">
           <motion.div whileTap={{ scale: 0.7 }} whileHover={{scale: 1.2}}>
@@ -65,44 +68,13 @@ export default function Header() {
         </div>
 
         {/* Menu dropdown */}
-        <div className={'bg-black w-screen left-0' + (menuNavbarOpen ? ' absolute' : ' hidden' )}>
-          <nav className={"text-white p-3"}
-            >
-              <ul>
-                <li className="nav-item">
-                  About Us
-                </li>
-                <li className="nav-item">
-                  Write an Article
-                </li>
-              </ul>
-            </nav>
-        </div>
+        <MenuDropdown isOpen={menuNavbarOpen}/>
 
         {/* Profile dropdown */}
-        <motion.div 
-          animate={{ y: 0 }}
-          transition={{ type: "spring" }}
-          className={'bg-black w-screen right-0' + (profileNavbarOpen ? ' absolute' : ' hidden' )}>
-          <nav className={"text-white p-3 text-right"}
-            >
-              <ul>
-                <li className="nav-item">
-                  Sign In
-                </li>
-                <li className="nav-item">
-                  Profile
-                </li>
-                <li className="nav-item">
-                  Sign Out
-                </li>
-              </ul>
-            </nav>
-        </motion.div>
+        <ProfileDropdown isOpen={profileNavbarOpen}/>
 
       </div>
 
-      
   </>
   )
 }
