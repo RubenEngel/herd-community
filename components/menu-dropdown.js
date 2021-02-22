@@ -20,7 +20,7 @@ const transition = {
 function MenuDropdown({isOpen}) {
     return (
         <motion.div 
-        className={'bg-black w-screen left-0 -z-10' + (isOpen ? ' absolute' : ' hidden' )}
+        className={'bg-black w-screen left-0 -z-10 overflow-hidden' + (isOpen ? ' absolute' : ' hidden' )}
         animate={isOpen ? "open" : "closed"}
         variants={menuVariants}
         transition={transition}

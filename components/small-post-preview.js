@@ -3,7 +3,7 @@ import Date from './date'
 import CoverImage from './cover-image'
 import Link from 'next/link'
 
-export default function PostPreview({
+export default function SmallPostPreview({
   title,
   coverImage,
   date,
