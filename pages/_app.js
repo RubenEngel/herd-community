@@ -29,10 +29,10 @@ function MyApp({ Component, pageProps }) {
         
         {pageLoading ?
         <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.3 }}
-        className='h-75-screen flex flex-col justify-center items-center '>
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6 }}
+          className='h-75-screen flex flex-col justify-center items-center '>
           <Loading/>
         </motion.div>
         :
