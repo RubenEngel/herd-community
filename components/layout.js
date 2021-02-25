@@ -1,13 +1,12 @@
 import Meta from '../components/meta'
 import Header from './header'
-// import Container from './container';
 
-export default function Layout({ children }) {
+export default function Layout({ children, category }) {
   return (
     <>
       <Meta />
-        <Header/>
-        <div className='px-2 mt-6'>
+        <Header category={category}/>
+        <div className='container mx-auto max-w-4xl my-6 px-6 overflow-hidden'>
           <main>{children}</main>
         </div>
     </>

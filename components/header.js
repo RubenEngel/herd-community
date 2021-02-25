@@ -7,14 +7,15 @@ import { format } from 'date-fns'
 import { motion } from 'framer-motion'
 import MenuDropdown from './menu-dropdown';
 import ProfileDropdown from './profile-dropdown';
+import CategoryDropdown from './category-dropdown';
 
-export default function Header() {
+export default function Header({category}) {
 
   const today = new Date()
 
   const [menuNavbarOpen, setMenuNavbarOpen] = useState(false);
   const [profileNavbarOpen, setProfileNavbarOpen] = useState(false)
-
+  const [categoryNavbarOpen, setCategoryNavbarOpen] = useState(false)
 
   return (
     <>
@@ -40,6 +41,7 @@ export default function Header() {
               onClick={() => {
                 setMenuNavbarOpen(!menuNavbarOpen)
                 setProfileNavbarOpen(false)
+                setCategoryNavbarOpen(false)
               }} 
               className='focus:outline-none'>
                 <BiMenuAltLeft className='text-5xl'/>
@@ -59,6 +61,7 @@ export default function Header() {
               onClick={() => {
                 setProfileNavbarOpen(!profileNavbarOpen)
                 setMenuNavbarOpen(false)
+                setCategoryNavbarOpen(false)
               }} 
               className='flex flex-row items-center focus:outline-none'>
                 <FaUserCircle className='text-3xl '/>
@@ -67,13 +70,33 @@ export default function Header() {
           </motion.div>
         </div>
 
+      { category &&
+      <>
+        <div className='pt-4 -z-10'>
+        <button
+          onClick={() => {
+            setCategoryNavbarOpen(!categoryNavbarOpen)
+            setProfileNavbarOpen(false)
+            setMenuNavbarOpen(false)
+          }}
+          className='flex flex-row items-center mx-auto focus:outline-none'>
+          <h1 className='uppercase'>
+            Browsing {category}
+          </h1>
+          <RiArrowDropDownFill className='text-3xl'/>
+        </button>
+      </div>
+      <CategoryDropdown isOpen={categoryNavbarOpen}/>
+      </>
+      }
+
         {/* Menu dropdown */}
         <MenuDropdown isOpen={menuNavbarOpen}/>
 
         {/* Profile dropdown */}
         <ProfileDropdown isOpen={profileNavbarOpen}/>
-
-      </div>
+        
+    </div>
 
   </>
   )

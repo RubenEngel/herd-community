@@ -1,9 +1,11 @@
 import Avatar from '../components/avatar'
 import Date from '../components/date'
-import CoverImage from './cover-image'
+// import CoverImage from './cover-image'
 import Link from 'next/link'
 import Categories from './categories';
 import {motion} from 'framer-motion'
+import PreviewImage from './preview-image';
+// import useWindowDimensions from './hooks/useWindowDimensions';
 
 export default function PostPreview({
   title,
@@ -14,21 +16,25 @@ export default function PostPreview({
   author,
   slug,
 }) {
+
+  // const { height, width } = useWindowDimensions()
+
   return (
     <motion.div 
-    initial={ { y: '-50%', opacity: 0 } }
+    initial={ { y: '50%', opacity: 0 } }
     animate= { { y: 0, opacity: 1 } }
-    className='flex max-w-4xl mx-auto flex-col justify-center p-4 rounded-2xl shadow-lg'>
+    className='flex mx-auto my-2 flex-col justify-center rounded-2xl '>
       {/* Image */}
-      <div className="mb-5">
-        <CoverImage title={title} coverImage={coverImage} slug={slug} />
+      <div className="mb-1">
+        {/* <CoverImage title={title} coverImage={coverImage} slug={slug} /> */}
+        <PreviewImage title={title} coverImage={coverImage} slug={slug} width={1000} height={900} priority/>
       </div>
       {/* Categories */}
       <div>
         <Categories categories={categories}/>
       </div>
       {/* Title */}
-        <h3 className="text-xl mb-2">
+        <h3 className="text-lg mb-2">
         <Link as={`/posts/${slug}`} href="/posts/[slug]">
           <a
             className="hover:underline"
@@ -37,7 +43,7 @@ export default function PostPreview({
         </Link>
       </h3>
       {/* Date and Author */}
-      <div className="flex flex-row justify-between items-center">
+      <div className="text-sm flex flex-row justify-between items-center">
         <Avatar author={author} />
         <Date dateString={date} />
       </div>

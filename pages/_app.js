@@ -30,13 +30,13 @@ function MyApp({ Component, pageProps }) {
         {pageLoading ?
         <motion.div
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6 }}
+          animate={{ opacity: 0.9 }}
+          transition={{ duration: 1 }}
           className='h-75-screen flex flex-col justify-center items-center '>
           <Loading/>
         </motion.div>
         :
-          <Component {...pageProps}/>      
+          <Component {...pageProps}/>        
         }
        
     </ApolloProvider>

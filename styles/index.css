@@ -34,17 +34,17 @@ h3 {
   font-family: 'Adamina', serif;
 }
 
-.nav-item{
-  font-family: 'Adamina', serif;
-
-  @apply mx-2 my-3 text-lg items-center uppercase font-bold leading-snug;
-  
-}
-
 .h-75-screen{
   height: 75vh;
 }
 
 .h-50-screen{
   height: 50vh;
+}
+
+.nav-item {
+  font-family: 'Adamina', serif;
+
+  @apply mx-2 my-3 text-lg items-center uppercase font-bold leading-snug;
+  
 }
