@@ -12,6 +12,5 @@ A platform for young adults to write about the things that interest themselves a
 Features to be implemented:
 * Cache filtering using apollo-client state for browsing by category and author
 * WYSIWYG Article submission using CK Editor 5
-* Profiles, with follows
-* Likes and comments
+* Profiles with follows, likes and comments
 * Suggested posts
