@@ -27,7 +27,7 @@ export default function PostPreview({
       {/* Image */}
       <div className="mb-1">
         {/* <CoverImage title={title} coverImage={coverImage} slug={slug} /> */}
-        <PreviewImage title={title} coverImage={coverImage} slug={slug} width={1000} height={900} priority/>
+        <PreviewImage title={title} coverImage={coverImage} slug={slug} width={1000} height={900} priority={true}/>
       </div>
       {/* Categories */}
       <div>

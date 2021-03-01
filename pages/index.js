@@ -12,26 +12,9 @@ import { useQuery } from '@apollo/client';
 import { AiFillCaretRight } from "react-icons/ai";
 import Link from 'next/link'
 
-export default function Index({
-  posts, 
-  endCursor
-}) {
+export default function Index({posts}) {
 
-  // const { loading, error, data } = useQuery(
-  //   GET_POSTS, 
-  //   {
-  //     variables: {
-  //       first: 4,
-  //       after: "",
-  //     },
-  //     notifyOnNetworkStatusChange: true,
-  //     fetchPolicy: "network-only"
-  //   }
-  //   );
 
-  // const posts = data?.posts.edges
-
-  console.log(endCursor)
   const latestStory = posts[0]
   const latestStories = posts.slice(1)
 
@@ -83,19 +66,6 @@ export default function Index({
 
         </div>
 
-          {/* <HomeCategory 
-          category={"climate"} 
-          // after={endCursor}
-          /> */}
-
-          {/* <HomeCategory category={"Current Affairs"} after={endCursor}/> */}
-
-          {/* <HomeCategory category={"Lifestyle"} after={endCursor}/> */}
-
-          {/* <HomeCategory category={"Sport"} after={endCursor}/> */}
-
-          {/* <HomeCategory category={"Work"} after={endCursor}/> */}
-
       </Layout>
     </>
   )
@@ -110,12 +80,12 @@ export async function getStaticProps() {
       variables: {first: 4, after: "", category: ""}
     })
     const posts = await response.data.posts.edges
-    const endCursor = await response.data.posts.pageInfo.endCursor
+    // const endCursor = await response.data.posts.pageInfo.endCursor
     
     return addApolloState(apolloClient, {
       props: {
         posts,
-        endCursor
+        // endCursor
       },
       revalidate: 1
     })
