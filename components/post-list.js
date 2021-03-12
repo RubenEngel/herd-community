@@ -31,8 +31,8 @@ export default function PostList({first, after, category}) {
     
     :
 
-    <section className='overflow-hidden md:p-20 mx-auto'>
-      <div className="grid grid-cols-1 md:grid-cols-2 col-gap-8 row-gap-2 mb-32">
+    <section className='overflow-hidden mx-auto'>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 col-gap-8 row-gap-2 mb-32">
         
         {error && <h1 className='text-4xl text-center'>An Error Occurred</h1>}
         

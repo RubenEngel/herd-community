@@ -15,15 +15,17 @@ export default function PostPreview({
   categories,
   author,
   slug,
+  animated
 }) {
 
   // const { height, width } = useWindowDimensions()
 
   return (
+   <>
     <motion.div 
     initial={ { y: '50%', opacity: 0 } }
     animate= { { y: 0, opacity: 1 } }
-    className='flex mx-auto my-2 flex-col justify-center rounded-2xl '>
+    className='flex mx-auto my-2 flex-col justify-center rounded-lg '>
       {/* Image */}
       <div className="mb-1">
         {/* <CoverImage title={title} coverImage={coverImage} slug={slug} /> */}
@@ -53,5 +55,6 @@ export default function PostPreview({
         dangerouslySetInnerHTML={{ __html: excerpt }}
       /> */}
     </motion.div>
+    </>
   )
 }
