@@ -1,4 +1,4 @@
-# A Next.js article website using Apollo Client and WPGraphQL as a data source.
+# A Next.js article social article web app using Apollo Client and WPGraphQL as a data source.
 
 ## This web application is still in active development in spare time
 This web application is being developed for mobile first due to a 90% mobile user rate on the current wordpress website https://www.herdcommunity.co.uk/. Desktop responsiveness will be implemented in the coming weeks.

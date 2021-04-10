@@ -17,7 +17,7 @@ export default function SmallPostPreview({
     <motion.div 
     initial={ { y: '50%', opacity: 0 } }
     animate= { { y: 0, opacity: 1 } }
-    className='rounded-2xl my-6'>
+    className='rounded-lg my-6'>
 
       <div className='grid grid-cols-5'>
         {/* Image */}

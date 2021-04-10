@@ -11,7 +11,7 @@ export default function Explore() {
 
     return (
         <Layout category={category}>
-            <PostList first={6} after={""} category={""}/>
+            <PostList first={6} after={""} category={'All' ? "" : category}/>
         </Layout>
     )
 }
