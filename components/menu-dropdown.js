@@ -43,7 +43,7 @@ function MenuDropdown({isOpen}) {
                   Search
                 </li>
                 <li className="nav-item">
-                  <Link href="/categories">
+                  <Link href="/explore">
                     <a>Explore</a>
                   </Link>
                 </li>
