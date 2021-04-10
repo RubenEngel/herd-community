@@ -9,6 +9,7 @@ import MenuDropdown from './menu-dropdown';
 import ProfileDropdown from './profile-dropdown';
 import CategoryDropdown from './category-dropdown';
 
+
 export default function Header({category}) {
 
   const today = new Date()
@@ -86,7 +87,7 @@ export default function Header({category}) {
           <RiArrowDropDownFill className='text-3xl'/>
         </button>
       </div>
-      <CategoryDropdown isOpen={categoryNavbarOpen}/>
+      <CategoryDropdown setIsOpen={setCategoryNavbarOpen} isOpen={categoryNavbarOpen}/>
       </>
       }
 

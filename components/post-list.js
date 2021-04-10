@@ -1,13 +1,15 @@
+import { useEffect } from 'react'
 import PostPreview from './post-preview'
-import { useQuery } from '@apollo/client';
+import { useQuery, useLazyQuery } from '@apollo/client';
 import Loading from './loading';
 import { Waypoint } from 'react-waypoint';
 import { GET_POSTS } from '../lib/apolloQueries';
-// import SmallPostPreview from './small-post-preview';
 
 export default function PostList({first, after, category}) {
 
-  const { loading, error, data, fetchMore } = useQuery(
+  if (category === 'All') {category = ""};
+
+  const [getPosts, {loading, error, data: postData, fetchMore}] = useLazyQuery(
     GET_POSTS, 
     {
       variables: {
@@ -15,15 +17,20 @@ export default function PostList({first, after, category}) {
         after: after,
         category: category
       },
+      fetchPolicy: 'network-only',
       notifyOnNetworkStatusChange: true,
     }
     );
 
-  const posts = data?.posts.edges
+  const posts = postData?.posts.edges
+
+  useEffect(() => {
+    getPosts()
+  }, [category])
 
   return (
 
-    !data ? 
+    !postData ? 
 
     <div className='h-75-screen flex justify-center items-center'>
     <Loading/>
@@ -47,11 +54,12 @@ export default function PostList({first, after, category}) {
             slug={node.slug}
             excerpt={node.excerpt}
             categories={node.categories}
+            animateY={'100%'}
           />
           ))}
 
           <Waypoint onEnter={() => {
-            const endCursor = data.posts.pageInfo.endCursor
+            const endCursor = postData.posts.pageInfo.endCursor
             fetchMore({
               variables: {after: endCursor}
             })
@@ -61,7 +69,6 @@ export default function PostList({first, after, category}) {
       </div>
 
       {loading && <div className='mb-40'><Loading/></div>}
-
 
     </section>
   )

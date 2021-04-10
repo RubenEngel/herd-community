@@ -1,6 +1,6 @@
 {
-  "name": "Next.js",
-  "short_name": "Next.js",
+  "name": "HERD",
+  "short_name": "HERD - Community Driven Articles",
   "icons": [
     {
       "src": "/favicons/android-chrome-192x192.png",

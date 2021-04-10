@@ -1,8 +1,8 @@
 import React from 'react'
 import {motion} from 'framer-motion'
-import Link from 'next/link'
+import { categoryVar } from '../lib/reactiveVars'
 
-function CategoryDropdown({isOpen}) {
+function CategoryDropdown({isOpen, setIsOpen}) {
 
     const menuVariants = {
         open: { opacity: 1, y: 0 },
@@ -20,6 +20,8 @@ function CategoryDropdown({isOpen}) {
       duration: 0.4 
     }
 
+
+
     return (
         <motion.div 
         className={'bg-black w-screen left-0 -z-10 overflow-hidden' + (isOpen ? ' absolute' : ' hidden' )}
@@ -34,20 +36,53 @@ function CategoryDropdown({isOpen}) {
           transition={transition}
           >
               <ul>
-                <li className="nav-item">
-                  Culture
+                <li 
+                  className="nav-item"
+                  onClick={() => {categoryVar('All'); setIsOpen(false)}}
+                  >
+                  <button className='uppercase'>
+                    All
+                  </button>
                 </li>
-                <li className="nav-item">
-                  Sport
+                <li 
+                  className="nav-item"
+                  onClick={() => {categoryVar('Culture'); setIsOpen(false)}}
+                  >
+                  <button className='uppercase'>
+                    Culture
+                  </button>
                 </li>
-                <li className="nav-item">
+                <li 
+                  className="nav-item"
+                  onClick={() => {categoryVar('Sport'); setIsOpen(false)}}
+                  >
+                  <button className='uppercase'>
+                    Sport
+                  </button>
+                </li>
+                <li 
+                  className="nav-item"
+                  onClick={() => {categoryVar('Current Affairs'); setIsOpen(false)}}
+                  >
+                  <button className='uppercase'>
                     Current Affairs
+                    </button>
                 </li>
-                <li className="nav-item">
+                {/* <li 
+                className="nav-item"
+                onClick={() => {categoryVar('Climate'); console.log(categoryVar())}}
+                >
+                  <button>
                     Climate
-                </li>
-                <li className="nav-item">
+                  </button>
+                </li> */}
+                <li 
+                className="nav-item"
+                onClick={() => {categoryVar('Lifestyle'); setIsOpen(false)}}
+                >
+                  <button className='uppercase'>
                     Lifestyle
+                  </button>
                 </li>
               </ul>
             </motion.nav>

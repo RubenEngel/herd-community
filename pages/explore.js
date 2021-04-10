@@ -1,17 +1,16 @@
 import React from 'react'
-import {useState} from 'react'
 import Layout from '../components/layout';
 import PostList from '../components/post-list';
-import Header from '../components/header';
-import Container from '../components/container';
+import { useReactiveVar } from '@apollo/client';
+import { categoryVar } from '../lib/reactiveVars';
 
 export default function Explore() {
 
-    const [category, setCategory] = useState('All')
+const selectedCategory = useReactiveVar(categoryVar)
 
     return (
-        <Layout category={category}>
-            <PostList first={6} after={""} category={'All' ? "" : category}/>
+        <Layout category={selectedCategory}>
+            <PostList first={6} after={""} category={selectedCategory}/>
         </Layout>
     )
 }

@@ -15,7 +15,8 @@ export default function PostPreview({
   categories,
   author,
   slug,
-  animated
+  animateY = 0,
+  animateScale = 1
 }) {
 
   // const { height, width } = useWindowDimensions()
@@ -23,8 +24,8 @@ export default function PostPreview({
   return (
    <>
     <motion.div 
-    initial={ { y: '50%', opacity: 0 } }
-    animate= { { y: 0, opacity: 1 } }
+    initial={ { scale: animateScale, y: animateY, opacity: 0 } }
+    animate= { { scale: 1, y: 0, opacity: 1 } }
     className='flex mx-auto my-2 flex-col justify-center rounded-lg '>
       {/* Image */}
       <div className="mb-1">

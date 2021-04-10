@@ -1,23 +1,25 @@
 import Head from 'next/head'
-import Container from '../components/container'
-import PostList from '../components/post-list.js'
-import Layout from '../components/layout'
 import { initializeApollo, addApolloState } from '../lib/apolloClient'
 import { GET_POSTS } from '../lib/apolloQueries';
 import PostPreview from '../components/post-preview';
 import SmallPostPreview from '../components/small-post-preview';
-import SectionHeader from '../components/section-header';
 import HomeCategory from '../components/home-category';
-import { useQuery } from '@apollo/client';
 import { AiFillCaretRight } from "react-icons/ai";
 import Link from 'next/link'
 import Header from '../components/header';
+import { categoryVar } from '../lib/reactiveVars';
 
-export default function Index({posts}) {
 
+export default function Index({
+  posts, 
+  sportPosts,
+  culturePosts,
+  currentAffairsPosts,
+  lifestylePosts
+}) {
 
   const latestStory = posts[0]
-  const latestStories = posts.slice(1)
+  const latestStories = posts.slice(1,4)
 
 
   return (
@@ -26,10 +28,20 @@ export default function Index({posts}) {
         <Head>
           <title>HERD</title>
         </Head>
-        {/* Desktop Latest Posts 3 Large */}
-        <div className='hidden lg:grid md:grid-cols-2 lg:grid-cols-3'>
-        {latestStories.map(({node}) => (
-                <div className='p-10'>
+        {/* Desktop Latest Posts 4 Large */}
+        <div className='text-center bg-black w-100 p-2 font-bold uppercase text-white'>
+                <Link href='/explore'>
+                    <button onClick={() => categoryVar('All')} className='flex items-center font-bold mx-auto'>
+                    <h1 className='text-lg uppercase mr-4'>
+                        Latest Stories
+                    </h1>
+                    <AiFillCaretRight/>
+                    </button>
+                </Link>
+            </div>
+        <div className='hidden md:grid md:grid-cols-2 max-w-screen-lg mx-auto'>
+        {posts.map(({node}) => (
+                <div className='p-6'>
                   <PostPreview
                 key={node.slug}
                 title={node.title}
@@ -39,6 +51,7 @@ export default function Index({posts}) {
                 slug={node.slug}
                 excerpt={node.excerpt}
                 categories={node.categories}
+                animateScale={0.5}
             />
                 </div>
                 
@@ -55,6 +68,7 @@ export default function Index({posts}) {
                 slug={latestStory.node.slug}
                 excerpt={latestStory.node.excerpt}
                 categories={latestStory.node.categories}
+                animateScale={0.5}
             />
 
             {latestStories.map(({node}) => (
@@ -71,18 +85,18 @@ export default function Index({posts}) {
             ))}
             </div>
         
-        {/* Categories after letest posts */}
-        <div className='grid md:grid-cols-2 lg:grid-cols-3'>
+        {/* Categories after latest posts */}
+        <div className='grid md:grid-cols-2 max-w-screen-lg mx-auto'>
+          
+          <HomeCategory category="Sport" posts={sportPosts}/>
 
-          <HomeCategory posts={posts}/>
+          <HomeCategory category="Culture" posts={culturePosts}/>
+          
+          <HomeCategory category="Lifestyle" posts={lifestylePosts}/>
 
-          <HomeCategory posts={posts}/>
-
-          <HomeCategory posts={posts}/>
+          <HomeCategory category="Current Affairs" posts={currentAffairsPosts}/>
 
         </div>
-
-      {/* </Container> */}
 
           <div className='flex items-center w-screen font-bold justify-end py-6 pr-10 bg-black text-white absolute'>
             <Link href='/explore'>
@@ -103,17 +117,49 @@ export default function Index({posts}) {
 export async function getStaticProps() {
   const apolloClient = initializeApollo()
 
-    const response = await apolloClient.query({
+    const postsRes = await apolloClient.query({
       query: GET_POSTS,
-      variables: {first: 4, after: "", category: ""}
+      variables: {first: 4, after: "", category: ""},
+      fetchPolicy: "no-cache"
     })
-    const posts = await response.data.posts.edges
-    // const endCursor = await response.data.posts.pageInfo.endCursor
     
+    const sportRes = await apolloClient.query({
+      query: GET_POSTS,
+      variables: {first: 4, after: "", category: "Sport"},
+      fetchPolicy: "no-cache"
+    })
+
+    const cultureRes = await apolloClient.query({
+      query: GET_POSTS,
+      variables: {first: 4, after: "", category: "Culture"},
+      fetchPolicy: "no-cache"
+    })
+
+    const currentAffairsRes = await apolloClient.query({
+      query: GET_POSTS,
+      variables: {first: 4, after: "", category: "Current Affairs"},
+      fetchPolicy: "no-cache"
+    })
+
+    const lifestyleRes = await apolloClient.query({
+      query: GET_POSTS,
+      variables: {first: 4, after: "", category: "Lifestyle"},
+      fetchPolicy: "no-cache"
+    })
+
+  const posts = await postsRes.data.posts.edges
+  const culturePosts = await cultureRes.data.posts.edges
+  const sportPosts = await sportRes.data.posts.edges
+  const currentAffairsPosts = await currentAffairsRes.data.posts.edges
+  const lifestylePosts = await lifestyleRes.data.posts.edges
+
     return addApolloState(apolloClient, {
       props: {
         posts,
-        // endCursor
+        sportPosts,
+        culturePosts,
+        currentAffairsPosts,
+        lifestylePosts
       },
       revalidate: 1
     })
