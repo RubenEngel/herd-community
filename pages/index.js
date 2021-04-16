@@ -165,7 +165,7 @@ export async function getStaticProps() {
         currentAffairsPosts,
         lifestylePosts
       },
-      revalidate: 1
+      revalidate: 30
     })
 
   }
