@@ -18,6 +18,7 @@ export default function Index({
   lifestylePosts
 }) {
 
+  const desktopLatestPosts = posts.slice(0,3)
   const latestStory = posts[0]
   const latestStories = posts.slice(1,4)
 
@@ -29,7 +30,8 @@ export default function Index({
           <title>HERD</title>
         </Head>
         {/* Desktop Latest Posts 4 Large */}
-        <div className='text-center bg-black w-100 p-2 font-bold uppercase text-white'>
+        <div className='text-center'>
+          <div className='bg-black lg:inline-block items-center lg:mt-6 lg:px-56 lg:rounded-xl p-2 font-bold uppercase text-white'>
                 <Link href='/explore'>
                     <button onClick={() => categoryVar('All')} className='flex items-center font-bold mx-auto'>
                     <h1 className='text-lg uppercase mr-4'>
@@ -38,9 +40,11 @@ export default function Index({
                     <AiFillCaretRight/>
                     </button>
                 </Link>
-            </div>
-        <div className='hidden md:grid md:grid-cols-2 max-w-screen-lg mx-auto'>
-        {posts.map(({node}) => (
+          </div>
+        </div>
+        
+        <div className='hidden md:grid md:grid-cols-3 max-w-screen-lg mx-auto'>
+        {desktopLatestPosts.map(({node}) => (
                 <div className='p-6'>
                   <PostPreview
                 key={node.slug}
@@ -120,7 +124,7 @@ export async function getStaticProps() {
     const postsRes = await apolloClient.query({
       query: GET_POSTS,
       variables: {first: 4, after: "", category: ""},
-      fetchPolicy: "no-cache"
+      // fetchPolicy: "no-cache"
     })
     
     const sportRes = await apolloClient.query({
