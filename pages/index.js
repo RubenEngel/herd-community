@@ -20,7 +20,7 @@ export default function Index({
 
   const desktopLatestPosts = posts.slice(0,3)
   const latestStory = posts[0]
-  const latestStories = posts.slice(1,4)
+  const mobileLatestStories = posts.slice(1,4)
 
 
   return (
@@ -75,7 +75,7 @@ export default function Index({
                 animateScale={0.5}
             />
 
-            {latestStories.map(({node}) => (
+            {mobileLatestStories.map(({node}) => (
                 <SmallPostPreview
                 key={node.slug}
                 title={node.title}
@@ -123,8 +123,7 @@ export async function getStaticProps() {
 
     const postsRes = await apolloClient.query({
       query: GET_POSTS,
-      variables: {first: 4, after: "", category: ""},
-      // fetchPolicy: "no-cache"
+      variables: {first: 100, after: "", category: ""},
     })
     
     const sportRes = await apolloClient.query({

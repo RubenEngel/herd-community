@@ -9,6 +9,8 @@ export default function PostList({first, after, category}) {
 
   if (category === 'All') {category = ""};
 
+  const fetchPolicy = ( category === 'All' ) ? 'cache-first' : 'network-only'
+
   const [getPosts, {loading, error, data: postData, fetchMore}] = useLazyQuery(
     GET_POSTS, 
     {
@@ -17,7 +19,7 @@ export default function PostList({first, after, category}) {
         after: after,
         category: category
       },
-      fetchPolicy: 'network-only',
+      fetchPolicy: fetchPolicy,
       notifyOnNetworkStatusChange: true,
     }
     );
