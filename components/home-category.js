@@ -7,7 +7,7 @@ import { categoryVar } from '../lib/reactiveVars';
 
 function HomeCategory({posts, category}) {
 
-    const latestStory = posts ? posts[0] : null
+    const latestPost = posts ? posts[0] : null
     const latestStories = posts?.slice(1,4)
 
     return (
@@ -28,14 +28,14 @@ function HomeCategory({posts, category}) {
             <div className='p-4 md:p-6 lg:p-10'>
 
             <PostPreview
-                key={latestStory.node.slug}
-                title={latestStory.node.title}
-                coverImage={latestStory.node.featuredImage?.node}
-                date={latestStory.node.date}
-                author={latestStory.node.author?.node}
-                slug={latestStory.node.slug}
-                excerpt={latestStory.node.excerpt}
-                categories={latestStory.node.categories}
+                key={latestPost.node.slug}
+                title={latestPost.node.title}
+                coverImage={latestPost.node.featuredImage?.node}
+                date={latestPost.node.date}
+                author={latestPost.node.author?.node}
+                slug={latestPost.node.slug}
+                excerpt={latestPost.node.excerpt}
+                categories={latestPost.node.categories}
                 animateScale={0.5}
             />
 

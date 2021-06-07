@@ -18,9 +18,9 @@ export default function Index({
   lifestylePosts
 }) {
 
+  const latestPost = posts[0]
   const desktopLatestPosts = posts.slice(0,3)
-  const latestStory = posts[0]
-  const mobileLatestStories = posts.slice(1,4)
+  const mobileLatestPosts = posts.slice(1,4)
 
 
   return (
@@ -64,18 +64,18 @@ export default function Index({
           {/* Mobile Latest Posts */}
         <div className='p-4 md:hidden'>
             <PostPreview
-                key={latestStory.node.slug}
-                title={latestStory.node.title}
-                coverImage={latestStory.node.featuredImage?.node}
-                date={latestStory.node.date}
-                author={latestStory.node.author?.node}
-                slug={latestStory.node.slug}
-                excerpt={latestStory.node.excerpt}
-                categories={latestStory.node.categories}
+                key={latestPost.node.slug}
+                title={latestPost.node.title}
+                coverImage={latestPost.node.featuredImage?.node}
+                date={latestPost.node.date}
+                author={latestPost.node.author?.node}
+                slug={latestPost.node.slug}
+                excerpt={latestPost.node.excerpt}
+                categories={latestPost.node.categories}
                 animateScale={0.5}
             />
 
-            {mobileLatestStories.map(({node}) => (
+            {mobileLatestPosts.map(({node}) => (
                 <SmallPostPreview
                 key={node.slug}
                 title={node.title}
@@ -123,7 +123,7 @@ export async function getStaticProps() {
 
     const postsRes = await apolloClient.query({
       query: GET_POSTS,
-      variables: {first: 100, after: "", category: ""},
+      variables: {first: 4, after: "", category: ""},
     })
     
     const sportRes = await apolloClient.query({
