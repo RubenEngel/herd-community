@@ -7,6 +7,7 @@ The founders are looking to do a relaunch with a slight rebranding in the coming
 It was decided to use the wordpress GraphQL API plugin (WPGraphQL) as a data source due to amount of content already on the wordpress server and the clients familiarity with it. Apollo-Server will be used to pull user profile data and social media elements at the same time as article data from wordpress.
 
 HERD instagram page: https://www.instagram.com/herd.uk/
+
 HERD current wordpress website: https://www.herdcommunity.co.uk/
 
 Features to be implemented:
