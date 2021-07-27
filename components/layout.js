@@ -6,7 +6,7 @@ export default function Layout({ category, children }) {
     <>
       <Meta />
         <Header category={category}/>
-        <div className='container mx-auto max-w-7xl my-6 px-6 overflow-hidden'>
+        <div className='container mx-auto max-w-6xl my-6 px-6 overflow-hidden'>
           <main>{children}</main>
         </div>
     </>

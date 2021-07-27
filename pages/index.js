@@ -29,7 +29,7 @@ export default function Index({
         <Head>
           <title>HERD</title>
         </Head>
-        {/* Desktop Latest Posts 4 Large */}
+        {/* Desktop Latest Posts*/}
         <div className='text-center'>
           <div className='bg-black lg:inline-block items-center lg:mt-6 lg:px-56 lg:rounded-xl p-2 font-bold uppercase text-white'>
                 <Link href='/explore'>
@@ -42,8 +42,7 @@ export default function Index({
                 </Link>
           </div>
         </div>
-        
-        <div className='hidden md:grid md:grid-cols-3 max-w-screen-lg mx-auto'>
+        <div className='hidden md:grid md:grid-cols-3 max-w-6xl mx-auto'>
         {desktopLatestPosts.map(({node}) => (
                 <div className='p-6'>
                   <PostPreview
@@ -90,7 +89,7 @@ export default function Index({
             </div>
         
         {/* Categories after latest posts */}
-        <div className='grid md:grid-cols-2 max-w-screen-lg mx-auto'>
+        <div className='grid md:grid-cols-2 max-w-6xl mx-auto'>
           
           <HomeCategory category="Sport" posts={sportPosts}/>
 

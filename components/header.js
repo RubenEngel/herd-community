@@ -20,23 +20,38 @@ export default function Header({category}) {
 
   return (
     <>
-      <div className="bg-black text-white text-center uppercase font-light flex justify-between items-center py-2 px-4 md:px-16 z-10">
-        <div className="flex flex-row justify-center">
-          <h3 className="hidden md:block mr-6 text-md">Follow Us</h3>
-          <FaFacebookF className='mx-1 text-xl '/>
-          <FaInstagram className='mx-1 text-xl '/>
-          <FaTwitter className='mx-1 text-xl '/>
-          <FaLinkedin className='mx-1 text-xl '/>
+      <div className="bg-black text-white text-center uppercase font-light  py-2 px-4 md:px-16 z-10">
+        <div className="flex justify-between items-center max-w-6xl m-auto">
+          {/* Social Media Links */}
+          <div className="flex flex-row justify-center">
+            <h3 className="hidden md:block mr-6 text-md">Follow Us</h3>
+            <a href="https://www.facebook.com/HERD.UK/" target="_blank">
+              <FaFacebookF className='mx-1 text-xl '/>
+            </a>
+            <a href="https://www.instagram.com/herd.uk/" target="_blank">
+              <FaInstagram className='mx-1 text-xl '/>
+            </a>
+            <a href="https://twitter.com/HERD_UK" target="_blank">
+              <FaTwitter className='mx-1 text-xl '/>
+            </a>
+            <a href="https://www.linkedin.com/company/herd-uk/" target="_blank">
+              <FaLinkedin className='mx-1 text-xl '/>
+            </a>
+          </div>
+          {/* Date and Time */}
+          <div>
+            <h3 className="text-md relative">
+              <time className='block md:hidden'>{format(new Date(), 'LLLL	d, yyyy')}</time>
+              <time className='hidden md:block'>{format(new Date(), 'eeee, LLLL	d, yyyy')}</time>
+            </h3>          
+          </div>
         </div>
-        <h3 className="text-md relative">
-        <time className='block md:hidden'>{format(new Date(), 'LLLL	d, yyyy')}</time>
-        <time className='hidden md:block'>{format(new Date(), 'eeee, LLLL	d, yyyy')}</time>
-        </h3>
+
+
       </div>
-  
-      <div className='sticky top-0 text-white bg-black px-6 py-2 w-screen z-10'>
-        
-        <div className="flex justify-between items-center">
+
+      <div className='sticky top-0 text-white bg-black px-6 py-2 z-10'>  
+        <div className="flex justify-between items-center max-w-6xl m-auto">
           <motion.div whileTap={{ scale: 0.7 }} whileHover={{scale: 1.2}}>
             <button
               onClick={() => {

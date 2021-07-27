@@ -26,7 +26,7 @@ function ProfileDropdown({isOpen}) {
           transition={transition}
           >
           <motion.nav
-          className={"text-white p-3 text-right -z-10"}
+          className={"text-white p-3 text-right -z-10 max-w-6xl m-auto"}
           animate={isOpen ? "open" : "closed"} 
           variants={navVariants}
           transition={transition}
