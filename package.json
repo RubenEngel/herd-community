@@ -15,6 +15,7 @@
     "classnames": "2.2.6",
     "date-fns": "2.14.0",
     "deepmerge": "^4.2.2",
+    "firebase": "^8.7.1",
     "framer-motion": "^3.3.0",
     "graphql": "^15.5.0",
     "graphql-request": "^3.4.0",
