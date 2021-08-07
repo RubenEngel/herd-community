@@ -1,63 +1,49 @@
-import React from 'react'
+import React from 'react';
 import SectionHeader from '../../components/section-header';
 import { useQuery } from '@apollo/client';
 import { GET_POSTS } from '../../lib/apolloQueries';
 import SmallPostPreview from '../../components/small-post-preview';
 import Loading from '../../components/loading';
 
-
 function HomeCategory({
-  // after, 
-  category
+  // after,
+  category,
 }) {
-    
-    const { loading, error, data } = useQuery(
-        GET_POSTS, 
-        {
-          variables: {
-            first: 2,
-            after: "",
-            category: category
-          },
-          notifyOnNetworkStatusChange: true,
-          fetchPolicy: "network-only"
-        }
-        );
-    
-      const stories = data?.posts.edges
-    
-        console.log(data, error)
-        console.log(after, category)
+  const { loading, error, data } = useQuery(GET_POSTS, {
+    variables: {
+      first: 2,
+      after: '',
+      category: category,
+    },
+    notifyOnNetworkStatusChange: true,
+    fetchPolicy: 'network-only',
+  });
 
-    return (
-        <div>
-          <SectionHeader>
-            {category}
-          </SectionHeader>
+  const stories = data?.posts.edges;
 
-          {/* {loading && <Loading/>}   */}
+  console.log(data, error);
+  console.log(after, category);
 
-          {stories?.map(({node}) => (
-            <SmallPostPreview
-            key={node.slug}
-            title={node.title}
-            coverImage={node.featuredImage?.node}
-            date={node.date}
-            author={node.author?.node}
-            slug={node.slug}
-            excerpt={node.excerpt}
-            categories={node.categories}
-          />
-          ))}
+  return (
+    <div>
+      <SectionHeader>{category}</SectionHeader>
 
-          {/* <div className='text-center my-4'>
-            <button className='bg-black px-3 py-1 rounded-xl text-white'>
-              <h3>Browse More..</h3>
-            </button>
-          </div> */}
+      {/* {loading && <Loading/>}   */}
 
-        </div>
-    )
+      {stories?.map(({ node }) => (
+        <SmallPostPreview
+          key={node.slug}
+          title={node.title}
+          coverImage={node.featuredImage?.node}
+          date={node.date}
+          author={node.author?.node}
+          slug={node.slug}
+          excerpt={node.excerpt}
+          categories={node.categories}
+        />
+      ))}
+    </div>
+  );
 }
 
-export default HomeCategory
+export default HomeCategory;
