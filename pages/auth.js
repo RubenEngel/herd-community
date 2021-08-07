@@ -25,7 +25,7 @@ export default function SignInPage() {
           <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
         </div>
       </div>
-    </div>xs
+    </div>
     </>
   );
 }
