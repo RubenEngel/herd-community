@@ -1,6 +1,6 @@
 import Meta from '../components/meta';
 import Header from './header';
-import { motion } from 'framer-motion';
+// import { motion } from 'framer-motion';
 
 export default function Layout({ category, children }) {
   return (

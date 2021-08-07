@@ -21,6 +21,9 @@ module.exports = {
       lineHeight: {
         tight: 1.2,
       },
+      minWidth: {
+        'sm': '24rem'
+      },
       fontSize: {
         '5xl': '2.5rem',
         '6xl': '2.75rem',

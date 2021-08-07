@@ -107,13 +107,16 @@ export default function Index({
           />
         </div>
 
-        <div className="flex items-center w-screen font-bold justify-end py-6 pr-10 bg-gray-800 text-white absolute">
-          <Link href="/explore">
+        <div className="w-screen font-bold py-6 pr-10 bg-gray-800 text-white absolute">
+          <div className='flex max-w-6xl m-auto justify-end'>
+            <Link href="/explore">
             <button className="flex items-center font-bold justify-end">
               <h1 className="text-2xl uppercase mr-4">Explore</h1>
               <AiFillCaretRight className="text-md" />
             </button>
           </Link>
+          </div>
+          
         </div>
       </motion.div>
     </>

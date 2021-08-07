@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import firebase from '../lib/firebase';
+import firebase from '../lib/firebase.tsx';
 
 const menuVariants = {
   open: { opacity: 1, y: 0 },
@@ -24,6 +24,7 @@ function ProfileDropdown({ isOpen }) {
   const [user, loading, error] = useAuthState(firebase.auth());
 
   return (
+    <>
     <motion.div
       className={
         'bg-gray-800 w-screen right-0 -z-10 overflow-hidden' +
@@ -59,6 +60,7 @@ function ProfileDropdown({ isOpen }) {
         </ul>
       </motion.nav>
     </motion.div>
+    </>
   );
 }
 

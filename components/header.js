@@ -14,7 +14,7 @@ import { motion } from 'framer-motion';
 import MenuDropdown from './menu-dropdown';
 import ProfileDropdown from './profile-dropdown';
 import CategoryDropdown from './category-dropdown';
-import firebase from '../lib/firebase';
+import firebase from '../lib/firebase.tsx';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
 export default function Header({ category }) {
@@ -64,7 +64,7 @@ export default function Header({ category }) {
 
       <div className="sticky top-0 text-white bg-gray-800 px-6 py-2 z-10">
         <div className="flex justify-between items-center max-w-6xl m-auto">
-          <motion.div whileTap={{ scale: 0.7 }} whileHover={{ scale: 1.2 }}>
+          <motion.div whileTap={{ scale: 0.8 }} whileHover={{ scale: 1.1 }}>
             <button
               onClick={() => {
                 setMenuNavbarOpen(!menuNavbarOpen);
@@ -85,7 +85,7 @@ export default function Header({ category }) {
             </h1>
           </motion.div>
 
-          <motion.div whileTap={{ scale: 0.7 }} whileHover={{ scale: 1.2 }}>
+          <motion.div whileTap={{ scale: 0.8 }} whileHover={{ scale: 1.1 }}>
             <button
               onClick={() => {
                 setProfileNavbarOpen(!profileNavbarOpen);

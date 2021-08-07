@@ -5,7 +5,7 @@ function Loading() {
   return (
     <motion.div
       animate={{ scale: 1.3, y: -10 }}
-      transition={{ duration: 0.9, yoyo: Infinity }}
+      transition={{ duration: 0.9, yoyo: Infinity, delay: 0.5, staggerChildren: 0.5 }}
     >
       <h1 className=" text-gray-800 text-4xl text-center">
         <motion.span>H</motion.span>

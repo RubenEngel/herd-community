@@ -17,8 +17,15 @@ const uiConfig = {
 export default function SignInPage() {
   return (
     <>
-      <h1>Sign In</h1>
-      <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
+    <div className='flex h-screen justify-center items-center'>
+      <div>
+        <h1 className='text-4xl text-center'>HERD.</h1>
+        <div className='flex flex-col text-white rounded-xl mx-auto min-w-sm p-10 bg-gray-800 text-center'>
+          <h2 className='uppercase'>Sign In</h2>
+          <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
+        </div>
+      </div>
+    </div>xs
     </>
   );
 }

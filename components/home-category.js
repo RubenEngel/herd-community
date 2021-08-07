@@ -32,7 +32,7 @@ function HomeCategory({ posts, category }) {
           slug={latestPost.node.slug}
           excerpt={latestPost.node.excerpt}
           categories={latestPost.node.categories}
-          animateScale={0.5}
+          // animateScale={0.5}
         />
 
         {latestStories.map(({ node }) => (
