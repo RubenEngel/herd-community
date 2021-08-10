@@ -7,14 +7,17 @@ import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import Loading from '../components/loading';
 import { motion } from 'framer-motion';
-import firebase, { firebasConfig } from '../lib/firebase';
+import { UserContext } from '../lib/context'
+import { useUserData } from '../lib/hooks';
+import { Toaster } from 'react-hot-toast';
+
 config.autoAddCss = false;
 
 function MyApp({ Component, pageProps }) {
   const apolloClient = useApollo(pageProps);
-
   const router = useRouter();
   const [pageLoading, setPageLoading] = useState(false);
+  const userData = useUserData()
 
   useEffect(() => {
     router.events.on('routeChangeStart', () => setPageLoading(true));
@@ -22,12 +25,13 @@ function MyApp({ Component, pageProps }) {
   }, [router]);
 
   return (
+    <UserContext.Provider value={userData}>
     <ApolloProvider client={apolloClient}>
       {pageLoading ? (
         <motion.div
-          initial={{ y: '-100%', opacity: 0.2 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 1 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
           className="h-75-screen flex flex-col justify-center items-center "
         >
           <Loading />
@@ -41,7 +45,10 @@ function MyApp({ Component, pageProps }) {
           <Component {...pageProps} />
         </motion.div>
       )}
+      <Toaster/>
     </ApolloProvider>
+    </UserContext.Provider>
+    
   );
 }
 

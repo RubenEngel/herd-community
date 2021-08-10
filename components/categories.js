@@ -4,7 +4,7 @@ export default function Categories({ categories }) {
       {categories.edges.map((category, index) => (
         <span
           key={index}
-          className="text-sm border mr-1 bg-gray-800 px-2 rounded-xl text-white"
+          className="text-sm border mr-1 bg-primary px-2 rounded-xl text-secondary"
         >
           {category.node.name}
         </span>

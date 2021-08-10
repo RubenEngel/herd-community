@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import Link from 'next/link';
 import {
   FaUserCircle,
@@ -14,15 +14,14 @@ import { motion } from 'framer-motion';
 import MenuDropdown from './menu-dropdown';
 import ProfileDropdown from './profile-dropdown';
 import CategoryDropdown from './category-dropdown';
-import firebase from '../lib/firebase.tsx';
-import { useAuthState } from 'react-firebase-hooks/auth';
+import { UserContext } from '../../lib/context';
 
 export default function Header({ category }) {
   const today = new Date();
 
-  const [user, loading, error] = useAuthState(firebase.auth());
+  // const [user, loading, error] = useAuthState(firebase.auth());
 
-  console.log(user);
+  const { user } = useContext(UserContext);
 
   const [menuNavbarOpen, setMenuNavbarOpen] = useState(false);
   const [profileNavbarOpen, setProfileNavbarOpen] = useState(false);
@@ -30,7 +29,7 @@ export default function Header({ category }) {
 
   return (
     <>
-      <div className=" bg-gray-800 text-white text-center uppercase font-light  py-2 px-4 md:px-16 z-10">
+      <div className="bg-primary text-secondary text-center uppercase font-light  py-2 px-4 md:px-16 z-10">
         <div className="flex justify-between items-center max-w-6xl m-auto">
           {/* Social Media Links */}
           <div className="flex flex-row justify-center">
@@ -62,7 +61,7 @@ export default function Header({ category }) {
         </div>
       </div>
 
-      <div className="sticky top-0 text-white bg-gray-800 px-6 py-2 z-10">
+      <div className="sticky top-0 text-secondary bg-primary px-6 py-2 z-10 shadow-xl">
         <div className="flex justify-between items-center max-w-6xl m-auto">
           <motion.div whileTap={{ scale: 0.8 }} whileHover={{ scale: 1.1 }}>
             <button

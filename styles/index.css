@@ -45,6 +45,6 @@ h3 {
 .nav-item {
   font-family: 'Adamina', serif;
 
-  @apply mx-2 my-3 text-lg items-center uppercase font-bold leading-snug;
+  @apply text-secondary mx-2 my-3 text-lg items-center uppercase font-bold leading-snug;
   
 }

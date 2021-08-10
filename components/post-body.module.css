@@ -75,3 +75,7 @@
 .content audio {
   @apply w-full;
 }
+
+.content img {
+  margin: 0 auto;
+}

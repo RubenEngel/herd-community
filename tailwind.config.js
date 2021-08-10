@@ -1,3 +1,5 @@
+const colors = require('tailwindcss/colors');
+
 module.exports = {
   purge: ['./components/**/*.js', './pages/**/*.js'],
   theme: {
@@ -8,13 +10,15 @@ module.exports = {
         'accent-7': '#333',
         success: '#0070f3',
         cyan: '#79FFE1',
+        primary: '#D6CEC3',
+        secondary: '#444444',
       },
       spacing: {
         28: '7rem',
       },
       zIndex: {
         '-10': '-10',
-       },
+      },
       letterSpacing: {
         tighter: '-.04em',
       },
@@ -22,7 +26,7 @@ module.exports = {
         tight: 1.2,
       },
       minWidth: {
-        'sm': '24rem'
+        sm: '24rem',
       },
       fontSize: {
         '5xl': '2.5rem',
@@ -36,4 +40,4 @@ module.exports = {
       },
     },
   },
-}
+};

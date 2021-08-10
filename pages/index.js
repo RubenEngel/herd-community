@@ -6,7 +6,7 @@ import SmallPostPreview from '../components/small-post-preview';
 import HomeCategory from '../components/home-category';
 import { AiFillCaretRight } from 'react-icons/ai';
 import Link from 'next/link';
-import Header from '../components/header';
+import Header from '../components/header/header';
 import { categoryVar } from '../lib/reactiveVars';
 import { motion } from 'framer-motion';
 
@@ -33,7 +33,7 @@ export default function Index({
           <title>HERD</title>
         </Head>
         <div className="text-center">
-          <div className="bg-gray-800 lg:inline-block items-center lg:mt-6 lg:px-56 lg:rounded-xl p-2 font-bold uppercase text-white">
+          <div className="bg-primary text-secondary lg:inline-block items-center lg:mt-6 lg:px-56 lg:rounded-xl p-2 font-bold uppercase">
             <Link href="/explore">
               <button
                 onClick={() => categoryVar('All')}
@@ -107,16 +107,15 @@ export default function Index({
           />
         </div>
 
-        <div className="w-screen font-bold py-6 pr-10 bg-gray-800 text-white absolute">
-          <div className='flex max-w-6xl m-auto justify-end'>
+        <div className="w-screen font-bold py-6 pr-10 bg-primary text-secondary absolute">
+          <div className="flex max-w-6xl m-auto justify-end">
             <Link href="/explore">
-            <button className="flex items-center font-bold justify-end">
-              <h1 className="text-2xl uppercase mr-4">Explore</h1>
-              <AiFillCaretRight className="text-md" />
-            </button>
-          </Link>
+              <button className="flex items-center font-bold justify-end">
+                <h1 className="text-2xl uppercase mr-4">Explore</h1>
+                <AiFillCaretRight className="text-md" />
+              </button>
+            </Link>
           </div>
-          
         </div>
       </motion.div>
     </>

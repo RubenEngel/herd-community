@@ -4,10 +4,10 @@ import { motion } from 'framer-motion';
 function Loading() {
   return (
     <motion.div
-      animate={{ scale: 1.3, y: -10 }}
-      transition={{ duration: 0.9, yoyo: Infinity, delay: 0.5, staggerChildren: 0.5 }}
+      animate={{ scale: 1.2, y: -5 }}
+      transition={{ duration: 0.9, yoyo: Infinity }}
     >
-      <h1 className=" text-gray-800 text-4xl text-center">
+      <h1 className="text-secondary text-4xl text-center">
         <motion.span>H</motion.span>
         <motion.span>E</motion.span>
         <motion.span>R</motion.span>

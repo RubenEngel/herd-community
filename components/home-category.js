@@ -11,7 +11,7 @@ function HomeCategory({ posts, category }) {
 
   return (
     <div>
-      <div className="text-center bg-gray-800 w-100 lg:mx-12 lg:rounded-xl p-2 font-bold uppercase text-white ">
+      <div className="text-center bg-primary w-100 lg:mx-12 lg:rounded-xl p-2 font-bold uppercase text-secondary">
         <Link href="/explore">
           <button
             className="flex items-center font-bold mx-auto"

@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { categoryVar } from '../lib/reactiveVars';
+import { categoryVar } from '../../lib/reactiveVars';
 
 function CategoryDropdown({ isOpen, setIsOpen }) {
   const menuVariants = {
@@ -22,7 +22,7 @@ function CategoryDropdown({ isOpen, setIsOpen }) {
   return (
     <motion.div
       className={
-        'bg-gray-800 w-screen left-0 -z-10 overflow-hidden' +
+        'bg-primary w-screen left-0 -z-10 overflow-hidden' +
         (isOpen ? ' absolute' : ' hidden')
       }
       animate={isOpen ? 'open' : 'closed'}
