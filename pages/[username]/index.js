@@ -7,7 +7,7 @@ function UserProfile() {
     <div>
       User Profile
       <p>{username}</p>
-      <img src={user?.photoURL} alt="" />
+      <img src={user?.photoURL} />
     </div>
   );
 }

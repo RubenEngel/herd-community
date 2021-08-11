@@ -168,6 +168,6 @@ export async function getStaticProps() {
       currentAffairsPosts,
       lifestylePosts,
     },
-    revalidate: 30,
+    revalidate: 300,
   });
 }
