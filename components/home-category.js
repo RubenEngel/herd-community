@@ -4,20 +4,23 @@ import { AiFillCaretRight } from 'react-icons/ai';
 import PostPreview from '../components/post-preview';
 import SmallPostPreview from '../components/small-post-preview';
 import { categoryVar } from '../lib/reactiveVars';
+import { ExploreContext } from '../lib/context';
 
-function HomeCategory({ posts, category }) {
+function HomeCategory({ posts, categoryName }) {
   const latestPost = posts ? posts[0] : null;
   const latestStories = posts?.slice(1, 4);
 
+  const { category, setCategory } = React.useContext(ExploreContext);
+
   return (
     <div>
-      <div className="text-center bg-primary w-100 lg:mx-12 lg:rounded-xl p-2 font-bold uppercase text-secondary">
+      <div className="text-center bg-primary w-100 lg:mx-12 rounded-xl p-1 lg:p-2 font-bold uppercase text-secondary">
         <Link href="/explore">
           <button
             className="flex items-center font-bold mx-auto"
-            onClick={() => categoryVar(category)}
+            onClick={(e) => setCategory(e.currentTarget.textContent)}
           >
-            <h1 className="text-lg uppercase mr-4">{category}</h1>
+            <h1 className="text-lg uppercase mr-4">{categoryName}</h1>
             <AiFillCaretRight />
           </button>
         </Link>

@@ -90,11 +90,11 @@ function SelectUsername() {
         <form onSubmit={onSubmit}>
           <input
             name="username"
-            placeholder="username"
+            placeholder={username || 'usernames'}
             value={formValue}
             onChange={onChange}
             type="text"
-            className="text-center border-b-2 border-primary m-2"
+            className="text-xl text-center border-b-2 border-primary m-2"
           />
           <UsernameMessage
             username={username}
@@ -108,12 +108,11 @@ function SelectUsername() {
             <button
               type="submit"
               disabled={!isValid}
-              className="bg-primary text-secondary py-1 px-2 rounded-md m-2 focused:outline-none"
+              className="bg-primary text-md text-secondary py-1 px-3 rounded-md m-2 focused:outline-none"
             >
               Submit
             </button>
           </div>
-          <div></div>
         </form>
       </section>
     </div>

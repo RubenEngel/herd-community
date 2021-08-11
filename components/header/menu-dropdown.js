@@ -13,7 +13,7 @@ const transition = {
   duration: 0.4,
 };
 
-function MenuDropdown({ isOpen }) {
+function MenuDropdown({ setIsOpen, isOpen }) {
   return (
     <motion.div
       className={
@@ -30,12 +30,12 @@ function MenuDropdown({ isOpen }) {
         transition={transition}
       >
         <ul>
-          <li className="nav-item">
+          <li onClick={() => setIsOpen(false)} className="nav-item">
             <Link href="/">
               <a>Home</a>
             </Link>
           </li>
-          <li className="nav-item">
+          <li onClick={() => setIsOpen(false)} className="nav-item">
             <Link href="/about-us">
               <a>About Us</a>
             </Link>
@@ -45,7 +45,7 @@ function MenuDropdown({ isOpen }) {
                 <a>Search</a>
             </Link>
           </li> */}
-          <li className="nav-item">
+          <li onClick={() => setIsOpen(false)} className="nav-item">
             <Link href="/explore">
               <a>Explore</a>
             </Link>

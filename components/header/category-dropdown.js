@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { categoryVar } from '../../lib/reactiveVars';
+import { ExploreContext } from '../../lib/context';
 
 function CategoryDropdown({ isOpen, setIsOpen }) {
+  const { setCategory } = useContext(ExploreContext);
+
   const menuVariants = {
     open: { opacity: 1, y: 0 },
     closed: { opacity: 0, y: '-100%' },
@@ -38,8 +41,8 @@ function CategoryDropdown({ isOpen, setIsOpen }) {
         <ul>
           <li
             className="nav-item"
-            onClick={() => {
-              categoryVar('All');
+            onClick={(e) => {
+              setCategory(e.currentTarget.textContent);
               setIsOpen(false);
             }}
           >
@@ -47,8 +50,8 @@ function CategoryDropdown({ isOpen, setIsOpen }) {
           </li>
           <li
             className="nav-item"
-            onClick={() => {
-              categoryVar('Culture');
+            onClick={(e) => {
+              setCategory(e.currentTarget.textContent);
               setIsOpen(false);
             }}
           >
@@ -56,8 +59,8 @@ function CategoryDropdown({ isOpen, setIsOpen }) {
           </li>
           <li
             className="nav-item"
-            onClick={() => {
-              categoryVar('Sport');
+            onClick={(e) => {
+              setCategory(e.currentTarget.textContent);
               setIsOpen(false);
             }}
           >
@@ -65,8 +68,8 @@ function CategoryDropdown({ isOpen, setIsOpen }) {
           </li>
           <li
             className="nav-item"
-            onClick={() => {
-              categoryVar('Current Affairs');
+            onClick={(e) => {
+              setCategory(e.currentTarget.textContent);
               setIsOpen(false);
             }}
           >
@@ -82,8 +85,8 @@ function CategoryDropdown({ isOpen, setIsOpen }) {
                 </li> */}
           <li
             className="nav-item"
-            onClick={() => {
-              categoryVar('Lifestyle');
+            onClick={(e) => {
+              setCategory(e.currentTarget.textContent);
               setIsOpen(false);
             }}
           >

@@ -16,7 +16,7 @@ const transition = {
   duration: 0.4,
 };
 
-function ProfileDropdown({ isOpen }) {
+function ProfileDropdown({ setIsOpen, isOpen }) {
   const { user, username } = useContext(UserContext);
 
   return (
@@ -37,8 +37,8 @@ function ProfileDropdown({ isOpen }) {
         >
           <ul>
             {!user && (
-              <li className="nav-item">
-                <Link href="/auth">
+              <li onClick={() => setIsOpen(false)} className="nav-item">
+                <Link href="/my-account">
                   <a>Sign In</a>
                 </Link>
               </li>
@@ -46,18 +46,21 @@ function ProfileDropdown({ isOpen }) {
 
             {user && (
               <>
-                <li className="nav-item">
-                  <Link href={`/${username}`}>
+                <li onClick={() => setIsOpen(false)} className="nav-item">
+                  <Link href="/my-account">
                     <a>Profile</a>
                   </Link>
                 </li>
-                <li className="nav-item">
+                <li onClick={() => setIsOpen(false)} className="nav-item">
                   <Link href="/submit">
                     <a>Submit an Article</a>
                   </Link>
                 </li>
                 <li
-                  onClick={() => firebase.auth().signOut()}
+                  onClick={() => {
+                    firebase.auth().signOut();
+                    setIsOpen(false);
+                  }}
                   className="nav-item cursor-pointer"
                 >
                   Sign Out

@@ -1,5 +1,6 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import {
   FaUserCircle,
   FaFacebookF,
@@ -14,14 +15,28 @@ import { motion } from 'framer-motion';
 import MenuDropdown from './menu-dropdown';
 import ProfileDropdown from './profile-dropdown';
 import CategoryDropdown from './category-dropdown';
-import { UserContext } from '../../lib/context';
+import { ExploreContext, UserContext } from '../../lib/context';
 
-export default function Header({ category }) {
+export default function Header() {
   const today = new Date();
 
-  // const [user, loading, error] = useAuthState(firebase.auth());
+  const router = useRouter();
+
+  const [showCategory, setShowCategory] = useState(false);
+
+  useEffect(() => {
+    setMenuNavbarOpen(false);
+    setProfileNavbarOpen(false);
+    setCategoryNavbarOpen(false);
+    if (router.pathname === '/explore') {
+      setShowCategory(true);
+    } else {
+      setShowCategory(false);
+    }
+  }, [router]);
 
   const { user } = useContext(UserContext);
+  const { category } = useContext(ExploreContext);
 
   const [menuNavbarOpen, setMenuNavbarOpen] = useState(false);
   const [profileNavbarOpen, setProfileNavbarOpen] = useState(false);
@@ -29,7 +44,8 @@ export default function Header({ category }) {
 
   return (
     <>
-      <div className="bg-primary text-secondary text-center uppercase font-light  py-2 px-4 md:px-16 z-10">
+      {/* Date and social icons */}
+      <div className="bg-primary text-secondary text-center uppercase font-light py-2 px-4 md:px-16 z-10">
         <div className="flex justify-between items-center max-w-6xl m-auto">
           {/* Social Media Links */}
           <div className="flex flex-row justify-center">
@@ -61,8 +77,10 @@ export default function Header({ category }) {
         </div>
       </div>
 
+      {/* Main section of header */}
       <div className="sticky top-0 text-secondary bg-primary px-6 py-2 z-10 shadow-xl">
         <div className="flex justify-between items-center max-w-6xl m-auto">
+          {/* Menu dropdwon button */}
           <motion.div whileTap={{ scale: 0.8 }} whileHover={{ scale: 1.1 }}>
             <button
               onClick={() => {
@@ -75,15 +93,19 @@ export default function Header({ category }) {
               <BiMenuAltLeft className="text-5xl" />
             </button>
           </motion.div>
-
-          <motion.div whileTap={{ scale: 0.9 }} whileHover={{ scale: 1.1 }}>
+          {/* HERD logo home button */}
+          <motion.div
+            onClick={() => setShowCategory(false)}
+            whileTap={{ scale: 0.9 }}
+            whileHover={{ scale: 1.1 }}
+          >
             <h1 className="text-6xl font-bold leading-tight text-center">
               <Link scroll={false} href="/">
                 <a>HERD.</a>
               </Link>
             </h1>
           </motion.div>
-
+          {/*  Profile dropdown menu button */}
           <motion.div whileTap={{ scale: 0.8 }} whileHover={{ scale: 1.1 }}>
             <button
               onClick={() => {
@@ -108,7 +130,7 @@ export default function Header({ category }) {
           </motion.div>
         </div>
 
-        {category && (
+        {showCategory && (
           <>
             <motion.div
               initial={{ y: -40 }}
@@ -134,12 +156,13 @@ export default function Header({ category }) {
             />
           </>
         )}
-
         {/* Menu dropdown */}
-        <MenuDropdown isOpen={menuNavbarOpen} />
-
+        <MenuDropdown setIsOpen={setMenuNavbarOpen} isOpen={menuNavbarOpen} />
         {/* Profile dropdown */}
-        <ProfileDropdown isOpen={profileNavbarOpen} />
+        <ProfileDropdown
+          setIsOpen={setProfileNavbarOpen}
+          isOpen={profileNavbarOpen}
+        />
       </div>
     </>
   );

@@ -1,9 +1,9 @@
-export default function Contact() {
+import Layout from '../components/layout';
 
-    return(
-        <div>
-            <h1>Contact</h1>
-        </div>
-    )
-    
-    }
+export default function Contact() {
+  return (
+    <Layout>
+      <h1>Contact</h1>
+    </Layout>
+  );
+}

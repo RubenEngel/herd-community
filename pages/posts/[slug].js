@@ -1,72 +1,73 @@
-import { useRouter } from 'next/router'
-import ErrorPage from 'next/error'
-import Container from '../../components/container'
-import PostBody from '../../components/post-body'
+import { useRouter } from 'next/router';
+import ErrorPage from 'next/error';
+import Container from '../../components/container';
+import PostBody from '../../components/post-body';
 // import PostList from '../../components/post-list'
-import PostHeader from '../../components/post-header'
-import SectionSeparator from '../../components/section-separator'
-import Layout from '../../components/layout'
-import { getPostAndMorePosts } from '../../lib/api'
-import PostTitle from '../../components/post-title'
-import Head from 'next/head'
-import Tags from '../../components/tags'
+import PostHeader from '../../components/post-header';
+import SectionSeparator from '../../components/section-separator';
+import Layout from '../../components/layout';
+import { getPostAndMorePosts } from '../../lib/api';
+import PostTitle from '../../components/post-title';
+import Head from 'next/head';
+import Tags from '../../components/tags';
 
 export default function Post({ post }) {
-  const router = useRouter()
+  const router = useRouter();
 
   if (!router.isFallback && !post?.slug) {
-    return <ErrorPage statusCode={404} />
+    return <ErrorPage statusCode={404} />;
   }
 
   return (
-    <Layout>
-        {router.isFallback ? (
-          <PostTitle>Loading…</PostTitle>
-        ) : (
-          <>
-            <article>
-              <Head>
-                <title>
-                  {post.title | 'HERD Post'}
-                </title>
-                <meta
-                  property="og:image"
-                  content={post.featuredImage?.node?.sourceUrl}
-                />
-              </Head>
-              <PostHeader
-                title={post.title}
-                coverImage={post.featuredImage?.node}
-                date={post.date}
-                author={post.author?.node}
-                categories={post.categories}
+    // <Layout>
+    <>
+      {router.isFallback ? (
+        <PostTitle>Loading…</PostTitle>
+      ) : (
+        <>
+          <article>
+            <Head>
+              <title>{post.title | 'HERD Post'}</title>
+              <meta
+                property="og:image"
+                content={post.featuredImage?.node?.sourceUrl}
               />
-              <Container>
+            </Head>
+            <PostHeader
+              title={post.title}
+              coverImage={post.featuredImage?.node}
+              date={post.date}
+              author={post.author?.node}
+              categories={post.categories}
+            />
+            <Container>
               <PostBody content={post.content} />
               <footer>
                 {post.tags.edges.length > 0 && <Tags tags={post.tags} />}
               </footer>
-              </Container>
-              
-            </article>
+            </Container>
+          </article>
 
-            <SectionSeparator />
-
-          </>
-        )}
-    </Layout>
-  )
+          <SectionSeparator />
+        </>
+      )}
+    </>
+    // </Layout>
+  );
 }
 
-export async function getServerSideProps({ params, preview = false, previewData }) {
-  
-  const data = await getPostAndMorePosts(params.slug, preview, previewData)
+export async function getServerSideProps({
+  params,
+  preview = false,
+  previewData,
+}) {
+  const data = await getPostAndMorePosts(params.slug, preview, previewData);
 
   return {
     props: {
       post: data.post,
-    }
-  }
+    },
+  };
 }
 
 // export async function getStaticPaths() {

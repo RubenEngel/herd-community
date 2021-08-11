@@ -14,6 +14,7 @@
     "@types/node": "^16.4.13",
     "@types/react": "^17.0.16",
     "apollo-server-micro": "^2.24.0",
+    "autoprefixer": "^10.3.1",
     "classnames": "2.2.6",
     "date-fns": "2.14.0",
     "deepmerge": "^4.2.2",
@@ -23,6 +24,9 @@
     "graphql-request": "^3.4.0",
     "lodash.debounce": "^4.0.8",
     "next": "latest",
+    "postcss": "^8.3.6",
+    "postcss-flexbugs-fixes": "^5.0.2",
+    "postcss-preset-env": "^6.7.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-firebase-hooks": "^3.0.4",
@@ -31,15 +35,8 @@
     "react-icons": "^4.1.0",
     "react-waypoint": "^9.0.3",
     "swr": "^0.4.1",
+    "tailwindcss": "^2.2.7",
     "typescript": "^4.3.5"
-  },
-  "devDependencies": {
-    "autoprefixer": "^10.3.1",
-    "postcss": "^8.3.6",
-    "postcss-flexbugs-fixes": "4.2.1",
-    "postcss-preset-env": "^6.7.0",
-    "prisma": "^2.22.1",
-    "tailwindcss": "^2.2.7"
   },
   "license": "MIT"
 }
