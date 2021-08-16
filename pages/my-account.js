@@ -18,7 +18,7 @@ function MyAccount() {
       {user && (
         <div className="flex flex-col items-center m-6">
           <div>
-            {!user.photoURL ? (
+            {user.photoURL ? (
               <img src={user.photoURL} />
             ) : (
               <FaUserCircle className="text-9xl " />
