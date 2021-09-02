@@ -1,6 +1,5 @@
 import React, { useContext, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { categoryVar } from '../../lib/reactiveVars';
 import { ExploreContext } from '../../lib/context';
 
 function CategoryDropdown({ isOpen, setIsOpen }) {
@@ -25,7 +24,7 @@ function CategoryDropdown({ isOpen, setIsOpen }) {
   return (
     <motion.div
       className={
-        'bg-primary w-screen left-0 -z-10 overflow-hidden' +
+        'bg-primary w-screen left-0 -z-10 overflow-hidden mt-2' +
         (isOpen ? ' absolute' : ' hidden')
       }
       animate={isOpen ? 'open' : 'closed'}
@@ -75,14 +74,15 @@ function CategoryDropdown({ isOpen, setIsOpen }) {
           >
             <button className="uppercase">Current Affairs</button>
           </li>
-          {/* <li 
-                className="nav-item"
-                onClick={() => {categoryVar('Climate'); console.log(categoryVar())}}
-                >
-                  <button>
-                    Climate
-                  </button>
-                </li> */}
+          <li
+            className="nav-item"
+            onClick={(e) => {
+              setCategory(e.currentTarget.textContent);
+              setIsOpen(false);
+            }}
+          >
+            <button className="uppercase">Climate</button>
+          </li>
           <li
             className="nav-item"
             onClick={(e) => {

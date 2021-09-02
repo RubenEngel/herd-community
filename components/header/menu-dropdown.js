@@ -17,7 +17,7 @@ function MenuDropdown({ setIsOpen, isOpen }) {
   return (
     <motion.div
       className={
-        ' bg-primary opacity-75 w-screen left-0 -z-10 overflow-hidden' +
+        ' bg-primary opacity-75 w-screen left-0 -z-10 overflow-hidden mt-2' +
         (isOpen ? ' absolute' : ' hidden')
       }
       animate={isOpen ? 'open' : 'closed'}

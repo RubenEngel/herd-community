@@ -16,7 +16,7 @@ export const uiConfig = {
 
 function SignIn() {
   return (
-    <div className="flex flex-col text-secondary rounded-xl mx-auto max-w-screen-lg p-10 bg-primary text-center shadow-xl">
+    <div className="flex flex-col text-secondary rounded-xl mx-auto max-w-screen-lg min-w-sm p-10 bg-primary text-center shadow-xl">
       <h2 className="uppercase">Sign In</h2>
       <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
     </div>

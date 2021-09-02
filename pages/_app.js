@@ -8,7 +8,7 @@ import { useState, useEffect } from 'react';
 import Loading from '../components/loading';
 import { motion } from 'framer-motion';
 import { ExploreContext, UserContext } from '../lib/context';
-import { useUserData } from '../lib/hooks';
+import { useUserData } from '../lib/hooks/useUserData';
 import { Toaster } from 'react-hot-toast';
 import Layout from '../components/layout';
 
@@ -38,7 +38,7 @@ function MyApp({ Component, pageProps }) {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5 }}
-                className="h-75-screen flex flex-col justify-center items-center "
+                className="h-50-screen flex flex-col justify-center items-center "
               >
                 <Loading />
               </motion.div>

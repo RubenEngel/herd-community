@@ -1,5 +1,9 @@
 .content {
-  @apply text-lg leading-relaxed;
+  /* @media only screen (max-width: 600px) {
+    font-size: 1.2rem;
+  } */
+  @apply leading-relaxed;
+  font-size: medium;
 }
 
 .content p,

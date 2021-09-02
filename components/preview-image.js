@@ -1,8 +1,14 @@
-import cn from 'classnames'
-import Link from 'next/link'
-import Image from 'next/image'
+import cn from 'classnames';
+import Link from 'next/link';
+import Image from 'next/image';
 
-export default function PreviewImage({ title, coverImage, slug, width, height }) {
+export default function PreviewImage({
+  title,
+  coverImage,
+  slug,
+  width,
+  height,
+}) {
   const image = (
     // <Image
     //   src={coverImage?.sourceUrl}
@@ -14,16 +20,17 @@ export default function PreviewImage({ title, coverImage, slug, width, height })
     //   })}
     // />
     <img
-      src={coverImage?.sourceUrl}
+      src={coverImage}
       width={width}
       height={height}
       className={cn('shadow-small m-auto', {
-        'hover:shadow-medium object-cover transition-shadow duration-200 rounded-xl': slug,
+        'hover:shadow-medium object-cover transition-shadow duration-200 rounded-xl':
+          slug,
       })}
     />
-  )
+  );
   return (
-    <div className="sm:mx-0" >
+    <div className="sm:mx-0">
       {slug ? (
         <Link as={`/posts/${slug}`} href="/posts/[slug]">
           <a aria-label={title}>{image}</a>
@@ -32,5 +39,5 @@ export default function PreviewImage({ title, coverImage, slug, width, height })
         image
       )}
     </div>
-  )
+  );
 }

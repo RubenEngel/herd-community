@@ -1,11 +1,12 @@
-import Avatar from '../components/avatar';
-import Date from '../components/date';
+import Avatar from './avatar';
+import Date from './date';
 // import CoverImage from './cover-image'
 import Link from 'next/link';
 import Categories from './categories';
 import { motion } from 'framer-motion';
 import PreviewImage from './preview-image';
 // import useWindowDimensions from './hooks/useWindowDimensions';
+import { User } from '../lib/types';
 
 export default function PostPreview({
   title,
@@ -18,6 +19,16 @@ export default function PostPreview({
   animateY = 0,
   animateScale = 1,
   animateOpacity = 1,
+}: {
+  title: string;
+  coverImage: string;
+  date: string;
+  categories: string[];
+  author: User;
+  slug: string;
+  animateY?: number | string;
+  animateScale?: number;
+  animateOpacity?: number;
 }) {
   // const { height, width } = useWindowDimensions()
 
@@ -26,7 +37,7 @@ export default function PostPreview({
       <motion.div
         initial={{ scale: animateScale, y: animateY, opacity: animateOpacity }}
         animate={{ scale: 1, y: 0, opacity: 1 }}
-        transition={{ bounce: 0, duration: 0.5 }}
+        transition={{ bounce: 0, duration: 0.4 }}
         className="flex mx-auto my-2 flex-col justify-center rounded-lg "
       >
         {/* Image */}
@@ -38,7 +49,7 @@ export default function PostPreview({
             slug={slug}
             width={1000}
             height={900}
-            priority={true}
+            // priority={true}
           />
         </div>
         {/* Categories */}

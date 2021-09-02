@@ -7,7 +7,7 @@ function Loading() {
       animate={{ scale: 1.2, y: -5 }}
       transition={{ duration: 0.9, yoyo: Infinity }}
     >
-      <h1 className="text-secondary text-4xl text-center">
+      <h1 className="text-secondary text-2xl text-center">
         <motion.span>H</motion.span>
         <motion.span>E</motion.span>
         <motion.span>R</motion.span>

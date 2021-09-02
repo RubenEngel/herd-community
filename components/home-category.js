@@ -3,7 +3,6 @@ import Link from 'next/link';
 import { AiFillCaretRight } from 'react-icons/ai';
 import PostPreview from '../components/post-preview';
 import SmallPostPreview from '../components/small-post-preview';
-import { categoryVar } from '../lib/reactiveVars';
 import { ExploreContext } from '../lib/context';
 
 function HomeCategory({ posts, categoryName }) {
@@ -14,7 +13,7 @@ function HomeCategory({ posts, categoryName }) {
 
   return (
     <div>
-      <div className="text-center bg-primary w-100 lg:mx-12 rounded-xl p-1 lg:p-2 font-bold uppercase text-secondary">
+      <div className="text-center bg-primary w-100 lg:mx-12 rounded-xl p-1 m-4 lg:p-2 font-bold uppercase text-secondary">
         <Link href="/explore">
           <button
             className="flex items-center font-bold mx-auto"
@@ -27,27 +26,26 @@ function HomeCategory({ posts, categoryName }) {
       </div>
       <div className="p-4 md:p-6 lg:p-10">
         <PostPreview
-          key={latestPost.node.slug}
-          title={latestPost.node.title}
-          coverImage={latestPost.node.featuredImage?.node}
-          date={latestPost.node.date}
-          author={latestPost.node.author?.node}
-          slug={latestPost.node.slug}
-          excerpt={latestPost.node.excerpt}
-          categories={latestPost.node.categories}
+          key={latestPost.slug}
+          title={latestPost.title}
+          coverImage={latestPost.featuredImage}
+          date={latestPost.date}
+          author={latestPost.author}
+          slug={latestPost.slug}
+          excerpt={latestPost.excerpt}
+          categories={latestPost.categories}
           // animateScale={0.5}
         />
 
-        {latestStories.map(({ node }) => (
+        {latestStories.map((post) => (
           <SmallPostPreview
-            key={node.slug}
-            title={node.title}
-            coverImage={node.featuredImage?.node}
-            date={node.date}
-            author={node.author?.node}
-            slug={node.slug}
-            excerpt={node.excerpt}
-            categories={node.categories}
+            key={post.slug}
+            title={post.title}
+            coverImage={post.featuredImage}
+            date={post.date}
+            author={post.author}
+            slug={post.slug}
+            categories={post.categories}
           />
         ))}
       </div>

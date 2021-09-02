@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { UserContext } from '../../lib/context.js';
+import { UserContext } from '../../lib/context.tsx';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -23,7 +23,7 @@ function ProfileDropdown({ setIsOpen, isOpen }) {
     <>
       <motion.div
         className={
-          'bg-primary w-screen right-0 -z-10 overflow-hidden' +
+          'bg-primary w-screen right-0 -z-10 overflow-hidden mt-2' +
           (isOpen ? ' absolute' : ' hidden')
         }
         animate={isOpen ? 'open' : 'closed'}
