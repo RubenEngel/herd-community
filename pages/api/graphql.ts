@@ -1,106 +1,148 @@
-import {
-  ApolloServer,
-  ApolloError,
-  ValidationError,
-  gql,
-} from 'apollo-server-micro';
-import * as admin from 'firebase-admin';
-import serviceAccount from '../../service-account.json';
-import { Post, User } from '../../lib/types';
+import { ApolloServer, gql } from "apollo-server-micro";
+import { GraphQLScalarType } from "graphql";
+import prisma from "../../lib/prisma";
+// import { PostInput } from "../../lib/types";
 
-if (!admin.apps.length) {
-  admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-  });
-}
+const dateScalar = new GraphQLScalarType({
+  name: "DateTime",
+  parseValue(value) {
+    return new Date(value);
+  },
+  serialize(value) {
+    return value.toISOString();
+  },
+});
 
 const typeDefs = gql`
-  type Post {
-    slug: String!
-    title: String!
-    date: String!
-    featuredImage: String!
-    author: User!
-    categories: [String!]!
-    tags: [String]!
-    content: String!
-    likes: Int!
-  }
+  scalar DateTime
 
   type User {
-    username: ID
-    firstName: String
-    lastName: String
-    photoURL: String
+    id: Int
+    email: String
+    role: Role
+    name: String
+    posts: [Post]
+    likedPosts: [Post]
+    comments: [Comment]
+    likedComments: [Comment]
+    following: [User]
+    followers: [User]
+  }
+
+  type Post {
+    id: Int
+    slug: String
+    published: Boolean
+    createdAt: DateTime
+    updatedAt: DateTime
+    title: String
+    featuredImage: String
+    content: String
+    author: User
+    comments: [Comment]
+    likedBy: [User]
+    categories: [Category]
+    tags: [String]
+  }
+
+  type Category {
+    id: Int
+    name: String
+    posts: [Post]
+  }
+
+  type Comment {
+    id: Int
+    content: String
+    author: User
+    authorId: Int
+    likedBy: [User]
+    createdAt: DateTime
+    post: Post
+    postId: Int
+    parentComment: Comment
+    childComments: [Comment]
+  }
+
+  enum Role {
+    USER
+    ADMIN
   }
 
   type Query {
-    user(username: String!): User
-    post(slug: String!): Post!
-    posts(category: String, limit: Int, startAfter: String): [Post]!
-    test: String
+    getPosts: [Post]
+    getPost(postId: Int): Post
+    getUser(email: String!): User
+  }
+
+  type Mutation {
+    createUser(email: String, name: String): User
+    createDraft(
+      slug: String
+      title: String
+      featuredImage: String
+      content: String
+      categories: [String]
+      tags: [String]
+      authorEmail: String
+    ): Post
   }
 `;
 
-// let lastSeenRef: FirebaseFirestore.QueryDocumentSnapshot<FirebaseFirestore.DocumentData> | null =
-//   null;
-
 const resolvers = {
   Query: {
-    async posts(
-      _: null,
-      args: { category: string; limit: number; startAfter: string }
-    ) {
-      try {
-        const postsRef = await admin.firestore().collection('posts');
-        let postsQuery = postsRef.orderBy('date', 'desc');
-        if (args.startAfter) postsQuery.startAfter(args.startAfter);
-        if (args.category && args.category !== 'All') {
-          postsQuery = postsQuery.where(
-            'categories',
-            'array-contains',
-            args.category
-          );
-        }
-        if (args.limit) postsQuery = postsQuery.limit(args.limit);
-        const postsRes = await postsQuery.get();
-        const postsArray = postsRes.docs.map((post) => post.data()) as Post[];
-        return postsArray || new ValidationError('No posts found');
-      } catch (error) {
-        throw new ApolloError(error);
-      }
+    getPosts: async () => {
+      return prisma.post.findMany();
     },
-    async post(_: null, args: { slug: string }) {
-      try {
-        const postDoc = await admin
-          .firestore()
-          .collection('posts')
-          .doc(args.slug)
-          .get();
-        const post = postDoc.data() as Post;
-        return post || new ValidationError('Post not found');
-      } catch (error) {
-        throw new ApolloError(error);
-      }
+    getPost: async (_, { id }) => {
+      return prisma.post.findUnique({
+        where: {
+          id: id,
+        },
+      });
     },
-    async user(_: null, args: { username: string }) {
-      try {
-        const usernameDoc = await admin
-          .firestore()
-          .doc(`usernames/${args.username}`)
-          .get();
-        const uid = usernameDoc.data().uid;
-        const userDoc = await admin.firestore().doc(`users/${uid}`).get();
-        const user = userDoc.data() as User;
-        return user || new ValidationError('User ID not found');
-      } catch (error) {
-        throw new ApolloError(error);
-      }
-    },
-    async test() {
-      return 'hello';
+    getUser: async (_, { email }) => {
+      return prisma.user.findUnique({
+        where: {
+          email: email,
+        },
+      });
     },
   },
+  Mutation: {
+    // publishPost
+    // updateUser
+    // updatePost
+    createUser: async (_, { email, name }) => {
+      return await prisma.user.create({
+        data: {
+          email: email.toLowerCase(),
+          name: name.toLowerCase(),
+        },
+      });
+    },
+    createDraft: async (
+      _,
+      { slug, title, featuredImage, content, categories, tags, authorEmail }
+    ) => {
+      return await prisma.post.create({
+        data: {
+          slug: slug,
+          title: title,
+          featuredImage: featuredImage,
+          content: content,
+          categories: {
+            connect: categories.map((categoryName) => ({
+              name: categoryName.toLowerCase().split(" ").join("_"),
+            })),
+          },
+          tags: tags,
+          author: { connect: { email: authorEmail } },
+        },
+      });
+    },
+  },
+  DateTime: dateScalar,
 };
 
 const apolloServer = new ApolloServer({
@@ -108,7 +150,7 @@ const apolloServer = new ApolloServer({
   resolvers,
 });
 
-const handler = apolloServer.createHandler({ path: '/api/graphql' });
+const handler = apolloServer.createHandler({ path: "/api/graphql" });
 
 export const config = {
   api: {

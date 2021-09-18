@@ -1,30 +1,30 @@
-import { useContext } from 'react';
-import Head from 'next/head';
-import { initializeApollo, addApolloState } from '../lib/apolloClient';
-import { GET_POSTS, GET_ALL_POST_SLUGS, GET_USER } from '../lib/apolloQueries';
-import PostPreview from '../components/post-preview';
-import SmallPostPreview from '../components/small-post-preview';
-import HomeCategory from '../components/home-category';
-import { AiFillCaretRight } from 'react-icons/ai';
-import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { ExploreContext } from '../lib/context';
-import { useQuery } from '@apollo/client';
-import { gql } from '@apollo/client';
-import { Post } from '../lib/types';
-import { supportsResultCaching } from '@apollo/client/cache/inmemory/entityStore';
+import { useContext } from "react";
+import Head from "next/head";
+import { initializeApollo, addApolloState } from "../lib/apolloClient";
+import { GET_POSTS, GET_ALL_POST_SLUGS, GET_USER } from "../lib/apolloQueries";
+import PostPreview from "../components/post-preview";
+import SmallPostPreview from "../components/small-post-preview";
+import HomeCategory from "../components/home-category";
+import { AiFillCaretRight } from "react-icons/ai";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { ExploreContext } from "../lib/context";
+import { useQuery } from "@apollo/client";
+import { gql } from "@apollo/client";
+import { Post } from "../lib/types";
+import { supportsResultCaching } from "@apollo/client/cache/inmemory/entityStore";
 
 // interface IndexProps {
 //   posts: Post[];
 // }
 
 const Index = ({
-  posts,
-  sportPosts,
-  culturePosts,
-  currentAffairsPosts,
-  lifestylePosts,
-  climatePosts,
+  posts = [],
+  sportPosts = [],
+  culturePosts = [],
+  currentAffairsPosts = [],
+  lifestylePosts = [],
+  climatePosts = [],
 }) => {
   const latestPost: Post = posts[0];
   const desktopLatestPosts: Post[] = posts.slice(0, 3);
@@ -52,7 +52,7 @@ const Index = ({
           <div className="bg-primary text-secondary lg:inline-block items-center lg:mt-6 lg:px-56 rounded-xl p-1 lg:p-2 font-bold uppercase">
             <Link href="/explore">
               <button
-                onClick={(e) => setCategory('All')}
+                onClick={(e) => setCategory("All")}
                 className="flex items-center font-bold mx-auto"
               >
                 <h1 className="text-lg uppercase mr-4">Latest Stories</h1>
@@ -63,7 +63,7 @@ const Index = ({
         </div>
         {/* Desktop Latest Posts*/}
         <div className="hidden md:grid md:grid-cols-3 max-w-6xl mx-auto">
-          {desktopLatestPosts.map((post) => (
+          {desktopLatestPosts.map((post, index) => (
             <div className="p-6">
               <PostPreview
                 key={post.slug}
@@ -131,52 +131,52 @@ export default Index;
 export async function getStaticProps() {
   const apolloClient = initializeApollo();
 
-  const postsRes = await apolloClient.query({
-    query: GET_POSTS,
-    variables: { category: 'All', limit: 5 },
-  });
+  // const postsRes = await apolloClient.query({
+  //   query: GET_POSTS,
+  //   variables: { category: "All", limit: 5 },
+  // });
 
-  const sportRes = await apolloClient.query({
-    query: GET_POSTS,
-    variables: { category: 'Sport', limit: 5 },
-  });
+  // const sportRes = await apolloClient.query({
+  //   query: GET_POSTS,
+  //   variables: { category: "Sport", limit: 5 },
+  // });
 
-  const cultureRes = await apolloClient.query({
-    query: GET_POSTS,
-    variables: { category: 'Culture', limit: 5 },
-  });
+  // const cultureRes = await apolloClient.query({
+  //   query: GET_POSTS,
+  //   variables: { category: "Culture", limit: 5 },
+  // });
 
-  const currentAffairsRes = await apolloClient.query({
-    query: GET_POSTS,
-    variables: { category: 'Current Affairs', limit: 5 },
-  });
+  // const currentAffairsRes = await apolloClient.query({
+  //   query: GET_POSTS,
+  //   variables: { category: "Current Affairs", limit: 5 },
+  // });
 
-  const lifestyleRes = await apolloClient.query({
-    query: GET_POSTS,
-    variables: { category: 'Lifestyle', limit: 5 },
-  });
+  // const lifestyleRes = await apolloClient.query({
+  //   query: GET_POSTS,
+  //   variables: { category: "Lifestyle", limit: 5 },
+  // });
 
-  const climateRes = await apolloClient.query({
-    query: GET_POSTS,
-    variables: { category: 'Climate', limit: 5 },
-  });
+  // const climateRes = await apolloClient.query({
+  //   query: GET_POSTS,
+  //   variables: { category: "Climate", limit: 5 },
+  // });
 
-  const posts = await postsRes.data.posts;
-  const sportPosts = await sportRes.data.posts;
-  const culturePosts = await cultureRes.data.posts;
-  const currentAffairsPosts = await currentAffairsRes.data.posts;
-  const lifestylePosts = await lifestyleRes.data.posts;
-  const climatePosts: Post[] = await climateRes.data.posts;
+  // const posts = await postsRes.data.posts;
+  // const sportPosts = await sportRes.data.posts;
+  // const culturePosts = await cultureRes.data.posts;
+  // const currentAffairsPosts = await currentAffairsRes.data.posts;
+  // const lifestylePosts = await lifestyleRes.data.posts;
+  // const climatePosts: Post[] = await climateRes.data.posts;
 
   return addApolloState(apolloClient, {
     props: {
-      posts,
-      sportPosts,
-      culturePosts,
-      currentAffairsPosts,
-      lifestylePosts,
-      climatePosts,
+      // posts,
+      // sportPosts,
+      // culturePosts,
+      // currentAffairsPosts,
+      // lifestylePosts,
+      // climatePosts,
     },
-    revalidate: 600,
+    // revalidate: 600,
   });
 }

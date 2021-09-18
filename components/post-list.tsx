@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
-import PostPreview from './post-preview';
-import { useQuery, useLazyQuery } from '@apollo/client';
-import Loading from './loading';
-import { Waypoint } from 'react-waypoint';
-import { GET_POSTS, GET_USER } from '../lib/apolloQueries';
-import { Post } from '../lib/types';
+import { useEffect, useState } from "react";
+import PostPreview from "./post-preview";
+import { useQuery, useLazyQuery } from "@apollo/client";
+import Loading from "./loading";
+import { Waypoint } from "react-waypoint";
+import { GET_POSTS, GET_USER } from "../lib/apolloQueries";
+import { Post } from "../lib/types";
 
 export default function PostList({
   category,
@@ -21,20 +21,16 @@ export default function PostList({
         category: category,
         // startAfter: 10,
       },
-      fetchPolicy: 'network-only',
+      fetchPolicy: "network-only",
       notifyOnNetworkStatusChange: true,
     }
   );
 
-  const [page, setPage] = useState(0);
-
-  let posts: Post[];
-
+  let posts = [];
   if (data) posts = data.posts;
 
   useEffect(() => {
     getPosts();
-    setPage(0);
   }, [category]);
 
   return !data ? (
@@ -55,21 +51,23 @@ export default function PostList({
             author={post.author}
             slug={post.slug}
             categories={post.categories}
-            animateY={'100%'}
+            animateY={"100%"}
           />
         ))}
 
-        <Waypoint
-          onEnter={() => {
-            fetchMore({
-              variables: {
-                limit: 5,
-                category: category,
-                // startAfter: posts[posts.length - 1].date,
-              },
-            });
-          }}
-        />
+        {data && (
+          <Waypoint
+            onEnter={() => {
+              // fetchMore({
+              //   variables: {
+              //     category: "Sport",
+              //     // startAfter: cursor,
+              //   },
+              // });
+              console.log("Enter waypoint");
+            }}
+          />
+        )}
       </div>
 
       {loading && (

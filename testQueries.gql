@@ -1,0 +1,52 @@
+# mutation CreateDraft(
+#   $authorEmail: String
+#   $slug: String
+#   $title: String
+#   $content: String
+#   $tags: [String]
+#   $categories: [String]
+# ) {
+#   createDraft(
+#       slug: $slug
+#       title: $title
+#       content: $content
+#       tags: $tags
+#       authorEmail: $authorEmail
+#     	categories: $categories
+#   ) {
+#     id
+#   }
+# }
+
+# {
+#   "slug": "yoyoyo2",
+#   "title": "Hello",
+# 	"content": "<h1>I was walking down the road one day and ....</h1>",
+#   "tags": ["random shit", "hello again"],
+#   "categories": ["climate", "current_affairs"],
+#   "authorEmail": "ruben.engel98@gmail.com"
+# }
+
+# mutation CreateUser($email: String!, $name: String!) {
+#   createUser(email: $email, name: $name) {
+# 			id
+#   	}
+# }
+
+# {
+#   "email": "harry@gmail.com",
+#   "name": "HARRY"
+# }
+
+# query {
+#   getUser(email: "harry@gmail.com") {
+#     name
+#     email
+#     id
+#     comments {
+#       post {
+#         title
+#       }
+#     }
+#   }
+# }

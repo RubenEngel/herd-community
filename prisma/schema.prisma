@@ -1,0 +1,67 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id            Int       @id @default(autoincrement())
+  email         String    @unique
+  role          Role      @default(USER)
+  name          String
+  posts         Post[]
+  likedPosts    Post[]    @relation("UserPostLikes", references: [id])
+  comments      Comment[] @relation("UserAuthorsComment")
+  likedComments Comment[] @relation("UserLikesComment")
+  following     User[]    @relation("UserFollows", references: [id])
+  followers     User[]    @relation("UserFollows", references: [id])
+}
+
+model Post {
+  id            Int        @id @default(autoincrement())
+  slug          String     @unique
+  published     Boolean    @default(false)
+  viewCount     Int        @default(0)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  title         String
+  featuredImage String?
+  content       String
+  author        User       @relation(fields: [authorId], references: [id])
+  authorId      Int
+  comments      Comment[]  @relation("PostHasComment")
+  likedBy       User[]     @relation("UserPostLikes", references: [id])
+  categories    Category[] @relation(references: [id])
+  tags          String[]
+}
+
+model Category {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  posts Post[] @relation(references: [id])
+}
+
+model Comment {
+  id              Int       @id @default(autoincrement())
+  content         String
+  author          User      @relation("UserAuthorsComment", fields: [authorId], references: [id])
+  authorId        Int
+  likedBy         User[]    @relation("UserLikesComment")
+  createdAt       DateTime  @default(now())
+  post            Post      @relation("PostHasComment", fields: [postId], references: [id])
+  postId          Int
+  parentComment   Comment?  @relation("CommentParentsComment", fields: [parentCommentId], references: [id])
+  parentCommentId Int?
+  childComments   Comment[] @relation("CommentParentsComment")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
