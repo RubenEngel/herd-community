@@ -1,37 +1,28 @@
-import Avatar from './avatar';
-import Date from './date';
-// import CoverImage from './cover-image'
-import Link from 'next/link';
-import Categories from './categories';
-import { motion } from 'framer-motion';
-import PreviewImage from './preview-image';
-// import useWindowDimensions from './hooks/useWindowDimensions';
-import { User } from '../lib/types';
+import Avatar from "../avatar";
+import Date from "../date";
+import Link from "next/link";
+import Categories from "../categories";
+import { motion } from "framer-motion";
+import PreviewImage from "./preview-image";
+import { User, Post } from "../../lib/types";
+
+interface PostPreviewProps extends Partial<Post> {
+  animateY?: number | string;
+  animateScale?: number;
+  animateOpacity?: number;
+}
 
 export default function PostPreview({
   title,
-  coverImage,
-  date,
-  // excerpt,
+  featuredImage,
+  createdAt,
   categories,
   author,
   slug,
   animateY = 0,
   animateScale = 1,
   animateOpacity = 1,
-}: {
-  title: string;
-  coverImage: string;
-  date: string;
-  categories: string[];
-  author: User;
-  slug: string;
-  animateY?: number | string;
-  animateScale?: number;
-  animateOpacity?: number;
-}) {
-  // const { height, width } = useWindowDimensions()
-
+}: PostPreviewProps) {
   return (
     <>
       <motion.div
@@ -42,14 +33,12 @@ export default function PostPreview({
       >
         {/* Image */}
         <div className="mb-1">
-          {/* <CoverImage title={title} coverImage={coverImage} slug={slug} /> */}
           <PreviewImage
             title={title}
-            coverImage={coverImage}
+            coverImage={featuredImage}
             slug={slug}
             width={1000}
             height={900}
-            // priority={true}
           />
         </div>
         {/* Categories */}
@@ -68,7 +57,7 @@ export default function PostPreview({
         {/* Date and Author */}
         <div className="text-sm flex flex-row justify-between items-center">
           <Avatar author={author} />
-          <Date dateString={date} />
+          <Date date={createdAt} />
         </div>
       </motion.div>
     </>

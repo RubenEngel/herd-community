@@ -2,30 +2,27 @@ import { useContext } from "react";
 import Head from "next/head";
 import { initializeApollo, addApolloState } from "../lib/apolloClient";
 import { GET_POSTS, GET_ALL_POST_SLUGS, GET_USER } from "../lib/apolloQueries";
-import PostPreview from "../components/post-preview";
-import SmallPostPreview from "../components/small-post-preview";
+import PostPreview from "../components/post-preview/post-preview";
+import SmallPostPreview from "../components/post-preview/small-post-preview";
 import HomeCategory from "../components/home-category";
 import { AiFillCaretRight } from "react-icons/ai";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ExploreContext } from "../lib/context";
-import { useQuery } from "@apollo/client";
-import { gql } from "@apollo/client";
 import { Post } from "../lib/types";
-import { supportsResultCaching } from "@apollo/client/cache/inmemory/entityStore";
 
-// interface IndexProps {
-//   posts: Post[];
-// }
+interface IndexProps {
+  posts: Post[];
+}
 
 const Index = ({
   posts = [],
-  sportPosts = [],
-  culturePosts = [],
-  currentAffairsPosts = [],
-  lifestylePosts = [],
-  climatePosts = [],
-}) => {
+}: // sportPosts = [],
+// culturePosts = [],
+// currentAffairsPosts = [],
+// lifestylePosts = [],
+// climatePosts = [],
+IndexProps) => {
   const latestPost: Post = posts[0];
   const desktopLatestPosts: Post[] = posts.slice(0, 3);
   const mobileLatestPosts: Post[] = posts.slice(1, 4);
@@ -52,7 +49,7 @@ const Index = ({
           <div className="bg-primary text-secondary lg:inline-block items-center lg:mt-6 lg:px-56 rounded-xl p-1 lg:p-2 font-bold uppercase">
             <Link href="/explore">
               <button
-                onClick={(e) => setCategory("All")}
+                onClick={(e) => setCategory(null)}
                 className="flex items-center font-bold mx-auto"
               >
                 <h1 className="text-lg uppercase mr-4">Latest Stories</h1>
@@ -66,10 +63,10 @@ const Index = ({
           {desktopLatestPosts.map((post, index) => (
             <div className="p-6">
               <PostPreview
-                key={post.slug}
+                key={post.id}
                 title={post.title}
-                coverImage={post.featuredImage}
-                date={post.date}
+                featuredImage={post.featuredImage}
+                createdAt={post.createdAt}
                 author={post.author}
                 slug={post.slug}
                 categories={post.categories}
@@ -82,10 +79,10 @@ const Index = ({
         {/* Mobile Latest Posts */}
         <div className="p-4 md:hidden">
           <PostPreview
-            key={latestPost.slug}
+            key={latestPost.id}
             title={latestPost.title}
-            coverImage={latestPost.featuredImage}
-            date={latestPost.date}
+            featuredImage={latestPost.featuredImage}
+            createdAt={latestPost.createdAt}
             author={latestPost.author}
             slug={latestPost.slug}
             categories={latestPost.categories}
@@ -95,19 +92,19 @@ const Index = ({
 
           {mobileLatestPosts.map((post) => (
             <SmallPostPreview
-              key={post.slug}
+              key={post.id}
               title={post.title}
               coverImage={post.featuredImage}
               author={post.author}
               slug={post.slug}
-              // categories={post.categories}
-              // date={post.date}
             />
           ))}
         </div>
 
+        <HomeCategory categoryName="Climate" posts={posts} />
+
         {/* Categories after latest posts */}
-        <div className="grid md:grid-cols-2 max-w-6xl mx-auto">
+        {/* <div className="grid md:grid-cols-2 max-w-6xl mx-auto">
           <HomeCategory categoryName="Climate" posts={climatePosts} />
 
           <HomeCategory categoryName="Lifestyle" posts={lifestylePosts} />
@@ -120,7 +117,7 @@ const Index = ({
           />
 
           <HomeCategory categoryName="Sport" posts={sportPosts} />
-        </div>
+        </div> */}
       </motion.div>
     </>
   );
@@ -131,10 +128,10 @@ export default Index;
 export async function getStaticProps() {
   const apolloClient = initializeApollo();
 
-  // const postsRes = await apolloClient.query({
-  //   query: GET_POSTS,
-  //   variables: { category: "All", limit: 5 },
-  // });
+  const postsRes = await apolloClient.query({
+    query: GET_POSTS,
+    variables: { limit: 10 },
+  });
 
   // const sportRes = await apolloClient.query({
   //   query: GET_POSTS,
@@ -161,7 +158,7 @@ export async function getStaticProps() {
   //   variables: { category: "Climate", limit: 5 },
   // });
 
-  // const posts = await postsRes.data.posts;
+  const posts = await postsRes.data.getPosts;
   // const sportPosts = await sportRes.data.posts;
   // const culturePosts = await cultureRes.data.posts;
   // const currentAffairsPosts = await currentAffairsRes.data.posts;
@@ -170,7 +167,7 @@ export async function getStaticProps() {
 
   return addApolloState(apolloClient, {
     props: {
-      // posts,
+      posts,
       // sportPosts,
       // culturePosts,
       // currentAffairsPosts,

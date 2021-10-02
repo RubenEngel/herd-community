@@ -14,8 +14,10 @@ model User {
   id            Int       @id @default(autoincrement())
   email         String    @unique
   role          Role      @default(USER)
-  name          String
-  posts         Post[]
+  firstName     String
+  lastName      String?
+  // imageUrl      String?
+  // posts         Post[]
   likedPosts    Post[]    @relation("UserPostLikes", references: [id])
   comments      Comment[] @relation("UserAuthorsComment")
   likedComments Comment[] @relation("UserLikesComment")
@@ -33,8 +35,9 @@ model Post {
   title         String
   featuredImage String?
   content       String
-  author        User       @relation(fields: [authorId], references: [id])
-  authorId      Int
+  authorEmail   String
+  // author        User       @relation(fields: [authorId], references: [id])
+  // authorId      Int
   comments      Comment[]  @relation("PostHasComment")
   likedBy       User[]     @relation("UserPostLikes", references: [id])
   categories    Category[] @relation(references: [id])

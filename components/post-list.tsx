@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import PostPreview from "./post-preview";
+import PostPreview from "./post-preview/post-preview";
 import { useQuery, useLazyQuery } from "@apollo/client";
 import Loading from "./loading";
 import { Waypoint } from "react-waypoint";
@@ -19,19 +19,21 @@ export default function PostList({
       variables: {
         limit: limit,
         category: category,
-        // startAfter: 10,
+        startAfter: null,
       },
-      fetchPolicy: "network-only",
+      fetchPolicy: "cache-first",
       notifyOnNetworkStatusChange: true,
     }
   );
 
-  let posts = [];
-  if (data) posts = data.posts;
-
   useEffect(() => {
     getPosts();
+    console.log(category)
   }, [category]);
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
 
   return !data ? (
     <div className="h-50-screen flex justify-center items-center">
@@ -42,12 +44,12 @@ export default function PostList({
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-32">
         {error && <h1 className="text-4xl text-center">An Error Occurred</h1>}
 
-        {posts.map((post) => (
+        {data.getPosts.length && data.getPosts.map((post) => (
           <PostPreview
             key={post.slug}
             title={post.title}
-            coverImage={post.featuredImage}
-            date={post.date}
+            featuredImage={post.featuredImage}
+            createdAt={post.createdAt}
             author={post.author}
             slug={post.slug}
             categories={post.categories}
@@ -55,16 +57,20 @@ export default function PostList({
           />
         ))}
 
-        {data && (
+        {data.getPosts.length && (
           <Waypoint
             onEnter={() => {
-              // fetchMore({
-              //   variables: {
-              //     category: "Sport",
-              //     // startAfter: cursor,
-              //   },
-              // });
-              console.log("Enter waypoint");
+              console.log("entered");
+              const endCursor = data.getPosts[data.getPosts.length - 1].id
+              fetchMore({
+                variables: {
+                  startAfter: endCursor,
+                },
+                updateQuery: (prevResult, {fetchMoreResult}) => {
+                  console.log(prevResult);
+                  console.log(fetchMoreResult);
+                }
+              });
             }}
           />
         )}

@@ -9,9 +9,9 @@ enum Role {
 
 export interface User {
   id: string;
-  email: String;
+  email: string;
   role: Role;
-  name: String;
+  name: string;
   posts: Post[];
   likedPosts: Post[];
   comments: Comment[];
@@ -23,21 +23,22 @@ export interface User {
 export interface Post {
   id: string;
   slug: string;
+  featuredImage: string;
   published: boolean;
   createdAt: Date;
   updatedAt: Date;
-  title: String;
-  content: String;
+  title: string;
+  content: string;
   author: User;
   comments: Comment[];
   likedBy: User[];
   categories: Category[];
-  tags: String[];
+  tags: string[];
 }
 
 export interface Category {
-  id: String;
-  name: String;
+  id: string;
+  name: string;
   posts: Post[];
 }
 

@@ -1,4 +1,4 @@
-import { ApolloServer, gql } from "apollo-server-micro";
+import { ApolloServer, gql, IResolvers } from "apollo-server-micro";
 import { GraphQLScalarType } from "graphql";
 import prisma from "../../lib/prisma";
 // import { PostInput } from "../../lib/types";
@@ -19,8 +19,11 @@ const typeDefs = gql`
   type User {
     id: Int
     email: String
+    # username: String
+    # imageUrl: String
     role: Role
-    name: String
+    firstName: String
+    lastName: String
     posts: [Post]
     likedPosts: [Post]
     comments: [Comment]
@@ -70,13 +73,13 @@ const typeDefs = gql`
   }
 
   type Query {
-    getPosts: [Post]
-    getPost(postId: Int): Post
+    getPosts(category: String, limit: Int, startAfter: Int): [Post]
+    getPost(slug: String!): Post
     getUser(email: String!): User
   }
 
   type Mutation {
-    createUser(email: String, name: String): User
+    createUser(email: String, firstName: String, lastName: String): User
     createDraft(
       slug: String
       title: String
@@ -85,19 +88,48 @@ const typeDefs = gql`
       categories: [String]
       tags: [String]
       authorEmail: String
+      createdAt: DateTime
     ): Post
   }
 `;
 
 const resolvers = {
   Query: {
-    getPosts: async () => {
-      return prisma.post.findMany();
+    getPosts: async (_, { category, limit, startAfter }) => {
+      if (category.toLowerCase() === "all") category = null;
+      let cursorParams = {};
+      if (startAfter) {
+        cursorParams = {
+          skip: 1,
+          cursor: {
+            id: startAfter,
+          },
+        };
+      }
+      return prisma.post.findMany({
+        ...cursorParams,
+        take: limit,
+        where: {
+          categories: {
+            some: {
+              name: {
+                contains: category?.toLowerCase().split(" ").join("_"),
+              },
+            },
+          },
+        },
+        include: {
+          categories: true,
+        },
+      });
     },
-    getPost: async (_, { id }) => {
+    getPost: async (_, { slug }) => {
       return prisma.post.findUnique({
         where: {
-          id: id,
+          slug: slug,
+        },
+        include: {
+          categories: true,
         },
       });
     },
@@ -111,19 +143,31 @@ const resolvers = {
   },
   Mutation: {
     // publishPost
-    // updateUser
     // updatePost
-    createUser: async (_, { email, name }) => {
+    // updateUser
+    // createComment
+    // deleteComment
+    createUser: async (_, { email, firstName, lastName }) => {
       return await prisma.user.create({
         data: {
           email: email.toLowerCase(),
-          name: name.toLowerCase(),
+          firstName: firstName ? firstName.toLowerCase() : undefined,
+          lastName: lastName ? lastName.toLowerCase() : undefined,
         },
       });
     },
     createDraft: async (
       _,
-      { slug, title, featuredImage, content, categories, tags, authorEmail }
+      {
+        slug,
+        title,
+        featuredImage,
+        content,
+        categories,
+        tags,
+        authorEmail,
+        createdAt,
+      }
     ) => {
       return await prisma.post.create({
         data: {
@@ -137,7 +181,10 @@ const resolvers = {
             })),
           },
           tags: tags,
-          author: { connect: { email: authorEmail } },
+          // author: { connect: { email: authorEmail } },
+          authorEmail: authorEmail,
+          published: true,
+          createdAt: createdAt,
         },
       });
     },

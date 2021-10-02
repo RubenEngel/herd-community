@@ -1,11 +1,18 @@
-import React from 'react';
-import Link from 'next/link';
-import { AiFillCaretRight } from 'react-icons/ai';
-import PostPreview from '../components/post-preview';
-import SmallPostPreview from '../components/small-post-preview';
-import { ExploreContext } from '../lib/context';
+import React from "react";
+import Link from "next/link";
+import { AiFillCaretRight } from "react-icons/ai";
+import PostPreview from "./post-preview/post-preview";
+import SmallPostPreview from "./post-preview/small-post-preview";
+import { ExploreContext } from "../lib/context";
+import { Post } from "../lib/types";
 
-function HomeCategory({ posts, categoryName }) {
+function HomeCategory({
+  posts,
+  categoryName,
+}: {
+  posts: Post[];
+  categoryName: string;
+}) {
   const latestPost = posts ? posts[0] : null;
   const latestStories = posts?.slice(1, 4);
 
@@ -28,11 +35,10 @@ function HomeCategory({ posts, categoryName }) {
         <PostPreview
           key={latestPost.slug}
           title={latestPost.title}
-          coverImage={latestPost.featuredImage}
-          date={latestPost.date}
+          featuredImage={latestPost.featuredImage}
+          createdAt={latestPost.createdAt}
           author={latestPost.author}
           slug={latestPost.slug}
-          excerpt={latestPost.excerpt}
           categories={latestPost.categories}
           // animateScale={0.5}
         />
@@ -42,10 +48,8 @@ function HomeCategory({ posts, categoryName }) {
             key={post.slug}
             title={post.title}
             coverImage={post.featuredImage}
-            date={post.date}
             author={post.author}
             slug={post.slug}
-            categories={post.categories}
           />
         ))}
       </div>

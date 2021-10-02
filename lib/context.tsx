@@ -1,8 +1,12 @@
-import { createContext } from 'react';
+import firebase from "./firebase";
+import { createContext } from "react";
 
-export const UserContext = createContext<{ user: string; userName: string }>({
+export const UserContext = createContext<{
+  user: firebase.User;
+  username: string;
+}>({
   user: null,
-  userName: null,
+  username: null,
 });
 
 export const ExploreContext = createContext({} as any);

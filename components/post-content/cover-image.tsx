@@ -1,15 +1,23 @@
-import cn from 'classnames';
-import Link from 'next/link';
+import cn from "classnames";
+import Link from "next/link";
 
-export default function CoverImage({ title, coverImage, slug }) {
+export default function CoverImage({
+  title,
+  coverImage,
+  slug,
+}: {
+  title: string;
+  coverImage: string;
+  slug?: string;
+}) {
   const image = (
     <img
       src={coverImage}
       // width={500}
       // height={500}
       // objectFit="cover"
-      className={cn('shadow-small m-auto', {
-        'hover:shadow-medium transition-shadow duration-200 rounded-xl': slug,
+      className={cn("shadow-small m-auto", {
+        "hover:shadow-medium transition-shadow duration-200 rounded-xl": slug,
       })}
     />
   );

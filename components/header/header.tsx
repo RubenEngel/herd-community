@@ -1,21 +1,21 @@
-import { useContext, useEffect, useState } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { useContext, useEffect, useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import {
   FaUserCircle,
   FaFacebookF,
   FaInstagram,
   FaTwitter,
   FaLinkedin,
-} from 'react-icons/fa';
-import { BiMenuAltLeft } from 'react-icons/bi';
-import { RiArrowDropDownFill } from 'react-icons/ri';
-import { format } from 'date-fns';
-import { motion } from 'framer-motion';
-import MenuDropdown from './menu-dropdown';
-import ProfileDropdown from './profile-dropdown';
-import CategoryDropdown from './category-dropdown';
-import { ExploreContext, UserContext } from '../../lib/context';
+} from "react-icons/fa";
+import { BiMenuAltLeft } from "react-icons/bi";
+import { RiArrowDropDownFill } from "react-icons/ri";
+import { format } from "date-fns";
+import { motion } from "framer-motion";
+import MenuDropdown from "./menu-dropdown";
+import ProfileDropdown from "./profile-dropdown";
+import CategoryDropdown from "./category-dropdown";
+import { ExploreContext, UserContext } from "../../lib/context";
 
 export default function Header() {
   const today = new Date();
@@ -28,7 +28,7 @@ export default function Header() {
     setMenuNavbarOpen(false);
     setProfileNavbarOpen(false);
     setCategoryNavbarOpen(false);
-    if (router.pathname === '/explore') {
+    if (router.pathname === "/explore") {
       setShowCategory(true);
     } else {
       setShowCategory(false);
@@ -67,10 +67,10 @@ export default function Header() {
           <div>
             <h3 className="text-md relative">
               <time className="block md:hidden">
-                {format(new Date(), 'LLLL	d, yyyy')}
+                {format(new Date(), "LLLL	d, yyyy")}
               </time>
               <time className="hidden md:block">
-                {format(new Date(), 'eeee, LLLL	d, yyyy')}
+                {format(new Date(), "eeee, LLLL	d, yyyy")}
               </time>
             </h3>
           </div>
