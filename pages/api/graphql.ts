@@ -76,6 +76,7 @@ const typeDefs = gql`
     getPosts(category: String, limit: Int, startAfter: Int): [Post]
     getPost(slug: String!): Post
     getUser(email: String!): User
+    getCategories: [Category]
   }
 
   type Mutation {
@@ -90,13 +91,22 @@ const typeDefs = gql`
       authorEmail: String
       createdAt: DateTime
     ): Post
+    updatePost(
+      slug: String!
+      id: Int
+      title: String
+      featuredImage: String
+      content: String
+      categories: [String]
+      tags: [String]
+    ): Post
   }
 `;
 
 const resolvers = {
   Query: {
     getPosts: async (_, { category, limit, startAfter }) => {
-      if (category.toLowerCase() === "all") category = null;
+      if (category?.toLowerCase() === "all") category = null;
       let cursorParams = {};
       if (startAfter) {
         cursorParams = {
@@ -140,6 +150,9 @@ const resolvers = {
         },
       });
     },
+    getCategories: async () => {
+      return prisma.category.findMany();
+    },
   },
   Mutation: {
     // publishPost
@@ -150,9 +163,9 @@ const resolvers = {
     createUser: async (_, { email, firstName, lastName }) => {
       return await prisma.user.create({
         data: {
-          email: email.toLowerCase(),
-          firstName: firstName ? firstName.toLowerCase() : undefined,
-          lastName: lastName ? lastName.toLowerCase() : undefined,
+          email: email?.toLowerCase(),
+          firstName: firstName?.toLowerCase(),
+          lastName: lastName?.toLowerCase(),
         },
       });
     },
@@ -176,7 +189,7 @@ const resolvers = {
           featuredImage: featuredImage,
           content: content,
           categories: {
-            connect: categories.map((categoryName) => ({
+            connect: categories?.map((categoryName) => ({
               name: categoryName.toLowerCase().split(" ").join("_"),
             })),
           },
@@ -185,6 +198,28 @@ const resolvers = {
           authorEmail: authorEmail,
           published: true,
           createdAt: createdAt,
+        },
+      });
+    },
+    updatePost: async (
+      _,
+      { slug, title, featuredImage, content, categories, tags }
+    ) => {
+      // TODO: if slug or id
+      return await prisma.post.update({
+        where: {
+          slug: slug,
+        },
+        data: {
+          title: title,
+          featuredImage: featuredImage,
+          content: content,
+          categories: {
+            connect: categories?.map((categoryName) => ({
+              name: categoryName.toLowerCase().split(" ").join("_"),
+            })),
+          },
+          tags: tags,
         },
       });
     },

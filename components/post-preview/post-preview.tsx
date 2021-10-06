@@ -42,7 +42,7 @@ export default function PostPreview({
           />
         </div>
         {/* Categories */}
-        <div>
+        <div className="mt-2">
           <Categories categories={categories} />
         </div>
         {/* Title */}

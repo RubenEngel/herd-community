@@ -4,10 +4,9 @@ import ErrorPage from "next/error";
 import Container from "../../components/container";
 import PostBody from "../../components/post-content/post-body";
 import PostHeader from "../../components/post-content/post-header";
-// import SectionSeparator from "../../components/section-separator";
-import PostTitle from "../../components/post-content/post-title";
 import Head from "next/head";
 import Tags from "../../components/post-content/tags";
+import Loading from "../../components/loading";
 import { GET_POST, GET_ALL_POST_SLUGS } from "../../lib/apolloQueries";
 import { addApolloState, initializeApollo } from "../../lib/apolloClient";
 import { Post } from "../../lib/types";
@@ -26,7 +25,9 @@ export default ({ post }: PostProps) => {
   return (
     <>
       {router.isFallback ? (
-        <PostTitle>Loading…</PostTitle>
+        <div className="h-50-screen flex flex-col justify-center">
+          <Loading />
+        </div>
       ) : (
         <>
           <article>
@@ -46,28 +47,11 @@ export default ({ post }: PostProps) => {
               <PostBody content={post.content} />
             </Container>
           </article>
-
-          {/* <SectionSeparator /> */}
         </>
       )}
     </>
   );
 };
-
-// export async function getServerSideProps({ params }) {
-//   const apolloClient = initializeApollo();
-
-//   const response = await apolloClient.query({
-//     query: GET_POST,
-//     variables: { slug: params.slug },
-//   });
-
-//   return addApolloState(apolloClient, {
-//     props: {
-//       post: response.data.post,
-//     },
-//   });
-// }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const apolloClient = initializeApollo();

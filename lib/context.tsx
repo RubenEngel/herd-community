@@ -1,5 +1,6 @@
 import firebase from "./firebase";
 import { createContext } from "react";
+import { Dispatch, SetStateAction } from "react";
 
 export const UserContext = createContext<{
   user: firebase.User;
@@ -9,4 +10,9 @@ export const UserContext = createContext<{
   username: null,
 });
 
-export const ExploreContext = createContext({} as any);
+interface ICategoryState {
+  category: string;
+  setCategory: Dispatch<SetStateAction<string>>;
+}
+
+export const ExploreContext = createContext<ICategoryState>(null);

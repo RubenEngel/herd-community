@@ -1,10 +1,10 @@
 import React from "react";
 import Link from "next/link";
 import { AiFillCaretRight } from "react-icons/ai";
-import PostPreview from "./post-preview/post-preview";
-import SmallPostPreview from "./post-preview/small-post-preview";
-import { ExploreContext } from "../lib/context";
-import { Post } from "../lib/types";
+import PostPreview from "./post-preview";
+import SmallPostPreview from "./small-post-preview";
+import { ExploreContext } from "../../lib/context";
+import { Post } from "../../lib/types";
 
 function HomeCategory({
   posts,
@@ -13,10 +13,10 @@ function HomeCategory({
   posts: Post[];
   categoryName: string;
 }) {
-  const latestPost = posts ? posts[0] : null;
+  const latestPost = posts[0];
   const latestStories = posts?.slice(1, 4);
 
-  const { category, setCategory } = React.useContext(ExploreContext);
+  const { setCategory } = React.useContext(ExploreContext);
 
   return (
     <div>
@@ -26,7 +26,9 @@ function HomeCategory({
             className="flex items-center font-bold mx-auto"
             onClick={(e) => setCategory(e.currentTarget.textContent)}
           >
-            <h1 className="text-lg uppercase mr-4">{categoryName}</h1>
+            <h1 className="text-lg uppercase mr-4">
+              {categoryName.split("_").join(" ")}
+            </h1>
             <AiFillCaretRight />
           </button>
         </Link>
@@ -45,6 +47,7 @@ function HomeCategory({
 
         {latestStories.map((post) => (
           <SmallPostPreview
+            createdAt={post.createdAt}
             key={post.slug}
             title={post.title}
             coverImage={post.featuredImage}

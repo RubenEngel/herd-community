@@ -1,16 +1,5 @@
 import { gql } from "@apollo/client";
 
-// export const GET_USER = gql`
-//   query GetUser($username: String!) {
-//     user(username: $username) {
-//       firstName
-//       lastName
-//       # username
-//       # imageUrl
-//     }
-//   }
-// `;
-
 export const GET_USER = gql`
   query GetUser($email: String!) {
     getUser(email: $email) {
@@ -90,6 +79,7 @@ export const ADD_POST = gql`
     $tags: [String]
     $categories: [String]
     $createdAt: DateTime
+    $featuredImage: String
   ) {
     createDraft(
       slug: $slug
@@ -99,6 +89,7 @@ export const ADD_POST = gql`
       authorEmail: $authorEmail
       categories: $categories
       createdAt: $createdAt
+      featuredImage: $featuredImage
     ) {
       id
       slug
@@ -106,11 +97,44 @@ export const ADD_POST = gql`
   }
 `;
 
-const ADD_USER = gql`
+export const UPDATE_POST = gql`
+  mutation UpdatePost(
+    $slug: String!
+    $id: Int
+    $title: String
+    $featuredImage: String
+    $content: String
+    $categories: [String]
+    $tags: [String]
+  ) {
+    updatePost(
+      slug: $slug
+      id: $id
+      title: $title
+      featuredImage: $featuredImage
+      content: $content
+      categories: $categories
+      tags: $tags
+    ) {
+      id
+      slug
+    }
+  }
+`;
+
+export const ADD_USER = gql`
   mutation CreateUser($email: String, $firstName: String, $lastName: String) {
     createUser(email: $email, firstName: $firstName, lastName: $lastName) {
       id
       email
+    }
+  }
+`;
+
+export const GET_CATEGORIES = gql`
+  query GetCategories {
+    getCategories {
+      name
     }
   }
 `;

@@ -20,7 +20,12 @@ function createApolloClient() {
       typePolicies: {
         Query: {
           fields: {
-            getPosts: relayStylePagination(),
+            getPosts: {
+              keyArgs: ["category"],
+              merge(existing = [], incoming) {
+                return [...existing, ...incoming];
+              },
+            },
           },
         },
       },

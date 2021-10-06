@@ -1,16 +1,16 @@
-import '../styles/index.css';
-import '@fortawesome/fontawesome-svg-core/styles.css'; // import Font Awesome CSS
-import { config } from '@fortawesome/fontawesome-svg-core';
-import { ApolloProvider } from '@apollo/client';
-import { useApollo } from '../lib/apolloClient';
-import { useRouter } from 'next/router';
-import { useState, useEffect } from 'react';
-import Loading from '../components/loading';
-import { motion } from 'framer-motion';
-import { ExploreContext, UserContext } from '../lib/context';
-import { useUserData } from '../lib/hooks/useUserData';
-import { Toaster } from 'react-hot-toast';
-import Layout from '../components/layout';
+import "../styles/index.css";
+import "@fortawesome/fontawesome-svg-core/styles.css"; // import Font Awesome CSS
+import { config } from "@fortawesome/fontawesome-svg-core";
+import { ApolloProvider } from "@apollo/client";
+import { useApollo } from "../lib/apolloClient";
+import { useRouter } from "next/router";
+import { useState, useEffect } from "react";
+import Loading from "../components/loading";
+import { motion } from "framer-motion";
+import { ExploreContext, UserContext } from "../lib/context";
+import { useUserData } from "../lib/hooks/useUserData";
+import { Toaster } from "react-hot-toast";
+import Layout from "../components/layout";
 
 config.autoAddCss = false;
 
@@ -20,12 +20,12 @@ function MyApp({ Component, pageProps }) {
   const [pageLoading, setPageLoading] = useState(false);
   const userData = useUserData();
 
-  const [category, setCategory] = useState('All');
+  const [category, setCategory] = useState("all");
   const categoryState = { category, setCategory };
 
   useEffect(() => {
-    router.events.on('routeChangeStart', () => setPageLoading(true));
-    router.events.on('routeChangeComplete', () => setPageLoading(false));
+    router.events.on("routeChangeStart", () => setPageLoading(true));
+    router.events.on("routeChangeComplete", () => setPageLoading(false));
   }, [router]);
 
   return (
