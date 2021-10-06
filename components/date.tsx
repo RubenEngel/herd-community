@@ -5,7 +5,6 @@ interface DateProps {
 }
 
 export default function Date({ date }) {
-  console.log(date);
   const dateISO = typeof date === "string" ? parseISO(date) : date;
   const dateString = typeof date === "string" ? date : date?.toDateString();
   return (

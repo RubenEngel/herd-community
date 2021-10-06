@@ -1,34 +1,35 @@
-import React from 'react';
-import SignIn from '../components/sign-in';
-import SelectUsername from '../components/select-username';
-import { UserContext } from '../lib/context';
-import { FaUserCircle } from 'react-icons/fa';
-import Button from '../components/button';
-import { useQuery } from '@apollo/client';
-import { GET_USER } from '../lib/apolloQueries';
-import Loading from '../components/loading';
+import React from "react";
+import SignIn from "../components/sign-in";
+import SelectUsername from "../components/select-username";
+// import { UserContext } from '../lib/context';
+// import { FaUserCircle } from 'react-icons/fa';
+// import Button from '../components/button';
+// import { useQuery } from '@apollo/client';
+// import { GET_USER } from '../lib/apolloQueries';
+// import Loading from '../components/loading';
 
 const MyAccount = () => {
-  const { user, userName } = React.useContext(UserContext);
+  // const { user, username } = React.useContext(UserContext);
 
-  user && console.log(user);
+  // user && console.log(user);
 
-  const { data, loading, error } = useQuery(GET_USER, {
-    variables: {
-      username: 'rubes',
-    },
-    fetchPolicy: 'network-only',
-  });
+  // const { data, loading, error } = useQuery(GET_USER, {
+  //   variables: {
+  //     username: 'rubes',
+  //   },
+  //   fetchPolicy: 'network-only',
+  // });
 
-  let userData;
+  // let userData;
 
-  if (data) userData = data.user;
+  // if (data) userData = data.user;
 
-  data && console.log(data);
+  // data && console.log(data);
 
   return (
     <>
-      {loading && (
+      <h1>My Account Page</h1>
+      {/* {loading && (
         <div>
           <Loading />
         </div>
@@ -60,7 +61,7 @@ const MyAccount = () => {
 
           <SelectUsername />
         </div>
-      )}
+      )} */}
     </>
   );
 };
