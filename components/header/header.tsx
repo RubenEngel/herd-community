@@ -146,7 +146,9 @@ export default function Header() {
                 }}
                 className="flex flex-row items-center mx-auto focus:outline-none"
               >
-                <h1 className="uppercase">Browsing {category}</h1>
+                <h1 className="uppercase">
+                  Browsing {category.split("_").join(" ")}
+                </h1>
                 <RiArrowDropDownFill className="text-3xl" />
               </button>
             </motion.div>

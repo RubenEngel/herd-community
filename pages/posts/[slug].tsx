@@ -15,7 +15,7 @@ interface PostProps {
   post: Post;
 }
 
-export default ({ post }: PostProps) => {
+export default function PostPage({ post }: PostProps) {
   const router = useRouter();
 
   if (!router.isFallback && !post?.slug) {
@@ -25,7 +25,7 @@ export default ({ post }: PostProps) => {
   return (
     <>
       {router.isFallback ? (
-        <div className="h-50-screen flex flex-col justify-center">
+        <div className="h-full flex flex-col justify-center">
           <Loading />
         </div>
       ) : (
@@ -51,7 +51,7 @@ export default ({ post }: PostProps) => {
       )}
     </>
   );
-};
+}
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const apolloClient = initializeApollo();

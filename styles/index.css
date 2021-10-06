@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Adamina&family=Open+Sans&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Adamina&family=Open+Sans&display=swap");
 
 @tailwind base;
 
@@ -14,37 +14,37 @@
 @tailwind utilities;
 /* Stop purging. */
 
-body{
-  font-family: 'Open Sans', sans-serif;
+body {
+  font-family: "Open Sans", sans-serif;
+  background-color: white;
 }
 
 h1 {
-  font-family: 'Adamina', serif;
+  font-family: "Adamina", serif;
 }
 
 h2 {
-  font-family: 'Adamina', serif;
+  font-family: "Adamina", serif;
 }
 
 h3 {
-  font-family: 'Adamina', serif;
+  font-family: "Adamina", serif;
 }
 
 .adamina {
-  font-family: 'Adamina', serif;
+  font-family: "Adamina", serif;
 }
 
-.h-75-screen{
+.h-75-screen {
   height: 75vh;
 }
 
-.h-50-screen{
+.h-50-screen {
   height: 50vh;
 }
 
 .nav-item {
-  font-family: 'Adamina', serif;
+  font-family: "Adamina", serif;
 
   @apply text-secondary mx-2 my-3 text-lg items-center uppercase font-bold leading-snug;
-  
 }
