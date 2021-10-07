@@ -28,7 +28,11 @@ export default function PostPreview({
       <motion.div
         initial={{ scale: animateScale, y: animateY, opacity: animateOpacity }}
         animate={{ scale: 1, y: 0, opacity: 1 }}
-        transition={{ bounce: 0, duration: 0.4 }}
+        transition={{
+          type: "spring",
+          damping: 13,
+          duration: 0.5,
+        }}
         className="flex mx-auto my-2 flex-col justify-center rounded-lg "
       >
         {/* Image */}

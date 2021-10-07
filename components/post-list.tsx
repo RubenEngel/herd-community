@@ -7,9 +7,11 @@ import { GET_POSTS, GET_USER } from "../lib/apolloQueries";
 import { Post } from "../lib/types";
 
 export default function PostList({
+  startLoad = true,
   category,
   limit,
 }: {
+  startLoad: boolean;
   category: string;
   limit: number;
 }) {
@@ -38,7 +40,7 @@ export default function PostList({
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-32">
         {error && <h1 className="text-4xl text-center">An Error Occurred</h1>}
 
-        {data.getPosts.length &&
+        {startLoad &&
           data.getPosts.map((post) => (
             <PostPreview
               key={post.slug}
@@ -48,21 +50,23 @@ export default function PostList({
               author={post.author}
               slug={post.slug}
               categories={post.categories}
-              animateY={"100%"}
+              animateY={"50%"}
+              // animateScale={0.8}
             />
           ))}
-
         {data.getPosts.length && (
-          <Waypoint
-            onEnter={() => {
-              const endCursor = data.getPosts[data.getPosts.length - 1].id;
-              fetchMore({
-                variables: {
-                  startAfter: endCursor,
-                },
-              });
-            }}
-          ></Waypoint>
+          <div className="mt-52">
+            <Waypoint
+              onEnter={() => {
+                const endCursor = data.getPosts[data.getPosts.length - 1].id;
+                fetchMore({
+                  variables: {
+                    startAfter: endCursor,
+                  },
+                });
+              }}
+            ></Waypoint>
+          </div>
         )}
       </div>
 

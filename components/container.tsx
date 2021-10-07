@@ -3,5 +3,5 @@ export default function Container({ children }) {
     <div className="container mx-auto max-w-7xl my-6 px-6 overflow-hidden">
       {children}
     </div>
-    )
+  );
 }

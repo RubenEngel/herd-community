@@ -10,6 +10,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ExploreContext } from "../lib/context";
 import { Post } from "../lib/types";
+import { useRouter } from "next/router";
 
 interface CategoryPosts {
   [categoryName: string]: Post[];
@@ -25,6 +26,8 @@ const Index = ({ categoryPosts }: IndexProps) => {
   const mobileLatestPosts: Post[] = categoryPosts["all"].slice(1, 4);
 
   const { setCategory } = useContext(ExploreContext);
+
+  const router = useRouter();
 
   return (
     <>

@@ -12,9 +12,8 @@ export default function Categories({ categories }) {
   return (
     <div className="mb-2">
       {categories.map((category, index) => (
-        <Link href={"/explore"}>
+        <Link key={index} href={"/explore"}>
           <a
-            key={index}
             className="text-md border mr-1 bg-primary px-3 rounded-xl text-secondary"
             onClick={() => setCategory(category.name)}
           >

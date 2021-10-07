@@ -10,6 +10,16 @@ import Loading from "../../components/loading";
 import { GET_POST, GET_ALL_POST_SLUGS } from "../../lib/apolloQueries";
 import { addApolloState, initializeApollo } from "../../lib/apolloClient";
 import { Post } from "../../lib/types";
+import PostList from "../../components/post-list";
+import {
+  motion,
+  useViewportScroll,
+  useTransform,
+  useSpring,
+  useElementScroll,
+} from "framer-motion";
+import { useEffect, useState, useRef } from "react";
+import { Waypoint } from "react-waypoint";
 
 interface PostProps {
   post: Post;
@@ -21,6 +31,22 @@ export default function PostPage({ post }: PostProps) {
   if (!router.isFallback && !post?.slug) {
     return <ErrorPage statusCode={404} />;
   }
+
+  const [percentageComplete, setPercentageComplete] = useState(0);
+  const [reachedEnd, setReachedEnd] = useState<boolean>(false);
+  const { scrollYProgress } = useViewportScroll();
+  const yRange = useTransform(scrollYProgress, [0, 1], [0, 100]);
+  const pathLength = useSpring(yRange, {
+    stiffness: 400,
+    damping: 90,
+  });
+
+  useEffect(() => {
+    pathLength.onChange((value) => {
+      setPercentageComplete(value);
+      console.log(value);
+    });
+  }, [pathLength]);
 
   return (
     <>
@@ -42,11 +68,44 @@ export default function PostPage({ post }: PostProps) {
               author={post.author}
               categories={post.categories}
             />
+            {!reachedEnd && (
+              <div className="w-screen">
+                <motion.div
+                  style={{
+                    background: "green",
+                    position: "fixed",
+                    left: "0px",
+                    top: "68px",
+                    height: "5px",
+                    opacity: 0.5 + percentageComplete / 85,
+                    width: (percentageComplete / 85) * 100 + "%",
+                  }}
+                />
+              </div>
+            )}
+
             {post.tags.length > 0 && <Tags tags={post.tags} />}
             <Container>
               <PostBody content={post.content} />
             </Container>
           </article>
+          <div
+          // className={!reachedEnd ? "mt-52" : null}
+          >
+            <Waypoint
+              onEnter={() => {
+                setReachedEnd(true);
+              }}
+            ></Waypoint>
+          </div>
+          <h1 className="text-4xl uppercase text-center mb-8">
+            More Posts from {post.categories[0].name}
+          </h1>
+          <PostList
+            startLoad={reachedEnd}
+            category={post.categories[0].name}
+            limit={3}
+          />
         </>
       )}
     </>

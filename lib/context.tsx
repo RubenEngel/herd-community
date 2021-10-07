@@ -10,9 +10,9 @@ export const UserContext = createContext<{
   username: null,
 });
 
-interface ICategoryState {
+interface CategoryState {
   category: string;
   setCategory: Dispatch<SetStateAction<string>>;
 }
 
-export const ExploreContext = createContext<ICategoryState>(null);
+export const ExploreContext = createContext<CategoryState>(null);
