@@ -72,7 +72,7 @@ export default function PostPage({ post }: PostProps) {
               <div className="w-screen">
                 <motion.div
                   style={{
-                    background: "green",
+                    background: "#50C878",
                     position: "fixed",
                     left: "0px",
                     top: "68px",
@@ -89,9 +89,7 @@ export default function PostPage({ post }: PostProps) {
               <PostBody content={post.content} />
             </Container>
           </article>
-          <div
-          // className={!reachedEnd ? "mt-52" : null}
-          >
+          <div>
             <Waypoint
               onEnter={() => {
                 setReachedEnd(true);

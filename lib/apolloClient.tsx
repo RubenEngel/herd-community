@@ -12,7 +12,7 @@ function createApolloClient() {
   return new ApolloClient({
     ssrMode: typeof window === "undefined",
     link: new HttpLink({
-      uri: "http://localhost:3000/api/graphql",
+      uri: "https://herd-community.vercel.app/",
       // uri: process.env.API_URL,
       credentials: "same-origin", // Additional fetch() options like `credentials` or `headers`
     }),
