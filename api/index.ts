@@ -19,6 +19,8 @@ async function startApolloServer(typeDefs, resolvers) {
   const server = new ApolloServer({
     typeDefs,
     resolvers,
+    introspection: true,
+    plugins: [],
   });
 
   await server.start();
@@ -30,8 +32,10 @@ async function startApolloServer(typeDefs, resolvers) {
   const PORT = process.env.PORT || 4000;
   httpServer.listen({ port: PORT }, (): void => {
     if (PORT !== process.env.PORT)
-      console.log(`🚀 GraphQL-Server is running on http://localhost:${PORT}/"`);
-    else console.log(`🚀 GraphQL-Server is running`);
+      console.log(
+        `\n🚀 GraphQL-Server is running on http://localhost:${PORT}/\n`
+      );
+    else console.log(`\n🚀 GraphQL-Server is running\n`);
   });
 }
 

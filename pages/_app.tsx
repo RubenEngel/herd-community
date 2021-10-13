@@ -1,6 +1,4 @@
 import "../styles/index.css";
-import "@fortawesome/fontawesome-svg-core/styles.css"; // import Font Awesome CSS
-import { config } from "@fortawesome/fontawesome-svg-core";
 import { ApolloProvider } from "@apollo/client";
 import { useApollo } from "../lib/apolloClient";
 import { useRouter } from "next/router";
@@ -11,8 +9,6 @@ import { ExploreContext, UserContext } from "../lib/context";
 import { useUserData } from "../lib/hooks/useUserData";
 import { Toaster } from "react-hot-toast";
 import Layout from "../components/layout";
-
-config.autoAddCss = false;
 
 function MyApp({ Component, pageProps }) {
   const apolloClient = useApollo(pageProps);
