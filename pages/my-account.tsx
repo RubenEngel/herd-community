@@ -1,6 +1,7 @@
 import React from "react";
 import SignIn from "../components/sign-in";
 import SelectUsername from "../components/select-username";
+
 // import { UserContext } from '../lib/context';
 // import { FaUserCircle } from 'react-icons/fa';
 // import Button from '../components/button';
@@ -30,6 +31,7 @@ const MyAccount = () => {
     <>
       <h1>My Account Page</h1>
       {/* {loading && (
+
         <div>
           <Loading />
         </div>
@@ -43,7 +45,9 @@ const MyAccount = () => {
         <div className="flex flex-col items-center m-6 text-center">
           <div className="mb-4">
             <h1 className="text-3xl">
+            
               {userData.firstName + ' ' + userData.lastName}
+
             </h1>
             <p>@{userData.username}</p>
           </div>
@@ -55,13 +59,17 @@ const MyAccount = () => {
             )}
           </div>
           <div className="flex m-4">
-            <Button onClick={() => console.log('hello')}>Upload</Button>
+
+            <Button onClick={() => console.log("hello")}>Upload</Button>
+
             <Button>Remove</Button>
           </div>
 
           <SelectUsername />
         </div>
+        
       )} */}
+
     </>
   );
 };
