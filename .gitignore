@@ -8,6 +8,8 @@
 # testing
 /coverage
 
+/postData
+
 # next.js
 /.next/
 /out/
@@ -34,6 +36,8 @@ yarn-error.log*
 # vercel
 .vercel
 
+# firebase
 .service-account.json
 
 .archive
+
