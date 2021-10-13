@@ -5,8 +5,12 @@
 /.pnp
 .pnp.js
 
+/api/node_modules
+
 # testing
 /coverage
+
+/postData
 
 # next.js
 /.next/
@@ -34,6 +38,7 @@ yarn-error.log*
 # vercel
 .vercel
 
+# firebase
 .service-account.json
 
 .archive

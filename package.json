@@ -4,21 +4,26 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "api:start": "cd api && npm run start",
+    "db:migrate": "npx prisma db push",
+    "prisma:studio": "npx prisma studio",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@apollo/client": "^3.3.8",
-    "@fortawesome/fontawesome-svg-core": "^1.2.32",
-    "@fortawesome/free-solid-svg-icons": "^5.15.1",
-    "@fortawesome/react-fontawesome": "^0.1.14",
+    "@ckeditor/ckeditor5-build-classic": "^29.1.0",
+    "@ckeditor/ckeditor5-react": "^3.0.2",
+    "@prisma/client": "^3.0.2",
     "@types/node": "^16.4.13",
     "@types/react": "^17.0.16",
-    "apollo-server-micro": "^2.24.0",
     "autoprefixer": "^10.3.1",
     "classnames": "2.2.6",
     "date-fns": "2.14.0",
     "deepmerge": "^4.2.2",
+    "express": "^4.17.1",
     "firebase": "^8.7.1",
+    "firebase-admin": "^9.11.0",
     "framer-motion": "^3.3.0",
     "graphql": "^15.5.0",
     "graphql-request": "^3.4.0",
@@ -38,5 +43,8 @@
     "tailwindcss": "^2.2.7",
     "typescript": "^4.3.5"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "prisma": "^3.0.2"
+  }
 }

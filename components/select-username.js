@@ -1,16 +1,16 @@
-import React, { useState, useEffect, useContext, useCallback } from 'react';
-import { UserContext } from '../lib/context';
-import debounce from 'lodash.debounce';
-import { firestore } from '../lib/firebase';
+import React, { useState, useEffect, useContext, useCallback } from "react";
+import { UserContext } from "../lib/context";
+import debounce from "lodash.debounce";
+import { firestore } from "../lib/firebase";
 
 function SelectUsername() {
-  const [formValue, setFormValue] = useState('');
+  const [formValue, setFormValue] = useState("");
   const [isValid, setIsValid] = useState(false);
   const [loading, setLoading] = useState(false);
   const [tooShort, setTooShort] = useState(true);
-  const [status, setStatus] = useState('');
+  const [status, setStatus] = useState("");
 
-  const { user, username } = useContext(UserContext);
+  const { user, userName } = useContext(UserContext);
 
   const onChange = (e) => {
     // Force form value typed in form to match correct format
@@ -37,14 +37,14 @@ function SelectUsername() {
     e.preventDefault();
 
     // Create refs for both documents
-    const userDoc = firestore.collection('users').doc(user.uid);
-    const newUsernameDoc = firestore.collection('usernames').doc(formValue);
+    const userDoc = firestore.collection("users").doc(user.uid);
+    const newUsernameDoc = firestore.collection("usernames").doc(formValue);
     let oldUsernameDoc = null;
 
     const userDocData = await userDoc.get();
     if (userDocData.exists) {
       const oldUsername = userDocData.data().username;
-      oldUsernameDoc = firestore.collection('usernames').doc(oldUsername);
+      oldUsernameDoc = firestore.collection("usernames").doc(oldUsername);
     }
 
     // Commit both docs together as a batch write and delete old username.
@@ -58,9 +58,9 @@ function SelectUsername() {
     });
     await batch.commit();
 
-    setStatus('Username set successfully');
+    setStatus("Username set successfully");
     setTimeout(() => {
-      setStatus('');
+      setStatus("");
     }, 1000);
   };
 
@@ -71,7 +71,7 @@ function SelectUsername() {
       if (username.length >= 3) {
         const ref = firestore.doc(`usernames/${username}`);
         const { exists } = await ref.get();
-        console.log('Firestore read executed!');
+        console.log("Firestore read executed!");
         setIsValid(!exists);
         setLoading(false);
       }
@@ -90,7 +90,7 @@ function SelectUsername() {
         <form onSubmit={onSubmit}>
           <input
             name="username"
-            placeholder={username || 'usernames'}
+            placeholder={username || "usernames"}
             value={formValue}
             onChange={onChange}
             type="text"
