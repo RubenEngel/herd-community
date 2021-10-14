@@ -45,6 +45,9 @@ export const resolvers = {
           include: {
             categories: true,
           },
+          orderBy: {
+            createdAt: "desc",
+          },
         });
       } catch (error) {
         throw new ApolloError(error as string);
