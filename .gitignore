@@ -3,8 +3,17 @@
 # dependencies
 node_modules
 
-# post data JSON
+/.pnp
+.pnp.js
+
+.next
+
 postData
+
+# testing
+/coverage
+
+/postData
 
 # next.js
 .next
