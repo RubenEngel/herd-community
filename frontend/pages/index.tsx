@@ -11,6 +11,7 @@ import { motion } from "framer-motion";
 import { ExploreContext } from "../lib/context";
 import { Post } from "../lib/types";
 import { useRouter } from "next/router";
+import type { GetStaticProps } from "next";
 
 interface CategoryPosts {
   [categoryName: string]: Post[];
@@ -117,7 +118,7 @@ const Index = ({ categoryPosts }: IndexProps) => {
 
 export default Index;
 
-export async function getServerSideProps() {
+export const getStaticProps: GetStaticProps = async () => {
   const apolloClient = initializeApollo();
 
   const categoriesRes = await apolloClient.query({
@@ -146,5 +147,6 @@ export async function getServerSideProps() {
     props: {
       categoryPosts,
     },
+    revalidate: 60,
   });
-}
+};
