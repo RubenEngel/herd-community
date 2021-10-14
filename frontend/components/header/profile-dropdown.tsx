@@ -17,7 +17,7 @@ const transition = {
 };
 
 function ProfileDropdown({ setIsOpen, isOpen }) {
-  const { user, username } = useContext(UserContext);
+  const user = useContext(UserContext);
 
   return (
     <>

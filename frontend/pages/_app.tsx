@@ -6,7 +6,9 @@ import { useState, useEffect } from "react";
 import Loading from "../components/loading";
 import { motion } from "framer-motion";
 import { ExploreContext, UserContext } from "../lib/context";
-import { useUserData } from "../lib/hooks/useUserData";
+// import { useUserData } from "../lib/hooks/useUserData";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../lib/firebase";
 import { Toaster } from "react-hot-toast";
 import Layout from "../components/layout";
 
@@ -14,7 +16,7 @@ function MyApp({ Component, pageProps }) {
   const apolloClient = useApollo(pageProps);
   const router = useRouter();
   const [pageLoading, setPageLoading] = useState(false);
-  const userData = useUserData();
+  const [user] = useAuthState(auth);
 
   const [category, setCategory] = useState("all");
   const categoryState = { category, setCategory };
@@ -26,7 +28,7 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <ExploreContext.Provider value={categoryState}>
-      <UserContext.Provider value={userData}>
+      <UserContext.Provider value={user}>
         <ApolloProvider client={apolloClient}>
           <Layout>
             {pageLoading ? (

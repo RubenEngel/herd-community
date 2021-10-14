@@ -35,7 +35,7 @@ export default function Header() {
     }
   }, [router]);
 
-  const { user } = useContext(UserContext);
+  const user = useContext(UserContext);
   const { category } = useContext(ExploreContext);
 
   const [menuNavbarOpen, setMenuNavbarOpen] = useState(false);
