@@ -2,6 +2,7 @@
 
 # dependencies
 node_modules
+
 /.pnp
 .pnp.js
 
@@ -15,11 +16,10 @@ postData
 /postData
 
 # next.js
-/.next/
-/out/
+.next
 
 # production
-/build
+build
 
 # misc
 .DS_Store
@@ -40,7 +40,5 @@ yarn-error.log*
 # vercel
 .vercel
 
-# firebase
+# firebase env
 .service-account.json
-
-.archive
