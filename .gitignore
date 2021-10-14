@@ -1,23 +1,16 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
-/.pnp
-.pnp.js
+node_modules
 
-/api/node_modules
-
-# testing
-/coverage
-
-/postData
+# post data JSON
+postData
 
 # next.js
-/.next/
-/out/
+.next
 
 # production
-/build
+build
 
 # misc
 .DS_Store
@@ -38,7 +31,5 @@ yarn-error.log*
 # vercel
 .vercel
 
-# firebase
+# firebase env
 .service-account.json
-
-.archive

@@ -47,7 +47,7 @@ export const resolvers = {
           },
         });
       } catch (error) {
-        throw new ApolloError(error);
+        throw new ApolloError(error as string);
       }
     },
     getPost: async (_, { slug }) => {

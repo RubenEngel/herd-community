@@ -10,17 +10,12 @@ import { resolvers } from "./resolvers";
 async function startApolloServer(typeDefs, resolvers) {
   // Required logic for integrating with Express
   const app = express();
-  app.use("*", cors());
-  app.use(helmet());
-  app.use(compression());
   const httpServer = http.createServer(app);
 
   // Same ApolloServer initialization as before, plus the drain plugin.
   const server = new ApolloServer({
     typeDefs,
     resolvers,
-    introspection: true,
-    plugins: [],
   });
 
   await server.start();
@@ -30,7 +25,7 @@ async function startApolloServer(typeDefs, resolvers) {
   });
 
   const PORT = process.env.PORT || 4000;
-  httpServer.listen({ port: PORT }, (): void => {
+  httpServer.listen({ port: PORT }, () => {
     if (PORT !== process.env.PORT)
       console.log(
         `\n🚀 GraphQL-Server is running on http://localhost:${PORT}/\n`
