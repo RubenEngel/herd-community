@@ -14,7 +14,6 @@
     "@apollo/client": "^3.3.8",
     "@ckeditor/ckeditor5-build-classic": "^29.1.0",
     "@ckeditor/ckeditor5-react": "^3.0.2",
-    "@prisma/client": "^3.0.2",
     "@types/node": "^16.4.13",
     "@types/react": "^17.0.16",
     "autoprefixer": "^10.3.1",
