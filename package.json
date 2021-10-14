@@ -1,0 +1,21 @@
+{
+  "name": "herd-community",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start:api": "cd api && npm run start",
+    "start:app": "cd frontend && npm run dev",
+    "deploy:api": "git subtree push --prefix api heroku master",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RubenEngel/herd-community.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RubenEngel/herd-community/issues"
+  },
+  "homepage": "https://github.com/RubenEngel/herd-community#readme"
+}

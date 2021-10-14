@@ -1,14 +1,10 @@
 {
-  "name": "cms-wordpress",
+  "name": "herd-community-frontend",
   "version": "1.0.0",
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start",
-    "api:start": "cd api && npm run start",
-    "db:migrate": "npx prisma db push",
-    "prisma:studio": "npx prisma studio",
-    "postinstall": "prisma generate"
+    "start": "next start"
   },
   "dependencies": {
     "@apollo/client": "^3.3.8",
