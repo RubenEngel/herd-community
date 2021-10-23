@@ -3,8 +3,8 @@ import PostPreview from "./post-preview/post-preview";
 import { useLazyQuery } from "@apollo/client";
 import Loading from "./loading";
 import { Waypoint } from "react-waypoint";
-import { GET_POSTS, GET_USER } from "../lib/apolloQueries";
-import { Post } from "../lib/types";
+import { GET_POSTS } from "../lib/apolloQueries";
+// import { Post } from "../lib/types";
 
 export default function PostList({
   startLoad = true,
@@ -54,6 +54,11 @@ export default function PostList({
               // animateScale={0.8}
             />
           ))}
+        {loading && (
+          <div className="mt-20">
+            <Loading />
+          </div>
+        )}
         {data.getPosts.length && (
           <div className="mt-52">
             <Waypoint
@@ -69,12 +74,6 @@ export default function PostList({
           </div>
         )}
       </div>
-
-      {loading && (
-        <div className="mb-40">
-          <Loading />
-        </div>
-      )}
     </section>
   );
 }

@@ -21,14 +21,25 @@ body {
 
 h1 {
   font-family: "Adamina", serif;
+  font-size: 1.6rem;
+  font-weight: bold;
 }
 
 h2 {
   font-family: "Adamina", serif;
+  font-size: 1.4rem;
+  font-weight: bold;
 }
 
 h3 {
   font-family: "Adamina", serif;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+h4 {
+  font-family: "Adamina", serif;
+  font-size: 1rem;
 }
 
 .adamina {
@@ -41,6 +52,10 @@ h3 {
 
 .h-50-screen {
   height: 50vh;
+}
+
+.min-h-50-screen {
+  min-height: 50vh;
 }
 
 .nav-item {

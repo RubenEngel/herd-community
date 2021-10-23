@@ -1,4 +1,5 @@
 import "../styles/index.css";
+import "../styles/ck-editor.css";
 import { ApolloProvider } from "@apollo/client";
 import { useApollo } from "../lib/apolloClient";
 import { useRouter } from "next/router";

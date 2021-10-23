@@ -40,7 +40,7 @@ export default function SmallPostPreview({
         </div>
         <div className="col-span-3">
           {/* Title */}
-          <h3 className="text-sm mb-3 leading-snug">
+          <h3 className="text-sm mb-2 leading-snug">
             <Link as={`/posts/${slug}`} href="/posts/[slug]">
               <a
                 className="hover:underline"
@@ -49,7 +49,7 @@ export default function SmallPostPreview({
             </Link>
           </h3>
           {/* Date */}
-          <div className="text-sm">
+          <div className="text-xs">
             <Date date={createdAt}></Date>
           </div>
           {/* Author */}

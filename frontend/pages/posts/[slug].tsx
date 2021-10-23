@@ -16,10 +16,10 @@ import {
   useViewportScroll,
   useTransform,
   useSpring,
-  useElementScroll,
 } from "framer-motion";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { Waypoint } from "react-waypoint";
+import formatString from '../../lib/formatString';
 
 interface PostProps {
   post: Post;
@@ -44,7 +44,6 @@ export default function PostPage({ post }: PostProps) {
   useEffect(() => {
     pathLength.onChange((value) => {
       setPercentageComplete(value);
-      console.log(value);
     });
   }, [pathLength]);
 
@@ -97,7 +96,7 @@ export default function PostPage({ post }: PostProps) {
             ></Waypoint>
           </div>
           <h1 className="text-4xl uppercase text-center mb-8">
-            More Posts from {post.categories[0].name}
+            More Posts from {formatString(post.categories[0].name)}
           </h1>
           <PostList
             startLoad={reachedEnd}
