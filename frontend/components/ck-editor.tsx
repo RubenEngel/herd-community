@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
-// import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import CustomEditor from "../ckeditor5/build/ckeditor";
+import CustomEditor from "ckeditor5-custom-build";
 import { SubmitPostData } from "../pages/submit";
 
 const editorConfiguration = {
