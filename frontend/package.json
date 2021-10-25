@@ -1,5 +1,5 @@
 {
-  "name": "cms-wordpress",
+  "name": "herd-community-frontend",
   "version": "1.0.0",
   "scripts": {
     "dev": "next",
@@ -16,9 +16,7 @@
     "classnames": "2.2.6",
     "date-fns": "2.14.0",
     "deepmerge": "^4.2.2",
-    "express": "^4.17.1",
     "firebase": "^8.7.1",
-    "firebase-admin": "^9.11.0",
     "framer-motion": "^3.3.0",
     "graphql": "^15.5.0",
     "graphql-request": "^3.4.0",
