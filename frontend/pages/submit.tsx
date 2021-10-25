@@ -1,15 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import dynamic from "next/dynamic";
 import SubmitIntro from "../components/submit-intro";
 import { GET_CATEGORIES } from "../lib/apolloQueries";
-import { useQuery } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 import formatString from "../lib/formatString";
 import formatSlug from "../lib/formatSlug";
-import CoverImage from '../components/post-content/cover-image';
+import toast from "react-hot-toast";
+import PostBody from "../components/post-content/post-body";
+import Container from "../components/container";
+import PostHeader from "../components/post-content/post-header";
+import { ADD_POST } from "../lib/apolloQueries";
+import { UserContext } from "../lib/context";
+import Tags from "../components/post-content/tags";
 
 const Editor = dynamic(() => import("../components/ck-editor"), {
   ssr: false,
-  
 });
 
 const SubmitHeading = ({ children }) => <h2 className="mb-2">{children}</h2>;
@@ -21,15 +26,19 @@ const InputBox = (props) => (
 export interface SubmitPostData {
   title: string;
   content: string;
-  imageUrl: string;
+  featuredImage: string;
   categories: string[];
   tags: string[];
 }
 
 const Submit = () => {
+  // Context
+  const user = useContext(UserContext);
+  // State
   const [ready, setReady] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [tag, setTag] = useState<string>("");
+  const [dataComplete, setDataComplete] = useState(false);
   const [postData, setPostData] = useState<SubmitPostData>(() => {
     if (typeof window !== "undefined" && localStorage.getItem("postData")) {
       return JSON.parse(localStorage.getItem("postData"));
@@ -37,27 +46,63 @@ const Submit = () => {
       return {
         title: "",
         content: "",
-        imageUrl: "",
+        featuredImage: "",
         categories: [],
         tags: [],
       };
     }
   });
 
-  
-
-  useEffect(() => {
-    localStorage.setItem("postData", JSON.stringify(postData));
-    console.log(formatSlug(postData.title))
-  }, [postData]);
-
-  const { data } = useQuery(GET_CATEGORIES);
+  // GraphQL
+  const { data: categoryData } = useQuery(GET_CATEGORIES);
 
   let allCategories: string[];
 
-  if (data)
-    allCategories = data.getCategories.map((cat) => formatString(cat.name, "_"));
+  const [
+    submitPost,
+    { data: mutationData, error: mutationError, loading: mutationLoading },
+  ] = useMutation(ADD_POST);
 
+  const handleSubmit = () => {
+    console.log(postData);
+    submitPost({
+      variables: {
+        ...postData,
+        slug: formatSlug(postData.title),
+        authorEmail: user.email,
+      },
+    });
+  };
+
+  useEffect(() => {
+    if (mutationError) {
+      toast.error("Error sending post", { position: "bottom-right" });
+    }
+    if (mutationData)
+      toast.success("Post sent succesfully", { position: "bottom-right" });
+  }, [mutationLoading]);
+
+  useEffect(() => {
+    localStorage.setItem("postData", JSON.stringify(postData));
+    if (
+      postData.title &&
+      postData.featuredImage &&
+      postData.content &&
+      postData.categories.length > 0
+    ) {
+      setDataComplete(true);
+    } else {
+      setDataComplete(false);
+    }
+  }, [postData]);
+
+  if (categoryData) {
+    allCategories = categoryData.getCategories.map((category) =>
+      formatString(category.name, "_")
+    );
+  }
+
+  // Add /remove categories
   const CategorySelect = ({ categoryName }: { categoryName: string }) => {
     const handleChange = () => {
       if (postData.categories.includes(categoryName)) {
@@ -88,6 +133,7 @@ const Submit = () => {
     );
   };
 
+  // Main component
   return (
     <div className="max-w-screen-sm mx-auto">
       <h1 className="text-3xl text-center text-bold">Submit an Article</h1>
@@ -116,53 +162,56 @@ const Submit = () => {
           {/*  Current Tags */}
           <div className="flex flex-row flex-wrap">
             {postData.tags?.map((tagName) => (
-            <button
-              id={tagName}
-              onClick={(e) =>
-                setPostData({
-                  ...postData,
-                  tags: postData.tags.filter((tag) => tag !== tagName),
-                })
-              }
-              className="cursor-pointer px-2 mr-2 mb-3 text-md rounded-full  text-white bg-green-400 hover:bg-red-500 hover:text-gray-100"
-            >
-              {tagName}
-            </button>
-          ))}
+              <button
+                id={tagName}
+                onClick={(e) =>
+                  setPostData({
+                    ...postData,
+                    tags: postData.tags.filter((tag) => tag !== tagName),
+                  })
+                }
+                className="cursor-pointer px-2 mr-2 mb-3 text-md rounded-full  text-white bg-green-400 hover:bg-red-500 hover:text-gray-100"
+              >
+                {tagName}
+              </button>
+            ))}
           </div>
           {/* Add Tags */}
           <div className="flex flex-row items-center mb-8 mt-3">
             <input
-            type="string"
-            className="border-2 border-gray-300"
-            value={tag}
-            onChange={(e) => setTag(e.target.value)}
-          />
-          <button
-            className="ml-2 px-2 text-gray-100 bg-gray-400 rounded-lg"
-            onClick={() => {
-              setPostData({ ...postData, tags: [...postData.tags, formatString(tag, " ")] });
-              setTag("");
-            }}
-          >
-            Add tag
-          </button>
+              type="string"
+              className="border-2 border-gray-300"
+              value={tag}
+              onChange={(e) => setTag(e.target.value)}
+            />
+            <button
+              className="ml-2 px-2 text-gray-100 bg-gray-400 rounded-lg"
+              onClick={() => {
+                setPostData({
+                  ...postData,
+                  tags: [...postData.tags, formatString(tag, " ")],
+                });
+                setTag("");
+              }}
+            >
+              Add tag
+            </button>
           </div>
           {/* Image */}
           <SubmitHeading>Featured Image URL</SubmitHeading>
           <InputBox
-            value={postData.imageUrl}
+            value={postData.featuredImage}
             onChange={(e) =>
-              setPostData({ ...postData, imageUrl: e.target.value })
+              setPostData({ ...postData, featuredImage: e.target.value })
             }
             type="url"
           />
-          {postData.imageUrl && (
+          {postData.featuredImage && (
             <img
               className="mb-10 mx-auto"
               height={300}
               width={300}
-              src={postData.imageUrl}
+              src={postData.featuredImage}
               onError={(e) => {
                 e.target.src =
                   "https://socialistmodernism.com/wp-content/uploads/2017/07/placeholder-image.png?w=640";
@@ -170,28 +219,45 @@ const Submit = () => {
             />
           )}
           <SubmitHeading>Main Content</SubmitHeading>
-          <div className="mb-10">
+          <div className="mb-6">
             <Editor postData={postData} setPostData={setPostData} />
           </div>
-          <button onClick={() => console.log(postData)} className="bg-green-400 text-xl mx-auto text-white py-3 px-8 rounded-xl">Submit Article</button>
+
+          <div className="flex flex-row mb-6 mx-auto">
             {/* Preview */}
-            <h3
-              className="hover:text-green-400 cursor-pointer"
+            <button
+              className="bg-blue-400 hover:bg-blue-600 text-xl mx-2 text-white py-3 px-8 rounded-xl"
               onClick={() => setShowPreview(!showPreview)}
             >
-              Click to show preview
-            </h3>
-            {showPreview && (
-              <>
-                <h1>{postData.title}</h1>
-                <CoverImage title={postData.title} coverImage={postData.imageUrl}/>
-                <div
-                  className={"ck-content"}
-                  dangerouslySetInnerHTML={{ __html: postData.content }}
-                ></div>
-              </>
-            )}
-          
+              {showPreview ? "Hide preview" : "Show preview"}
+            </button>
+            <button
+              onClick={() => {
+                handleSubmit();
+                // notify("Post submitted", "📬 ")
+                // console.log(user.email)
+              }}
+              disabled={!dataComplete}
+              className={`disabled:bg-gray-400 disabled:opacity-50  bg-green-400 ${dataComplete && 'hover:bg-green-600'} text-xl mx-2 text-white py-2 px-6 rounded-xl`}
+            >
+              Submit Article 
+              <p className="text-xs">{!dataComplete && '(Incomplete fields)'}</p>
+            </button>
+          </div>
+
+          {showPreview && (
+            <>
+              {/* -------- Preview --------- */}
+              <PostHeader
+                title={postData.title}
+                coverImage={postData.featuredImage}
+              />
+              {postData.tags.length > 0 && <Tags tags={postData.tags} />}
+              <Container>
+                <PostBody content={postData.content} />
+              </Container>
+            </>
+          )}
         </div>
       )}
     </div>

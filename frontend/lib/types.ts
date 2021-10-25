@@ -11,7 +11,8 @@ export interface User {
   id: string;
   email: string;
   role: Role;
-  name: string;
+  firstName: string;
+  lastName: string;
   posts: Post[];
   likedPosts: Post[];
   comments: Comment[];

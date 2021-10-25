@@ -33,6 +33,9 @@ export const resolvers = {
         return prisma.post.findMany({
           ...cursorParams,
           take: limit,
+          orderBy: {
+            createdAt: "desc",
+          },
           where: {
             categories: {
               some: {
@@ -96,27 +99,31 @@ export const resolvers = {
         categories,
         tags,
         authorEmail,
-        createdAt,
+        // createdAt,
       }
     ) => {
-      return await prisma.post.create({
-        data: {
-          slug: slug,
-          title: title,
-          featuredImage: featuredImage,
-          content: content,
-          categories: {
-            connect: categories?.map((categoryName) => ({
-              name: categoryName.toLowerCase().split(" ").join("_"),
-            })),
+      try {
+        return await prisma.post.create({
+          data: {
+            slug: slug,
+            title: title,
+            featuredImage: featuredImage,
+            content: content,
+            categories: {
+              connect: categories?.map((categoryName) => ({
+                name: categoryName.toLowerCase().split(" ").join("_"),
+              })),
+            },
+            tags: tags,
+            // author: { connect: { email: authorEmail } },
+            authorEmail: authorEmail,
+            published: true,
+            // createdAt: createdAt,
           },
-          tags: tags,
-          // author: { connect: { email: authorEmail } },
-          authorEmail: authorEmail,
-          published: true,
-          createdAt: createdAt,
-        },
-      });
+        });
+      } catch (error) {
+        throw new ApolloError(error as string);
+      }
     },
     updatePost: async (
       _,

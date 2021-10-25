@@ -5,6 +5,11 @@ module.exports = {
     "./pages/**/*.js",
     "./pages/**/*.tsx",
   ],
+  variants: {
+    extend: {
+      opacity: ['disabled'],
+    }
+  },
   theme: {
     extend: {
       colors: {

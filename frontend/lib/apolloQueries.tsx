@@ -78,7 +78,7 @@ export const ADD_POST = gql`
     $content: String
     $tags: [String]
     $categories: [String]
-    $createdAt: DateTime
+    # $createdAt: DateTime
     $featuredImage: String
   ) {
     createDraft(
@@ -88,7 +88,7 @@ export const ADD_POST = gql`
       tags: $tags
       authorEmail: $authorEmail
       categories: $categories
-      createdAt: $createdAt
+      # createdAt: $createdAt
       featuredImage: $featuredImage
     ) {
       id

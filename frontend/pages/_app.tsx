@@ -7,7 +7,6 @@ import { useState, useEffect } from "react";
 import Loading from "../components/loading";
 import { motion } from "framer-motion";
 import { ExploreContext, UserContext } from "../lib/context";
-// import { useUserData } from "../lib/hooks/useUserData";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../lib/firebase";
 import { Toaster } from "react-hot-toast";

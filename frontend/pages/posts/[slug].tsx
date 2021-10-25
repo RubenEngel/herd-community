@@ -1,3 +1,4 @@
+import { useEffect, useState, useContext } from "react";
 import { GetStaticProps, GetStaticPaths } from "next";
 import { useRouter } from "next/router";
 import ErrorPage from "next/error";
@@ -17,9 +18,9 @@ import {
   useTransform,
   useSpring,
 } from "framer-motion";
-import { useEffect, useState } from "react";
 import { Waypoint } from "react-waypoint";
 import formatString from '../../lib/formatString';
+import { ExploreContext } from "../../lib/context"
 
 interface PostProps {
   post: Post;
@@ -32,6 +33,9 @@ export default function PostPage({ post }: PostProps) {
     return <ErrorPage statusCode={404} />;
   }
 
+  const {category} = useContext(ExploreContext)
+
+  // Scroll progress bar
   const [percentageComplete, setPercentageComplete] = useState(0);
   const [reachedEnd, setReachedEnd] = useState<boolean>(false);
   const { scrollYProgress } = useViewportScroll();
@@ -96,11 +100,11 @@ export default function PostPage({ post }: PostProps) {
             ></Waypoint>
           </div>
           <h1 className="text-4xl uppercase text-center mb-8">
-            More Posts from {formatString(post.categories[0].name)}
+            More Posts from {formatString(category, "_")}
           </h1>
           <PostList
             startLoad={reachedEnd}
-            category={post.categories[0].name}
+            category={category}
             limit={3}
           />
         </>

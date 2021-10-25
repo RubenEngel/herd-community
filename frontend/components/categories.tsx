@@ -10,11 +10,11 @@ export default function Categories({ categories }) {
   const { setCategory } = useContext(ExploreContext);
 
   return (
-    <div className="mb-2">
+    <div className="flex flex-row flex-wrap no-wrap">
       {categories.map((category, index) => (
-        <Link key={index} href={"/explore"}>
+        <div key={index} className="text-md border mr-2 mb-2 bg-primary px-3 rounded-xl text-secondary">
+        <Link href={"/explore"}>
           <a
-            className="text-md border mr-1 bg-primary px-3 rounded-xl text-secondary"
             onClick={() => setCategory(category.name)}
           >
             {category.name
@@ -23,6 +23,7 @@ export default function Categories({ categories }) {
               .join(" ")}
           </a>
         </Link>
+        </div>
       ))}
     </div>
   );
