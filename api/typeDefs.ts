@@ -28,7 +28,8 @@ export const typeDefs = gql`
     title: String
     featuredImage: String
     content: String
-    author: User
+    # author: User
+    authorEmail: String
     comments: [Comment]
     likedBy: [User]
     categories: [Category]
@@ -69,14 +70,14 @@ export const typeDefs = gql`
   type Mutation {
     createUser(email: String, firstName: String, lastName: String): User
     createDraft(
-      slug: String
-      title: String
-      featuredImage: String
-      content: String
-      categories: [String]
-      tags: [String]
+      slug: String!
+      title: String!
+      content: String!
+      categories: [String]!
       authorEmail: String
-      createdAt: DateTime
+      featuredImage: String
+      tags: [String]
+      # createdAt: DateTime
     ): Post
     updatePost(
       slug: String!
