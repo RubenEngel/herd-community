@@ -33,9 +33,6 @@ export const resolvers = {
         return prisma.post.findMany({
           ...cursorParams,
           take: limit,
-          orderBy: {
-            createdAt: "desc",
-          },
           where: {
             categories: {
               some: {

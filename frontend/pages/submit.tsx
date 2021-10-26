@@ -212,10 +212,10 @@ const Submit = () => {
               height={300}
               width={300}
               src={postData.featuredImage}
-              onError={(e) => {
-                e.target.src =
-                  "https://socialistmodernism.com/wp-content/uploads/2017/07/placeholder-image.png?w=640";
-              }}
+              // onError={(e) => {
+              //   e.target.src =
+              //     "https://socialistmodernism.com/wp-content/uploads/2017/07/placeholder-image.png?w=640";
+              // }}
             />
           )}
           <SubmitHeading>Main Content</SubmitHeading>
