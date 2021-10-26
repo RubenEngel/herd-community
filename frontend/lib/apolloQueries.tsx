@@ -1,15 +1,17 @@
 import { gql } from "@apollo/client";
 
-export const GET_USER = gql`
-  query GetUser($email: String!) {
-    getUser(email: $email) {
-      firstName
-      lastName
-      # username
-      # imageUrl
-    }
-  }
-`;
+// --------------- Queries
+
+// export const GET_USER = gql`
+//   query GetUser($email: String!) {
+//     getUser(email: $email) {
+//       firstName
+//       lastName
+//       username
+//       imageUrl
+//     }
+//   }
+// `;
 
 export const GET_ALL_POST_SLUGS = gql`
   query GetAllPostSlugs {
@@ -26,12 +28,13 @@ export const GET_POST = gql`
       title
       createdAt
       featuredImage
-      author {
-        firstName
-        lastName
+      # author {
+        # firstName
+        # lastName
         # username
         # imageUrl
-      }
+      # }
+      authorEmail
       categories {
         name
       }
@@ -53,12 +56,13 @@ export const GET_POSTS = gql`
       title
       createdAt
       featuredImage
-      author {
-        firstName
-        lastName
+      authorEmail
+      # author {
+        # firstName
+        # lastName
         # imageUrl
         # username
-      }
+      # }
       categories {
         name
       }
@@ -70,14 +74,25 @@ export const GET_POSTS = gql`
   }
 `;
 
+export const GET_CATEGORIES = gql`
+  query GetCategories {
+    getCategories {
+      name
+    }
+  }
+`;
+
+
+// --------------- Mutations
+
 export const ADD_POST = gql`
   mutation CreateDraft(
     $authorEmail: String
-    $slug: String
-    $title: String
-    $content: String
+    $slug: String!
+    $title: String!
+    $content: String!
     $tags: [String]
-    $categories: [String]
+    $categories: [String]!
     # $createdAt: DateTime
     $featuredImage: String
   ) {
@@ -118,6 +133,9 @@ export const UPDATE_POST = gql`
     ) {
       id
       slug
+      title
+      featuredImage
+      content
     }
   }
 `;
@@ -127,14 +145,6 @@ export const ADD_USER = gql`
     createUser(email: $email, firstName: $firstName, lastName: $lastName) {
       id
       email
-    }
-  }
-`;
-
-export const GET_CATEGORIES = gql`
-  query GetCategories {
-    getCategories {
-      name
     }
   }
 `;

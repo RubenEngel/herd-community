@@ -58,6 +58,7 @@ export const typeDefs = gql`
   enum Role {
     USER
     ADMIN
+    EDITOR
   }
 
   type Query {

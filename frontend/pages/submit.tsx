@@ -12,6 +12,7 @@ import PostHeader from "../components/post-content/post-header";
 import { ADD_POST } from "../lib/apolloQueries";
 import { UserContext } from "../lib/context";
 import Tags from "../components/post-content/tags";
+import {useRouter} from "next/router";
 
 const Editor = dynamic(() => import("../components/ck-editor"), {
   ssr: false,
@@ -31,6 +32,14 @@ export interface SubmitPostData {
   tags: string[];
 }
 
+const emptyPostData = {
+  title: "",
+  content: "",
+  featuredImage: "",
+  categories: [],
+  tags: [],
+};
+
 const Submit = () => {
   // Context
   const user = useContext(UserContext);
@@ -43,13 +52,7 @@ const Submit = () => {
     if (typeof window !== "undefined" && localStorage.getItem("postData")) {
       return JSON.parse(localStorage.getItem("postData"));
     } else {
-      return {
-        title: "",
-        content: "",
-        featuredImage: "",
-        categories: [],
-        tags: [],
-      };
+      return emptyPostData;
     }
   });
 
@@ -74,12 +77,17 @@ const Submit = () => {
     });
   };
 
+  const router = useRouter()
+
   useEffect(() => {
     if (mutationError) {
       toast.error("Error sending post", { position: "bottom-right" });
     }
-    if (mutationData)
-      toast.success("Post sent succesfully", { position: "bottom-right" });
+    if (mutationData){
+      toast.success("Post sent succesfully", { position: "bottom-right" })
+      localStorage.setItem("postData", JSON.stringify(emptyPostData))
+      router.push("/")
+    };
   }, [mutationLoading]);
 
   useEffect(() => {
@@ -102,7 +110,7 @@ const Submit = () => {
     );
   }
 
-  // Add /remove categories
+  // Add / remove categories
   const CategorySelect = ({ categoryName }: { categoryName: string }) => {
     const handleChange = () => {
       if (postData.categories.includes(categoryName)) {
