@@ -16,11 +16,18 @@ import MenuDropdown from "./menu-dropdown";
 import ProfileDropdown from "./profile-dropdown";
 import CategoryDropdown from "./category-dropdown";
 import { ExploreContext, UserContext } from "../../lib/context";
+import formatString from "../../lib/formatString";
+
 
 export default function Header() {
-  const today = new Date();
 
   const router = useRouter();
+
+  const [pageLoading, setPageLoading] = useState(false);
+  useEffect(() => {
+    router.events.on("routeChangeStart", () => setPageLoading(true));
+    router.events.on("routeChangeComplete", () => setPageLoading(false));
+  }, [router]);
 
   const [showCategory, setShowCategory] = useState(false);
 
@@ -129,8 +136,8 @@ export default function Header() {
             </button>
           </motion.div>
         </div>
-
-        {showCategory && (
+        {/* Category indicator */}
+        {showCategory && !pageLoading && (
           <>
             <motion.div
               initial={{ y: -40 }}
@@ -147,7 +154,7 @@ export default function Header() {
                 className="flex flex-row items-center mx-auto focus:outline-none"
               >
                 <p className="uppercase nav-item">
-                  Browsing {category.split("_").join(" ")}
+                  Browsing {formatString(category, "_")}
                 </p>
                 <RiArrowDropDownFill className="text-3xl" />
               </button>

@@ -15,12 +15,13 @@ import PostList from "../../components/post-list";
 import {
   motion,
   useViewportScroll,
-  useTransform,
+  AnimatePresence,
   useSpring,
 } from "framer-motion";
 import { Waypoint } from "react-waypoint";
 import formatString from '../../lib/formatString';
 import { ExploreContext } from "../../lib/context"
+import PostInteractions from '../../components/header/post-interactions';
 
 interface PostProps {
   post: Post;
@@ -36,20 +37,29 @@ export default function PostPage({ post }: PostProps) {
   const {category} = useContext(ExploreContext)
 
   // Scroll progress bar
+  const [startedReading, setStartedReading] = useState(false)
   const [percentageComplete, setPercentageComplete] = useState(0);
   const [reachedEnd, setReachedEnd] = useState<boolean>(false);
-  const { scrollYProgress } = useViewportScroll();
-  const yRange = useTransform(scrollYProgress, [0, 1], [0, 100]);
-  const pathLength = useSpring(yRange, {
+  const { scrollY, scrollYProgress } = useViewportScroll();;
+  const scrollYSpring = useSpring(scrollYProgress, {
     stiffness: 400,
     damping: 90,
   });
 
+  useEffect(() => (
+    scrollY.onChange(value => {
+      if (value > 60) {
+        setStartedReading(true)
+      } else {
+        setStartedReading(false)
+      }
+    })
+    
+  ))
+
   useEffect(() => {
-    pathLength.onChange((value) => {
-      setPercentageComplete(value);
-    });
-  }, [pathLength]);
+    scrollYSpring.onChange((value) => setPercentageComplete(value * 100));
+  }, [scrollYSpring]);
 
   return (
     <>
@@ -64,6 +74,10 @@ export default function PostPage({ post }: PostProps) {
               <title>{post.title || "HERD Post"}</title>
               <meta property="og:image" content={post.featuredImage} />
             </Head>
+            <AnimatePresence>
+              {startedReading && <PostInteractions/>}
+            </AnimatePresence>
+            
             <PostHeader
               title={post.title}
               coverImage={post.featuredImage}
@@ -79,9 +93,8 @@ export default function PostPage({ post }: PostProps) {
                     position: "fixed",
                     left: "0px",
                     top: "68px",
-                    height: "5px",
-                    opacity: 0.5 + percentageComplete / 85,
-                    width: (percentageComplete / 85) * 100 + "%",
+                    height: "9px",
+                    width: (percentageComplete / 90) * 100 + "%",
                   }}
                 />
               </div>
