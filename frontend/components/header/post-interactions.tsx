@@ -1,12 +1,18 @@
 import React from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { BiUpvote } from "react-icons/bi";
-import { FiShare } from "react-icons/fi";
+import { FiShare, FiEdit3 } from "react-icons/fi";
 import { BiCommentDetail } from "react-icons/bi";
+import { UserContext } from '../../lib/context';
 
 const InteractionButton = ({ children }) => {
   return (
-    <motion.button className="text-3xl p-4 flex items-center ">
+    <motion.button
+    whileHover={{
+      scale: 1.2,
+      transition: { duration: 0.2 },
+    }}
+    className="text-3xl p-4 flex items-center ">
       {children}
     </motion.button>
   );
@@ -25,6 +31,9 @@ const showing = {
 };
 
 const PostInteractions = () => {
+
+  const {userData} = React.useContext(UserContext)
+
   return (
     <motion.div
       initial={hidden}
@@ -33,10 +42,13 @@ const PostInteractions = () => {
       transition={{
         duration: 0.4
       }}
-      className="text-primary fixed bottom-0 right-0 w-20 -mr-5 z-10"
+      className="text-primary fixed bottom-0 right-0 w-20 -mr-6 z-10"
     >
+      {userData?.role.toString() === "ADMIN" && (
+      <InteractionButton><FiEdit3 /></InteractionButton>
+  )}
       <InteractionButton>
-        <BiUpvote floodColor={"black"} />
+        <BiUpvote/>
       </InteractionButton>
       <InteractionButton>
         <FiShare />

@@ -14,6 +14,7 @@ export interface User {
   firstName: string;
   lastName: string;
   posts: Post[];
+  imageUrl: string
   likedPosts: Post[];
   comments: Comment[];
   likedComments: Comment[];

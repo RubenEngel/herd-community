@@ -4,7 +4,7 @@ import Link from "next/link";
 import Categories from "../categories";
 import { motion } from "framer-motion";
 import PreviewImage from "./preview-image";
-import { User, Post } from "../../lib/types";
+import { Post } from "../../lib/types";
 
 interface PostPreviewProps extends Partial<Post> {
   animateY?: number | string;
@@ -32,6 +32,15 @@ export default function PostPreview({
           type: "spring",
           damping: 13,
           duration: 0.5,
+        }}
+        whileHover={{
+          scale: 1.03,
+          transition: {
+            duration: 0.2
+          }
+        }}
+        whileTap={{
+          scale: 0.9
         }}
         className="flex mx-auto my-2 flex-col justify-center rounded-lg "
       >

@@ -28,7 +28,7 @@ const Index = ({ categoryPosts }: IndexProps) => {
 
   const { setCategory } = useContext(ExploreContext);
 
-  const router = useRouter();
+  // const router = useRouter();
 
   return (
     <>

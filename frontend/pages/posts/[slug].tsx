@@ -1,12 +1,10 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useCallback, useState, useContext } from "react";
 import { GetStaticProps, GetStaticPaths } from "next";
 import { useRouter } from "next/router";
 import ErrorPage from "next/error";
-import Container from "../../components/container";
 import PostBody from "../../components/post-content/post-body";
 import PostHeader from "../../components/post-content/post-header";
 import Head from "next/head";
-import Tags from "../../components/post-content/tags";
 import Loading from "../../components/loading";
 import { GET_POST, GET_ALL_POST_SLUGS } from "../../lib/apolloQueries";
 import { addApolloState, initializeApollo } from "../../lib/apolloClient";
@@ -19,9 +17,9 @@ import {
   useSpring,
 } from "framer-motion";
 import { Waypoint } from "react-waypoint";
-import formatString from '../../lib/formatString';
-import { ExploreContext } from "../../lib/context"
-import PostInteractions from '../../components/header/post-interactions';
+import formatString from "../../lib/formatString";
+import { ExploreContext } from "../../lib/context";
+import PostInteractions from "../../components/header/post-interactions";
 
 interface PostProps {
   post: Post;
@@ -34,28 +32,27 @@ export default function PostPage({ post }: PostProps) {
     return <ErrorPage statusCode={404} />;
   }
 
-  const {category} = useContext(ExploreContext)
+  const { category } = useContext(ExploreContext);
 
-  // Scroll progress bar
-  const [startedReading, setStartedReading] = useState(false)
+  // ---> Scroll progress bar
+  const [startedReading, setStartedReading] = useState(false);
   const [percentageComplete, setPercentageComplete] = useState(0);
   const [reachedEnd, setReachedEnd] = useState<boolean>(false);
-  const { scrollY, scrollYProgress } = useViewportScroll();;
+  const { scrollY, scrollYProgress } = useViewportScroll();
   const scrollYSpring = useSpring(scrollYProgress, {
     stiffness: 400,
     damping: 90,
   });
-
-  useEffect(() => (
-    scrollY.onChange(value => {
+  useEffect(() =>
+    scrollY.onChange((value) => {
       if (value > 60) {
-        setStartedReading(true)
+        setStartedReading(true);
       } else {
-        setStartedReading(false)
+        setStartedReading(false);
       }
     })
-    
-  ))
+  );
+  // <---
 
   useEffect(() => {
     scrollYSpring.onChange((value) => setPercentageComplete(value * 100));
@@ -75,17 +72,17 @@ export default function PostPage({ post }: PostProps) {
               <meta property="og:image" content={post.featuredImage} />
             </Head>
             <AnimatePresence>
-              {startedReading && <PostInteractions/>}
+              {startedReading && <PostInteractions />}
             </AnimatePresence>
-            
             <PostHeader
               title={post.title}
               coverImage={post.featuredImage}
               date={post.createdAt}
               author={post.author}
               categories={post.categories}
+              tags={post.tags}
             />
-            {!reachedEnd && (
+            {!reachedEnd && startedReading && (
               <div className="w-screen">
                 <motion.div
                   style={{
@@ -93,33 +90,27 @@ export default function PostPage({ post }: PostProps) {
                     position: "fixed",
                     left: "0px",
                     top: "68px",
-                    height: "9px",
-                    width: (percentageComplete / 90) * 100 + "%",
+                    height: "8px",
+                    width: ((percentageComplete - 3) / 80) * 100 + "%",
                   }}
                 />
               </div>
             )}
-
-            {post.tags.length > 0 && <Tags tags={post.tags} />}
-            <Container>
-              <PostBody content={post.content} />
-            </Container>
+            <PostBody content={post.content} />
           </article>
           <div>
             <Waypoint
+              bottomOffset={"25%"}
               onEnter={() => {
                 setReachedEnd(true);
               }}
-            ></Waypoint>
+            >
+              <h1 className="text-4xl uppercase text-center mb-8">
+                More Posts from {formatString(category, "_")}
+              </h1>
+            </Waypoint>
           </div>
-          <h1 className="text-4xl uppercase text-center mb-8">
-            More Posts from {formatString(category, "_")}
-          </h1>
-          <PostList
-            startLoad={reachedEnd}
-            category={category}
-            limit={3}
-          />
+          <PostList startLoad={reachedEnd} category={category} limit={3} />
         </>
       )}
     </>

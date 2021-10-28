@@ -19,8 +19,10 @@ function createApolloClient() {
           fields: {
             getPosts: {
               keyArgs: ["category"],
-              merge(existing = [], incoming) {
-                return [...existing, ...incoming];
+              merge(existing: {__ref: string}[] = [], incoming: {__ref: string}[]) {
+                const existingRefs: string[] = existing.map((postRef) => postRef.__ref)
+                const newPosts: {__ref: string}[] = incoming.filter((postRef) => !existingRefs.includes(postRef.__ref))
+                return [...existing, ...newPosts];
               },
             },
           },

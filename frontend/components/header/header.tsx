@@ -18,7 +18,6 @@ import CategoryDropdown from "./category-dropdown";
 import { ExploreContext, UserContext } from "../../lib/context";
 import formatString from "../../lib/formatString";
 
-
 export default function Header() {
 
   const router = useRouter();
@@ -42,7 +41,7 @@ export default function Header() {
     }
   }, [router]);
 
-  const user = useContext(UserContext);
+  const {userData} = useContext(UserContext);
   const { category } = useContext(ExploreContext);
 
   const [menuNavbarOpen, setMenuNavbarOpen] = useState(false);
@@ -72,7 +71,7 @@ export default function Header() {
           </div>
           {/* Date and Time */}
           <div>
-            <h3 className="text-md relative">
+            <h3 className="text-md xs:text-md relative">
               <time className="block md:hidden">
                 {format(new Date(), "LLLL	d, yyyy")}
               </time>
@@ -122,12 +121,12 @@ export default function Header() {
               }}
               className="flex flex-row items-center focus:outline-none"
             >
-              {user ? (
+              {userData?.imageUrl ? (
                 <img
                   width="30px"
                   height="30px"
                   className="rounded-full"
-                  src={user.photoURL}
+                  src={userData.imageUrl}
                 />
               ) : (
                 <FaUserCircle className="text-3xl " />

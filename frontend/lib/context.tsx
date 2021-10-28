@@ -1,8 +1,10 @@
 import firebase from "./firebase";
 import { createContext } from "react";
 import { Dispatch, SetStateAction } from "react";
+import { User } from "./types";
 
-export const UserContext = createContext<firebase.User>(null);
+export const UserContext =
+  createContext<{ userAuth: firebase.User; userData: User }>(null);
 
 interface CategoryState {
   category: string;

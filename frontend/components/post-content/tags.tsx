@@ -1,10 +1,10 @@
 export default function Tags({ tags }) {
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className="text-center">
       <p className="mt-8 text-sm font-bold">
         Tagged:
         {tags.map((tag, index) => (
-          <span key={index} className="ml-4 font-normal">
+          <span key={index} className="ml-2">
             {tag}
           </span>
         ))}

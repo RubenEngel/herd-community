@@ -10,34 +10,26 @@ import { FaUserCircle } from "react-icons/fa";
 // import Loading from '../components/loading';
 
 const MyAccount = () => {
-  const user = React.useContext(UserContext);
-
-  React.useEffect(() => {
-    console.log(user);
-  }, [user]);
+  const {userAuth, userData} = React.useContext(UserContext);
 
   return (
     <>
-      <h1 className="text-center text-2xl">My Account</h1>
-      {!user && (
-        <div className="flex items-center h-50-screen">
-          <SignIn />
-        </div>
-      )}
-      {user && (
+      {userAuth ? (
+        <>
+        <h1 className="text-center text-2xl">My Account</h1>
         <div className="flex flex-col items-center m-6 text-center">
           {/* Profile Picture */}
           <div>
-            {user.photoURL ? (
-              <img className="rounded-full" src={user.photoURL} />
+            {userData?.imageUrl ? (
+              <img className="rounded-full" src={userAuth.photoURL} />
             ) : (
               <FaUserCircle className="text-9xl " />
             )}
           </div>
           {/* User details */}
           <div className="mb-4 mt-7">
-            <p className="text-xl">{user.email}</p>
-            <p>{user.displayName}</p>
+            <p className="text-xl">{userAuth.email}</p>
+            <p>{`${userData?.firstName + (userData?.lastName ? userData.lastName : "")}`}</p>
           </div>
           {/* <div className="flex m-4">
             <Button onClick={() => console.log("hello")}>Upload</Button>
@@ -47,7 +39,10 @@ const MyAccount = () => {
 
           <SelectUsername /> */}
         </div>
-      )}
+        </>
+      ) :
+      <p>Sign in</p>
+      }
     </>
   );
 };

@@ -7,7 +7,6 @@ import formatString from "../lib/formatString";
 import formatSlug from "../lib/formatSlug";
 import toast from "react-hot-toast";
 import PostBody from "../components/post-content/post-body";
-import Container from "../components/container";
 import PostHeader from "../components/post-content/post-header";
 import { ADD_POST } from "../lib/apolloQueries";
 import { UserContext } from "../lib/context";
@@ -42,7 +41,7 @@ const emptyPostData = {
 
 const Submit = () => {
   // Context
-  const user = useContext(UserContext);
+  const {userAuth} = useContext(UserContext);
   // State
   const [ready, setReady] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
@@ -72,7 +71,7 @@ const Submit = () => {
       variables: {
         ...postData,
         slug: formatSlug(postData.title),
-        authorEmail: user.email,
+        authorEmail: userAuth.email,
       },
     });
   };
@@ -261,9 +260,7 @@ const Submit = () => {
                 coverImage={postData.featuredImage}
               />
               {postData.tags.length > 0 && <Tags tags={postData.tags} />}
-              <Container>
                 <PostBody content={postData.content} />
-              </Container>
             </>
           )}
         </div>

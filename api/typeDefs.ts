@@ -7,7 +7,7 @@ export const typeDefs = gql`
     id: Int
     email: String
     # username: String
-    # imageUrl: String
+    imageUrl: String
     role: Role
     firstName: String
     lastName: String

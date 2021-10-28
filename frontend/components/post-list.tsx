@@ -36,8 +36,8 @@ export default function PostList({
       <Loading />
     </div>
   ) : (
-    <section className="overflow-hidden mx-auto">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-32">
+    // <section className="mx-auto">
+      <div className="px-3 md:px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-32">
         {error && <h1 className="text-4xl text-center">An Error Occurred</h1>}
 
         {startLoad &&
@@ -60,7 +60,7 @@ export default function PostList({
           </div>
         )}
         {data.getPosts.length && (
-          <div className="mt-52">
+          <div>
             <Waypoint
               onEnter={() => {
                 const endCursor = data.getPosts[data.getPosts.length - 1].id;
@@ -74,6 +74,6 @@ export default function PostList({
           </div>
         )}
       </div>
-    </section>
+    // </section>
   );
 }
