@@ -16,11 +16,17 @@ import MenuDropdown from "./menu-dropdown";
 import ProfileDropdown from "./profile-dropdown";
 import CategoryDropdown from "./category-dropdown";
 import { ExploreContext, UserContext } from "../../lib/context";
+import formatString from "../../lib/formatString";
 
 export default function Header() {
-  const today = new Date();
 
   const router = useRouter();
+
+  const [pageLoading, setPageLoading] = useState(false);
+  useEffect(() => {
+    router.events.on("routeChangeStart", () => setPageLoading(true));
+    router.events.on("routeChangeComplete", () => setPageLoading(false));
+  }, [router]);
 
   const [showCategory, setShowCategory] = useState(false);
 
@@ -35,7 +41,7 @@ export default function Header() {
     }
   }, [router]);
 
-  const user = useContext(UserContext);
+  const {userData} = useContext(UserContext);
   const { category } = useContext(ExploreContext);
 
   const [menuNavbarOpen, setMenuNavbarOpen] = useState(false);
@@ -65,7 +71,7 @@ export default function Header() {
           </div>
           {/* Date and Time */}
           <div>
-            <h3 className="text-md relative">
+            <h3 className="text-md xs:text-md relative">
               <time className="block md:hidden">
                 {format(new Date(), "LLLL	d, yyyy")}
               </time>
@@ -115,12 +121,12 @@ export default function Header() {
               }}
               className="flex flex-row items-center focus:outline-none"
             >
-              {user ? (
+              {userData?.imageUrl ? (
                 <img
                   width="30px"
                   height="30px"
                   className="rounded-full"
-                  src={user.photoURL}
+                  src={userData.imageUrl}
                 />
               ) : (
                 <FaUserCircle className="text-3xl " />
@@ -129,8 +135,8 @@ export default function Header() {
             </button>
           </motion.div>
         </div>
-
-        {showCategory && (
+        {/* Category indicator */}
+        {showCategory && !pageLoading && (
           <>
             <motion.div
               initial={{ y: -40 }}
@@ -147,7 +153,7 @@ export default function Header() {
                 className="flex flex-row items-center mx-auto focus:outline-none"
               >
                 <p className="uppercase nav-item">
-                  Browsing {category.split("_").join(" ")}
+                  Browsing {formatString(category, "_")}
                 </p>
                 <RiArrowDropDownFill className="text-3xl" />
               </button>

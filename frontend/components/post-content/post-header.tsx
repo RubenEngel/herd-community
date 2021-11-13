@@ -3,6 +3,7 @@ import Date from "../date";
 import CoverImage from "./cover-image";
 import PostTitle from "./post-title";
 import Categories from "../categories";
+import Tags from "../../components/post-content/tags";
 import { User, Category } from "../../lib/types";
 
 interface PostHeaderProps {
@@ -11,6 +12,7 @@ interface PostHeaderProps {
   date?: string | Date;
   author?: User,
   categories?: Category[];
+  tags?: string[]
 }
 
 export default function PostHeader({
@@ -19,6 +21,7 @@ export default function PostHeader({
   date,
   author,
   categories,
+  tags
 }: PostHeaderProps) {
   return (
     <div className="max-w-3xl mx-auto px-4">
@@ -38,6 +41,9 @@ export default function PostHeader({
       </div>
       <div className="mb-8">
         <CoverImage title={title} coverImage={coverImage} />
+      </div>
+      <div>
+      {tags?.length > 0 && <Tags tags={tags} />}
       </div>
     </div>
   );

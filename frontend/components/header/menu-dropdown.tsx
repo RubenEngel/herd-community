@@ -1,14 +1,14 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import Link from 'next/link';
+import React from "react";
+import { motion } from "framer-motion";
+import Link from "next/link";
 
 const menuVariants = {
   open: { opacity: 1, y: 0 },
-  closed: { opacity: 0, y: '-100%' },
+  closed: { opacity: 0, y: "-100%" },
 };
 
 const transition = {
-  type: 'spring',
+  type: "spring",
   bounce: 0,
   duration: 0.4,
 };
@@ -17,16 +17,16 @@ function MenuDropdown({ setIsOpen, isOpen }) {
   return (
     <motion.div
       className={
-        ' bg-primary opacity-75 w-screen left-0 -z-10 overflow-hidden mt-2' +
-        (isOpen ? ' absolute' : ' hidden')
+        " bg-primary opacity-75 w-screen left-0 -z-10 overflow-hidden mt-2" +
+        (isOpen ? " absolute" : " hidden")
       }
-      animate={isOpen ? 'open' : 'closed'}
+      animate={isOpen ? "open" : "closed"}
       variants={menuVariants}
       transition={transition}
     >
       <motion.nav
-        className={'text-white p-3 -z-10 max-w-6xl m-auto'}
-        animate={isOpen ? 'open' : 'closed'}
+        className={"text-white p-3 -z-10 max-w-6xl m-auto"}
+        animate={isOpen ? "open" : "closed"}
         transition={transition}
       >
         <ul>
@@ -48,6 +48,11 @@ function MenuDropdown({ setIsOpen, isOpen }) {
           <li onClick={() => setIsOpen(false)} className="nav-item">
             <Link href="/explore">
               <a>Explore</a>
+            </Link>
+          </li>
+          <li onClick={() => setIsOpen(false)} className="nav-item">
+            <Link href="/edit-post">
+              <a>Submit an Article</a>
             </Link>
           </li>
         </ul>

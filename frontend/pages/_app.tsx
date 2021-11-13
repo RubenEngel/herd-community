@@ -1,6 +1,6 @@
 import "../styles/index.css";
 import "../styles/ck-editor.css";
-import { ApolloProvider } from "@apollo/client";
+import { ApolloProvider, useQuery, gql } from "@apollo/client";
 import { useApollo } from "../lib/apolloClient";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
@@ -12,12 +12,14 @@ import { auth } from "../lib/firebase";
 import { Toaster } from "react-hot-toast";
 import Layout from "../components/layout";
 import type { AppProps } from "next/app";
+import { User } from '../lib/types';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const apolloClient = useApollo(pageProps);
   const router = useRouter();
   const [pageLoading, setPageLoading] = useState(false);
   const [user] = useAuthState(auth);
+  const [userData, setUserData] = useState<User>(null)
 
   const [category, setCategory] = useState("all");
   const categoryState = { category, setCategory };
@@ -27,10 +29,35 @@ function MyApp({ Component, pageProps }: AppProps) {
     router.events.on("routeChangeComplete", () => setPageLoading(false));
   }, [router]);
 
+  useEffect(() => {
+    if (!user) {
+      setUserData(null)
+    } else if (user.email) { 
+      apolloClient.query({
+          query: gql`
+            query GetUser($email: String!) {
+              getUser(email: $email) {
+                email
+                role
+                firstName
+                lastName
+                imageUrl
+              }
+            }
+          `,
+          variables: {
+            email: user.email
+          }
+        }).then((res) => setUserData(res.data.getUser))
+    }
+  }, [user])
+
+
+
   return (
-    <ExploreContext.Provider value={categoryState}>
-      <UserContext.Provider value={user}>
-        <ApolloProvider client={apolloClient}>
+    <ApolloProvider client={apolloClient}>
+      <ExploreContext.Provider value={categoryState}>
+        <UserContext.Provider value={{ userAuth: user, userData }}>
           <Layout>
             {pageLoading ? (
               <motion.div
@@ -52,9 +79,9 @@ function MyApp({ Component, pageProps }: AppProps) {
             )}
           </Layout>
           <Toaster />
-        </ApolloProvider>
-      </UserContext.Provider>
-    </ExploreContext.Provider>
+        </UserContext.Provider>
+      </ExploreContext.Provider>
+    </ApolloProvider>
   );
 }
 

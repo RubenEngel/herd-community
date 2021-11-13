@@ -5,5 +5,5 @@ import { ExploreContext } from "../lib/context";
 export default function Explore() {
   const { category } = React.useContext(ExploreContext);
 
-  return <PostList startLoad limit={5} category={category} />;
+  return <PostList published={true} startLoad={true} limit={5} category={category} />;
 }

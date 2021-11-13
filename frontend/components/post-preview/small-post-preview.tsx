@@ -26,6 +26,15 @@ export default function SmallPostPreview({
       animate={{ opacity: 1 }}
       transition={{ bounce: 0, duration: 0.5 }}
       className="rounded-lg my-6"
+      whileHover={{
+        scale: 1.03,
+        transition: {
+          duration: 0.2
+        }
+      }}
+      whileTap={{
+        scale: 0.9
+      }}
     >
       <div className="grid grid-cols-5">
         {/* Image */}
