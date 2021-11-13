@@ -3,8 +3,9 @@ import { UserContext } from "../../lib/context";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import SignIn from "../sign-in";
-import firebase from "../../lib/firebase";
+import firebase, { auth } from "../../lib/firebase";
 import router from "next/router";
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 const menuVariants = {
   open: { opacity: 1, y: 0 },
@@ -17,15 +18,18 @@ const transition = {
   duration: 0.4,
 };
 
+
+
 function ProfileDropdown({ setIsOpen, isOpen }) {
   const { userAuth, userData } = useContext(UserContext);
   const [showSignIn, setShowSignIn] = React.useState(false);
 
+  const [user, loading, error] = useAuthState(auth)
+
   useEffect(() => {
-    setTimeout(() => {
-      setShowSignIn(!userAuth);
-    }, 2000);
-  });
+    if (!user) setShowSignIn(true);
+    else setShowSignIn(false)
+  }, [loading])
 
   return (
     <>

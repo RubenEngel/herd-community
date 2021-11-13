@@ -29,8 +29,6 @@ interface PostProps {
 export default function PostPage({ post }: PostProps) {
   const router = useRouter();
 
-  console.log(post)
-
   if (!router.isFallback && !post?.slug) {
     return <ErrorPage statusCode={404} />;
   }
@@ -132,7 +130,7 @@ export default function PostPage({ post }: PostProps) {
               </h1>
             </Waypoint>
           </div>
-          <PostList startLoad={reachedEnd} category={category} limit={3} />
+          <PostList published startLoad={reachedEnd} category={category} limit={3} />
         </>
       )}
     </>

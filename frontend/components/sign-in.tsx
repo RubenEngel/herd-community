@@ -4,7 +4,7 @@ import firebase from '../lib/firebase';
 import { motion } from "framer-motion";
 
 export const uiConfig = {
-  signInSuccessUrl: '/my-account',
+  // signInSuccessUrl: '/my-account',
   signInOptions: [
     {
       provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
