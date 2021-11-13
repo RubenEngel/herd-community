@@ -168,7 +168,7 @@ const EditPost = () => {
 
   // Store progress in local storage
   useEffect(() => {
-    localStorage.setItem("postData", JSON.stringify(postData));
+    if (!existingPostData) localStorage.setItem("postData", JSON.stringify(postData));
     if (
       postData.title &&
       postData.featuredImage &&

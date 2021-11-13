@@ -28,7 +28,7 @@ export const typeDefs = gql`
     title: String
     featuredImage: String
     content: String
-    author: User
+    # author: User
     authorEmail: String
     comments: [Comment]
     likedBy: [User]
