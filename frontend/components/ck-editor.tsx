@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import CustomEditor from "ckeditor5-custom-build";
-import { SubmitPostData } from "../pages/submit";
+import { SubmitPostData } from "../pages/edit-post";
+import styles from './post-content/post-body.module.css'
 
 const editorConfiguration = {
   toolbar: [
@@ -56,7 +57,7 @@ interface EditorProps {
 const Editor = ({ postData, setPostData }: EditorProps) => {
   return (
     <>
-      <div className="max-w-3xl mx-auto">
+      <div className={`max-w-3xl mx-auto ${styles.content}`}>
         <CKEditor
           editor={CustomEditor}
           config={editorConfiguration}

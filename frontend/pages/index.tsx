@@ -125,7 +125,7 @@ export const getStaticProps: GetStaticProps = async () => {
     query: GET_CATEGORIES,
   });
 
-  const categoryNames = categoriesRes.data.getCategories.map((cat) => cat.name);
+  const categoryNames = categoriesRes.data.getCategories.map((category) => category.name);
   categoryNames.unshift("all");
 
   let categoryPosts: { [catgoryName: string]: Post[] } = {};
@@ -136,7 +136,7 @@ export const getStaticProps: GetStaticProps = async () => {
     let category = categoryNames[i];
     let postsRes = await apolloClient.query({
       query: GET_POSTS,
-      variables: { category: category, limit: limit },
+      variables: { published: true, category: category, limit: limit },
     });
     let posts: Post[] = postsRes.data.getPosts;
     categoryPosts[category] = [];

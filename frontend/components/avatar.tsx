@@ -1,19 +1,20 @@
-import { FaUserCircle } from 'react-icons/fa';
+import { FaUserCircle } from "react-icons/fa";
+import { User } from "../lib/types";
 
-export default function Avatar({ author }) {
+export default function Avatar({ author }: { author: User }) {
   const name = author
     ? author.firstName && author.lastName
       ? `${author.firstName} ${author.lastName}`
-      : author.name
+      : author.firstName
     : null;
 
   return (
     <>
       {author && (
         <div className="flex items-center">
-          {author.photoURL ? (
+          {author.imageUrl ? (
             <img
-              src={author.photoURL}
+              src={author.imageUrl}
               className="w-4 h-4 rounded-full"
               alt={name}
             />

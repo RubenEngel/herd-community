@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { UserContext } from "../../lib/context";
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -18,8 +18,14 @@ const transition = {
 };
 
 function ProfileDropdown({ setIsOpen, isOpen }) {
-  const { userAuth } = useContext(UserContext);
-  const [showSignIn, setShowSignIn] = React.useState(!userAuth);
+  const { userAuth, userData } = useContext(UserContext);
+  const [showSignIn, setShowSignIn] = React.useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setShowSignIn(!userAuth);
+    }, 2000);
+  });
 
   return (
     <>
@@ -54,21 +60,23 @@ function ProfileDropdown({ setIsOpen, isOpen }) {
 
             {userAuth && (
               <>
+                {userData?.role.toString() === "ADMIN" && (
+                  <li onClick={() => setIsOpen(false)} className="nav-item">
+                    <Link href="/admin">
+                      <a>Admin</a>
+                    </Link>
+                  </li>
+                )}
                 <li onClick={() => setIsOpen(false)} className="nav-item">
                   <Link href="/my-account">
                     <a>Profile</a>
-                  </Link>
-                </li>
-                <li onClick={() => setIsOpen(false)} className="nav-item">
-                  <Link href="/submit">
-                    <a>Submit an Article</a>
                   </Link>
                 </li>
                 <li
                   onClick={() => {
                     firebase.auth().signOut();
                     setIsOpen(false);
-                    router.push("/")
+                    router.push("/");
                   }}
                   className="nav-item cursor-pointer"
                 >

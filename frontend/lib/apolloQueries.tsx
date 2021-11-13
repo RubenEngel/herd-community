@@ -1,4 +1,5 @@
 import { gql } from "@apollo/client";
+import Categories from '../components/categories';
 
 // --------------- Queries
 
@@ -24,15 +25,16 @@ export const GET_ALL_POST_SLUGS = gql`
 export const GET_POST = gql`
   query GetPost($slug: String!) {
     getPost(slug: $slug) {
+      id
       slug
       title
       createdAt
       featuredImage
+      published
       # author {
-        # firstName
-        # lastName
-        # username
-        # imageUrl
+      #   firstName
+      #   lastName
+      #   imageUrl
       # }
       authorEmail
       categories {
@@ -49,19 +51,20 @@ export const GET_POST = gql`
 `;
 
 export const GET_POSTS = gql`
-  query GetPosts($category: String, $limit: Int!, $startAfter: Int) {
-    getPosts(category: $category, limit: $limit, startAfter: $startAfter) {
+  query GetPosts($published: Boolean, $category: String, $limit: Int!, $startAfter: Int) {
+    getPosts(published: $published, category: $category, limit: $limit, startAfter: $startAfter) {
       id
       slug
+      published
       title
       createdAt
       featuredImage
       authorEmail
       # author {
-        # firstName
-        # lastName
-        # imageUrl
-        # username
+      #  firstName
+      #  lastName
+      #  imageUrl
+      #  username
       # }
       categories {
         name
@@ -93,7 +96,6 @@ export const ADD_POST = gql`
     $content: String!
     $tags: [String]
     $categories: [String]!
-    # $createdAt: DateTime
     $featuredImage: String
   ) {
     createDraft(
@@ -103,7 +105,6 @@ export const ADD_POST = gql`
       tags: $tags
       authorEmail: $authorEmail
       categories: $categories
-      # createdAt: $createdAt
       featuredImage: $featuredImage
     ) {
       id
@@ -114,8 +115,8 @@ export const ADD_POST = gql`
 
 export const UPDATE_POST = gql`
   mutation UpdatePost(
-    $slug: String!
-    $id: Int
+    $id: Int!
+    $slug: String
     $title: String
     $featuredImage: String
     $content: String
@@ -123,8 +124,8 @@ export const UPDATE_POST = gql`
     $tags: [String]
   ) {
     updatePost(
-      slug: $slug
       id: $id
+      slug: $slug
       title: $title
       featuredImage: $featuredImage
       content: $content
@@ -135,7 +136,10 @@ export const UPDATE_POST = gql`
       slug
       title
       featuredImage
-      content
+      categories {
+        name
+      }
+      tags
     }
   }
 `;
@@ -148,3 +152,12 @@ export const ADD_USER = gql`
     }
   }
 `;
+
+export const CHANGE_PUBLISHED = gql`
+  mutation ChangePublished($id: Int!, $published: Boolean!) {
+    changePublished(id: $id, published: $published) {
+      id
+      published
+    }
+  }
+`

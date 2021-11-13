@@ -7,7 +7,8 @@
     "start:app": "cd frontend && npm run dev",
     "deploy:api": "git subtree push --prefix api heroku master",
     "deploy:app": "vercel --prod",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "codegen": "graphql-codegen --config codegen.yml"
   },
   "repository": {
     "type": "git",
@@ -18,5 +19,17 @@
   "bugs": {
     "url": "https://github.com/RubenEngel/herd-community/issues"
   },
-  "homepage": "https://github.com/RubenEngel/herd-community#readme"
+  "homepage": "https://github.com/RubenEngel/herd-community#readme",
+  "dependencies": {
+    "graphql": "^15.7.2"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "2.2.2",
+    "@graphql-codegen/typescript-react-apollo": "3.2.1",
+    "@graphql-codegen/typescript-operations": "2.2.0",
+    "@graphql-codegen/typescript-document-nodes": "2.2.0",
+    "@graphql-codegen/typescript": "2.3.1",
+    "@graphql-codegen/typescript-resolvers": "2.4.0",
+    "@graphql-codegen/introspection": "2.1.0"
+  }
 }

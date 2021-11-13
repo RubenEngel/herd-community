@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useState, useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import { GetStaticProps, GetStaticPaths } from "next";
 import { useRouter } from "next/router";
 import ErrorPage from "next/error";
@@ -10,6 +10,7 @@ import { GET_POST, GET_ALL_POST_SLUGS } from "../../lib/apolloQueries";
 import { addApolloState, initializeApollo } from "../../lib/apolloClient";
 import { Post } from "../../lib/types";
 import PostList from "../../components/post-list";
+import { UserContext } from "../../lib/context";
 import {
   motion,
   useViewportScroll,
@@ -28,9 +29,25 @@ interface PostProps {
 export default function PostPage({ post }: PostProps) {
   const router = useRouter();
 
+  console.log(post)
+
   if (!router.isFallback && !post?.slug) {
     return <ErrorPage statusCode={404} />;
   }
+
+  const { userData } = useContext(UserContext);
+
+  // Check if user can edit post, own post or ADMIN account
+    const [isEditable, setIsEditable] = useState(false);
+
+    useEffect(() => {
+    if (userData?.email && (userData.email === post.author?.email)) {
+      setIsEditable(true);
+    }
+    if (String(userData?.role) === "ADMIN") {
+      setIsEditable(true);
+    }
+  }, [userData]);
 
   const { category } = useContext(ExploreContext);
 
@@ -72,7 +89,12 @@ export default function PostPage({ post }: PostProps) {
               <meta property="og:image" content={post.featuredImage} />
             </Head>
             <AnimatePresence>
-              {startedReading && <PostInteractions />}
+              {startedReading && (
+                <PostInteractions
+                  slug={post.slug}
+                  isEditable={isEditable}
+                />
+              )}
             </AnimatePresence>
             <PostHeader
               title={post.title}

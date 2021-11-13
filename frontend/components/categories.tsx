@@ -2,8 +2,9 @@ import { ExploreContext } from "../lib/context";
 import { useContext } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { Category } from "../lib/types";
 
-export default function Categories({ categories }) {
+export default function Categories({ categories }: {categories: Category[]}) {
   function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
@@ -12,7 +13,7 @@ export default function Categories({ categories }) {
 
   return (
     <div className="flex flex-row flex-wrap no-wrap">
-      {categories.map((category, index) => (
+      {categories?.map((category, index) => (
         <motion.button
           whileHover={{
             scale: 1.05

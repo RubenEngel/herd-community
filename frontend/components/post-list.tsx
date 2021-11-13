@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import PostPreview from "./post-preview/post-preview";
 import { useLazyQuery } from "@apollo/client";
 import Loading from "./loading";
@@ -7,6 +7,7 @@ import { GET_POSTS } from "../lib/apolloQueries";
 // import { Post } from "../lib/types";
 
 export default function PostList({
+  published,
   startLoad = true,
   category,
   limit,
@@ -14,11 +15,13 @@ export default function PostList({
   startLoad: boolean;
   category: string;
   limit: number;
+  published: boolean;
 }) {
   const [getPosts, { loading, error, data, fetchMore }] = useLazyQuery(
     GET_POSTS,
     {
       variables: {
+        published: published,
         limit: limit,
         category: category,
         startAfter: null,
@@ -36,7 +39,6 @@ export default function PostList({
       <Loading />
     </div>
   ) : (
-    // <section className="mx-auto">
       <div className="px-3 md:px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-32">
         {error && <h1 className="text-4xl text-center">An Error Occurred</h1>}
 
@@ -74,6 +76,5 @@ export default function PostList({
           </div>
         )}
       </div>
-    // </section>
   );
 }

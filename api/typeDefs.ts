@@ -28,7 +28,7 @@ export const typeDefs = gql`
     title: String
     featuredImage: String
     content: String
-    # author: User
+    author: User
     authorEmail: String
     comments: [Comment]
     likedBy: [User]
@@ -62,7 +62,7 @@ export const typeDefs = gql`
   }
 
   type Query {
-    getPosts(category: String, limit: Int, startAfter: Int): [Post]
+    getPosts(published: Boolean, category: String, limit: Int, startAfter: Int): [Post]
     getPost(slug: String!): Post
     getUser(email: String!): User
     getCategories: [Category]
@@ -78,16 +78,19 @@ export const typeDefs = gql`
       authorEmail: String
       featuredImage: String
       tags: [String]
-      # createdAt: DateTime
     ): Post
     updatePost(
-      slug: String!
-      id: Int
+      id: Int!
+      slug: String
       title: String
       featuredImage: String
       content: String
       categories: [String]
       tags: [String]
+    ): Post
+    changePublished(
+      id: Int!
+      published: Boolean!
     ): Post
   }
 `;

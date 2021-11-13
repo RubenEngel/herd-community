@@ -18,7 +18,7 @@ const prisma = new PrismaClient({
 
 export const resolvers = {
   Query: {
-    getPosts: async (_, { category, limit, startAfter }) => {
+    getPosts: async (_, { published, category, limit, startAfter }) => {
       try {
         if (category?.toLowerCase() === "all") category = null;
         let cursorParams = {};
@@ -41,6 +41,7 @@ export const resolvers = {
                 },
               },
             },
+            published: published
           },
           include: {
             categories: true,
@@ -127,26 +128,43 @@ export const resolvers = {
     },
     updatePost: async (
       _,
-      { slug, title, featuredImage, content, categories, tags }
+      { id, slug, title, featuredImage, content, categories, tags }
     ) => {
       // TODO: if slug or id
-      return await prisma.post.update({
+      try {
+        return await prisma.post.update({
         where: {
-          slug: slug,
+          id: id,
         },
         data: {
+          slug: slug,
           title: title,
           featuredImage: featuredImage,
           content: content,
           categories: {
-            connect: categories?.map((categoryName) => ({
-              name: categoryName.toLowerCase().split(" ").join("_"),
-            })),
+            set: categories.map((category) => ({name: category})),
           },
           tags: tags,
         },
       });
+      } catch (error) {
+        throw new ApolloError(error as string);
+      }
     },
+    changePublished: async (_, {id, published}) => {
+      try {
+        return await prisma.post.update({
+          where: {
+            id
+          },
+          data: {
+            published
+          }
+        })
+      } catch (error) {
+        throw new ApolloError(error as string)
+      }
+    }
   },
   DateTime: dateScalar,
 };

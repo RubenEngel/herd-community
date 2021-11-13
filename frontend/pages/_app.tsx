@@ -52,6 +52,8 @@ function MyApp({ Component, pageProps }: AppProps) {
     }
   }, [user])
 
+
+
   return (
     <ApolloProvider client={apolloClient}>
       <ExploreContext.Provider value={categoryState}>

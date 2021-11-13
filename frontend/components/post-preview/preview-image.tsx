@@ -1,6 +1,13 @@
 import cn from "classnames";
 import Link from "next/link";
-import Image from "next/image";
+
+interface PreviewImageProps {
+  title: string;
+  coverImage: string;
+  slug: string;
+  width: number;
+  height: number;
+}
 
 export default function PreviewImage({
   title,
@@ -8,19 +15,8 @@ export default function PreviewImage({
   slug,
   width,
   height,
-}) {
+}: PreviewImageProps) {
   const image = (
-    // <Image
-    //   priority={true}
-    //   placeholder={"blur"}
-    //   src={coverImage}
-    //   width={width}
-    //   height={height}
-    //   objectFit="cover"
-    //   className={cn("shadow-small m-auto", {
-    //     "hover:shadow-medium transition-shadow duration-200 rounded-xl": slug,
-    //   })}
-    // />
     <img
       src={coverImage}
       width={width}

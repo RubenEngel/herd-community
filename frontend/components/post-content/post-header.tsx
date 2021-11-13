@@ -43,7 +43,7 @@ export default function PostHeader({
         <CoverImage title={title} coverImage={coverImage} />
       </div>
       <div>
-      {tags?.length && <Tags tags={tags} />}
+      {tags?.length > 0 && <Tags tags={tags} />}
       </div>
     </div>
   );
