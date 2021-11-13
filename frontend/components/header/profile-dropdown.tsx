@@ -27,11 +27,6 @@ function ProfileDropdown({ setIsOpen, isOpen }) {
   const [user, loading, error] = useAuthState(auth)
 
   useEffect(() => {
-    if (!user) setShowSignIn(true);
-    else setShowSignIn(false)
-  }, [loading])
-
-  useEffect(() => {
     if (!user) {
       setTimeout(() => setShowSignIn(true), 1000)
     } else setShowSignIn(false)
