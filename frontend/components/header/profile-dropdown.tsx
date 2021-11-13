@@ -31,6 +31,12 @@ function ProfileDropdown({ setIsOpen, isOpen }) {
     else setShowSignIn(false)
   }, [loading])
 
+  useEffect(() => {
+    if (!user) {
+      setTimeout(() => setShowSignIn(true), 1000)
+    } else setShowSignIn(false)
+  }, [loading])
+
   return (
     <>
       <motion.div
