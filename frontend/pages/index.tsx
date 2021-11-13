@@ -147,6 +147,6 @@ export const getStaticProps: GetStaticProps = async () => {
     props: {
       categoryPosts,
     },
-    revalidate: 60,
+    revalidate: 30,
   });
 };
