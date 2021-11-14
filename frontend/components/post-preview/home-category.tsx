@@ -26,7 +26,7 @@ function HomeCategory({
             className="flex items-center font-bold mx-auto"
             onClick={(e) => setCategory(e.currentTarget.textContent)}
           >
-            <h1 className="text-lg mr-4">
+            <h1 className="text-lg mr-4 uppercase">
               {categoryName.split("_").join(" ")}
             </h1>
             <AiFillCaretRight />

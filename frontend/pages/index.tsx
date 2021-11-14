@@ -28,8 +28,6 @@ const Index = ({ categoryPosts }: IndexProps) => {
 
   const { setCategory } = useContext(ExploreContext);
 
-  // const router = useRouter();
-
   return (
     <>
       <motion.div
