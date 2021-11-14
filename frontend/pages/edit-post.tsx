@@ -259,7 +259,7 @@ const EditPost = () => {
                     tags: postData.tags.filter((tag) => tag !== tagName),
                   })
                 }
-                className="cursor-pointer px-2 py-1 px-3 mr-2 mb-3 text-md rounded-full text-white bg-green-500 hover:bg-red-500 hover:text-gray-100"
+                className="cursor-pointer py-1 px-3 mr-2 mb-3 text-md rounded-full text-white bg-green-500 hover:bg-red-500 hover:text-gray-100"
               >
                 {tagName}
               </button>
