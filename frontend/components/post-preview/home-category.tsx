@@ -20,13 +20,13 @@ function HomeCategory({
 
   return (
     <div>
-      <div className="text-center bg-primary w-100 lg:mx-12 rounded-xl p-1 m-4 lg:p-2 font-bold uppercase text-secondary">
+      <div className="text-center bg-primary w-100 lg:mx-12 rounded-xl p-1 m-4 lg:p-2 font-bold text-secondary">
         <Link href="/explore">
           <button
             className="flex items-center font-bold mx-auto"
             onClick={(e) => setCategory(e.currentTarget.textContent)}
           >
-            <h1 className="text-lg uppercase mr-4">
+            <h1 className="text-lg mr-4">
               {categoryName.split("_").join(" ")}
             </h1>
             <AiFillCaretRight />

@@ -43,7 +43,7 @@ export default function PostList({
         {error && <h1 className="text-4xl text-center">An Error Occurred</h1>}
 
         {startLoad &&
-          data.getPosts.map((post) => (
+          data.posts.map((post) => (
             <PostPreview
               key={post.slug}
               title={post.title}
@@ -61,11 +61,11 @@ export default function PostList({
             <Loading />
           </div>
         )}
-        {data.getPosts.length && (
+        {data.posts.length > 0 && (
           <div>
             <Waypoint
               onEnter={() => {
-                const endCursor = data.getPosts[data.getPosts.length - 1].id;
+                const endCursor = data.posts[data.posts.length - 1].id;
                 fetchMore({
                   variables: {
                     startAfter: endCursor,

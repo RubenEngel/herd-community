@@ -1,11 +1,11 @@
 import { useMemo } from "react";
-import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
+import { ApolloClient, HttpLink, InMemoryCache, NormalizedCacheObject } from "@apollo/client";
 import merge from "deepmerge";
 import isEqual from "lodash/isEqual";
 
 export const APOLLO_STATE_PROP_NAME = "__APOLLO_STATE__";
 
-let apolloClient;
+let apolloClient: ApolloClient<NormalizedCacheObject>;
 
 function createApolloClient() {
   return new ApolloClient({
@@ -17,7 +17,7 @@ function createApolloClient() {
       typePolicies: {
         Query: {
           fields: {
-            getPosts: {
+            posts: {
               keyArgs: ["category", "published"],
               merge(existing: {__ref: string}[] = [], incoming: {__ref: string}[]) {
                 const existingRefs: string[] = existing.map((postRef) => postRef.__ref)

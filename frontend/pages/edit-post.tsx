@@ -13,7 +13,7 @@ import { UserContext } from "../lib/context";
 import Tags from "../components/post-content/tags";
 import { useRouter } from "next/router";
 import { Post } from "../lib/types";
-import { v4 as uuid } from 'uuid';
+import { v4 as uuid } from "uuid";
 
 // TODO: Check if user admin again
 
@@ -47,11 +47,14 @@ const EditPost = () => {
   const router = useRouter();
 
   // Get exisitng post data to edit
-  const { loading: existingPostDataLoading, data: existingPostData } = useQuery(GET_POST, {
-    variables: {
-      slug: router.query?.slug,
-    },
-  });
+  const { loading: existingPostDataLoading, data: existingPostData } = useQuery(
+    GET_POST,
+    {
+      variables: {
+        slug: router.query?.slug,
+      },
+    }
+  );
 
   // Context
   const { userAuth, userData } = useContext(UserContext);
@@ -60,7 +63,9 @@ const EditPost = () => {
   const [showPreview, setShowPreview] = useState(false);
   const [tag, setTag] = useState<string>("");
   const [dataComplete, setDataComplete] = useState(false);
-  const [editPostId, setEditPostId] = useState<string | undefined>(existingPostData?.getPost?.id)
+  const [editPostId, setEditPostId] = useState<string | undefined>(
+    existingPostData?.post?.id
+  );
 
   const [postData, setPostData] = useState<SubmitPostData>(() => {
     if (
@@ -70,7 +75,7 @@ const EditPost = () => {
     ) {
       return JSON.parse(localStorage.getItem("postData"));
     } else if (router.query.slug && existingPostData) {
-      const dbPostData: Post = existingPostData.getPost;
+      const dbPostData: Post = existingPostData.post;
       return {
         title: dbPostData.title,
         content: dbPostData.content,
@@ -83,20 +88,22 @@ const EditPost = () => {
     }
   });
 
-    const [isEditable, setIsEditable] = useState(false);
-    useEffect(() => {
-      if (userData?.email && (userData.email === existingPostData?.getPost?.author?.email)) {
-        setIsEditable(true);
-      } else if (String(userData?.role) === "ADMIN") {
-        setIsEditable(true);
-      }
-    }, [userData]);
-
+  const [isEditable, setIsEditable] = useState(false);
+  useEffect(() => {
+    if (
+      userData?.email &&
+      userData.email === existingPostData?.post?.author?.email
+    ) {
+      setIsEditable(true);
+    } else if (String(userData?.role) === "ADMIN") {
+      setIsEditable(true);
+    }
+  }, [userData]);
 
   // If exisitng post data is not loaded into initial state, update state data when data comes in
   useEffect(() => {
     if (existingPostData) {
-      const dbPostData: Post = existingPostData.getPost;
+      const dbPostData: Post = existingPostData.post;
       setPostData({
         title: dbPostData.title,
         content: dbPostData.content,
@@ -104,7 +111,7 @@ const EditPost = () => {
         categories: dbPostData.categories?.map((category) => category.name),
         tags: dbPostData.tags,
       });
-      setEditPostId(dbPostData.id)
+      setEditPostId(dbPostData.id);
     }
   }, [existingPostDataLoading]);
 
@@ -126,32 +133,33 @@ const EditPost = () => {
   };
 
   // ----------- Post editing
-  const [
-    editPost,
-    { data: editData, error: editError, loading: editLoading },
-  ] = useMutation(UPDATE_POST);
+  const [editPost, { data: editData, error: editError, loading: editLoading }] =
+    useMutation(UPDATE_POST);
 
   const handleEdit = () => {
     editPost({
       variables: {
         ...postData,
         id: Number(editPostId),
-        slug: formatSlug(postData.title)
-      }
-    })
-  }
+        slug: formatSlug(postData.title),
+      },
+    });
+  };
 
   // Handle change of publication status
-  const [changePublished, {data: publishedData, loading: publishedLoading, error: publishedError }] = useMutation(CHANGE_PUBLISHED)
+  const [
+    changePublished,
+    { data: publishedData, loading: publishedLoading, error: publishedError },
+  ] = useMutation(CHANGE_PUBLISHED);
 
   const handleChangePublished = (status: boolean) => {
     changePublished({
       variables: {
         id: Number(editPostId),
-        published: status
-      }
-    })
-  }
+        published: status,
+      },
+    });
+  };
 
   // Handle notifications on submit mutation status
   useEffect(() => {
@@ -164,11 +172,11 @@ const EditPost = () => {
       router.push("/");
     }
   }, [editLoading, submitLoading, publishedLoading]);
- 
 
   // Store progress in local storage
   useEffect(() => {
-    if (!existingPostData) localStorage.setItem("postData", JSON.stringify(postData));
+    if (!existingPostData)
+      localStorage.setItem("postData", JSON.stringify(postData));
     if (
       postData.title &&
       postData.featuredImage &&
@@ -186,14 +194,15 @@ const EditPost = () => {
 
   let allCategories: string[];
 
-  if (categoryData) allCategories = categoryData.getCategories?.map((category) =>
-    category.name
-  );
+  if (categoryData)
+    allCategories = categoryData.categories?.map(
+      (category) => category.name
+    );
 
   // Add / remove categories component
   const CategorySelect = ({ categoryName }: { categoryName: string }) => {
     const handleChange = () => {
-      if (postData.categories.includes((categoryName))) {
+      if (postData.categories.includes(categoryName)) {
         setPostData({
           ...postData,
           categories: postData.categories.filter(
@@ -224,8 +233,10 @@ const EditPost = () => {
   // Main component
   return (
     <div className="max-w-screen-sm mx-auto">
-      <h1 className="text-3xl text-center mb-6 text-bold uppercase">Post Editor</h1>
-      {ready ? (
+      <h1 className="text-3xl text-center mb-6 text-bold uppercase">
+        Post Editor
+      </h1>
+      {!ready && !existingPostData ? (
         <SubmitIntro setReady={setReady} />
       ) : (
         <div className="flex flex-col">
@@ -309,31 +320,35 @@ const EditPost = () => {
           </div>
           {/* Mutation and preview buttons */}
           <div className="flex flex-row flex-wrap mb-6 mx-auto justify-center">
-            {existingPostData?.getPost?.published && (
-                <button
-                  disabled={!isEditable}
-                  className={"bg-blue-500 hover:bg-blue-600 text-md py-1 px-4 mx-2 mb-3 text-white rounded-xl uppercase"}
-                  onClick={() => handleChangePublished(false)}>
-                  <h4>Unpublish</h4>
-                </button>
+            {existingPostData?.post?.published && (
+              <button
+                disabled={!isEditable}
+                className={
+                  "bg-blue-500 hover:bg-blue-600 text-md py-2 px-4 mx-2 mb-3 text-white rounded-xl uppercase"
+                }
+                onClick={() => handleChangePublished(false)}
+              >
+                <h4>Unpublish</h4>
+              </button>
             )}
-            {
-              String(userData?.role) === "ADMIN" && existingPostData?.getPost.published === false && (
+            {String(userData?.role) === "ADMIN" &&
+              existingPostData?.post.published === false && (
                 <button
                   disabled={!isEditable}
-                  className={"bg-blue-500 hover:bg-blue-600 text-md py-1 px-4 mx-2 mb-3 text-white rounded-xl uppercase"}
+                  className={
+                    "bg-blue-500 hover:bg-blue-600 text-md py-2 px-4 mx-2 mb-3 text-white rounded-xl uppercase"
+                  }
                   onClick={() => {
                     handleChangePublished(true);
-                    
-                  }}>
+                  }}
+                >
                   <h4>Publish</h4>
                 </button>
-              )
-            }
+              )}
             {/* Preview */}
             <button
               disabled={!isEditable}
-              className="disabled:bg-gray-400 bg-blue-500 hover:bg-blue-600 text-md px-4 mx-2 mb-3 text-white rounded-xl uppercase"
+              className="disabled:bg-gray-400 bg-blue-500 hover:bg-blue-600 text-md px-4 py-2 mx-2 mb-3 text-white rounded-xl uppercase"
               onClick={() => setShowPreview(!showPreview)}
             >
               <h4>{showPreview ? "Hide preview" : "Show preview"}</h4>
@@ -341,7 +356,7 @@ const EditPost = () => {
             <button
               onClick={() => {
                 if (router.query.slug) {
-                  handleEdit()
+                  handleEdit();
                 } else {
                   handleSubmit();
                 }
@@ -349,13 +364,13 @@ const EditPost = () => {
               disabled={!dataComplete || !isEditable}
               className={`disabled:bg-gray-400 disabled:opacity-50 bg-green-500 ${
                 dataComplete && "hover:bg-green-700"
-              } text-md py-1 px-4 mx-2 mb-3 text-white  rounded-xl uppercase`}
+              } text-md py-2 px-4 mx-2 mb-3 text-white  rounded-xl uppercase`}
             >
               <h4>
-              {router.query.slug ? "Submit Edits" : "Submit Post"}
-              <p className="text-xs">
-                {!dataComplete && "(Incomplete fields)"}
-              </p>
+                {router.query.slug ? "Submit Edits" : "Submit Post"}
+                <p className="text-xs">
+                  {!dataComplete && "(Incomplete fields)"}
+                </p>
               </h4>
             </button>
           </div>

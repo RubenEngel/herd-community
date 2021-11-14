@@ -42,7 +42,7 @@ const Index = ({ categoryPosts }: IndexProps) => {
         </Head>
         {/* --------------- Latest Posts Heading ----------------- */}
         <div className="text-center">
-          <div className="bg-primary text-secondary lg:inline-block items-center lg:mt-6 lg:px-56 rounded-xl p-1 lg:p-2 font-bold uppercase">
+          <div className="bg-primary text-secondary lg:inline-block items-center lg:mt-6 lg:px-56 rounded-xl p-1 lg:p-2 font-bold">
             <Link href="/explore">
               <button
                 onClick={(e) => setCategory("all")}
@@ -125,7 +125,7 @@ export const getStaticProps: GetStaticProps = async () => {
     query: GET_CATEGORIES,
   });
 
-  const categoryNames = categoriesRes.data.getCategories.map((category) => category.name);
+  const categoryNames = categoriesRes.data.categories.map((category) => category.name);
   categoryNames.unshift("all");
 
   let categoryPosts: { [catgoryName: string]: Post[] } = {};
@@ -138,7 +138,7 @@ export const getStaticProps: GetStaticProps = async () => {
       query: GET_POSTS,
       variables: { published: true, category: category, limit: limit },
     });
-    let posts: Post[] = postsRes.data.getPosts;
+    let posts: Post[] = postsRes.data.posts;
     categoryPosts[category] = [];
     categoryPosts[category].push(...posts);
   }

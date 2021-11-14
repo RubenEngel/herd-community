@@ -25,8 +25,8 @@ function MenuDropdown({ setIsOpen, isOpen }) {
   return (
     <motion.div
       className={
-        " bg-primary opacity-75 w-screen left-0 -z-10 overflow-hidden mt-2" +
-        (isOpen ? " absolute" : " hidden")
+        " bg-primary opacity-75 w-screen left-0 -z-10 overflow-hidden mt-2 " +
+        (isOpen ? "absolute" : "hidden")
       }
       animate={isOpen ? "open" : "closed"}
       variants={menuVariants}
@@ -38,7 +38,7 @@ function MenuDropdown({ setIsOpen, isOpen }) {
         transition={transition}
       >
         <ul>
-          <li onClick={() => setIsOpen(false)} className="nav-item">
+        <li onClick={() => setIsOpen(false)} className="nav-item">
             <Link href="/">
               <a>Home</a>
             </Link>
@@ -48,11 +48,11 @@ function MenuDropdown({ setIsOpen, isOpen }) {
               <a>About Us</a>
             </Link>
           </li>
-          <li className="nav-item">
+          {/* <li className="nav-item">
             <Link href='/search'>
                 <a>Search</a>
             </Link>
-          </li>
+          </li> */}
           <li onClick={() => setIsOpen(false)} className="nav-item">
             <Link href="/explore">
               <a>Explore</a>
@@ -68,6 +68,7 @@ function MenuDropdown({ setIsOpen, isOpen }) {
             } className="nav-item">
               <button className="uppercase font-bold">Submit an Article</button>
           </li>
+
         </ul>
       </motion.nav>
     </motion.div>
