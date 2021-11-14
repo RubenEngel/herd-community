@@ -1,10 +1,8 @@
 import React, { useContext, useEffect } from "react";
-import { UserContext } from "../../lib/context";
+import { UserContext, SignInContext } from "../../lib/context";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import SignIn from "../sign-in";
 import firebase, { auth } from "../../lib/firebase";
-import router from "next/router";
 import { useAuthState } from 'react-firebase-hooks/auth';
 
 const menuVariants = {
@@ -18,19 +16,9 @@ const transition = {
   duration: 0.4,
 };
 
-
-
 function ProfileDropdown({ setIsOpen, isOpen }) {
   const { userAuth, userData } = useContext(UserContext);
-  const [showSignIn, setShowSignIn] = React.useState(false);
-
-  const [user, loading, error] = useAuthState(auth)
-
-  useEffect(() => {
-    if (!user) {
-      setTimeout(() => setShowSignIn(true), 1000)
-    } else setShowSignIn(false)
-  }, [loading])
+  const setShowSignIn = useContext(SignInContext)
 
   return (
     <>
@@ -81,7 +69,6 @@ function ProfileDropdown({ setIsOpen, isOpen }) {
                   onClick={() => {
                     firebase.auth().signOut();
                     setIsOpen(false);
-                    router.push("/");
                   }}
                   className="nav-item cursor-pointer"
                 >
@@ -92,17 +79,6 @@ function ProfileDropdown({ setIsOpen, isOpen }) {
           </ul>
         </motion.nav>
       </motion.div>
-      {!userAuth && showSignIn && (
-        <div className="fixed flex flex-col h-screen w-screen justify-center left-0 bottom-0 bg-primary">
-          <SignIn />
-          <button
-            onClick={() => setShowSignIn(false)}
-            className="fixed bottom-10 left-1/2 transform -translate-x-1/2 uppercase"
-          >
-            <h3>Not now</h3>
-          </button>
-        </div>
-      )}
     </>
   );
 }

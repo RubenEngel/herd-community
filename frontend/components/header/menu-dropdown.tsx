@@ -1,6 +1,9 @@
-import React from "react";
+import React, {useContext} from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import {SignInContext, UserContext} from "../../lib/context"
+import router from "next/router";
+import toast from "react-hot-toast";
 
 const menuVariants = {
   open: { opacity: 1, y: 0 },
@@ -14,6 +17,11 @@ const transition = {
 };
 
 function MenuDropdown({ setIsOpen, isOpen }) {
+
+  const setShowSignIn = useContext(SignInContext)
+
+  const {userAuth} = useContext(UserContext)
+
   return (
     <motion.div
       className={
@@ -40,20 +48,25 @@ function MenuDropdown({ setIsOpen, isOpen }) {
               <a>About Us</a>
             </Link>
           </li>
-          {/* <li className="nav-item">
+          <li className="nav-item">
             <Link href='/search'>
                 <a>Search</a>
             </Link>
-          </li> */}
+          </li>
           <li onClick={() => setIsOpen(false)} className="nav-item">
             <Link href="/explore">
               <a>Explore</a>
             </Link>
           </li>
-          <li onClick={() => setIsOpen(false)} className="nav-item">
-            <Link href="/edit-post">
-              <a>Submit an Article</a>
-            </Link>
+          <li onClick={() => {
+            if (!userAuth) {
+              setShowSignIn(true)
+            } else {
+              router.push("/edit-post")
+            }
+            setIsOpen(false)}
+            } className="nav-item">
+              <button className="uppercase">Submit an Article</button>
           </li>
         </ul>
       </motion.nav>

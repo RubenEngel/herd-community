@@ -24,7 +24,7 @@ const Editor = dynamic(() => import("../components/ck-editor"), {
 const SubmitHeading = ({ children }) => <h2 className="mb-2">{children}</h2>;
 
 const InputBox = (props) => (
-  <input {...props} className="border-2 border-gray-300 mb-8" />
+  <input {...props} className="border-2 border-gray-300 mb-8 p-2 tex-lg" />
 );
 
 export interface SubmitPostData {
@@ -209,9 +209,9 @@ const EditPost = () => {
     };
     return (
       <button
-        className={`px-2 mr-2 mb-3 text-md rounded-full ${
+        className={`px-3 py-1 mr-4 mb-3 text-md rounded-full uppercase ${
           postData.categories?.includes(categoryName)
-            ? "bg-green-400 text-white"
+            ? "bg-green-500 text-white"
             : "bg-gray-400 text-gray-600"
         } `}
         onClick={handleChange}
@@ -224,7 +224,7 @@ const EditPost = () => {
   // Main component
   return (
     <div className="max-w-screen-sm mx-auto">
-      <h1 className="text-3xl text-center mb-6 text-bold">Post Editor</h1>
+      <h1 className="text-3xl text-center mb-6 text-bold uppercase">Post Editor</h1>
       {ready ? (
         <SubmitIntro setReady={setReady} />
       ) : (
@@ -259,7 +259,7 @@ const EditPost = () => {
                     tags: postData.tags.filter((tag) => tag !== tagName),
                   })
                 }
-                className="cursor-pointer px-2 mr-2 mb-3 text-md rounded-full  text-white bg-green-400 hover:bg-red-500 hover:text-gray-100"
+                className="cursor-pointer px-2 py-1 px-3 mr-2 mb-3 text-md rounded-full text-white bg-green-500 hover:bg-red-500 hover:text-gray-100"
               >
                 {tagName}
               </button>
@@ -269,12 +269,12 @@ const EditPost = () => {
           <div className="flex flex-row items-center mb-8 mt-3">
             <input
               type="string"
-              className="border-2 border-gray-300"
+              className="border-2 border-gray-300 p-1 text-lg"
               value={tag}
               onChange={(e) => setTag(e.target.value)}
             />
             <button
-              className="ml-2 px-2 text-gray-100 bg-gray-400 rounded-lg"
+              className="ml-2 px-3 py-1 text-white bg-green-500 rounded-lg uppercase text-sm"
               onClick={() => {
                 setPostData({
                   ...postData,
@@ -312,28 +312,31 @@ const EditPost = () => {
             {existingPostData?.getPost?.published && (
                 <button
                   disabled={!isEditable}
-                  className={"bg-blue-500 hover:bg-blue-600 text-md py-1 px-4 mx-2 text-white rounded-xl"}
+                  className={"bg-blue-500 hover:bg-blue-600 text-md py-1 px-4 mx-2 text-white rounded-xl uppercase"}
                   onClick={() => handleChangePublished(false)}>
-                  Unpublish
+                  <h4>Unpublish</h4>
                 </button>
             )}
             {
               String(userData?.role) === "ADMIN" && existingPostData?.getPost.published === false && (
                 <button
                   disabled={!isEditable}
-                  className={"bg-blue-500 hover:bg-blue-600 text-md py-1 px-4 mx-2 text-white rounded-xl"}
-                  onClick={() => handleChangePublished(true)}>
-                  Publish
+                  className={"bg-blue-500 hover:bg-blue-600 text-md py-1 px-4 mx-2 text-white rounded-xl uppercase"}
+                  onClick={() => {
+                    handleChangePublished(true);
+                    
+                  }}>
+                  <h4>Publish</h4>
                 </button>
               )
             }
             {/* Preview */}
             <button
               disabled={!isEditable}
-              className="bg-blue-500 hover:bg-blue-600 text-md py-1 px-4 mx-2 text-white rounded-xl"
+              className="bg-blue-500 hover:bg-blue-600 text-md px-4 mx-2 text-white rounded-xl uppercase"
               onClick={() => setShowPreview(!showPreview)}
             >
-              {showPreview ? "Hide preview" : "Show preview"}
+              <h4>{showPreview ? "Hide preview" : "Show preview"}</h4>
             </button>
             <button
               onClick={() => {
@@ -344,14 +347,16 @@ const EditPost = () => {
                 }
               }}
               disabled={!dataComplete || !isEditable}
-              className={`disabled:bg-gray-400 disabled:opacity-50  bg-green-500 ${
+              className={`disabled:bg-gray-400 disabled:opacity-50 bg-green-500 ${
                 dataComplete && "hover:bg-green-700"
-              } text-md py-1 px-4 mx-2 text-white  rounded-xl`}
+              } text-md py-1 px-4 mx-2 text-white  rounded-xl uppercase`}
             >
+              <h4>
               {router.query.slug ? "Submit Edits" : "Submit Post"}
               <p className="text-xs">
                 {!dataComplete && "(Incomplete fields)"}
               </p>
+              </h4>
             </button>
           </div>
 

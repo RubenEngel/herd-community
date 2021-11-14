@@ -1,9 +1,9 @@
 import { ApolloServer } from "apollo-server-express";
 import express from "express";
 import http from "http";
-import compression from "compression";
-import cors from "cors";
-import helmet from "helmet";
+// import compression from "compression";
+// import cors from "cors";
+// import helmet from "helmet";
 import { typeDefs } from "./typeDefs";
 import { resolvers } from "./resolvers";
 
