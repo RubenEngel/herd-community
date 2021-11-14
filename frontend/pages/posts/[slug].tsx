@@ -125,7 +125,7 @@ export default function PostPage({ post }: PostProps) {
                 setReachedEnd(true);
               }}
             >
-              <h1 className="text-4xl uppercase text-center mb-8">
+              <h1 className="text-4xl text-center mb-8">
                 More Posts from {formatString(category, "_")}
               </h1>
             </Waypoint>
@@ -145,7 +145,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     variables: { slug: params.slug },
   });
 
-  const post = await response.data.getPost;
+  const post = await response.data.post;
 
   return addApolloState(apolloClient, {
     props: {
@@ -163,7 +163,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   });
 
   return {
-    paths: response.data.getPosts.map((post) => `/posts/${post.slug}`) || [],
+    paths: response.data.posts.map((post) => `/posts/${post.slug}`) || [],
     fallback: true,
   };
 };

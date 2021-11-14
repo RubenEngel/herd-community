@@ -18,7 +18,7 @@ const prisma = new PrismaClient({
 
 export const resolvers = {
   Query: {
-    getPosts: async (_, { published, category, limit, startAfter }) => {
+    posts: async (_, { published, category, limit, startAfter }) => {
       try {
         if (category?.toLowerCase() === "all") category = null;
         let cursorParams = {};
@@ -45,6 +45,7 @@ export const resolvers = {
           },
           include: {
             categories: true,
+            author: true
           },
           orderBy: {
             createdAt: "desc",
@@ -54,7 +55,7 @@ export const resolvers = {
         throw new ApolloError(error as string);
       }
     },
-    getPost: async (_, { slug }) => {
+    post: async (_, { slug }) => {
       return prisma.post.findUnique({
         where: {
           slug: slug,
@@ -64,31 +65,26 @@ export const resolvers = {
         },
       });
     },
-    getUser: async (_, { email }) => {
+    user: async (_, { email }) => {
       return prisma.user.findUnique({
         where: {
           email: email,
         },
       });
     },
-    getCategories: async () => {
+    categories: async () => {
       return prisma.category.findMany();
     },
   },
   Mutation: {
-    // publishPost
-    // updatePost
     // updateUser
     // createComment
     // deleteComment
-    createUser: async (_, { email, firstName, lastName }) => {
+    createUser: async (_, { email }) => {
       return await prisma.user.create({
         data: {
-          email: email?.toLowerCase(),
-          firstName: firstName?.toLowerCase(),
-          lastName: lastName?.toLowerCase(),
-        },
-      });
+          email: email.toLowerCase(),
+        }})
     },
     createDraft: async (
       _,

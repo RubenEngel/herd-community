@@ -14,7 +14,8 @@ model User {
   id            Int       @id @default(autoincrement())
   email         String    @unique
   role          Role      @default(USER)
-  firstName     String
+  username      String?    @unique
+  firstName     String?
   lastName      String?
   imageUrl      String?
   posts         Post[]    @relation(name: "PostHasAuthor")

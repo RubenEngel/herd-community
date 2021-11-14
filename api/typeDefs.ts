@@ -28,7 +28,7 @@ export const typeDefs = gql`
     title: String
     featuredImage: String
     content: String
-    # author: User
+    author: User
     authorEmail: String
     comments: [Comment]
     likedBy: [User]
@@ -62,14 +62,14 @@ export const typeDefs = gql`
   }
 
   type Query {
-    getPosts(published: Boolean, category: String, limit: Int, startAfter: Int): [Post]
-    getPost(slug: String!): Post
-    getUser(email: String!): User
-    getCategories: [Category]
+    posts(published: Boolean, category: String, limit: Int, startAfter: Int): [Post]
+    post(slug: String!): Post
+    user(email: String!): User
+    categories: [Category]
   }
 
   type Mutation {
-    createUser(email: String, firstName: String, lastName: String): User
+    createUser(email: String): User
     createDraft(
       slug: String!
       title: String!
