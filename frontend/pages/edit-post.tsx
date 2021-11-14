@@ -307,12 +307,12 @@ const EditPost = () => {
           <div className="mb-6">
             <Editor postData={postData} setPostData={setPostData} />
           </div>
-
-          <div className="flex flex-row mb-6 mx-auto">
+          {/* Mutation and preview buttons */}
+          <div className="flex flex-row flex-wrap mb-6 mx-auto justify-center">
             {existingPostData?.getPost?.published && (
                 <button
                   disabled={!isEditable}
-                  className={"bg-blue-500 hover:bg-blue-600 text-md py-1 px-4 mx-2 text-white rounded-xl uppercase"}
+                  className={"bg-blue-500 hover:bg-blue-600 text-md py-1 px-4 mx-2 mb-3 text-white rounded-xl uppercase"}
                   onClick={() => handleChangePublished(false)}>
                   <h4>Unpublish</h4>
                 </button>
@@ -321,7 +321,7 @@ const EditPost = () => {
               String(userData?.role) === "ADMIN" && existingPostData?.getPost.published === false && (
                 <button
                   disabled={!isEditable}
-                  className={"bg-blue-500 hover:bg-blue-600 text-md py-1 px-4 mx-2 text-white rounded-xl uppercase"}
+                  className={"bg-blue-500 hover:bg-blue-600 text-md py-1 px-4 mx-2 mb-3 text-white rounded-xl uppercase"}
                   onClick={() => {
                     handleChangePublished(true);
                     
@@ -333,7 +333,7 @@ const EditPost = () => {
             {/* Preview */}
             <button
               disabled={!isEditable}
-              className="bg-blue-500 hover:bg-blue-600 text-md px-4 mx-2 text-white rounded-xl uppercase"
+              className="disabled:bg-gray-400 bg-blue-500 hover:bg-blue-600 text-md px-4 mx-2 mb-3 text-white rounded-xl uppercase"
               onClick={() => setShowPreview(!showPreview)}
             >
               <h4>{showPreview ? "Hide preview" : "Show preview"}</h4>
@@ -349,7 +349,7 @@ const EditPost = () => {
               disabled={!dataComplete || !isEditable}
               className={`disabled:bg-gray-400 disabled:opacity-50 bg-green-500 ${
                 dataComplete && "hover:bg-green-700"
-              } text-md py-1 px-4 mx-2 text-white  rounded-xl uppercase`}
+              } text-md py-1 px-4 mx-2 mb-3 text-white  rounded-xl uppercase`}
             >
               <h4>
               {router.query.slug ? "Submit Edits" : "Submit Post"}

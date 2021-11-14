@@ -66,7 +66,7 @@ function MenuDropdown({ setIsOpen, isOpen }) {
             }
             setIsOpen(false)}
             } className="nav-item">
-              <button className="uppercase">Submit an Article</button>
+              <button className="uppercase font-bold">Submit an Article</button>
           </li>
         </ul>
       </motion.nav>
