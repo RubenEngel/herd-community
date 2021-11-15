@@ -125,7 +125,7 @@ export default function PostPage({ post }: PostProps) {
                 setReachedEnd(true);
               }}
             >
-              <h1 className="text-4xl text-center mb-8">
+              <h1 className="text-4xl text-center mb-8 uppercase">
                 More Posts from {formatString(category, "_")}
               </h1>
             </Waypoint>
