@@ -1,12 +1,19 @@
 import { FaUserCircle } from "react-icons/fa";
 import { User } from "../lib/types";
+import capitalizeFirstLetter from "../lib/capitalizeFirstLetter";
 
 export default function Avatar({ author }: { author: User }) {
-  const name = author
-    ? author.firstName && author.lastName
-      ? `${author.firstName} ${author.lastName}`
-      : author.firstName
+  const firstName = author.firstName
+    ? capitalizeFirstLetter(author.firstName)
     : null;
+  const lastName = author.lastName
+    ? capitalizeFirstLetter(author.lastName)
+    : undefined;
+
+  const displayName =
+    firstName || lastName
+      ? `${firstName || ""} ${lastName || ""}`
+      : "HERD Author";
 
   return (
     <>
@@ -16,13 +23,13 @@ export default function Avatar({ author }: { author: User }) {
             <img
               src={author.imageUrl}
               className="w-4 h-4 rounded-full"
-              alt={name}
+              alt={displayName}
             />
           ) : (
             <FaUserCircle className="text-md" />
           )}
 
-          <div className="ml-1">{name}</div>
+          <div className="ml-1">{displayName}</div>
         </div>
       )}
     </>

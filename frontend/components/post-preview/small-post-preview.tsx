@@ -29,14 +29,14 @@ export default function SmallPostPreview({
       whileHover={{
         scale: 1.03,
         transition: {
-          duration: 0.2
-        }
+          duration: 0.2,
+        },
       }}
       whileTap={{
-        scale: 0.9
+        scale: 0.9,
       }}
     >
-      <div className="grid grid-cols-5">
+      <div className="grid grid-cols-5 gap-2">
         {/* Image */}
         <div className="mr-2 col-span-2">
           <PreviewImage
@@ -58,13 +58,15 @@ export default function SmallPostPreview({
             </Link>
           </h3>
           {/* Date */}
-          <div className="text-xs">
+          <div className="mb-2 text-xs">
             <Date date={createdAt}></Date>
           </div>
-          {/* Author */}
-          <div className="flex flex-row justify-start items-center text-xs col-span-3">
-            <Avatar author={author} />
+          <div className="lg:flex justify-between text-sm">
+            <div className="flex flex-row justify-start items-center col-span-3 ">
+              <Avatar author={author} />
+            </div>
           </div>
+          {/* Author */}
         </div>
       </div>
     </motion.div>

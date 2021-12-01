@@ -32,11 +32,12 @@ export const GET_POST = gql`
       createdAt
       featuredImage
       published
-      # author {
-      #   firstName
-      #   lastName
-      #   imageUrl
-      # }
+      author {
+        firstName
+        lastName
+        imageUrl
+        # username
+      }
       authorEmail
       categories {
         name
@@ -52,8 +53,18 @@ export const GET_POST = gql`
 `;
 
 export const GET_POSTS = gql`
-  query GetPosts($published: Boolean, $category: String, $limit: Int!, $startAfter: Int) {
-    posts(published: $published, category: $category, limit: $limit, startAfter: $startAfter) {
+  query GetPosts(
+    $published: Boolean
+    $category: String
+    $limit: Int!
+    $startAfter: Int
+  ) {
+    posts(
+      published: $published
+      category: $category
+      limit: $limit
+      startAfter: $startAfter
+    ) {
       id
       slug
       published
@@ -61,12 +72,12 @@ export const GET_POSTS = gql`
       createdAt
       featuredImage
       authorEmail
-      # author {
-      #  firstName
-      #  lastName
-      #  imageUrl
-      #  username
-      # }
+      author {
+        firstName
+        lastName
+        imageUrl
+        # username
+      }
       categories {
         name
       }
@@ -85,7 +96,6 @@ export const GET_CATEGORIES = gql`
     }
   }
 `;
-
 
 // --------------- Mutations
 
@@ -165,4 +175,4 @@ export const CHANGE_PUBLISHED = gql`
       published
     }
   }
-`
+`;

@@ -41,11 +41,11 @@ export const resolvers = {
                 },
               },
             },
-            published: published
+            published: published,
           },
           include: {
             categories: true,
-            author: true
+            author: true,
           },
           orderBy: {
             createdAt: "desc",
@@ -62,6 +62,7 @@ export const resolvers = {
         },
         include: {
           categories: true,
+          author: true,
         },
       });
     },
@@ -84,7 +85,8 @@ export const resolvers = {
       return await prisma.user.create({
         data: {
           email: email.toLowerCase(),
-        }})
+        },
+      });
     },
     createDraft: async (
       _,
@@ -129,38 +131,38 @@ export const resolvers = {
       // TODO: if slug or id
       try {
         return await prisma.post.update({
-        where: {
-          id: id,
-        },
-        data: {
-          slug: slug,
-          title: title,
-          featuredImage: featuredImage,
-          content: content,
-          categories: {
-            set: categories.map((category) => ({name: category})),
+          where: {
+            id: id,
           },
-          tags: tags,
-        },
-      });
+          data: {
+            slug: slug,
+            title: title,
+            featuredImage: featuredImage,
+            content: content,
+            categories: {
+              set: categories.map((category) => ({ name: category })),
+            },
+            tags: tags,
+          },
+        });
       } catch (error) {
         throw new ApolloError(error as string);
       }
     },
-    changePublished: async (_, {id, published}) => {
+    changePublished: async (_, { id, published }) => {
       try {
         return await prisma.post.update({
           where: {
-            id
+            id,
           },
           data: {
-            published
-          }
-        })
+            published,
+          },
+        });
       } catch (error) {
-        throw new ApolloError(error as string)
+        throw new ApolloError(error as string);
       }
-    }
+    },
   },
   DateTime: dateScalar,
 };

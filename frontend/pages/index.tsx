@@ -9,8 +9,7 @@ import { AiFillCaretRight } from "react-icons/ai";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ExploreContext } from "../lib/context";
-import { Post } from "../lib/types";
-import { useRouter } from "next/router";
+import { Category, Post } from "../lib/types";
 import type { GetStaticProps } from "next";
 
 interface CategoryPosts {
@@ -123,7 +122,9 @@ export const getStaticProps: GetStaticProps = async () => {
     query: GET_CATEGORIES,
   });
 
-  const categoryNames = categoriesRes.data.categories.map((category) => category.name);
+  const categoryNames = categoriesRes.data.categories.map(
+    (category: Category) => category.name
+  );
   categoryNames.unshift("all");
 
   let categoryPosts: { [catgoryName: string]: Post[] } = {};
@@ -131,12 +132,12 @@ export const getStaticProps: GetStaticProps = async () => {
   const limit = 6;
 
   for (let i = 0; i < categoryNames.length; ++i) {
-    let category = categoryNames[i];
-    let postsRes = await apolloClient.query({
+    const category = categoryNames[i];
+    const postsRes = await apolloClient.query({
       query: GET_POSTS,
       variables: { published: true, category: category, limit: limit },
     });
-    let posts: Post[] = postsRes.data.posts;
+    const posts: Post[] = postsRes.data.posts;
     categoryPosts[category] = [];
     categoryPosts[category].push(...posts);
   }

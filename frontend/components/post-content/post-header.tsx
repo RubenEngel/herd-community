@@ -4,15 +4,15 @@ import CoverImage from "./cover-image";
 import PostTitle from "./post-title";
 import Categories from "../categories";
 import Tags from "../../components/post-content/tags";
-import { User, Category } from "../../lib/types";
+import { Post } from "../../lib/types";
 
 interface PostHeaderProps {
-  title: string;
-  coverImage: string;
-  date?: string | Date;
-  author?: User,
-  categories?: Category[];
-  tags?: string[]
+  title: Post["title"];
+  coverImage: Post["featuredImage"];
+  date: Post["createdAt"];
+  author: Post["author"];
+  categories: Post["categories"];
+  tags: Post["tags"];
 }
 
 export default function PostHeader({
@@ -21,7 +21,7 @@ export default function PostHeader({
   date,
   author,
   categories,
-  tags
+  tags,
 }: PostHeaderProps) {
   return (
     <div className="max-w-3xl mx-auto px-4">
@@ -35,16 +35,12 @@ export default function PostHeader({
         <div>
           <Avatar author={author} />
         </div>
-        <div>
-          {date && <Date date={date} />}
-        </div>
+        <div>{date && <Date date={date} />}</div>
       </div>
       <div className="mb-8">
         <CoverImage title={title} coverImage={coverImage} />
       </div>
-      <div>
-      {tags?.length > 0 && <Tags tags={tags} />}
-      </div>
+      <div>{tags?.length > 0 && <Tags tags={tags} />}</div>
     </div>
   );
 }

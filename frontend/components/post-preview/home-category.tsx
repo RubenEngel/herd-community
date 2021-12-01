@@ -6,7 +6,7 @@ import SmallPostPreview from "./small-post-preview";
 import { ExploreContext } from "../../lib/context";
 import { Post } from "../../lib/types";
 
-function HomeCategory({
+export default function HomeCategory({
   posts,
   categoryName,
 }: {
@@ -59,5 +59,3 @@ function HomeCategory({
     </div>
   );
 }
-
-export default HomeCategory;
