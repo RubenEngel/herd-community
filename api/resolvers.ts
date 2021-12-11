@@ -1,6 +1,7 @@
 import { ApolloError } from "apollo-server-express";
 import { PrismaClient } from "@prisma/client";
 import { GraphQLScalarType } from "graphql";
+import { User } from "./node_modules/.prisma/client/index";
 
 const dateScalar = new GraphQLScalarType({
   name: "DateTime",
@@ -63,6 +64,7 @@ export const resolvers = {
         include: {
           categories: true,
           author: true,
+          likedBy: true,
         },
       });
     },
@@ -157,6 +159,26 @@ export const resolvers = {
           },
           data: {
             published,
+          },
+        });
+      } catch (error) {
+        throw new ApolloError(error as string);
+      }
+    },
+    likePost: async (_, { id }, { userEmail }) => {
+      try {
+        console.log(userEmail);
+        return await prisma.post.update({
+          where: {
+            id,
+          },
+          include: {
+            likedBy: true,
+          },
+          data: {
+            likedBy: {
+              connect: { email: userEmail },
+            },
           },
         });
       } catch (error) {

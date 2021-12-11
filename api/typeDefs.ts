@@ -6,7 +6,7 @@ export const typeDefs = gql`
   type User {
     id: Int
     email: String
-    # username: String
+    username: String
     imageUrl: String
     role: Role
     firstName: String
@@ -62,7 +62,12 @@ export const typeDefs = gql`
   }
 
   type Query {
-    posts(published: Boolean, category: String, limit: Int, startAfter: Int): [Post]
+    posts(
+      published: Boolean
+      category: String
+      limit: Int
+      startAfter: Int
+    ): [Post]
     post(slug: String!): Post
     user(email: String!): User
     categories: [Category]
@@ -88,9 +93,7 @@ export const typeDefs = gql`
       categories: [String]
       tags: [String]
     ): Post
-    changePublished(
-      id: Int!
-      published: Boolean!
-    ): Post
+    changePublished(id: Int!, published: Boolean!): Post
+    likePost(id: Int): Post
   }
 `;

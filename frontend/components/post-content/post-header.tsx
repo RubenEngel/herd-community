@@ -4,7 +4,7 @@ import CoverImage from "./cover-image";
 import PostTitle from "./post-title";
 import Categories from "../categories";
 import Tags from "../../components/post-content/tags";
-import { Post } from "../../lib/types";
+import { Post, User } from "../../lib/types";
 
 interface PostHeaderProps {
   title: Post["title"];
@@ -13,6 +13,7 @@ interface PostHeaderProps {
   author: Post["author"];
   categories: Post["categories"];
   tags: Post["tags"];
+  likedBy: User[];
 }
 
 export default function PostHeader({
@@ -22,6 +23,7 @@ export default function PostHeader({
   author,
   categories,
   tags,
+  likedBy,
 }: PostHeaderProps) {
   return (
     <div className="max-w-3xl mx-auto px-4">
@@ -37,6 +39,9 @@ export default function PostHeader({
         </div>
         <div>{date && <Date date={date} />}</div>
       </div>
+      {likedBy.map((user) => (
+        <p>{user.firstName}</p>
+      ))}
       <div className="mb-8">
         <CoverImage title={title} coverImage={coverImage} />
       </div>

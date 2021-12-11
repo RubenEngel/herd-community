@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { BiUpvote } from "react-icons/bi";
 import { FiShare, FiEdit3 } from "react-icons/fi";
-import { BiCommentDetail } from "react-icons/bi";
-import { useRouter } from "next/router";
+// import { BiCommentDetail } from "react-icons/bi";
+// import { useRouter } from "next/router";
 import Link from "next/link";
 
 const InteractionButton = (props) => {
@@ -14,7 +14,8 @@ const InteractionButton = (props) => {
         scale: 1.2,
         transition: { duration: 0.2 },
       }}
-      className="text-3xl p-4 flex items-center "
+      whileTap={{ scale: 1.4 }}
+      className={`text-3xl p-4 flex items-center`}
     >
       {props.children}
     </motion.button>
@@ -33,16 +34,14 @@ const showing = {
   scale: 1,
 };
 
-const PostInteractions = ({
-  isEditable,
-  slug,
-}: {
+const PostInteractions: React.FC<{
   isEditable: boolean;
+  isLiked: boolean;
   slug: string;
-}) => {
+}> = ({ isEditable, isLiked = false, slug }) => {
+  // const router = useRouter();
 
-
-  const router = useRouter();
+  const [liked, setLiked] = useState(isLiked);
 
   return (
     <motion.div
@@ -55,7 +54,7 @@ const PostInteractions = ({
       className="text-primary fixed bottom-0 right-0 w-20 -mr-6 z-10"
     >
       {isEditable && (
-        <Link href={{ pathname: '/edit-post', query: { slug: slug }} }>
+        <Link href={{ pathname: "/edit-post", query: { slug: slug } }}>
           <a>
             <InteractionButton>
               <FiEdit3 />
@@ -63,15 +62,15 @@ const PostInteractions = ({
           </a>
         </Link>
       )}
-      <InteractionButton>
-        <BiUpvote />
+      <InteractionButton onClick={() => setLiked(!liked)}>
+        <BiUpvote fill={liked ? "#47B36B" : null} />
       </InteractionButton>
       <InteractionButton>
         <FiShare />
       </InteractionButton>
-      <InteractionButton>
+      {/* <InteractionButton>
         <BiCommentDetail />
-      </InteractionButton>
+      </InteractionButton> */}
     </motion.div>
   );
 };

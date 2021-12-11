@@ -1,27 +1,57 @@
 import { useMemo } from "react";
-import { ApolloClient, HttpLink, InMemoryCache, NormalizedCacheObject } from "@apollo/client";
+import {
+  ApolloClient,
+  HttpLink,
+  InMemoryCache,
+  NormalizedCacheObject,
+} from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
 import merge from "deepmerge";
 import isEqual from "lodash/isEqual";
+import { auth } from "../lib/firebase";
 
 export const APOLLO_STATE_PROP_NAME = "__APOLLO_STATE__";
 
 let apolloClient: ApolloClient<NormalizedCacheObject>;
 
+const authLink = setContext(async (_, { headers }) => {
+  // return the headers to the context so httpLink can read them
+
+  const authEmail = await auth.currentUser?.email;
+  const isVerified = await auth.currentUser?.emailVerified;
+
+  return {
+    headers: {
+      ...headers,
+      authorization: isVerified ? authEmail : null,
+    },
+  };
+});
+
+const httpLink = new HttpLink({
+  uri: process.env.API_URL,
+});
+
 function createApolloClient() {
   return new ApolloClient({
     ssrMode: typeof window === "undefined",
-    link: new HttpLink({
-      uri: process.env.API_URL,
-    }),
+    link: authLink.concat(httpLink),
     cache: new InMemoryCache({
       typePolicies: {
         Query: {
           fields: {
             posts: {
               keyArgs: ["category", "published"],
-              merge(existing: {__ref: string}[] = [], incoming: {__ref: string}[]) {
-                const existingRefs: string[] = existing.map((postRef) => postRef.__ref)
-                const newPosts: {__ref: string}[] = incoming.filter((postRef) => !existingRefs.includes(postRef.__ref))
+              merge(
+                existing: { __ref: string }[] = [],
+                incoming: { __ref: string }[]
+              ) {
+                const existingRefs: string[] = existing.map(
+                  (postRef) => postRef.__ref
+                );
+                const newPosts: { __ref: string }[] = incoming.filter(
+                  (postRef) => !existingRefs.includes(postRef.__ref)
+                );
                 return [...existing, ...newPosts];
               },
             },

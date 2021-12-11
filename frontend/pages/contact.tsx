@@ -1,6 +1,6 @@
-import Layout from '../components/layout';
+import Layout from "../components/layout";
 
-export default function Contact() {
+export default function Contact(): React.FC {
   return (
     <Layout>
       <h1>Contact</h1>

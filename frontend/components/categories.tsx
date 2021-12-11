@@ -5,9 +5,7 @@ import { motion } from "framer-motion";
 import { Category } from "../lib/types";
 import capitalizeFirstLetter from "../lib/capitalizeFirstLetter";
 
-const Categories: React.FC<{
-  categories: Category[];
-}> = ({ categories }) => {
+export default function Categories({ categories }: { categories: Category[] }) {
   const { setCategory } = useContext(ExploreContext);
 
   return (
@@ -35,6 +33,4 @@ const Categories: React.FC<{
       ))}
     </div>
   );
-};
-
-export default Categories;
+}

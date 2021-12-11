@@ -21,6 +21,7 @@ import { Waypoint } from "react-waypoint";
 import formatString from "../../lib/formatString";
 import { ExploreContext } from "../../lib/context";
 import PostInteractions from "../../components/header/post-interactions";
+import { useMutation } from "@apollo/client";
 
 interface PostProps {
   post: Post;
@@ -36,16 +37,18 @@ export default function PostPage({ post }: PostProps) {
   const { userData } = useContext(UserContext);
 
   // Check if user can edit post, own post or ADMIN account
-    const [isEditable, setIsEditable] = useState(false);
+  const [isEditable, setIsEditable] = useState(false);
 
-    useEffect(() => {
-    if (userData?.email && (userData.email === post.author?.email)) {
+  useEffect(() => {
+    if (userData?.email && userData.email === post.author?.email) {
       setIsEditable(true);
     }
     if (String(userData?.role) === "ADMIN") {
       setIsEditable(true);
     }
   }, [userData]);
+
+  // useMutation()
 
   const { category } = useContext(ExploreContext);
 
@@ -91,6 +94,7 @@ export default function PostPage({ post }: PostProps) {
                 <PostInteractions
                   slug={post.slug}
                   isEditable={isEditable}
+                  isLiked={false}
                 />
               )}
             </AnimatePresence>
@@ -101,6 +105,7 @@ export default function PostPage({ post }: PostProps) {
               author={post.author}
               categories={post.categories}
               tags={post.tags}
+              likedBy={post.likedBy}
             />
             {!reachedEnd && startedReading && (
               <div className="w-screen">
@@ -130,7 +135,12 @@ export default function PostPage({ post }: PostProps) {
               </h1>
             </Waypoint>
           </div>
-          <PostList published startLoad={reachedEnd} category={category} limit={3} />
+          <PostList
+            published
+            startLoad={reachedEnd}
+            category={category}
+            limit={3}
+          />
         </>
       )}
     </>
@@ -151,7 +161,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     props: {
       post: post,
     },
-    revalidate: 30
+    revalidate: 30,
   });
 };
 

@@ -36,7 +36,7 @@ export const GET_POST = gql`
         firstName
         lastName
         imageUrl
-        # username
+        username
       }
       authorEmail
       categories {
@@ -47,6 +47,8 @@ export const GET_POST = gql`
       likedBy {
         firstName
         lastName
+        imageUrl
+        username
       }
     }
   }
@@ -76,7 +78,7 @@ export const GET_POSTS = gql`
         firstName
         lastName
         imageUrl
-        # username
+        username
       }
       categories {
         name

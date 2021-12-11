@@ -15,6 +15,7 @@ export interface User extends PrismaUser {}
 export interface Post extends PrismaPost {
   author: User;
   categories: Category[];
+  likedBy: User[];
 }
 
 export interface Category extends PrimsaCategory {}
