@@ -1,6 +1,7 @@
 import { ApolloError } from "apollo-server-express";
 import { PrismaClient } from "@prisma/client";
 import { GraphQLScalarType } from "graphql";
+import { User } from "./node_modules/.prisma/client/index";
 
 const dateScalar = new GraphQLScalarType({
   name: "DateTime",
@@ -41,11 +42,11 @@ export const resolvers = {
                 },
               },
             },
-            published: published
+            published: published,
           },
           include: {
             categories: true,
-            author: true
+            author: true,
           },
           orderBy: {
             createdAt: "desc",
@@ -62,6 +63,11 @@ export const resolvers = {
         },
         include: {
           categories: true,
+          author: true,
+          likedBy: true,
+          _count: {
+            select: { likedBy: true },
+          },
         },
       });
     },
@@ -75,6 +81,16 @@ export const resolvers = {
     categories: async () => {
       return prisma.category.findMany();
     },
+    likedBy: async (_, { id }) => {
+      return prisma.post.findUnique({
+        where: {
+          id: id,
+        },
+        select: {
+          likedBy: true,
+        },
+      });
+    },
   },
   Mutation: {
     // updateUser
@@ -84,7 +100,8 @@ export const resolvers = {
       return await prisma.user.create({
         data: {
           email: email.toLowerCase(),
-        }})
+        },
+      });
     },
     createDraft: async (
       _,
@@ -129,38 +146,60 @@ export const resolvers = {
       // TODO: if slug or id
       try {
         return await prisma.post.update({
-        where: {
-          id: id,
-        },
-        data: {
-          slug: slug,
-          title: title,
-          featuredImage: featuredImage,
-          content: content,
-          categories: {
-            set: categories.map((category) => ({name: category})),
+          where: {
+            id: id,
           },
-          tags: tags,
-        },
-      });
+          data: {
+            slug: slug,
+            title: title,
+            featuredImage: featuredImage,
+            content: content,
+            categories: {
+              set: categories.map((category) => ({ name: category })),
+            },
+            tags: tags,
+          },
+        });
       } catch (error) {
         throw new ApolloError(error as string);
       }
     },
-    changePublished: async (_, {id, published}) => {
+    changePublished: async (_, { id, published }) => {
       try {
         return await prisma.post.update({
           where: {
-            id
+            id,
           },
           data: {
-            published
-          }
-        })
+            published,
+          },
+        });
       } catch (error) {
-        throw new ApolloError(error as string)
+        throw new ApolloError(error as string);
       }
-    }
+    },
+    likePost: async (_, { id }, { userEmail }) => {
+      try {
+        return await prisma.post.update({
+          where: {
+            id,
+          },
+          include: {
+            likedBy: true,
+            _count: {
+              select: { likedBy: true },
+            },
+          },
+          data: {
+            likedBy: {
+              connect: { email: userEmail },
+            },
+          },
+        });
+      } catch (error) {
+        throw new ApolloError(error as string);
+      }
+    },
   },
   DateTime: dateScalar,
 };

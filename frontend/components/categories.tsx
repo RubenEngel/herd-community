@@ -3,12 +3,9 @@ import { useContext } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Category } from "../lib/types";
+import capitalizeFirstLetter from "../lib/capitalizeFirstLetter";
 
-export default function Categories({ categories }: {categories: Category[]}) {
-  function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-  }
-
+export default function Categories({ categories }: { categories: Category[] }) {
   const { setCategory } = useContext(ExploreContext);
 
   return (
@@ -16,12 +13,12 @@ export default function Categories({ categories }: {categories: Category[]}) {
       {categories?.map((category, index) => (
         <motion.button
           whileHover={{
-            scale: 1.05
+            scale: 1.05,
           }}
           whileTap={{
-            scale: 0.9
+            scale: 0.9,
           }}
-          key={index}
+          key={category.name}
           className="text-md border mr-2 mb-2 bg-primary px-3 rounded-xl text-secondary"
         >
           <Link href={"/explore"}>

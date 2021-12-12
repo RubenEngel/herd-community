@@ -32,28 +32,45 @@ export const GET_POST = gql`
       createdAt
       featuredImage
       published
-      # author {
-      #   firstName
-      #   lastName
-      #   imageUrl
-      # }
+      author {
+        firstName
+        lastName
+        imageUrl
+        username
+      }
       authorEmail
       categories {
         name
       }
       tags
       content
-      likedBy {
-        firstName
-        lastName
+      # likedBy {
+      #   id
+      #   firstName
+      #   lastName
+      #   imageUrl
+      #   username
+      # }
+      _count {
+        likedBy
       }
     }
   }
 `;
 
 export const GET_POSTS = gql`
-  query GetPosts($published: Boolean, $category: String, $limit: Int!, $startAfter: Int) {
-    posts(published: $published, category: $category, limit: $limit, startAfter: $startAfter) {
+  query GetPosts(
+    $published: Boolean
+    $category: String
+    $limit: Int!
+    $startAfter: Int
+  ) {
+    posts(
+      published: $published
+      category: $category
+      limit: $limit
+      startAfter: $startAfter
+    ) {
       id
       slug
       published
@@ -61,19 +78,16 @@ export const GET_POSTS = gql`
       createdAt
       featuredImage
       authorEmail
-      # author {
-      #  firstName
-      #  lastName
-      #  imageUrl
-      #  username
-      # }
+      author {
+        firstName
+        lastName
+        imageUrl
+        username
+      }
       categories {
         name
       }
       tags
-      likedBy {
-        id
-      }
     }
   }
 `;
@@ -86,6 +100,18 @@ export const GET_CATEGORIES = gql`
   }
 `;
 
+export const LIKED_BY = gql`
+  query LikedBy($id: Int) {
+    likedBy(id: $id) {
+      likedBy {
+        id
+        firstName
+        lastName
+        username
+      }
+    }
+  }
+`;
 
 // --------------- Mutations
 
@@ -165,4 +191,17 @@ export const CHANGE_PUBLISHED = gql`
       published
     }
   }
-`
+`;
+
+export const LIKE_POST = gql`
+  mutation LikePost($id: Int!) {
+    likePost(id: $id) {
+      likedBy {
+        id
+      }
+      _count {
+        likedBy
+      }
+    }
+  }
+`;

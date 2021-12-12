@@ -6,7 +6,7 @@ export const typeDefs = gql`
   type User {
     id: Int
     email: String
-    # username: String
+    username: String
     imageUrl: String
     role: Role
     firstName: String
@@ -17,6 +17,10 @@ export const typeDefs = gql`
     likedComments: [Comment]
     following: [User]
     followers: [User]
+  }
+
+  type LikedByCount {
+    likedBy: Int
   }
 
   type Post {
@@ -32,6 +36,7 @@ export const typeDefs = gql`
     authorEmail: String
     comments: [Comment]
     likedBy: [User]
+    _count: LikedByCount
     categories: [Category]
     tags: [String]
   }
@@ -62,10 +67,16 @@ export const typeDefs = gql`
   }
 
   type Query {
-    posts(published: Boolean, category: String, limit: Int, startAfter: Int): [Post]
+    posts(
+      published: Boolean
+      category: String
+      limit: Int
+      startAfter: Int
+    ): [Post]
     post(slug: String!): Post
     user(email: String!): User
     categories: [Category]
+    likedBy(id: Int): Post
   }
 
   type Mutation {
@@ -88,9 +99,7 @@ export const typeDefs = gql`
       categories: [String]
       tags: [String]
     ): Post
-    changePublished(
-      id: Int!
-      published: Boolean!
-    ): Post
+    changePublished(id: Int!, published: Boolean!): Post
+    likePost(id: Int): Post
   }
 `;

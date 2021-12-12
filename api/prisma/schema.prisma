@@ -2,8 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 datasource db {
-  provider          = "postgresql"
-  url               = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 generator client {
@@ -14,7 +14,7 @@ model User {
   id            Int       @id @default(autoincrement())
   email         String    @unique
   role          Role      @default(USER)
-  username      String?    @unique
+  username      String?   @unique
   firstName     String?
   lastName      String?
   imageUrl      String?
@@ -36,7 +36,7 @@ model Post {
   title         String
   featuredImage String?
   content       String
-  author        User?       @relation(name: "PostHasAuthor", fields: [authorEmail], references: [email])
+  author        User?      @relation(name: "PostHasAuthor", fields: [authorEmail], references: [email])
   authorEmail   String?
   comments      Comment[]  @relation("PostHasComment")
   likedBy       User[]     @relation("UserPostLikes", references: [id])

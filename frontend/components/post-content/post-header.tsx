@@ -4,25 +4,27 @@ import CoverImage from "./cover-image";
 import PostTitle from "./post-title";
 import Categories from "../categories";
 import Tags from "../../components/post-content/tags";
-import { User, Category } from "../../lib/types";
+import { Post, User } from "../../lib/types";
 
 interface PostHeaderProps {
-  title: string;
-  coverImage: string;
-  date?: string | Date;
-  author?: User,
-  categories?: Category[];
-  tags?: string[]
+  title: Post["title"];
+  coverImage: Post["featuredImage"];
+  date?: Post["createdAt"];
+  author?: Post["author"];
+  categories?: Post["categories"];
+  tags?: Post["tags"];
+  likeCount?: number;
 }
 
-export default function PostHeader({
+const PostHeader: React.FC<PostHeaderProps> = ({
   title,
   coverImage,
   date,
   author,
   categories,
-  tags
-}: PostHeaderProps) {
+  tags,
+  likeCount,
+}) => {
   return (
     <div className="max-w-3xl mx-auto px-4">
       <div className="">
@@ -31,20 +33,21 @@ export default function PostHeader({
       <div className="my-6">
         {categories && <Categories categories={categories} />}
       </div>
+      {Number(likeCount) > 0 && (
+        <p>{`${likeCount} like${likeCount > 1 ? "s" : ""}`}</p>
+      )}
       <div className="flex flex-row justify-between mb-6 ">
         <div>
           <Avatar author={author} />
         </div>
-        <div>
-          {date && <Date date={date} />}
-        </div>
+        <div>{date && <Date date={date} />}</div>
       </div>
       <div className="mb-8">
         <CoverImage title={title} coverImage={coverImage} />
       </div>
-      <div>
-      {tags?.length > 0 && <Tags tags={tags} />}
-      </div>
+      <div>{tags?.length > 0 && <Tags tags={tags} />}</div>
     </div>
   );
-}
+};
+
+export default PostHeader;

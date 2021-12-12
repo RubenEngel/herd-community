@@ -16,6 +16,11 @@ async function startApolloServer(typeDefs, resolvers) {
   const server = new ApolloServer({
     typeDefs,
     resolvers,
+    context: ({ req }) => {
+      const userEmail = req.headers.authorization || "";
+      // Add the user email to the context
+      return { userEmail };
+    },
   });
 
   await server.start();
