@@ -44,7 +44,7 @@ export default function PostPreview({
           },
         }}
         whileTap={{
-          scale: 0.9,
+          scale: 0.95,
         }}
         className="flex mx-auto my-2 flex-col justify-center rounded-lg "
       >

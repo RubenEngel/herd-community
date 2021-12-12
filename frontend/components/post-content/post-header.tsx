@@ -4,7 +4,7 @@ import CoverImage from "./cover-image";
 import PostTitle from "./post-title";
 import Categories from "../categories";
 import Tags from "../../components/post-content/tags";
-import { Post, User } from "../../lib/types";
+import { Post } from "../../lib/types";
 
 interface PostHeaderProps {
   title: Post["title"];
@@ -30,12 +30,15 @@ const PostHeader: React.FC<PostHeaderProps> = ({
       <div className="">
         <PostTitle>{title}</PostTitle>
       </div>
-      <div className="my-6">
+      <div className="my-6 flex justify-between items-center">
         {categories && <Categories categories={categories} />}
+        {likeCount > 0 && (
+          <div className="mb-3">{`${likeCount} like${
+            likeCount > 1 ? "s" : ""
+          }`}</div>
+        )}
       </div>
-      {Number(likeCount) > 0 && (
-        <p>{`${likeCount} like${likeCount > 1 ? "s" : ""}`}</p>
-      )}
+
       <div className="flex flex-row justify-between mb-6 ">
         <div>
           <Avatar author={author} />

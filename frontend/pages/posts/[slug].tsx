@@ -59,44 +59,42 @@ export default function PostPage({ post }: PostProps) {
     { data: likeMutationData, error: likeError, loading: likeLoading },
   ] = useMutation(LIKE_POST, {
     variables: {
-      id: post.id,
+      id: post?.id,
     },
   });
 
   const { data: likedByData } = useQuery(LIKED_BY, {
     variables: {
-      id: post.id,
+      id: post?.id,
     },
   });
 
-  const [likedBy, setLikedBy] = useState<
-    {
-      firstName: string;
-      lastName: string;
-      id: number;
-      username: string;
-    }[]
-  >();
+  type LikedBy = {
+    firstName: string;
+    lastName: string;
+    id: number;
+    username: string;
+  }[];
+
+  const [likedBy, setLikedBy] = useState<LikedBy>();
 
   useEffect(() => {
     if (likedByData) {
-      const likedByArray = likedByData.likedBy.likedBy;
+      const likedByArray: LikedBy = likedByData.likedBy.likedBy;
       setLikedBy(likedByArray);
-      setIsLiked(likedByArray?.some((user) => user.id === userData?.id));
+      setIsLiked(likedByArray?.some((user) => user?.id === userData?.id));
     }
   }, [likedByData, userData]);
 
   useEffect(() => {
     if (likeMutationData) {
-      const likedByArray = likeMutationData.likePost.likedBy;
+      const likedByArray: LikedBy = likeMutationData.likePost.likedBy;
       setLikedBy(likedByArray);
-      setIsLiked(likedByArray?.some((user) => user.id === userData.id));
+      setIsLiked(likedByArray?.some((user) => user?.id === userData?.id));
     }
   }, [likeMutationData, userData]);
 
-  const [isLiked, setIsLiked] = useState(
-    likedBy?.some((user) => user.id === userData?.id)
-  );
+  const [isLiked, setIsLiked] = useState(false);
 
   const { category } = useContext(ExploreContext);
 
