@@ -65,6 +65,9 @@ export const resolvers = {
           categories: true,
           author: true,
           likedBy: true,
+          _count: {
+            select: { likedBy: true },
+          },
         },
       });
     },
@@ -77,6 +80,16 @@ export const resolvers = {
     },
     categories: async () => {
       return prisma.category.findMany();
+    },
+    likedBy: async (_, { id }) => {
+      return prisma.post.findUnique({
+        where: {
+          id: id,
+        },
+        select: {
+          likedBy: true,
+        },
+      });
     },
   },
   Mutation: {
@@ -167,13 +180,15 @@ export const resolvers = {
     },
     likePost: async (_, { id }, { userEmail }) => {
       try {
-        console.log(userEmail);
         return await prisma.post.update({
           where: {
             id,
           },
           include: {
             likedBy: true,
+            _count: {
+              select: { likedBy: true },
+            },
           },
           data: {
             likedBy: {

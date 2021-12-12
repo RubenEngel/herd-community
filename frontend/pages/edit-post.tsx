@@ -14,6 +14,7 @@ import Tags from "../components/post-content/tags";
 import { useRouter } from "next/router";
 import { Post } from "../lib/types";
 import { v4 as uuid } from "uuid";
+import { time } from "console";
 
 // TODO: Check if user admin again
 
@@ -63,7 +64,7 @@ const EditPost = () => {
   const [showPreview, setShowPreview] = useState(false);
   const [tag, setTag] = useState<string>("");
   const [dataComplete, setDataComplete] = useState(false);
-  const [editPostId, setEditPostId] = useState<string | undefined>(
+  const [editPostId, setEditPostId] = useState<number | undefined>(
     existingPostData?.post?.id
   );
 
@@ -195,9 +196,7 @@ const EditPost = () => {
   let allCategories: string[];
 
   if (categoryData)
-    allCategories = categoryData.categories?.map(
-      (category) => category.name
-    );
+    allCategories = categoryData.categories?.map((category) => category.name);
 
   // Add / remove categories component
   const CategorySelect = ({ categoryName }: { categoryName: string }) => {

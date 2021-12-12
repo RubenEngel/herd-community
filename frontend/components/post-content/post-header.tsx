@@ -9,22 +9,22 @@ import { Post, User } from "../../lib/types";
 interface PostHeaderProps {
   title: Post["title"];
   coverImage: Post["featuredImage"];
-  date: Post["createdAt"];
-  author: Post["author"];
-  categories: Post["categories"];
-  tags: Post["tags"];
-  likedBy: User[];
+  date?: Post["createdAt"];
+  author?: Post["author"];
+  categories?: Post["categories"];
+  tags?: Post["tags"];
+  likeCount?: number;
 }
 
-export default function PostHeader({
+const PostHeader: React.FC<PostHeaderProps> = ({
   title,
   coverImage,
   date,
   author,
   categories,
   tags,
-  likedBy,
-}: PostHeaderProps) {
+  likeCount,
+}) => {
   return (
     <div className="max-w-3xl mx-auto px-4">
       <div className="">
@@ -33,19 +33,21 @@ export default function PostHeader({
       <div className="my-6">
         {categories && <Categories categories={categories} />}
       </div>
+      {Number(likeCount) > 0 && (
+        <p>{`${likeCount} like${likeCount > 1 ? "s" : ""}`}</p>
+      )}
       <div className="flex flex-row justify-between mb-6 ">
         <div>
           <Avatar author={author} />
         </div>
         <div>{date && <Date date={date} />}</div>
       </div>
-      {likedBy.map((user) => (
-        <p>{user.firstName}</p>
-      ))}
       <div className="mb-8">
         <CoverImage title={title} coverImage={coverImage} />
       </div>
       <div>{tags?.length > 0 && <Tags tags={tags} />}</div>
     </div>
   );
-}
+};
+
+export default PostHeader;

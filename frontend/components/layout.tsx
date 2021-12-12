@@ -1,8 +1,7 @@
 import Meta from "./meta";
 import Header from "./header/header";
-import { motion } from "framer-motion";
 
-export default function Layout({ children }): React.FC {
+const Layout = ({ children }) => {
   return (
     <>
       <Meta />
@@ -12,4 +11,6 @@ export default function Layout({ children }): React.FC {
       </div>
     </>
   );
-}
+};
+
+export default Layout;

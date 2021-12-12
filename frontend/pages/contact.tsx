@@ -1,9 +1,11 @@
 import Layout from "../components/layout";
 
-export default function Contact(): React.FC {
+const Contact = () => {
   return (
     <Layout>
       <h1>Contact</h1>
     </Layout>
   );
-}
+};
+
+export default Contact;

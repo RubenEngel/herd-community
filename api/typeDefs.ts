@@ -19,6 +19,10 @@ export const typeDefs = gql`
     followers: [User]
   }
 
+  type LikedByCount {
+    likedBy: Int
+  }
+
   type Post {
     id: Int
     slug: String
@@ -32,6 +36,7 @@ export const typeDefs = gql`
     authorEmail: String
     comments: [Comment]
     likedBy: [User]
+    _count: LikedByCount
     categories: [Category]
     tags: [String]
   }
@@ -71,6 +76,7 @@ export const typeDefs = gql`
     post(slug: String!): Post
     user(email: String!): User
     categories: [Category]
+    likedBy(id: Int): Post
   }
 
   type Mutation {

@@ -5,6 +5,7 @@ import { FiShare, FiEdit3 } from "react-icons/fi";
 // import { BiCommentDetail } from "react-icons/bi";
 // import { useRouter } from "next/router";
 import Link from "next/link";
+import { FetchResult, MutationFunctionOptions } from "@apollo/client";
 
 const InteractionButton = (props) => {
   return (
@@ -15,7 +16,7 @@ const InteractionButton = (props) => {
         transition: { duration: 0.2 },
       }}
       whileTap={{ scale: 1.4 }}
-      className={`text-3xl p-4 flex items-center`}
+      className={`text-3xl p-4 flex flex-col items-center`}
     >
       {props.children}
     </motion.button>
@@ -38,10 +39,21 @@ const PostInteractions: React.FC<{
   isEditable: boolean;
   isLiked: boolean;
   slug: string;
-}> = ({ isEditable, isLiked = false, slug }) => {
-  // const router = useRouter();
-
-  const [liked, setLiked] = useState(isLiked);
+  likeCount: number;
+  likePost: (
+    options?: MutationFunctionOptions<
+      any,
+      {
+        id: number;
+      }
+    >
+  ) => Promise<FetchResult<any, Record<string, any>, Record<string, any>>>;
+}> = ({ isEditable, isLiked, slug, likePost, likeCount }) => {
+  const handleLike = () => {
+    if (!isLiked) {
+      likePost();
+    }
+  };
 
   return (
     <motion.div
@@ -62,8 +74,9 @@ const PostInteractions: React.FC<{
           </a>
         </Link>
       )}
-      <InteractionButton onClick={() => setLiked(!liked)}>
-        <BiUpvote fill={liked ? "#47B36B" : null} />
+      <InteractionButton onClick={handleLike}>
+        <BiUpvote fill={isLiked ? "#47B36B" : "#5c5c5ce6"} />
+        {likeCount > 0 && <div className="text-sm block">{likeCount}</div>}
       </InteractionButton>
       <InteractionButton>
         <FiShare />

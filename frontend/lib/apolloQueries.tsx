@@ -44,11 +44,15 @@ export const GET_POST = gql`
       }
       tags
       content
-      likedBy {
-        firstName
-        lastName
-        imageUrl
-        username
+      # likedBy {
+      #   id
+      #   firstName
+      #   lastName
+      #   imageUrl
+      #   username
+      # }
+      _count {
+        likedBy
       }
     }
   }
@@ -84,9 +88,6 @@ export const GET_POSTS = gql`
         name
       }
       tags
-      likedBy {
-        id
-      }
     }
   }
 `;
@@ -95,6 +96,19 @@ export const GET_CATEGORIES = gql`
   query GetCategories {
     categories {
       name
+    }
+  }
+`;
+
+export const LIKED_BY = gql`
+  query LikedBy($id: Int) {
+    likedBy(id: $id) {
+      likedBy {
+        id
+        firstName
+        lastName
+        username
+      }
     }
   }
 `;
@@ -175,6 +189,19 @@ export const CHANGE_PUBLISHED = gql`
     changePublished(id: $id, published: $published) {
       id
       published
+    }
+  }
+`;
+
+export const LIKE_POST = gql`
+  mutation LikePost($id: Int!) {
+    likePost(id: $id) {
+      likedBy {
+        id
+      }
+      _count {
+        likedBy
+      }
     }
   }
 `;

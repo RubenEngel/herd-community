@@ -16,6 +16,9 @@ export interface Post extends PrismaPost {
   author: User;
   categories: Category[];
   likedBy: User[];
+  _count: {
+    likedBy: number;
+  };
 }
 
 export interface Category extends PrimsaCategory {}
