@@ -63,11 +63,14 @@ export default function PostPage({ post }: PostProps) {
     },
   });
 
-  const { data: likedByData } = useQuery(LIKED_BY, {
-    variables: {
-      id: post?.id,
-    },
-  });
+  const { data: likedByData, loading: likedByDataLoading } = useQuery(
+    LIKED_BY,
+    {
+      variables: {
+        id: post?.id,
+      },
+    }
+  );
 
   type LikedBy = {
     firstName: string;
@@ -76,21 +79,23 @@ export default function PostPage({ post }: PostProps) {
     username: string;
   }[];
 
-  const [likedBy, setLikedBy] = useState<LikedBy>();
+  const [likedBy, setLikedBy] = useState<LikedBy>([]);
 
   useEffect(() => {
+    if (!userData) return;
     if (likedByData) {
       const likedByArray: LikedBy = likedByData.likedBy.likedBy;
       setLikedBy(likedByArray);
-      setIsLiked(likedByArray?.some((user) => user?.id === userData?.id));
+      setIsLiked(likedByArray.some((user) => user.id === userData.id));
     }
   }, [likedByData, userData]);
 
   useEffect(() => {
+    if (!userData) return;
     if (likeMutationData) {
       const likedByArray: LikedBy = likeMutationData.likePost.likedBy;
       setLikedBy(likedByArray);
-      setIsLiked(likedByArray?.some((user) => user?.id === userData?.id));
+      setIsLiked(likedByArray.some((user) => user.id === userData.id));
     }
   }, [likeMutationData, userData]);
 
@@ -138,7 +143,7 @@ export default function PostPage({ post }: PostProps) {
             <AnimatePresence>
               {startedReading && (
                 <PostInteractions
-                  likeCount={likedBy.length}
+                  likeCount={likedBy?.length}
                   slug={post.slug}
                   isEditable={isEditable}
                   isLiked={isLiked}
@@ -154,6 +159,7 @@ export default function PostPage({ post }: PostProps) {
               categories={post.categories}
               tags={post.tags}
               likeCount={likedBy?.length}
+              likedByDataLoading={likedByDataLoading}
             />
             {!reachedEnd && startedReading && (
               <div className="w-screen">

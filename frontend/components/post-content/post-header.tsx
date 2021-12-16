@@ -5,6 +5,7 @@ import PostTitle from "./post-title";
 import Categories from "../categories";
 import Tags from "../../components/post-content/tags";
 import { Post } from "../../lib/types";
+import Loading from "../loading";
 
 interface PostHeaderProps {
   title: Post["title"];
@@ -14,6 +15,7 @@ interface PostHeaderProps {
   categories?: Post["categories"];
   tags?: Post["tags"];
   likeCount?: number;
+  likedByDataLoading: boolean;
 }
 
 const PostHeader: React.FC<PostHeaderProps> = ({
@@ -24,6 +26,7 @@ const PostHeader: React.FC<PostHeaderProps> = ({
   categories,
   tags,
   likeCount,
+  likedByDataLoading,
 }) => {
   return (
     <div className="max-w-3xl mx-auto px-4">
@@ -32,6 +35,7 @@ const PostHeader: React.FC<PostHeaderProps> = ({
       </div>
       <div className="my-6 flex justify-between items-center">
         {categories && <Categories categories={categories} />}
+        {likedByDataLoading && <Loading fontSize="text-sm" />}
         {likeCount > 0 && (
           <div className="mb-3">{`${likeCount} like${
             likeCount > 1 ? "s" : ""
