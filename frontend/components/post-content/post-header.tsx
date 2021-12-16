@@ -15,7 +15,7 @@ interface PostHeaderProps {
   categories?: Post["categories"];
   tags?: Post["tags"];
   likeCount?: number;
-  likedByDataLoading: boolean;
+  likedByDataLoading?: boolean;
 }
 
 const PostHeader: React.FC<PostHeaderProps> = ({
