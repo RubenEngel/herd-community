@@ -22,7 +22,6 @@
   },
   "homepage": "https://github.com/RubenEngel/herd-community#readme",
   "dependencies": {
-    "@types/tailwindcss": "^2.2.4",
     "graphql": "^15.7.2"
   },
   "devDependencies": {
