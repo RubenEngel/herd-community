@@ -81,7 +81,10 @@ function MyApp({ Component, pageProps }: AppProps) {
               ) : (
                 // When site has been entered
                 <Layout>
-                  <AnimatePresence exitBeforeEnter>
+                  <AnimatePresence
+                    onExitComplete={() => window.scrollTo(0, 0)}
+                    exitBeforeEnter
+                  >
                     {pageLoading ? (
                       <PageLoading key={"page-loading"} />
                     ) : (
