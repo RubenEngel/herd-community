@@ -54,13 +54,13 @@ function ProfileDropdown({ setIsOpen, isOpen }) {
               <>
                 {userData?.role.toString() === "ADMIN" && (
                   <li onClick={() => setIsOpen(false)} className="nav-item">
-                    <Link href="/admin">
+                    <Link scroll={false} href="/admin">
                       <a>Admin</a>
                     </Link>
                   </li>
                 )}
                 <li onClick={() => setIsOpen(false)} className="nav-item">
-                  <Link href="/my-account">
+                  <Link scroll={false} href="/my-account">
                     <a>Profile</a>
                   </Link>
                 </li>

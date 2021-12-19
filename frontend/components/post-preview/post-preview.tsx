@@ -60,7 +60,7 @@ export default function PostPreview({
         </div>
         {/* Title */}
         <h3 className="text-lg mb-2">
-          <Link as={`/posts/${slug}`} href="/posts/[slug]">
+          <Link scroll={false} as={`/posts/${slug}`} href="/posts/[slug]">
             <a
               className="hover:text-gray-500"
               dangerouslySetInnerHTML={{ __html: title }}

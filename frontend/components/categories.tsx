@@ -21,7 +21,7 @@ export default function Categories({ categories }: { categories: Category[] }) {
           key={category.name}
           className="text-md border mr-2 mb-2 bg-primary px-3 rounded-xl text-secondary"
         >
-          <Link href={"/explore"}>
+          <Link scroll={false} href={"/explore"}>
             <a onClick={() => setCategory(category.name)}>
               {category.name
                 .split("_")

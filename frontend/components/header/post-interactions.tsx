@@ -63,7 +63,10 @@ const PostInteractions: React.FC<{
       className="text-primary fixed bottom-4 right-0 w-20 -mr-6 z-10"
     >
       {isEditable && (
-        <Link href={{ pathname: "/edit-post", query: { slug: slug } }}>
+        <Link
+          scroll={false}
+          href={{ pathname: "/edit-post", query: { slug: slug } }}
+        >
           <a>
             <InteractionButton>
               <FiEdit3 />

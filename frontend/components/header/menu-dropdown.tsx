@@ -1,7 +1,7 @@
-import React, {useContext} from "react";
+import React, { useContext } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import {SignInContext, UserContext} from "../../lib/context"
+import { SignInContext, UserContext } from "../../lib/context";
 import router from "next/router";
 import toast from "react-hot-toast";
 
@@ -17,10 +17,9 @@ const transition = {
 };
 
 function MenuDropdown({ setIsOpen, isOpen }) {
+  const setShowSignIn = useContext(SignInContext);
 
-  const setShowSignIn = useContext(SignInContext)
-
-  const {userAuth} = useContext(UserContext)
+  const { userAuth } = useContext(UserContext);
 
   return (
     <motion.div
@@ -38,13 +37,13 @@ function MenuDropdown({ setIsOpen, isOpen }) {
         transition={transition}
       >
         <ul>
-        <li onClick={() => setIsOpen(false)} className="nav-item">
-            <Link href="/">
+          <li onClick={() => setIsOpen(false)} className="nav-item">
+            <Link scroll={false} href="/">
               <a>Home</a>
             </Link>
           </li>
           <li onClick={() => setIsOpen(false)} className="nav-item">
-            <Link href="/about-us">
+            <Link scroll={false} href="/about-us">
               <a>About Us</a>
             </Link>
           </li>
@@ -54,21 +53,23 @@ function MenuDropdown({ setIsOpen, isOpen }) {
             </Link>
           </li> */}
           <li onClick={() => setIsOpen(false)} className="nav-item">
-            <Link href="/explore">
+            <Link scroll={false} href="/explore">
               <a>Explore</a>
             </Link>
           </li>
-          <li onClick={() => {
-            if (!userAuth) {
-              setShowSignIn(true)
-            } else {
-              router.push("/edit-post")
-            }
-            setIsOpen(false)}
-            } className="nav-item">
-              <button className="uppercase font-bold">Submit an Article</button>
+          <li
+            onClick={() => {
+              if (!userAuth) {
+                setShowSignIn(true);
+              } else {
+                router.push("/edit-post");
+              }
+              setIsOpen(false);
+            }}
+            className="nav-item"
+          >
+            <button className="uppercase font-bold">Submit an Article</button>
           </li>
-
         </ul>
       </motion.nav>
     </motion.div>

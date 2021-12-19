@@ -35,7 +35,7 @@ const Index = ({ categoryPosts }: IndexProps) => {
         </Head>
         {/* --------------- Latest Posts Heading ----------------- */}
         <div className="px-4">
-          <Link href="/explore">
+          <Link scroll={false} href="/explore">
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.9 }}
