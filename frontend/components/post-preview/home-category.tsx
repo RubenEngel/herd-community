@@ -24,8 +24,8 @@ export default function HomeCategory({
       <div className="px-4">
         <Link scroll={false} href="/explore">
           <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.9 }}
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
             className="flex mx-auto max-w-md justify-center bg-primary w-full text-secondary items-center rounded-xl p-1 lg:p-2 font-bold"
             onClick={(e) => setCategory(e.currentTarget.textContent)}
           >

@@ -52,7 +52,7 @@ export default function SmallPostPreview({
           <h3 className="text-sm mb-2 leading-snug">
             <Link scroll={false} as={`/posts/${slug}`} href="/posts/[slug]">
               <a
-                className="hover:text-gray-500"
+                className="hover:text-primary"
                 dangerouslySetInnerHTML={{ __html: title }}
               ></a>
             </Link>

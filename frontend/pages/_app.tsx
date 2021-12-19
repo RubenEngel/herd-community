@@ -5,8 +5,7 @@ import { ADD_USER, GET_USER } from "../lib/apolloQueries";
 import { useApollo } from "../lib/apolloClient";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
-import Loading from "../components/loading";
-import { motion, AnimatePresence, Variants } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { ExploreContext, UserContext, SignInContext } from "../lib/context";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../lib/firebase";
@@ -14,8 +13,10 @@ import { Toaster } from "react-hot-toast";
 import Layout from "../components/layout";
 import type { AppProps } from "next/app";
 import { User } from "../lib/types";
-import SignIn from "../components/sign-in";
-import { BsArrowUp } from "react-icons/bs";
+import Intro from "../components/intro";
+import PageLoading from "../components/page-loading";
+import SignInModal from "../components/sign-in-modal";
+import PageTransition from "../components/page-transition";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const apolloClient = useApollo(pageProps);
@@ -47,10 +48,8 @@ function MyApp({ Component, pageProps }: AppProps) {
       },
     });
     if (res.data.user) {
-      console.log("Found User");
       setUserData(res.data.user);
     } else {
-      console.log("no user exists");
       await apolloClient.mutate({
         mutation: ADD_USER,
         variables: {
@@ -78,107 +77,21 @@ function MyApp({ Component, pageProps }: AppProps) {
           <SignInContext.Provider value={setShowSignIn}>
             <AnimatePresence exitBeforeEnter>
               {firstLoad ? (
-                <motion.div
-                  exit={{ scale: 0 }}
-                  key={router.route}
-                  className="w-screen h-75-screen flex flex-col justify-center items-center"
-                >
-                  <motion.h1
-                    initial={{ y: 100, scale: 0 }}
-                    animate={{ y: 0, scale: 1 }}
-                    transition={{ type: "spring", duration: 0.8 }}
-                    className="text-7xl flex"
-                  >
-                    {"HERD.".split("").map((letter, index) => (
-                      <motion.div
-                        key={index}
-                        initial={{ y: 0 }}
-                        animate={{ y: 10 }}
-                        transition={{
-                          delay: 0.2 * index,
-                          ease: "easeInOut",
-                          repeat: Infinity,
-                          repeatType: "reverse",
-                          duration: "HERD.".length * 0.3,
-                        }}
-                      >
-                        {letter}
-                      </motion.div>
-                    ))}
-                  </motion.h1>
-                  <motion.button
-                    className="bg-primary mt-20 text-white px-4 py-2 rounded-full text-3xl"
-                    onClick={() => setFirstLoad(false)}
-                    initial={{ y: 50, scale: 0 }}
-                    animate={{ y: 0, scale: 1 }}
-                    transition={{ delay: 0.3, type: "spring", duration: 0.7 }}
-                  >
-                    <BsArrowUp />
-                  </motion.button>
-                </motion.div>
+                <Intro key={router.route} setFirstLoad={setFirstLoad} />
               ) : (
                 // When site has been entered
                 <Layout>
                   <AnimatePresence exitBeforeEnter>
                     {pageLoading ? (
-                      <motion.div
-                        key={"loading"}
-                        initial={{ opacity: 0, y: 50, scale: 0 }}
-                        animate={{
-                          opacity: 1,
-                          y: 0,
-                          scale: 1,
-                        }}
-                        exit={{
-                          opacity: 0,
-                          y: 50,
-                          scale: 0,
-                        }}
-                        className="h-50-screen flex flex-col justify-center items-center "
-                        transition={{
-                          type: "spring",
-                          bounce: 0,
-                          duration: 0.4,
-                        }}
-                      >
-                        <Loading />
-                      </motion.div>
+                      <PageLoading key={"page-loading"} />
                     ) : (
-                      <motion.div
-                        key={router.route}
-                        initial={{
-                          opacity: 0,
-                          y: -200,
-                        }}
-                        animate={{
-                          opacity: 1,
-                          y: 0,
-                          x: 0,
-                        }}
-                        exit={{
-                          opacity: 0,
-                          y: 200,
-                        }}
-                        transition={{
-                          duration: 0.4,
-                          ease: "easeInOut",
-                          type: "linear",
-                        }}
-                      >
+                      <PageTransition key={router.route}>
                         <Component {...pageProps} />
-                      </motion.div>
+                      </PageTransition>
                     )}
                   </AnimatePresence>
                   {!user && showSignIn && (
-                    <div className="fixed flex flex-col h-screen w-screen justify-center left-0 bottom-0 bg-primary z-10">
-                      <SignIn />
-                      <button
-                        onClick={() => setShowSignIn(false)}
-                        className="fixed bottom-10 left-1/2 transform -translate-x-1/2 uppercase"
-                      >
-                        <h3 className="text-white">Not now</h3>
-                      </button>
-                    </div>
+                    <SignInModal setShowSignIn={setShowSignIn} />
                   )}
                 </Layout>
               )}

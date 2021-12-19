@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { motion } from "framer-motion";
 import { ExploreContext } from "../../lib/context";
 
@@ -38,6 +38,7 @@ function CategoryDropdown({ isOpen, setIsOpen }) {
         transition={transition}
       >
         <ul>
+          {}
           <li
             className="nav-item"
             onClick={(e) => {

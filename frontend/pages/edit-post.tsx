@@ -236,7 +236,10 @@ const EditPost = () => {
       <h1 className="text-3xl text-center mb-6 text-bold uppercase">
         Post Editor
       </h1>
-      <AnimatePresence exitBeforeEnter>
+      <AnimatePresence
+        onExitComplete={() => window.scrollTo(0, 0)}
+        exitBeforeEnter
+      >
         {!ready && !existingPostData ? (
           <motion.div key="intro" exit={{ opacity: 0 }}>
             <SubmitIntro setReady={setReady} />

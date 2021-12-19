@@ -212,6 +212,7 @@ export default function PostPage({ post }: PostProps) {
                 />
               </div>
             )}
+            <motion.div></motion.div>
             <PostBody content={post.content} />
           </article>
           <div>

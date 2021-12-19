@@ -40,7 +40,7 @@ export default function PostPreview({
           },
         }}
         whileTap={{
-          scale: 0.95,
+          scale: 0.97,
         }}
         className="flex mx-auto my-2 flex-col justify-center rounded-lg "
       >
@@ -62,7 +62,7 @@ export default function PostPreview({
         <h3 className="text-lg mb-2">
           <Link scroll={false} as={`/posts/${slug}`} href="/posts/[slug]">
             <a
-              className="hover:text-gray-500"
+              className="hover:text-primary"
               dangerouslySetInnerHTML={{ __html: title }}
             ></a>
           </Link>

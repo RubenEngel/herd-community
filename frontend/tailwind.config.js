@@ -7,8 +7,8 @@ module.exports = {
   ],
   variants: {
     extend: {
-      opacity: ['disabled'],
-    }
+      opacity: ["disabled"],
+    },
   },
   theme: {
     extend: {
@@ -18,7 +18,7 @@ module.exports = {
         "accent-7": "#333",
         success: "#0070f3",
         cyan: "#79FFE1",
-        primary: "#5c5c5ce6",
+        primary: "rgba(29,29,29,0.95)",
         secondary: "#ffffffe8",
       },
       spacing: {

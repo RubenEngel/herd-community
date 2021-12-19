@@ -143,7 +143,9 @@ export default function Header() {
               transition={{ duration: 0.5 }}
               className="pt-4 -z-10"
             >
-              <button
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={() => {
                   setCategoryNavbarOpen(!categoryNavbarOpen);
                   setProfileNavbarOpen(false);
@@ -155,7 +157,7 @@ export default function Header() {
                   Browsing {formatString(category, "_")}
                 </p>
                 <RiArrowDropDownFill className="text-3xl" />
-              </button>
+              </motion.button>
             </motion.div>
             <CategoryDropdown
               setIsOpen={setCategoryNavbarOpen}

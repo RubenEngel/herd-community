@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { UserContext, SignInContext } from "../../lib/context";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import firebase from "../../lib/firebase";
+// import firebase from "../../lib/firebase";
 
 const menuVariants = {
   open: { opacity: 1, y: 0 },

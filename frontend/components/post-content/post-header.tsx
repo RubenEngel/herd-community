@@ -86,8 +86,8 @@ const PostHeader: React.FC<PostHeaderProps> = ({
         className="mb-8"
       >
         <CoverImage title={title} coverImage={coverImage} />
+        <div>{tags?.length > 0 && <Tags tags={tags} />}</div>
       </motion.div>
-      <div>{tags?.length > 0 && <Tags tags={tags} />}</div>
     </div>
   );
 };

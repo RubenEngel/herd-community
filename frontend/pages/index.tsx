@@ -40,7 +40,7 @@ const Index = ({ categoryPosts }: IndexProps) => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.9 }}
               className="flex max-w-screen-md justify-center mx-auto bg-primary w-full text-secondary items-center rounded-xl p-1 lg:p-2 font-bold"
-              onClick={(e) => setCategory("all")}
+              onClick={() => setCategory("all")}
             >
               <h1 className="text-lg uppercase mr-4 text-center">
                 Latest Stories
