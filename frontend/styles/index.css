@@ -61,9 +61,3 @@ h4 {
 .min-h-50-screen {
   min-height: 50vh;
 }
-
-.nav-item {
-  font-family: "Adamina", serif;
-
-  @apply text-secondary mx-2 my-3 text-lg items-center uppercase font-bold leading-snug;
-}

@@ -1,4 +1,5 @@
 import React from "react";
+import Button from "./button";
 
 const StepHeading = ({ children }) => (
   <h2 className="text-md font-bold mb-2 mt-5">{children}</h2>
@@ -40,11 +41,13 @@ const SubmitIntro = ({ setReady }: SubmitIntroProps) => {
         <a className="text-blue-800" target="_blank" href="https://imgbb.com/">
           https://imgbb.com/
         </a>{" "}
-        to get an image link. You can insert images in the main body of your article by pasting a link.
+        to get an image link. You can insert images in the main body of your
+        article by pasting a link.
       </p>
       <StepHeading>5. Questions</StepHeading>
       <p>
-        We’re always happy to help. Just drop us a direct message on Instagram and we’ll be able to assist you.
+        We’re always happy to help. Just drop us a direct message on Instagram
+        and we’ll be able to assist you.
       </p>
       <StepHeading>5. Submission</StepHeading>
       <p>
@@ -52,14 +55,14 @@ const SubmitIntro = ({ setReady }: SubmitIntroProps) => {
         before approving it for the HERD.
       </p>
       <div className="text-center">
-        <button
+        <Button
           onClick={() => {
             setReady(true);
           }}
           className="bg-green-600 text-white p-3 mt-10 mb-5 rounded-lg mx-auto uppercase"
         >
           <h4>I'm ready to write!</h4>
-        </button>
+        </Button>
       </div>
     </>
   );

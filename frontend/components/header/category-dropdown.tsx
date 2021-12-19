@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { motion } from "framer-motion";
 import { ExploreContext } from "../../lib/context";
+import NavItem from "../nav-item";
 
 function CategoryDropdown({ isOpen, setIsOpen }) {
   const { setCategory } = useContext(ExploreContext);
@@ -38,61 +39,54 @@ function CategoryDropdown({ isOpen, setIsOpen }) {
         transition={transition}
       >
         <ul>
-          {}
-          <li
-            className="nav-item"
-            onClick={(e) => {
-              setCategory(e.currentTarget.textContent);
+          <NavItem
+            onClick={() => {
+              setCategory("all");
               setIsOpen(false);
             }}
           >
-            <button className="uppercase">All</button>
-          </li>
-          <li
-            className="nav-item"
-            onClick={(e) => {
-              setCategory(e.currentTarget.textContent);
+            All
+          </NavItem>
+          <NavItem
+            onClick={() => {
+              setCategory("culture");
               setIsOpen(false);
             }}
           >
-            <button className="uppercase">Culture</button>
-          </li>
-          <li
-            className="nav-item"
-            onClick={(e) => {
-              setCategory(e.currentTarget.textContent);
+            Culture
+          </NavItem>
+          <NavItem
+            onClick={() => {
+              setCategory("sport");
               setIsOpen(false);
             }}
           >
-            <button className="uppercase">Sport</button>
-          </li>
-          <li
-            className="nav-item"
-            onClick={(e) => {
-              setCategory(e.currentTarget.textContent);
+            Sport
+          </NavItem>
+          <NavItem
+            onClick={() => {
+              setCategory("Current Affairs");
               setIsOpen(false);
             }}
           >
-            <button className="uppercase">Current Affairs</button>
-          </li>
-          <li
-            className="nav-item"
-            onClick={(e) => {
-              setCategory(e.currentTarget.textContent);
+            Current Affairs
+          </NavItem>
+          <NavItem
+            onClick={() => {
+              setCategory("Climate");
               setIsOpen(false);
             }}
           >
-            <button className="uppercase">Climate</button>
-          </li>
-          <li
-            className="nav-item"
-            onClick={(e) => {
-              setCategory(e.currentTarget.textContent);
+            Climate
+          </NavItem>
+          <NavItem
+            onClick={() => {
+              setCategory("Lifestyle");
               setIsOpen(false);
             }}
           >
-            <button className="uppercase">Lifestyle</button>
-          </li>
+            Lifestyle
+          </NavItem>
         </ul>
       </motion.nav>
     </motion.div>

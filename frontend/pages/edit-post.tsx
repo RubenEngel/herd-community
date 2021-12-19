@@ -16,6 +16,7 @@ import { Post } from "../lib/types";
 import { v4 as uuid } from "uuid";
 import { time } from "console";
 import { AnimatePresence, motion } from "framer-motion";
+import Button from "../components/button";
 
 // TODO: Check if user admin again
 
@@ -217,7 +218,7 @@ const EditPost = () => {
       }
     };
     return (
-      <button
+      <Button
         className={`px-3 py-1 mr-4 mb-3 text-md rounded-full uppercase ${
           postData.categories?.includes(categoryName)
             ? "bg-green-500 text-white"
@@ -226,7 +227,7 @@ const EditPost = () => {
         onClick={handleChange}
       >
         {formatString(categoryName, "_")}
-      </button>
+      </Button>
     );
   };
 
@@ -272,7 +273,7 @@ const EditPost = () => {
             {/*  Current Tags */}
             <div className="flex flex-row flex-wrap">
               {postData.tags?.map((tagName) => (
-                <button
+                <Button
                   key={uuid()}
                   id={tagName}
                   onClick={(e) =>
@@ -284,7 +285,7 @@ const EditPost = () => {
                   className="cursor-pointer py-1 px-3 mr-2 mb-3 text-md rounded-full text-white bg-green-500 hover:bg-red-500 hover:text-gray-100"
                 >
                   {tagName}
-                </button>
+                </Button>
               ))}
             </div>
             {/* Add Tags */}
@@ -295,7 +296,7 @@ const EditPost = () => {
                 value={tag}
                 onChange={(e) => setTag(e.target.value)}
               />
-              <button
+              <Button
                 className="ml-2 px-3 py-1 text-white bg-green-500 rounded-lg uppercase text-sm"
                 onClick={() => {
                   setPostData({
@@ -306,7 +307,7 @@ const EditPost = () => {
                 }}
               >
                 Add tag
-              </button>
+              </Button>
             </div>
             {/* Image */}
             <SubmitHeading>Featured Image URL</SubmitHeading>
@@ -332,7 +333,7 @@ const EditPost = () => {
             {/* Mutation and preview buttons */}
             <div className="flex flex-row flex-wrap mb-6 mx-auto justify-center">
               {existingPostData?.post?.published && (
-                <button
+                <Button
                   disabled={!isEditable}
                   className={
                     "bg-blue-500 hover:bg-blue-600 text-md py-2 px-4 mx-2 mb-3 text-white rounded-xl uppercase"
@@ -340,11 +341,11 @@ const EditPost = () => {
                   onClick={() => handleChangePublished(false)}
                 >
                   <h4>Unpublish</h4>
-                </button>
+                </Button>
               )}
               {String(userData?.role) === "ADMIN" &&
                 existingPostData?.post.published === false && (
-                  <button
+                  <Button
                     disabled={!isEditable}
                     className={
                       "bg-blue-500 hover:bg-blue-600 text-md py-2 px-4 mx-2 mb-3 text-white rounded-xl uppercase"
@@ -354,17 +355,17 @@ const EditPost = () => {
                     }}
                   >
                     <h4>Publish</h4>
-                  </button>
+                  </Button>
                 )}
               {/* Preview */}
-              <button
+              <Button
                 disabled={!isEditable}
                 className="disabled:bg-gray-400 bg-blue-500 hover:bg-blue-600 text-md px-4 py-2 mx-2 mb-3 text-white rounded-xl uppercase"
                 onClick={() => setShowPreview(!showPreview)}
               >
                 <h4>{showPreview ? "Hide preview" : "Show preview"}</h4>
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={() => {
                   if (router.query.slug) {
                     handleEdit();
@@ -383,7 +384,7 @@ const EditPost = () => {
                     {!dataComplete && "(Incomplete fields)"}
                   </p>
                 </h4>
-              </button>
+              </Button>
             </div>
 
             {showPreview && (

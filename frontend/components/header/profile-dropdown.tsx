@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { UserContext, SignInContext } from "../../lib/context";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import NavItem from "../nav-item";
 // import firebase from "../../lib/firebase";
 
 const menuVariants = {
@@ -37,33 +38,30 @@ function ProfileDropdown({ setIsOpen, isOpen }) {
         >
           <ul>
             {!userAuth && (
-              <li
+              <NavItem
                 onClick={() => {
                   setIsOpen(false);
                   setShowSignIn(true);
                 }}
-                className="nav-item"
               >
-                {/* <Link href="/my-account"> */}
-                <button className="uppercase">Sign In</button>
-                {/* </Link> */}
-              </li>
+                Sign In
+              </NavItem>
             )}
 
             {userAuth && (
               <>
                 {userData?.role.toString() === "ADMIN" && (
-                  <li onClick={() => setIsOpen(false)} className="nav-item">
+                  <NavItem onClick={() => setIsOpen(false)}>
                     <Link scroll={false} href="/admin">
-                      <a>Admin</a>
+                      Admin
                     </Link>
-                  </li>
+                  </NavItem>
                 )}
-                <li onClick={() => setIsOpen(false)} className="nav-item">
+                <NavItem onClick={() => setIsOpen(false)}>
                   <Link scroll={false} href="/my-account">
-                    <a>Profile</a>
+                    Profile
                   </Link>
-                </li>
+                </NavItem>
                 {/* <li
                   onClick={() => {
                     firebase.auth().signOut();

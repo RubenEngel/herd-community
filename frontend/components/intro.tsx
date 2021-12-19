@@ -14,13 +14,13 @@ const Intro: React.FC<{ setFirstLoad: Dispatch<SetStateAction<boolean>> }> = ({
         initial={{ y: 100, scale: 0 }}
         animate={{ y: 0, scale: 1 }}
         transition={{ type: "spring", duration: 0.8 }}
-        className="text-7xl flex"
+        className="md:text-7xl text-6xl flex"
       >
         {"HERD.".split("").map((letter, index) => (
           <motion.div
             key={index}
-            initial={{ y: 0 }}
-            animate={{ y: 15 }}
+            initial={{ scale: 1 }}
+            animate={{ scale: 1.2 }}
             transition={{
               delay: 0.2 * index,
               ease: "easeInOut",
@@ -28,9 +28,9 @@ const Intro: React.FC<{ setFirstLoad: Dispatch<SetStateAction<boolean>> }> = ({
               repeatType: "reverse",
               duration: "HERD.".length * 0.3,
             }}
-            className="mx-1"
+            className="mx-2"
           >
-            {letter}
+            <span>{letter}</span>
           </motion.div>
         ))}
       </motion.h1>

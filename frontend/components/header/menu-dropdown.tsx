@@ -1,9 +1,10 @@
-import React, { useContext } from "react";
+import React, { Dispatch, SetStateAction, useContext } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { SignInContext, UserContext } from "../../lib/context";
 import router from "next/router";
 import toast from "react-hot-toast";
+import NavItem from "../nav-item";
 
 const menuVariants = {
   open: { opacity: 1, y: 0 },
@@ -16,7 +17,10 @@ const transition = {
   duration: 0.4,
 };
 
-function MenuDropdown({ setIsOpen, isOpen }) {
+const MenuDropdown: React.FC<{
+  isOpen: boolean;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
+}> = ({ setIsOpen, isOpen }) => {
   const setShowSignIn = useContext(SignInContext);
 
   const { userAuth } = useContext(UserContext);
@@ -37,27 +41,19 @@ function MenuDropdown({ setIsOpen, isOpen }) {
         transition={transition}
       >
         <ul>
-          <li onClick={() => setIsOpen(false)} className="nav-item">
-            <Link scroll={false} href="/">
-              <a>Home</a>
-            </Link>
-          </li>
-          <li onClick={() => setIsOpen(false)} className="nav-item">
-            <Link scroll={false} href="/about-us">
-              <a>About Us</a>
-            </Link>
-          </li>
-          {/* <li className="nav-item">
-            <Link href='/search'>
-                <a>Search</a>
-            </Link>
-          </li> */}
-          <li onClick={() => setIsOpen(false)} className="nav-item">
-            <Link scroll={false} href="/explore">
-              <a>Explore</a>
-            </Link>
-          </li>
-          <li
+          <NavItem onClick={() => setIsOpen(false)}>
+            <Link href="/">Home</Link>
+          </NavItem>
+          <NavItem onClick={() => setIsOpen(false)}>
+            <Link href="/about-us">About Us</Link>
+          </NavItem>
+          <NavItem onClick={() => setIsOpen(false)}>
+            <Link href="/search">Search</Link>
+          </NavItem>
+          <NavItem onClick={() => setIsOpen(false)}>
+            <Link href="/explore">Explore</Link>
+          </NavItem>
+          <NavItem
             onClick={() => {
               if (!userAuth) {
                 setShowSignIn(true);
@@ -66,14 +62,13 @@ function MenuDropdown({ setIsOpen, isOpen }) {
               }
               setIsOpen(false);
             }}
-            className="nav-item"
           >
-            <button className="uppercase font-bold">Submit an Article</button>
-          </li>
+            <Link href="/edit-post">Submit an Article</Link>
+          </NavItem>
         </ul>
       </motion.nav>
     </motion.div>
   );
-}
+};
 
 export default MenuDropdown;

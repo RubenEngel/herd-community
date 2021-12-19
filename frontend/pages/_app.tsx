@@ -5,7 +5,7 @@ import { ADD_USER, GET_USER } from "../lib/apolloQueries";
 import { useApollo } from "../lib/apolloClient";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import { ExploreContext, UserContext, SignInContext } from "../lib/context";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../lib/firebase";
@@ -24,16 +24,17 @@ function MyApp({ Component, pageProps }: AppProps) {
   const [pageLoading, setPageLoading] = useState(false);
   const [user, loading] = useAuthState(auth);
   const [userData, setUserData] = useState<User>(null);
-
+  const [firstLoad, setFirstLoad] = useState(true);
   const [category, setCategory] = useState("all");
   const categoryState = { category, setCategory };
 
   const [showSignIn, setShowSignIn] = useState(false);
   useEffect(() => {
-    if (!user) {
-      setTimeout(() => setShowSignIn(true), 1000);
+    if (!user && !firstLoad) {
+      setTimeout(() => setShowSignIn(true), 3000);
+      console.log("true say");
     } else setShowSignIn(false);
-  }, [loading]);
+  }, [user, firstLoad]);
 
   useEffect(() => {
     router.events.on("routeChangeStart", () => setPageLoading(true));
@@ -56,7 +57,6 @@ function MyApp({ Component, pageProps }: AppProps) {
           email: user.email,
         },
       });
-      console.log("New User Created");
     }
   };
 
@@ -67,8 +67,6 @@ function MyApp({ Component, pageProps }: AppProps) {
       findOrCreateUser();
     }
   }, [user]);
-
-  const [firstLoad, setFirstLoad] = useState(true);
 
   return (
     <ApolloProvider client={apolloClient}>
@@ -82,13 +80,13 @@ function MyApp({ Component, pageProps }: AppProps) {
                 // When site has been entered
                 <Layout>
                   <AnimatePresence
-                    onExitComplete={() => window.scrollTo(0, 0)}
+                    onExitComplete={() => window?.scrollTo(0, 0)}
                     exitBeforeEnter
                   >
                     {pageLoading ? (
                       <PageLoading key={"page-loading"} />
                     ) : (
-                      <PageTransition key={router.route}>
+                      <PageTransition key={router.asPath}>
                         <Component {...pageProps} />
                       </PageTransition>
                     )}

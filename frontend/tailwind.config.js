@@ -36,6 +36,10 @@ module.exports = {
       minWidth: {
         sm: "24rem",
       },
+      fontFamily: {
+        heading: ["Adamina", "serif"],
+        serif: "Adamina, serif",
+      },
       fontSize: {
         "5xl": "2.5rem",
         "6xl": "2.75rem",

@@ -151,7 +151,7 @@ export default function Header() {
                   setProfileNavbarOpen(false);
                   setMenuNavbarOpen(false);
                 }}
-                className="flex flex-row items-center mx-auto focus:outline-none"
+                className="flex flex-row items-center mx-auto focus:outline-none font-serif"
               >
                 <p className="uppercase nav-item">
                   Browsing {formatString(category, "_")}
