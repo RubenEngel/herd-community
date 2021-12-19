@@ -1,4 +1,5 @@
 import cn from "classnames";
+import { motion } from "framer-motion";
 import Link from "next/link";
 
 export default function CoverImage({
@@ -13,9 +14,6 @@ export default function CoverImage({
   const image = (
     <img
       src={coverImage}
-      // width={500}
-      // height={500}
-      // objectFit="cover"
       className={cn("shadow-small m-auto", {
         "hover:shadow-medium transition-shadow duration-200 rounded-xl": slug,
       })}

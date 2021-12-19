@@ -40,21 +40,18 @@ const PostInteractions: React.FC<{
   isLiked: boolean;
   slug: string;
   likeCount: number;
-  likePost: (
-    options?: MutationFunctionOptions<
-      any,
-      {
-        id: number;
-      }
-    >
-  ) => Promise<FetchResult<any, Record<string, any>, Record<string, any>>>;
-}> = ({ isEditable, isLiked, slug, likePost, likeCount }) => {
-  const handleLike = () => {
-    if (!isLiked) {
-      likePost();
-    }
-  };
-
+  handleLike: () => void;
+  handleShare: () => void;
+  isSharable: boolean;
+}> = ({
+  isEditable,
+  isLiked,
+  slug,
+  handleLike,
+  handleShare,
+  likeCount,
+  isSharable,
+}) => {
   return (
     <motion.div
       initial={hidden}
@@ -63,7 +60,7 @@ const PostInteractions: React.FC<{
       transition={{
         duration: 0.4,
       }}
-      className="text-primary fixed bottom-0 right-0 w-20 -mr-6 z-10"
+      className="text-primary fixed bottom-4 right-0 w-20 -mr-6 z-10"
     >
       {isEditable && (
         <Link href={{ pathname: "/edit-post", query: { slug: slug } }}>
@@ -78,9 +75,11 @@ const PostInteractions: React.FC<{
         <BiUpvote fill={isLiked ? "#47B36B" : "#5c5c5ce6"} />
         {likeCount > 0 && <div className="text-sm block">{likeCount}</div>}
       </InteractionButton>
-      <InteractionButton>
-        <FiShare />
-      </InteractionButton>
+      {isSharable && (
+        <InteractionButton onClick={handleShare}>
+          <FiShare />
+        </InteractionButton>
+      )}
       {/* <InteractionButton>
         <BiCommentDetail />
       </InteractionButton> */}

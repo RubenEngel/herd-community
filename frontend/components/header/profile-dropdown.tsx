@@ -1,9 +1,8 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { UserContext, SignInContext } from "../../lib/context";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import firebase, { auth } from "../../lib/firebase";
-import { useAuthState } from 'react-firebase-hooks/auth';
+import firebase from "../../lib/firebase";
 
 const menuVariants = {
   open: { opacity: 1, y: 0 },
@@ -18,7 +17,7 @@ const transition = {
 
 function ProfileDropdown({ setIsOpen, isOpen }) {
   const { userAuth, userData } = useContext(UserContext);
-  const setShowSignIn = useContext(SignInContext)
+  const setShowSignIn = useContext(SignInContext);
 
   return (
     <>
@@ -65,7 +64,7 @@ function ProfileDropdown({ setIsOpen, isOpen }) {
                     <a>Profile</a>
                   </Link>
                 </li>
-                <li
+                {/* <li
                   onClick={() => {
                     firebase.auth().signOut();
                     setIsOpen(false);
@@ -73,7 +72,7 @@ function ProfileDropdown({ setIsOpen, isOpen }) {
                   className="nav-item cursor-pointer"
                 >
                   Sign Out
-                </li>
+                </li> */}
               </>
             )}
           </ul>

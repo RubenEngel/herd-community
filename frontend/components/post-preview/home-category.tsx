@@ -5,6 +5,7 @@ import PostPreview from "./post-preview";
 import SmallPostPreview from "./small-post-preview";
 import { ExploreContext } from "../../lib/context";
 import { Post } from "../../lib/types";
+import { motion } from "framer-motion";
 
 export default function HomeCategory({
   posts,
@@ -20,19 +21,22 @@ export default function HomeCategory({
 
   return (
     <div>
-      <div className="text-center bg-primary w-100 lg:mx-12 rounded-xl p-1 m-4 lg:p-2 font-bold text-secondary">
+      <div className="px-4">
         <Link href="/explore">
-          <button
-            className="flex items-center font-bold mx-auto"
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.9 }}
+            className="flex mx-auto max-w-md justify-center bg-primary w-full text-secondary items-center rounded-xl p-1 lg:p-2 font-bold"
             onClick={(e) => setCategory(e.currentTarget.textContent)}
           >
             <h1 className="text-lg mr-4 uppercase">
               {categoryName.split("_").join(" ")}
             </h1>
             <AiFillCaretRight />
-          </button>
+          </motion.button>
         </Link>
       </div>
+
       <div className="p-4 md:p-6 lg:p-10">
         <PostPreview
           key={latestPost.slug}

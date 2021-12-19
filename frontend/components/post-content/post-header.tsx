@@ -6,6 +6,7 @@ import Categories from "../categories";
 import Tags from "../../components/post-content/tags";
 import { Post } from "../../lib/types";
 import Loading from "../loading";
+import { motion, Transition, Variants } from "framer-motion";
 
 interface PostHeaderProps {
   title: Post["title"];
@@ -28,30 +29,64 @@ const PostHeader: React.FC<PostHeaderProps> = ({
   likeCount,
   likedByDataLoading,
 }) => {
+  const variants: Variants = {
+    hidden: {
+      y: -50,
+      opacity: 0,
+    },
+    show: {
+      y: 0,
+      opacity: 1,
+    },
+  };
+
+  const transition: Transition = {
+    type: "bounce",
+    duration: 0.4,
+    bounce: 0,
+  };
+
   return (
     <div className="max-w-3xl mx-auto px-4">
-      <div className="">
+      <motion.div
+        variants={variants}
+        initial={"hidden"}
+        animate={"show"}
+        transition={transition}
+      >
         <PostTitle>{title}</PostTitle>
-      </div>
-      <div className="my-6 flex justify-between items-center">
-        {categories && <Categories categories={categories} />}
-        {likedByDataLoading && <Loading fontSize="text-sm" />}
-        {likeCount > 0 && (
-          <div className="mb-3">{`${likeCount} like${
-            likeCount > 1 ? "s" : ""
-          }`}</div>
-        )}
-      </div>
+        <div className="my-6 flex justify-between items-center">
+          {categories && <Categories categories={categories} />}
+          {likedByDataLoading && <Loading fontSize="text-sm" />}
+          {likeCount > 0 && (
+            <div className="mb-3">{`${likeCount} like${
+              likeCount > 1 ? "s" : ""
+            }`}</div>
+          )}
+        </div>
+      </motion.div>
 
-      <div className="flex flex-row justify-between mb-6 ">
+      <motion.div
+        variants={variants}
+        initial={"hidden"}
+        animate={"show"}
+        transition={{ ...transition, delay: 0.2 }}
+        className="flex flex-row justify-between mb-6 "
+      >
         <div>
           <Avatar author={author} />
         </div>
         <div>{date && <Date date={date} />}</div>
-      </div>
-      <div className="mb-8">
+      </motion.div>
+      <motion.div
+        variants={variants}
+        initial={{ opacity: 0 }}
+        animate={"show"}
+        transition={{ ...transition, delay: 0.4 }}
+        className="mb-8"
+      >
         <CoverImage title={title} coverImage={coverImage} />
-      </div>
+      </motion.div>
       <div>{tags?.length > 0 && <Tags tags={tags} />}</div>
     </div>
   );

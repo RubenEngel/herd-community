@@ -15,7 +15,7 @@ import {
 import { addApolloState, initializeApollo } from "../../lib/apolloClient";
 import { Post } from "../../lib/types";
 import PostList from "../../components/post-list";
-import { UserContext } from "../../lib/context";
+import { SignInContext, UserContext } from "../../lib/context";
 import {
   motion,
   useViewportScroll,
@@ -40,6 +40,7 @@ export default function PostPage({ post }: PostProps) {
   }
 
   const { userData } = useContext(UserContext);
+  const setShowSignin = useContext(SignInContext);
 
   // Check if user can edit post, own post or ADMIN account
   const [isEditable, setIsEditable] = useState(false);
@@ -53,7 +54,7 @@ export default function PostPage({ post }: PostProps) {
     }
   }, [userData]);
 
-  // Post liking function and state
+  // ----- Post liking function and state
   const [
     likePost,
     { data: likeMutationData, error: likeError, loading: likeLoading },
@@ -103,6 +104,40 @@ export default function PostPage({ post }: PostProps) {
 
   const { category } = useContext(ExploreContext);
 
+  const handleLike = () => {
+    if (!userData) return setShowSignin(true);
+    if (!isLiked) likePost();
+  };
+
+  // ---- Post sharing
+  const [isSharable, setIsShareable] = useState(false);
+
+  useEffect(() => {
+    if (navigator?.share) setIsShareable(true);
+  }, []);
+
+  const handleShare = async () => {
+    console.log(navigator);
+    if (navigator.share) {
+      try {
+        await navigator
+          .share({
+            url: router.asPath,
+            title: post.title,
+            text: "Check out this article on HERD!",
+          })
+          .then(() => console.log("The post was shared!"));
+      } catch (error) {
+        console.log(`Oops! I couldn't share because: ${error}`);
+      }
+    } else {
+      // fallback code
+      console.log(
+        "Web share is currently not supported on this browser. Please provide a callback"
+      );
+    }
+  };
+
   // ---> Scroll progress bar
   const [startedReading, setStartedReading] = useState(false);
   const [percentageComplete, setPercentageComplete] = useState(0);
@@ -147,7 +182,9 @@ export default function PostPage({ post }: PostProps) {
                   slug={post.slug}
                   isEditable={isEditable}
                   isLiked={isLiked}
-                  likePost={likePost}
+                  isSharable={isSharable}
+                  handleLike={handleLike}
+                  handleShare={handleShare}
                 />
               )}
             </AnimatePresence>

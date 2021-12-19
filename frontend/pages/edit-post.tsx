@@ -15,6 +15,7 @@ import { useRouter } from "next/router";
 import { Post } from "../lib/types";
 import { v4 as uuid } from "uuid";
 import { time } from "console";
+import { AnimatePresence, motion } from "framer-motion";
 
 // TODO: Check if user admin again
 
@@ -235,158 +236,167 @@ const EditPost = () => {
       <h1 className="text-3xl text-center mb-6 text-bold uppercase">
         Post Editor
       </h1>
-      {!ready && !existingPostData ? (
-        <SubmitIntro setReady={setReady} />
-      ) : (
-        <div className="flex flex-col">
-          {/* Title */}
-          <SubmitHeading>Title</SubmitHeading>
-          <InputBox
-            value={postData.title}
-            onChange={(e) =>
-              setPostData({ ...postData, title: e.target.value })
-            }
-            type="string"
-          />
-          {/* Categories */}
-          <SubmitHeading>Select Categories</SubmitHeading>
-          <div className="flex mb-6 flex-wrap">
-            {allCategories?.map((categoryName) => (
-              <CategorySelect key={uuid()} categoryName={categoryName} />
-            ))}
-          </div>
-          {/* Tags */}
-          <SubmitHeading>Tags</SubmitHeading>
-          {/*  Current Tags */}
-          <div className="flex flex-row flex-wrap">
-            {postData.tags?.map((tagName) => (
+      <AnimatePresence exitBeforeEnter>
+        {!ready && !existingPostData ? (
+          <motion.div key="intro" exit={{ opacity: 0 }}>
+            <SubmitIntro setReady={setReady} />
+          </motion.div>
+        ) : (
+          <motion.div
+            key={"post-editor"}
+            initial={{ y: -100 }}
+            animate={{ y: 0 }}
+            className="flex flex-col"
+          >
+            {/* Title */}
+            <SubmitHeading>Title</SubmitHeading>
+            <InputBox
+              value={postData.title}
+              onChange={(e) =>
+                setPostData({ ...postData, title: e.target.value })
+              }
+              type="string"
+            />
+            {/* Categories */}
+            <SubmitHeading>Select Categories</SubmitHeading>
+            <div className="flex mb-6 flex-wrap">
+              {allCategories?.map((categoryName) => (
+                <CategorySelect key={uuid()} categoryName={categoryName} />
+              ))}
+            </div>
+            {/* Tags */}
+            <SubmitHeading>Tags</SubmitHeading>
+            {/*  Current Tags */}
+            <div className="flex flex-row flex-wrap">
+              {postData.tags?.map((tagName) => (
+                <button
+                  key={uuid()}
+                  id={tagName}
+                  onClick={(e) =>
+                    setPostData({
+                      ...postData,
+                      tags: postData.tags.filter((tag) => tag !== tagName),
+                    })
+                  }
+                  className="cursor-pointer py-1 px-3 mr-2 mb-3 text-md rounded-full text-white bg-green-500 hover:bg-red-500 hover:text-gray-100"
+                >
+                  {tagName}
+                </button>
+              ))}
+            </div>
+            {/* Add Tags */}
+            <div className="flex flex-row items-center mb-8 mt-3">
+              <input
+                type="string"
+                className="border-2 border-gray-300 p-1 text-lg"
+                value={tag}
+                onChange={(e) => setTag(e.target.value)}
+              />
               <button
-                key={uuid()}
-                id={tagName}
-                onClick={(e) =>
+                className="ml-2 px-3 py-1 text-white bg-green-500 rounded-lg uppercase text-sm"
+                onClick={() => {
                   setPostData({
                     ...postData,
-                    tags: postData.tags.filter((tag) => tag !== tagName),
-                  })
-                }
-                className="cursor-pointer py-1 px-3 mr-2 mb-3 text-md rounded-full text-white bg-green-500 hover:bg-red-500 hover:text-gray-100"
+                    tags: [...postData.tags, formatString(tag, " ")],
+                  });
+                  setTag("");
+                }}
               >
-                {tagName}
+                Add tag
               </button>
-            ))}
-          </div>
-          {/* Add Tags */}
-          <div className="flex flex-row items-center mb-8 mt-3">
-            <input
-              type="string"
-              className="border-2 border-gray-300 p-1 text-lg"
-              value={tag}
-              onChange={(e) => setTag(e.target.value)}
+            </div>
+            {/* Image */}
+            <SubmitHeading>Featured Image URL</SubmitHeading>
+            <InputBox
+              value={postData.featuredImage}
+              onChange={(e) =>
+                setPostData({ ...postData, featuredImage: e.target.value })
+              }
+              type="url"
             />
-            <button
-              className="ml-2 px-3 py-1 text-white bg-green-500 rounded-lg uppercase text-sm"
-              onClick={() => {
-                setPostData({
-                  ...postData,
-                  tags: [...postData.tags, formatString(tag, " ")],
-                });
-                setTag("");
-              }}
-            >
-              Add tag
-            </button>
-          </div>
-          {/* Image */}
-          <SubmitHeading>Featured Image URL</SubmitHeading>
-          <InputBox
-            value={postData.featuredImage}
-            onChange={(e) =>
-              setPostData({ ...postData, featuredImage: e.target.value })
-            }
-            type="url"
-          />
-          {postData.featuredImage && (
-            <img
-              className="mb-10 mx-auto"
-              height={300}
-              width={300}
-              src={postData.featuredImage}
-            />
-          )}
-          <SubmitHeading>Main Content</SubmitHeading>
-          <div className="mb-6">
-            <Editor postData={postData} setPostData={setPostData} />
-          </div>
-          {/* Mutation and preview buttons */}
-          <div className="flex flex-row flex-wrap mb-6 mx-auto justify-center">
-            {existingPostData?.post?.published && (
-              <button
-                disabled={!isEditable}
-                className={
-                  "bg-blue-500 hover:bg-blue-600 text-md py-2 px-4 mx-2 mb-3 text-white rounded-xl uppercase"
-                }
-                onClick={() => handleChangePublished(false)}
-              >
-                <h4>Unpublish</h4>
-              </button>
+            {postData.featuredImage && (
+              <img
+                className="mb-10 mx-auto"
+                height={300}
+                width={300}
+                src={postData.featuredImage}
+              />
             )}
-            {String(userData?.role) === "ADMIN" &&
-              existingPostData?.post.published === false && (
+            <SubmitHeading>Main Content</SubmitHeading>
+            <div className="mb-6">
+              <Editor postData={postData} setPostData={setPostData} />
+            </div>
+            {/* Mutation and preview buttons */}
+            <div className="flex flex-row flex-wrap mb-6 mx-auto justify-center">
+              {existingPostData?.post?.published && (
                 <button
                   disabled={!isEditable}
                   className={
                     "bg-blue-500 hover:bg-blue-600 text-md py-2 px-4 mx-2 mb-3 text-white rounded-xl uppercase"
                   }
-                  onClick={() => {
-                    handleChangePublished(true);
-                  }}
+                  onClick={() => handleChangePublished(false)}
                 >
-                  <h4>Publish</h4>
+                  <h4>Unpublish</h4>
                 </button>
               )}
-            {/* Preview */}
-            <button
-              disabled={!isEditable}
-              className="disabled:bg-gray-400 bg-blue-500 hover:bg-blue-600 text-md px-4 py-2 mx-2 mb-3 text-white rounded-xl uppercase"
-              onClick={() => setShowPreview(!showPreview)}
-            >
-              <h4>{showPreview ? "Hide preview" : "Show preview"}</h4>
-            </button>
-            <button
-              onClick={() => {
-                if (router.query.slug) {
-                  handleEdit();
-                } else {
-                  handleSubmit();
-                }
-              }}
-              disabled={!dataComplete || !isEditable}
-              className={`disabled:bg-gray-400 disabled:opacity-50 bg-green-500 ${
-                dataComplete && "hover:bg-green-700"
-              } text-md py-2 px-4 mx-2 mb-3 text-white  rounded-xl uppercase`}
-            >
-              <h4>
-                {router.query.slug ? "Submit Edits" : "Submit Post"}
-                <p className="text-xs">
-                  {!dataComplete && "(Incomplete fields)"}
-                </p>
-              </h4>
-            </button>
-          </div>
+              {String(userData?.role) === "ADMIN" &&
+                existingPostData?.post.published === false && (
+                  <button
+                    disabled={!isEditable}
+                    className={
+                      "bg-blue-500 hover:bg-blue-600 text-md py-2 px-4 mx-2 mb-3 text-white rounded-xl uppercase"
+                    }
+                    onClick={() => {
+                      handleChangePublished(true);
+                    }}
+                  >
+                    <h4>Publish</h4>
+                  </button>
+                )}
+              {/* Preview */}
+              <button
+                disabled={!isEditable}
+                className="disabled:bg-gray-400 bg-blue-500 hover:bg-blue-600 text-md px-4 py-2 mx-2 mb-3 text-white rounded-xl uppercase"
+                onClick={() => setShowPreview(!showPreview)}
+              >
+                <h4>{showPreview ? "Hide preview" : "Show preview"}</h4>
+              </button>
+              <button
+                onClick={() => {
+                  if (router.query.slug) {
+                    handleEdit();
+                  } else {
+                    handleSubmit();
+                  }
+                }}
+                disabled={!dataComplete || !isEditable}
+                className={`disabled:bg-gray-400 disabled:opacity-50 bg-green-500 ${
+                  dataComplete && "hover:bg-green-700"
+                } text-md py-2 px-4 mx-2 mb-3 text-white  rounded-xl uppercase`}
+              >
+                <h4>
+                  {router.query.slug ? "Submit Edits" : "Submit Post"}
+                  <p className="text-xs">
+                    {!dataComplete && "(Incomplete fields)"}
+                  </p>
+                </h4>
+              </button>
+            </div>
 
-          {showPreview && (
-            <>
-              {/* -------- Preview --------- */}
-              <PostHeader
-                title={postData.title}
-                coverImage={postData.featuredImage}
-              />
-              {postData.tags.length > 0 && <Tags tags={postData.tags} />}
-              <PostBody content={postData.content} />
-            </>
-          )}
-        </div>
-      )}
+            {showPreview && (
+              <>
+                {/* -------- Preview --------- */}
+                <PostHeader
+                  title={postData.title}
+                  coverImage={postData.featuredImage}
+                />
+                {postData.tags.length > 0 && <Tags tags={postData.tags} />}
+                <PostBody content={postData.content} />
+              </>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

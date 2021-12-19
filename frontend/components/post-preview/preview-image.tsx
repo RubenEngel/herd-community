@@ -1,4 +1,5 @@
 import cn from "classnames";
+import { motion } from "framer-motion";
 import Link from "next/link";
 
 interface PreviewImageProps {

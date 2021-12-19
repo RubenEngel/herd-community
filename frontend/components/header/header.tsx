@@ -19,7 +19,6 @@ import { ExploreContext, UserContext } from "../../lib/context";
 import formatString from "../../lib/formatString";
 
 export default function Header() {
-
   const router = useRouter();
 
   const [pageLoading, setPageLoading] = useState(false);
@@ -41,7 +40,7 @@ export default function Header() {
     }
   }, [router]);
 
-  const {userData} = useContext(UserContext);
+  const { userData } = useContext(UserContext);
   const { category } = useContext(ExploreContext);
 
   const [menuNavbarOpen, setMenuNavbarOpen] = useState(false);
@@ -51,8 +50,8 @@ export default function Header() {
   return (
     <>
       {/* Date and social icons */}
-      <div className="bg-primary text-secondary text-center uppercase font-light py-2 px-4 md:px-16 z-10">
-        <div className="flex justify-between items-center max-w-6xl m-auto">
+      <div className="bg-primary text-secondary text-center uppercase font-light py-2 px-4 md:px-16 z-10 ">
+        <div className="flex justify-between items-center max-w-6xl m-auto transition-all">
           {/* Social Media Links */}
           <div className="flex flex-row justify-center">
             <h3 className="hidden md:block mr-6 text-md">Follow Us</h3>

@@ -1,20 +1,39 @@
 import React from "react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion, Variants } from "framer-motion";
 
 const Loading = ({ fontSize = "text-2xl" }) => {
+  const brand = "HERD.";
+
+  const variants: Variants = {
+    up: {
+      y: 5,
+    },
+    down: {
+      y: -5,
+    },
+  };
+
+  const staggerTime = 0.15;
+
   return (
-    <motion.div
-      animate={{ scale: 1.2, y: -5 }}
-      transition={{ duration: 0.7, repeat: Infinity, repeatType: "reverse" }}
-    >
-      <h1 className={`text-primary ${fontSize} text-center`}>
-        <motion.span>H</motion.span>
-        <motion.span>E</motion.span>
-        <motion.span>R</motion.span>
-        <motion.span>D</motion.span>
-        <motion.span>.</motion.span>
-      </h1>
-    </motion.div>
+    <div className={`text-primary text-center ${fontSize} flex justify-center`}>
+      {brand.split("").map((letter, i) => (
+        <motion.h1
+          key={i}
+          variants={variants}
+          animate="up"
+          initial="down"
+          transition={{
+            repeat: Infinity,
+            repeatType: "reverse",
+            delay: i * staggerTime,
+            duration: brand.length * staggerTime,
+          }}
+        >
+          {letter}
+        </motion.h1>
+      ))}
+    </div>
   );
 };
 

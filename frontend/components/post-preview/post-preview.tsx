@@ -4,11 +4,7 @@ import Link from "next/link";
 import Categories from "../categories";
 import { motion } from "framer-motion";
 import PreviewImage from "./preview-image";
-import {
-  Post,
-  // Category,
-  // User
-} from "../../lib/types";
+import { Post } from "../../lib/types";
 
 interface PostPreviewProps extends Partial<Post> {
   animateY?: number | string;
@@ -66,7 +62,7 @@ export default function PostPreview({
         <h3 className="text-lg mb-2">
           <Link as={`/posts/${slug}`} href="/posts/[slug]">
             <a
-              className="hover:underline"
+              className="hover:text-gray-500"
               dangerouslySetInnerHTML={{ __html: title }}
             ></a>
           </Link>

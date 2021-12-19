@@ -14,6 +14,10 @@
 @tailwind utilities;
 /* Stop purging. */
 
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
 body {
   font-family: "Open Sans", sans-serif;
   background-color: white;

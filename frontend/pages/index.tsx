@@ -29,32 +29,41 @@ const Index = ({ categoryPosts }: IndexProps) => {
 
   return (
     <>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.75 }}
-      >
+      <motion.div>
         <Head>
           <title>HERD</title>
         </Head>
         {/* --------------- Latest Posts Heading ----------------- */}
-        <div className="text-center">
-          <div className="bg-primary text-secondary lg:inline-block items-center lg:mt-6 lg:px-56 rounded-xl p-1 lg:p-2 font-bold">
-            <Link href="/explore">
-              <button
-                onClick={(e) => setCategory("all")}
-                className="flex items-center font-bold mx-auto"
-              >
-                <h1 className="text-lg uppercase mr-4">Latest Stories</h1>
-                <AiFillCaretRight />
-              </button>
-            </Link>
-          </div>
+        <div className="px-4">
+          <Link href="/explore">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.9 }}
+              className="flex max-w-screen-md justify-center mx-auto bg-primary w-full text-secondary items-center rounded-xl p-1 lg:p-2 font-bold"
+              onClick={(e) => setCategory("all")}
+            >
+              <h1 className="text-lg uppercase mr-4 text-center">
+                Latest Stories
+              </h1>
+              <AiFillCaretRight />
+            </motion.button>
+          </Link>
         </div>
+
         {/* ------------------ Desktop Latest Posts ------------- */}
         <div className="hidden md:grid md:grid-cols-3 max-w-6xl mx-auto">
           {desktopLatestPosts.map((post, index) => (
-            <div key={index} className="p-6">
+            <motion.div
+              key={index}
+              initial={{ y: 100, opacity: 0 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                type: "spring",
+                bounce: 0,
+                delay: 0.3 + 0.15 * index,
+              }}
+              className="p-6"
+            >
               <PostPreview
                 title={post.title}
                 featuredImage={post.featuredImage}
@@ -62,35 +71,52 @@ const Index = ({ categoryPosts }: IndexProps) => {
                 author={post.author}
                 slug={post.slug}
                 categories={post.categories}
-                // animateScale={0.5}
-                // animateOpacity={0}
               />
-            </div>
+            </motion.div>
           ))}
         </div>
         {/* ------------------ Mobile Latest Posts ---------------- */}
         <div className="p-4 md:hidden">
-          <PostPreview
-            key={latestPost.id + "m"}
-            title={latestPost.title}
-            featuredImage={latestPost.featuredImage}
-            createdAt={latestPost.createdAt}
-            author={latestPost.author}
-            slug={latestPost.slug}
-            categories={latestPost.categories}
-            // animateScale={0.5}
-            // animateOpacity={0}
-          />
-
-          {mobileLatestPosts.map((post) => (
-            <SmallPostPreview
-              createdAt={post.createdAt}
-              key={post.id}
-              title={post.title}
-              coverImage={post.featuredImage}
-              author={post.author}
-              slug={post.slug}
+          <motion.div
+            initial={{ y: 100, opacity: 0 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              type: "spring",
+              bounce: 0,
+              delay: 0.4,
+            }}
+          >
+            <PostPreview
+              key={latestPost.id + "m"}
+              title={latestPost.title}
+              featuredImage={latestPost.featuredImage}
+              createdAt={latestPost.createdAt}
+              author={latestPost.author}
+              slug={latestPost.slug}
+              categories={latestPost.categories}
             />
+          </motion.div>
+
+          {mobileLatestPosts.map((post, index) => (
+            <motion.div
+              key={index}
+              initial={{ y: 100, opacity: 0 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                type: "spring",
+                bounce: 0,
+                delay: 0.5 + 0.2 * index,
+              }}
+            >
+              <SmallPostPreview
+                createdAt={post.createdAt}
+                key={post.id}
+                title={post.title}
+                coverImage={post.featuredImage}
+                author={post.author}
+                slug={post.slug}
+              />
+            </motion.div>
           ))}
         </div>
 
@@ -100,11 +126,22 @@ const Index = ({ categoryPosts }: IndexProps) => {
             .filter((categoryName) => categoryName !== "all")
             .map((category, index) => {
               return (
-                <HomeCategory
+                <motion.div
                   key={index}
-                  categoryName={category}
-                  posts={categoryPosts[category]}
-                />
+                  initial={{ y: 100, opacity: 0 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{
+                    type: "spring",
+                    bounce: 0.05,
+                    delay: 0.8 + 0.15 * index,
+                  }}
+                >
+                  <HomeCategory
+                    key={index}
+                    categoryName={category}
+                    posts={categoryPosts[category]}
+                  />
+                </motion.div>
               );
             })}
         </div>
