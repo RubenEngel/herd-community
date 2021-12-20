@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
+import { SignInContext, UserContext } from "../lib/context";
 import Button from "./button";
 
 const StepHeading = ({ children }) => (
@@ -10,6 +11,10 @@ interface SubmitIntroProps {
 }
 
 const SubmitIntro = ({ setReady }: SubmitIntroProps) => {
+  const { userAuth } = useContext(UserContext);
+
+  const setShowSignIn = useContext(SignInContext);
+
   return (
     <>
       <StepHeading>
@@ -57,9 +62,13 @@ const SubmitIntro = ({ setReady }: SubmitIntroProps) => {
       <div className="text-center">
         <Button
           onClick={() => {
-            setReady(true);
+            if (userAuth) {
+              setReady(true);
+            } else {
+              setShowSignIn(true);
+            }
           }}
-          className="bg-green-600 text-white p-3 mt-10 mb-5 rounded-lg mx-auto uppercase"
+          className="bg-primary text-white mt-10 px-8 py-4 mb-5 rounded-lg mx-auto uppercase"
         >
           <h4>I'm ready to write!</h4>
         </Button>

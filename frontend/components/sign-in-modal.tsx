@@ -21,9 +21,9 @@ const SignInModal: React.FC<{
   return (
     <div className="fixed flex flex-col h-screen w-screen justify-center left-0 bottom-0 bg-primary z-10">
       <motion.div
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        transition={{ duration: 0.4 }}
+        initial={{ y: 200, scale: 0.5, opacity: 0 }}
+        animate={{ y: 0, scale: 1, opacity: 1 }}
+        transition={{ type: "spring", duration: 0.4 }}
         className=" text-secondary w-full relative bottom-10 mx-auto p-2 text-center"
       >
         <h2 className="uppercase">Sign In</h2>

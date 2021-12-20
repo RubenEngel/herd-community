@@ -4,6 +4,7 @@ import PreviewImage from "./preview-image";
 import { motion } from "framer-motion";
 import Date from "../date";
 import { Post, User } from "../../lib/types";
+import Button from "../button";
 
 interface SmallPostPreviewProps {
   title: Post["title"];
@@ -49,14 +50,12 @@ export default function SmallPostPreview({
         </div>
         <div className="col-span-3">
           {/* Title */}
-          <h3 className="text-sm mb-2 leading-snug">
+          <Button className="text-left text-sm mb-2 leading-snug font-serif">
             <Link scroll={false} as={`/posts/${slug}`} href="/posts/[slug]">
-              <a
-                className="hover:text-primary"
-                dangerouslySetInnerHTML={{ __html: title }}
-              ></a>
+              <a>{title}</a>
             </Link>
-          </h3>
+          </Button>
+
           {/* Date */}
           <div className="mb-2 text-xs">
             <Date date={createdAt}></Date>

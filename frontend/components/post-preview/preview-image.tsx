@@ -1,6 +1,7 @@
 import cn from "classnames";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Button from "../button";
 
 interface PreviewImageProps {
   title: string;
@@ -31,9 +32,11 @@ export default function PreviewImage({
   return (
     <div className="sm:mx-0">
       {slug ? (
-        <Link scroll={false} as={`/posts/${slug}`} href="/posts/[slug]">
-          <a aria-label={title}>{image}</a>
-        </Link>
+        <Button>
+          <Link scroll={false} as={`/posts/${slug}`} href="/posts/[slug]">
+            <a aria-label={title}>{image}</a>
+          </Link>
+        </Button>
       ) : (
         image
       )}

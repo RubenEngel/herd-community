@@ -231,6 +231,14 @@ const EditPost = () => {
     );
   };
 
+  // if (!userAuth) {
+  //   return (
+  //     <div className="h-75-screen flex flex-col justify-center items-center uppercase">
+  //       <h3>Sign in to edit posts</h3>
+  //     </div>
+  //   );
+  // }
+
   // Main component
   return (
     <div className="max-w-screen-sm mx-auto">

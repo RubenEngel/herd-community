@@ -47,19 +47,19 @@ const MenuDropdown: React.FC<{
           <NavItem onClick={() => setIsOpen(false)}>
             <Link href="/about-us">About Us</Link>
           </NavItem>
-          <NavItem onClick={() => setIsOpen(false)}>
+          {/* <NavItem onClick={() => setIsOpen(false)}>
             <Link href="/search">Search</Link>
-          </NavItem>
+          </NavItem> */}
           <NavItem onClick={() => setIsOpen(false)}>
             <Link href="/explore">Explore</Link>
           </NavItem>
           <NavItem
             onClick={() => {
-              if (!userAuth) {
-                setShowSignIn(true);
-              } else {
-                router.push("/edit-post");
-              }
+              // if (!userAuth) {
+              //   setShowSignIn(true);
+              // } else {
+              //   router.push("/edit-post");
+              // }
               setIsOpen(false);
             }}
           >

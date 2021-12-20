@@ -17,6 +17,7 @@ import Intro from "../components/intro";
 import PageLoading from "../components/page-loading";
 import SignInModal from "../components/sign-in-modal";
 import PageTransition from "../components/page-transition";
+import { CloudinaryContext, Image } from "cloudinary-react";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const apolloClient = useApollo(pageProps);
@@ -29,12 +30,12 @@ function MyApp({ Component, pageProps }: AppProps) {
   const categoryState = { category, setCategory };
 
   const [showSignIn, setShowSignIn] = useState(false);
-  useEffect(() => {
-    if (!user && !firstLoad) {
-      setTimeout(() => setShowSignIn(true), 3000);
-      console.log("true say");
-    } else setShowSignIn(false);
-  }, [user, firstLoad]);
+
+  // useEffect(() => {
+  //   if (!user && !firstLoad) {
+  //     setTimeout(() => setShowSignIn(true));
+  //   } else setShowSignIn(false);
+  // }, [user, firstLoad]);
 
   useEffect(() => {
     router.events.on("routeChangeStart", () => setPageLoading(true));
@@ -70,37 +71,39 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <ApolloProvider client={apolloClient}>
-      <ExploreContext.Provider value={categoryState}>
-        <UserContext.Provider value={{ userAuth: user, userData }}>
-          <SignInContext.Provider value={setShowSignIn}>
-            <AnimatePresence exitBeforeEnter>
-              {firstLoad ? (
-                <Intro key={router.route} setFirstLoad={setFirstLoad} />
-              ) : (
-                // When site has been entered
-                <Layout>
-                  <AnimatePresence
-                    onExitComplete={() => window?.scrollTo(0, 0)}
-                    exitBeforeEnter
-                  >
-                    {pageLoading ? (
-                      <PageLoading key={"page-loading"} />
-                    ) : (
-                      <PageTransition key={router.asPath}>
-                        <Component {...pageProps} />
-                      </PageTransition>
+      <CloudinaryContext cloudName="dnsihvop5">
+        <ExploreContext.Provider value={categoryState}>
+          <UserContext.Provider value={{ userAuth: user, userData }}>
+            <SignInContext.Provider value={setShowSignIn}>
+              <AnimatePresence exitBeforeEnter>
+                {firstLoad ? (
+                  <Intro key={router.route} setFirstLoad={setFirstLoad} />
+                ) : (
+                  // When site has been entered
+                  <Layout>
+                    <AnimatePresence
+                      onExitComplete={() => window?.scrollTo(0, 0)}
+                      exitBeforeEnter
+                    >
+                      {pageLoading ? (
+                        <PageLoading key={"page-loading"} />
+                      ) : (
+                        <PageTransition key={router.asPath}>
+                          <Component {...pageProps} />
+                        </PageTransition>
+                      )}
+                    </AnimatePresence>
+                    {!user && showSignIn && (
+                      <SignInModal setShowSignIn={setShowSignIn} />
                     )}
-                  </AnimatePresence>
-                  {!user && showSignIn && (
-                    <SignInModal setShowSignIn={setShowSignIn} />
-                  )}
-                </Layout>
-              )}
-            </AnimatePresence>
-            <Toaster />
-          </SignInContext.Provider>
-        </UserContext.Provider>
-      </ExploreContext.Provider>
+                  </Layout>
+                )}
+              </AnimatePresence>
+              <Toaster />
+            </SignInContext.Provider>
+          </UserContext.Provider>
+        </ExploreContext.Provider>
+      </CloudinaryContext>
     </ApolloProvider>
   );
 }

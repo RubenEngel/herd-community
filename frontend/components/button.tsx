@@ -5,7 +5,7 @@ const Button = (props) => {
   return (
     <motion.button
       {...props}
-      className={`${props.className} text-md text-secondary py-1 px-3 rounded-md m-2 focused:outline-none uppercase`}
+      className={`${props.className}`}
       whileTap={{ scale: 0.9 }}
       whileHover={{ scale: 1.03 }}
     >
