@@ -55,11 +55,11 @@ const PostHeader: React.FC<PostHeaderProps> = ({
         transition={transition}
       >
         <PostTitle>{title}</PostTitle>
-        <div className="my-6 flex justify-between items-center">
+        <div className="flex justify-between items-center">
           {categories && <Categories categories={categories} />}
           {likedByDataLoading && <Loading fontSize="text-sm" />}
           {likeCount > 0 && (
-            <div className="mb-3">{`${likeCount} like${
+            <div className="mb-2">{`${likeCount} like${
               likeCount > 1 ? "s" : ""
             }`}</div>
           )}
@@ -71,12 +71,12 @@ const PostHeader: React.FC<PostHeaderProps> = ({
         initial={"hidden"}
         animate={"show"}
         transition={{ ...transition, delay: 0.2 }}
-        className="flex flex-row justify-between mb-6 "
+        className="flex flex-col sm:flex-row justify-between mb-6 "
       >
+        <div className="mb-2 sm:mb-0">{date && <Date date={date} />}</div>
         <div>
           <Avatar author={author} />
         </div>
-        <div>{date && <Date date={date} />}</div>
       </motion.div>
       <motion.div
         variants={variants}

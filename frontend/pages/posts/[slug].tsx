@@ -176,17 +176,18 @@ export default function PostPage({ post }: PostProps) {
               <meta property="og:image" content={post.featuredImage} />
             </Head>
             <AnimatePresence>
-              {startedReading && (
-                <PostInteractions
-                  likeCount={likedBy?.length}
-                  slug={post.slug}
-                  isEditable={isEditable}
-                  isLiked={isLiked}
-                  isSharable={isSharable}
-                  handleLike={handleLike}
-                  handleShare={handleShare}
-                />
-              )}
+              {/* {startedReading && ( */}
+
+              <PostInteractions
+                likeCount={likedBy?.length}
+                slug={post.slug}
+                isEditable={isEditable}
+                isLiked={isLiked}
+                isSharable={isSharable}
+                handleLike={handleLike}
+                handleShare={handleShare}
+              />
+              {/* )} */}
             </AnimatePresence>
             <PostHeader
               title={post.title}

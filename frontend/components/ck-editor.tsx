@@ -2,7 +2,7 @@ import React from "react";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import CustomEditor from "ckeditor5-custom-build";
 import { SubmitPostData } from "../pages/edit-post";
-import styles from './post-content/post-body.module.css'
+import styles from "./post-content/post-body.module.css";
 
 const editorConfiguration = {
   toolbar: [
@@ -64,7 +64,7 @@ const Editor = ({ postData, setPostData }: EditorProps) => {
           data={postData.content}
           onChange={(_, editor) => {
             const data = editor.getData();
-            setPostData({...postData, content: data});
+            setPostData({ ...postData, content: data });
           }}
           onReady={(editor) => {
             console.log("Editor is ready to use!", editor);

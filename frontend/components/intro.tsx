@@ -14,21 +14,27 @@ const Intro: React.FC<{ setFirstLoad: Dispatch<SetStateAction<boolean>> }> = ({
         initial={{ y: 100, scale: 0 }}
         animate={{ y: 0, scale: 1 }}
         transition={{ type: "spring", duration: 0.8 }}
-        className="md:text-7xl text-6xl flex"
+        className="text-7xl flex"
       >
         {"HERD.".split("").map((letter, index) => (
           <motion.div
             key={index}
-            initial={{ scale: 1 }}
-            animate={{ scale: 1.2 }}
-            transition={{
-              delay: 0.2 * index,
-              ease: "easeInOut",
-              repeat: Infinity,
-              repeatType: "reverse",
-              duration: "HERD.".length * 0.3,
+            initial={{ y: 100, scale: 0, opacity: 0 }}
+            animate={{
+              y: 0,
+              scale: 1,
+              opacity: 1,
             }}
-            className="mx-2"
+            transition={{
+              delay: 0.22 * index,
+              // ease: "easeInOut",
+              type: "spring",
+              // repeat: Infinity,
+              // repeatType: "reverse",
+              // duration: "HERD.".length * 0.2,
+              duration: 0.5,
+            }}
+            className="mx-1"
           >
             <span>{letter}</span>
           </motion.div>
@@ -37,14 +43,17 @@ const Intro: React.FC<{ setFirstLoad: Dispatch<SetStateAction<boolean>> }> = ({
       <motion.button
         className="bg-primary mt-20 text-white px-4 py-2 rounded-full text-3xl shadow-lg"
         onClick={() => setFirstLoad(false)}
-        initial={{ y: 75, x: 0, scale: 0 }}
+        initial={{ y: 100, x: 0, scale: 0 }}
         animate={{
           y: 0,
           x: 0,
           scale: 1,
           transition: {
-            y: { delay: 0.5 },
-            scale: { delay: 0.5 },
+            // y: { delay: 0.5 },
+            // scale: { delay: 0.7 },
+            type: "spring",
+            delay: 0.8,
+            duration: 0.8,
           },
         }}
         transition={{ type: "spring" }}

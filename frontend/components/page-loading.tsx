@@ -21,7 +21,7 @@ const PageLoading = () => {
       transition={{
         type: "spring",
         bounce: 0,
-        duration: 0.4,
+        duration: 0.2,
       }}
     >
       <Loading />

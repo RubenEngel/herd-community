@@ -205,3 +205,12 @@ export const LIKE_POST = gql`
     }
   }
 `;
+
+export const UPLOAD_PROFILE_IMAGE = gql`
+  mutation ($userId: Int, $image: String) {
+    uploadProfileImage(userId: $userId, image: $image) {
+      id
+      imageUrl
+    }
+  }
+`;

@@ -152,7 +152,7 @@ const Index = ({ categoryPosts }: IndexProps) => {
 
 export default Index;
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetStaticProps = async () => {
   const apolloClient = initializeApollo();
 
   const categoriesRes = await apolloClient.query({
@@ -183,6 +183,6 @@ export const getStaticProps: GetStaticProps = async () => {
     props: {
       categoryPosts,
     },
-    revalidate: 30,
+    // revalidate: 30,
   });
 };

@@ -2,6 +2,13 @@ import { gql } from "apollo-server-express";
 
 export const typeDefs = gql`
   scalar DateTime
+  scalar Upload
+
+  type File {
+    filename: String!
+    mimetype: String!
+    encoding: String!
+  }
 
   type User {
     id: Int
@@ -101,5 +108,7 @@ export const typeDefs = gql`
     ): Post
     changePublished(id: Int!, published: Boolean!): Post
     likePost(id: Int): Post
+    # uploadProfileImage(userId: Int, image: String): User
+    singleUpload(file: Upload!): File!
   }
 `;
