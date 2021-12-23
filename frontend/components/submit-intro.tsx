@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { SignInContext, UserContext } from "../lib/context";
-import Button from "./button";
+import AnimatedButton from "./button";
 
 const StepHeading = ({ children }) => (
   <h2 className="text-md font-bold mb-2 mt-5">{children}</h2>
@@ -60,7 +60,7 @@ const SubmitIntro = ({ setReady }: SubmitIntroProps) => {
         before approving it for the HERD.
       </p>
       <div className="text-center">
-        <Button
+        <AnimatedButton
           onClick={() => {
             if (userAuth) {
               setReady(true);
@@ -71,7 +71,7 @@ const SubmitIntro = ({ setReady }: SubmitIntroProps) => {
           className="bg-primary text-white mt-10 px-8 py-4 mb-5 rounded-lg mx-auto uppercase"
         >
           <h4>I'm ready to write!</h4>
-        </Button>
+        </AnimatedButton>
       </div>
     </>
   );

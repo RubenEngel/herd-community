@@ -4,7 +4,7 @@ import PreviewImage from "./preview-image";
 import { motion } from "framer-motion";
 import Date from "../date";
 import { Post, User } from "../../lib/types";
-import Button from "../button";
+import AnimatedButton from "../button";
 
 interface SmallPostPreviewProps {
   title: Post["title"];
@@ -50,11 +50,11 @@ export default function SmallPostPreview({
         </div>
         <div className="col-span-3">
           {/* Title */}
-          <Button className="text-left text-sm mb-2 leading-snug font-serif">
+          <AnimatedButton className="text-left text-sm mb-2 leading-snug font-serif">
             <Link scroll={false} as={`/posts/${slug}`} href="/posts/[slug]">
               <a>{title}</a>
             </Link>
-          </Button>
+          </AnimatedButton>
 
           {/* Date */}
           <div className="mb-2 text-xs">

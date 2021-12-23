@@ -4,8 +4,9 @@ import React, { useContext, useEffect, useState } from "react";
 import { UserContext, SignInContext } from "../lib/context";
 import { FaUserCircle } from "react-icons/fa";
 import firebase from "../lib/firebase";
-import Button from "../components/button";
+import AnimatedButton from "../components/button";
 import { gql, useMutation } from "@apollo/client";
+import router from "next/router";
 // import { UPLOAD_PROFILE_IMAGE } from "../lib/apolloQueries";
 // import { useQuery } from '@apollo/client';
 // import { GET_USER } from '../lib/apolloQueries';
@@ -95,12 +96,15 @@ const MyAccount = () => {
               <p>{`${userData?.firstName}${" " + userData?.lastName}`}</p>
             </div>
             {/* <SelectUsername /> */}
-            <Button
-              className="bg-red-500 py-1 px-2 rounded-lg shadow-md text-secondary mt-11"
-              onClick={() => firebase.auth().signOut()}
+            <AnimatedButton
+              className="bg-red-500  py-1 px-2 rounded-lg shadow-md hover:shadow-lg text-secondary mt-11"
+              onClick={() => {
+                router.push("/");
+                firebase.auth().signOut();
+              }}
             >
               Sign Out
-            </Button>
+            </AnimatedButton>
           </div>
         </>
       ) : (

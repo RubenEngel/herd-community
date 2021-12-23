@@ -59,7 +59,7 @@ function ProfileDropdown({ setIsOpen, isOpen }) {
                 )}
                 <NavItem onClick={() => setIsOpen(false)}>
                   <Link scroll={false} href="/my-account">
-                    Profile
+                    Account
                   </Link>
                 </NavItem>
                 {/* <li

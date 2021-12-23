@@ -1,7 +1,7 @@
 import { ForwardRefComponent, HTMLMotionProps, motion } from "framer-motion";
 import React from "react";
 
-const Button = (props) => {
+const AnimatedButton = (props) => {
   return (
     <motion.button
       {...props}
@@ -14,4 +14,4 @@ const Button = (props) => {
   );
 };
 
-export default Button;
+export default AnimatedButton;
