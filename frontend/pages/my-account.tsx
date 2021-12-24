@@ -99,7 +99,7 @@ const MyAccount = () => {
             <AnimatedButton
               className="bg-red-500  py-1 px-2 rounded-lg shadow-md hover:shadow-lg text-secondary mt-11"
               onClick={() => {
-                router.push("/");
+                router.push("/home");
                 firebase.auth().signOut();
               }}
             >

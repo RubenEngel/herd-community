@@ -13,7 +13,7 @@ export default function Categories({ categories }: { categories: Category[] }) {
       {categories?.map((category, index) => (
         <motion.button
           whileHover={{
-            scale: 1.05,
+            scale: 1.02,
           }}
           whileTap={{
             scale: 0.9,

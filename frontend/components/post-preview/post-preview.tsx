@@ -35,12 +35,12 @@ export default function PostPreview({
           bounce: 0.2,
         }}
         whileHover={{
-          scale: 1.03,
+          scale: 1.02,
           transition: {
             duration: 0.2,
           },
         }}
-        className="flex mx-auto my-2 flex-col justify-center rounded-lg "
+        className="flex mx-auto my-2 flex-col justify-center rounded-lg"
       >
         {/* Image */}
         <div className="mb-1">

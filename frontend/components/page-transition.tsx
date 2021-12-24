@@ -6,7 +6,7 @@ const PageTransition: React.FC = ({ children }) => {
     <motion.div
       initial={{
         opacity: 0,
-        y: -200,
+        y: -100,
       }}
       animate={{
         opacity: 1,

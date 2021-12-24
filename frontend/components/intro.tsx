@@ -1,10 +1,13 @@
 import { motion } from "framer-motion";
+import { useRouter } from "next/router";
 import React, { Dispatch, SetStateAction } from "react";
 import { BsArrowUp } from "react-icons/bs";
 
-const Intro: React.FC<{ setFirstLoad: Dispatch<SetStateAction<boolean>> }> = ({
+const Intro: React.FC<{ setFirstLoad?: Dispatch<SetStateAction<boolean>> }> = ({
   setFirstLoad,
 }) => {
+  const router = useRouter();
+
   return (
     <motion.div
       exit={{ scale: 0 }}
@@ -42,7 +45,10 @@ const Intro: React.FC<{ setFirstLoad: Dispatch<SetStateAction<boolean>> }> = ({
       </motion.h1>
       <motion.button
         className="bg-primary mt-20 text-white px-4 py-2 rounded-full text-3xl shadow-lg"
-        onClick={() => setFirstLoad(false)}
+        onClick={() => {
+          setFirstLoad(false);
+          if (router.route === "/") router.push("/home");
+        }}
         initial={{ y: 100, x: 0, scale: 0 }}
         animate={{
           y: 0,

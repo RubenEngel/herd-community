@@ -14,7 +14,6 @@ import Tags from "../components/post-content/tags";
 import { useRouter } from "next/router";
 import { Post } from "../lib/types";
 import { v4 as uuid } from "uuid";
-import { time } from "console";
 import { AnimatePresence, motion } from "framer-motion";
 import AnimatedButton from "../components/button";
 
@@ -172,7 +171,7 @@ const EditPost = () => {
     if (editData || submitData || publishedData) {
       toast.success("Success", { position: "bottom-right" });
       localStorage.setItem("postData", JSON.stringify(emptyPostData));
-      router.push("/");
+      router.push("/home");
     }
   }, [editLoading, submitLoading, publishedLoading]);
 
