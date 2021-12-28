@@ -217,7 +217,7 @@ export default function PostPage({ post }: PostProps) {
           </article>
           <div>
             <Waypoint
-              bottomOffset={"25%"}
+              bottomOffset={100}
               onEnter={() => {
                 setReachedEnd(true);
               }}

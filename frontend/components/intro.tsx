@@ -35,7 +35,7 @@ const Intro: React.FC<{ setFirstLoad?: Dispatch<SetStateAction<boolean>> }> = ({
               // repeat: Infinity,
               // repeatType: "reverse",
               // duration: "HERD.".length * 0.2,
-              duration: 0.3,
+              duration: 0.4,
             }}
             className="mx-1"
           >
@@ -43,12 +43,7 @@ const Intro: React.FC<{ setFirstLoad?: Dispatch<SetStateAction<boolean>> }> = ({
           </motion.div>
         ))}
       </motion.h1>
-      <motion.button
-        className="bg-primary mt-20 text-white px-4 py-2 rounded-full text-3xl shadow-lg"
-        onClick={() => {
-          setFirstLoad(false);
-          if (router.route === "/") router.push("/home");
-        }}
+      <motion.div
         initial={{ y: 100, x: 0, scale: 0 }}
         animate={{
           y: 0,
@@ -63,18 +58,26 @@ const Intro: React.FC<{ setFirstLoad?: Dispatch<SetStateAction<boolean>> }> = ({
           },
         }}
         transition={{ type: "spring" }}
-        drag
-        whileHover={{ scale: 1.2, transition: { delay: 0 } }}
-        dragConstraints={{ top: 0, bottom: 0, left: 0, right: 0 }}
       >
-        <motion.div
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ delay: 0.7 }}
+        <motion.button
+          className="bg-primary mt-20 text-white px-4 py-2 rounded-full text-3xl shadow-lg"
+          onClick={() => {
+            setFirstLoad(false);
+            if (router.route === "/") router.push("/home");
+          }}
+          drag
+          whileHover={{ scale: 1.2, transition: { delay: 0 } }}
+          dragConstraints={{ top: 0, bottom: 0, left: 0, right: 0 }}
         >
-          <BsArrowUp />
-        </motion.div>
-      </motion.button>
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.7 }}
+          >
+            <BsArrowUp />
+          </motion.div>
+        </motion.button>
+      </motion.div>
     </motion.div>
   );
 };

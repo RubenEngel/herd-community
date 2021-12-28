@@ -27,7 +27,7 @@ const PostHeader: React.FC<PostHeaderProps> = ({
   categories,
   tags,
   likeCount,
-  likedByDataLoading,
+  // likedByDataLoading,
 }) => {
   const variants: Variants = {
     hidden: {
@@ -41,9 +41,10 @@ const PostHeader: React.FC<PostHeaderProps> = ({
   };
 
   const transition: Transition = {
-    type: "bounce",
+    // type: "spring",
+    ease: "easeInOut",
     duration: 0.4,
-    bounce: 0,
+    // bounce: 0,
   };
 
   return (
@@ -57,7 +58,7 @@ const PostHeader: React.FC<PostHeaderProps> = ({
         <PostTitle>{title}</PostTitle>
         <div className="flex justify-between items-center">
           {categories && <Categories categories={categories} />}
-          {likedByDataLoading && <Loading fontSize="text-sm" />}
+          {/* {likedByDataLoading && <Loading fontSize="text-sm" />} */}
           {likeCount > 0 && (
             <div className="mb-2">{`${likeCount} like${
               likeCount > 1 ? "s" : ""
@@ -70,7 +71,7 @@ const PostHeader: React.FC<PostHeaderProps> = ({
         variants={variants}
         initial={"hidden"}
         animate={"show"}
-        transition={{ ...transition, delay: 0.2 }}
+        transition={transition}
         className="flex flex-col sm:flex-row justify-between mb-6 "
       >
         <div className="mb-2 sm:mb-0">{date && <Date date={date} />}</div>
@@ -82,7 +83,7 @@ const PostHeader: React.FC<PostHeaderProps> = ({
         variants={variants}
         initial={{ opacity: 0 }}
         animate={"show"}
-        transition={{ ...transition, delay: 0.4 }}
+        transition={{ ...transition, delay: 0.3 }}
         className="mb-8"
       >
         <CoverImage title={title} coverImage={coverImage} />
