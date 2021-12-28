@@ -3,7 +3,6 @@ import { UserContext, SignInContext } from "../../lib/context";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import NavItem from "../nav-item";
-// import firebase from "../../lib/firebase";
 
 const menuVariants = {
   show: { opacity: 1, y: 0 },
@@ -50,7 +49,7 @@ function ProfileDropdown({ setIsOpen }) {
           initial="hidden"
           transition={{
             ...transition,
-            staggerChildren: 0.1,
+            staggerChildren: 0.05,
             delayChildren: 0.1,
           }}
         >

@@ -1,7 +1,7 @@
 import { motion, Variants } from "framer-motion";
 
 const NavItem: React.FC<{
-  variants: Variants;
+  variants?: Variants;
   children: any;
   onClick?: () => void;
 }> = ({ children, onClick, variants }) => {

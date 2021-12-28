@@ -42,10 +42,13 @@ const MenuDropdown: React.FC<{
     >
       <motion.nav
         className={"text-white p-3 -z-10 max-w-6xl m-auto"}
-        // variants={menuVariants}
         animate="show"
         initial="hidden"
-        transition={{ ...transition, staggerChildren: 0.1, delayChildren: 0.1 }}
+        transition={{
+          ...transition,
+          staggerChildren: 0.05,
+          delayChildren: 0.1,
+        }}
       >
         <ul>
           <NavItem variants={itemVariants} onClick={() => setIsOpen(false)}>

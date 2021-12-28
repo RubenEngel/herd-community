@@ -134,46 +134,49 @@ export default function Header() {
             </button>
           </motion.div>
         </div>
-        {/* Category indicator */}
-        {showCategory && !pageLoading && (
-          <>
-            <motion.div
-              initial={{ y: -40 }}
-              animate={{ y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="pt-4 -z-10"
-            >
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => {
-                  setCategoryNavbarOpen(!categoryNavbarOpen);
-                  setProfileNavbarOpen(false);
-                  setMenuNavbarOpen(false);
-                }}
-                className="flex flex-row items-center mx-auto focus:outline-none font-serif"
-              >
-                <p className="uppercase nav-item">
-                  Browsing {formatString(category, "_")}
-                </p>
-                <RiArrowDropDownFill className="text-3xl" />
-              </motion.button>
-            </motion.div>
-            <CategoryDropdown
-              setIsOpen={setCategoryNavbarOpen}
-              isOpen={categoryNavbarOpen}
-            />
-          </>
-        )}
         <AnimatePresence>
+          {/* Category indicator */}
+          {showCategory && !pageLoading && (
+            <>
+              <motion.div
+                key="explore-dropdown"
+                initial={{ y: -40 }}
+                animate={{ y: 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.5 }}
+                className="pt-4 -z-10"
+              >
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => {
+                    setCategoryNavbarOpen(!categoryNavbarOpen);
+                    setProfileNavbarOpen(false);
+                    setMenuNavbarOpen(false);
+                  }}
+                  className="flex flex-row items-center mx-auto focus:outline-none font-serif"
+                >
+                  <p className="uppercase nav-item">
+                    Browsing {formatString(category, "_")}
+                  </p>
+                  <RiArrowDropDownFill className="text-3xl" />
+                </motion.button>
+              </motion.div>
+              <AnimatePresence>
+                {categoryNavbarOpen && (
+                  <CategoryDropdown setIsOpen={setCategoryNavbarOpen} />
+                )}
+              </AnimatePresence>
+            </>
+          )}
           {/* Menu dropdown */}
           {menuNavbarOpen && (
-            <MenuDropdown key={"menuDropdown"} setIsOpen={setMenuNavbarOpen} />
+            <MenuDropdown key={"menu-dropdown"} setIsOpen={setMenuNavbarOpen} />
           )}
           {/* Profile dropdown */}
           {profileNavbarOpen && (
             <ProfileDropdown
-              key={"profileDropdown"}
+              key={"profile-dropdown"}
               setIsOpen={setProfileNavbarOpen}
             />
           )}
