@@ -1,7 +1,7 @@
 import "../styles/index.css";
 import "../styles/ck-editor.css";
 import { ApolloProvider } from "@apollo/client";
-import { ADD_USER, GET_USER } from "../lib/apolloQueries";
+import { ADD_USER, GET_USER_BY_EMAIL } from "../lib/apolloQueries";
 import { useApollo } from "../lib/apolloClient";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
@@ -44,13 +44,13 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   const findOrCreateUser = async () => {
     const res = await apolloClient.query({
-      query: GET_USER,
+      query: GET_USER_BY_EMAIL,
       variables: {
         email: user.email,
       },
     });
-    if (res.data.user) {
-      setUserData(res.data.user);
+    if (res.data.userByEmail) {
+      setUserData(res.data.userByEmail);
     } else {
       await apolloClient.mutate({
         mutation: ADD_USER,

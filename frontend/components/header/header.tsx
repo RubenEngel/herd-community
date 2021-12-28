@@ -11,7 +11,7 @@ import {
 import { BiMenuAltLeft } from "react-icons/bi";
 import { RiArrowDropDownFill } from "react-icons/ri";
 import { format } from "date-fns";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import MenuDropdown from "./menu-dropdown";
 import ProfileDropdown from "./profile-dropdown";
 import CategoryDropdown from "./category-dropdown";
@@ -165,13 +165,19 @@ export default function Header() {
             />
           </>
         )}
-        {/* Menu dropdown */}
-        <MenuDropdown setIsOpen={setMenuNavbarOpen} isOpen={menuNavbarOpen} />
-        {/* Profile dropdown */}
-        <ProfileDropdown
-          setIsOpen={setProfileNavbarOpen}
-          isOpen={profileNavbarOpen}
-        />
+        <AnimatePresence>
+          {/* Menu dropdown */}
+          {menuNavbarOpen && (
+            <MenuDropdown key={"menuDropdown"} setIsOpen={setMenuNavbarOpen} />
+          )}
+          {/* Profile dropdown */}
+          {profileNavbarOpen && (
+            <ProfileDropdown
+              key={"profileDropdown"}
+              setIsOpen={setProfileNavbarOpen}
+            />
+          )}
+        </AnimatePresence>
       </div>
     </>
   );

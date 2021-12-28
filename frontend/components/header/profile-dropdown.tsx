@@ -6,17 +6,29 @@ import NavItem from "../nav-item";
 // import firebase from "../../lib/firebase";
 
 const menuVariants = {
-  open: { opacity: 1, y: 0 },
-  closed: { opacity: 0, y: "-100%" },
+  show: { opacity: 1, y: 0 },
+  hidden: { opacity: 0, y: "-100%" },
+  exit: { opacity: 0, transition: { duration: 0.2 } },
+};
+
+const itemVariants = {
+  hidden: {
+    y: 20,
+    opacity: 0,
+  },
+  show: {
+    y: 0,
+    opacity: 1,
+  },
 };
 
 const transition = {
   type: "spring",
   bounce: 0,
-  duration: 0.4,
+  duration: 0.3,
 };
 
-function ProfileDropdown({ setIsOpen, isOpen }) {
+function ProfileDropdown({ setIsOpen }) {
   const { userAuth, userData } = useContext(UserContext);
   const setShowSignIn = useContext(SignInContext);
 
@@ -24,21 +36,28 @@ function ProfileDropdown({ setIsOpen, isOpen }) {
     <>
       <motion.div
         className={
-          "bg-primary w-screen right-0 -z-10 overflow-hidden mt-2" +
-          (isOpen ? " absolute" : " hidden")
+          "bg-primary absolute w-screen right-0 -z-10 overflow-hidden mt-2"
         }
-        animate={isOpen ? "open" : "closed"}
         variants={menuVariants}
+        animate="show"
+        initial="hidden"
+        exit="exit"
         transition={transition}
       >
         <motion.nav
           className={"text-white p-3 text-right -z-10 max-w-6xl m-auto"}
-          animate={isOpen ? "open" : "closed"}
-          transition={transition}
+          animate="show"
+          initial="hidden"
+          transition={{
+            ...transition,
+            staggerChildren: 0.1,
+            delayChildren: 0.1,
+          }}
         >
           <ul>
             {!userAuth && (
               <NavItem
+                variants={itemVariants}
                 onClick={() => {
                   setIsOpen(false);
                   setShowSignIn(true);
@@ -47,30 +66,42 @@ function ProfileDropdown({ setIsOpen, isOpen }) {
                 Sign In
               </NavItem>
             )}
-
             {userAuth && (
               <>
                 {userData?.role.toString() === "ADMIN" && (
-                  <NavItem onClick={() => setIsOpen(false)}>
+                  <NavItem
+                    variants={itemVariants}
+                    onClick={() => setIsOpen(false)}
+                  >
                     <Link scroll={false} href="/admin">
                       Admin
                     </Link>
                   </NavItem>
                 )}
-                <NavItem onClick={() => setIsOpen(false)}>
+                {userData && (
+                  <NavItem
+                    variants={itemVariants}
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <Link
+                      scroll={false}
+                      href={{
+                        pathname: "/users/[username]",
+                        query: { username: userData.username },
+                      }}
+                    >
+                      Profile
+                    </Link>
+                  </NavItem>
+                )}
+                <NavItem
+                  variants={itemVariants}
+                  onClick={() => setIsOpen(false)}
+                >
                   <Link scroll={false} href="/my-account">
                     Account
                   </Link>
                 </NavItem>
-                {/* <li
-                  onClick={() => {
-                    firebase.auth().signOut();
-                    setIsOpen(false);
-                  }}
-                  className="nav-item cursor-pointer"
-                >
-                  Sign Out
-                </li> */}
               </>
             )}
           </ul>

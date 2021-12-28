@@ -1,65 +1,68 @@
 import React, { Dispatch, SetStateAction, useContext } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { SignInContext, UserContext } from "../../lib/context";
-import router from "next/router";
-import toast from "react-hot-toast";
 import NavItem from "../nav-item";
 
 const menuVariants = {
-  open: { opacity: 1, y: 0 },
-  closed: { opacity: 0, y: "-100%" },
+  show: { opacity: 1, y: 0 },
+  hidden: { opacity: 0, y: "-100%" },
+  exit: { opacity: 0, transition: { duration: 0.2 } },
+};
+
+const itemVariants = {
+  hidden: {
+    y: 20,
+    opacity: 0,
+  },
+  show: {
+    y: 0,
+    opacity: 1,
+  },
 };
 
 const transition = {
   type: "spring",
   bounce: 0,
-  duration: 0.4,
+  duration: 0.3,
 };
 
 const MenuDropdown: React.FC<{
-  isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
-}> = ({ setIsOpen, isOpen }) => {
-  const setShowSignIn = useContext(SignInContext);
-
-  const { userAuth } = useContext(UserContext);
-
+}> = ({ setIsOpen }) => {
   return (
     <motion.div
       className={
-        " bg-primary opacity-75 w-screen left-0 -z-10 overflow-hidden mt-2 " +
-        (isOpen ? "absolute" : "hidden")
+        " bg-primary absolute opacity-75 w-screen left-0 -z-10 overflow-hidden mt-2 "
       }
-      animate={isOpen ? "open" : "closed"}
       variants={menuVariants}
+      initial="hidden"
+      animate="show"
+      exit="exit"
       transition={transition}
     >
       <motion.nav
         className={"text-white p-3 -z-10 max-w-6xl m-auto"}
-        animate={isOpen ? "open" : "closed"}
-        transition={transition}
+        // variants={menuVariants}
+        animate="show"
+        initial="hidden"
+        transition={{ ...transition, staggerChildren: 0.1, delayChildren: 0.1 }}
       >
         <ul>
-          <NavItem onClick={() => setIsOpen(false)}>
+          <NavItem variants={itemVariants} onClick={() => setIsOpen(false)}>
             <Link href="/home">Home</Link>
           </NavItem>
-          <NavItem onClick={() => setIsOpen(false)}>
+          <NavItem variants={itemVariants} onClick={() => setIsOpen(false)}>
             <Link href="/about-us">About Us</Link>
           </NavItem>
           {/* <NavItem onClick={() => setIsOpen(false)}>
             <Link href="/search">Search</Link>
           </NavItem> */}
-          <NavItem onClick={() => setIsOpen(false)}>
+          <NavItem variants={itemVariants} onClick={() => setIsOpen(false)}>
             <Link href="/explore">Explore</Link>
           </NavItem>
           <NavItem
+            variants={itemVariants}
             onClick={() => {
-              // if (!userAuth) {
-              //   setShowSignIn(true);
-              // } else {
-              //   router.push("/edit-post");
-              // }
               setIsOpen(false);
             }}
           >

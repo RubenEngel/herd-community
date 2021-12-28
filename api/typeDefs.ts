@@ -2,7 +2,7 @@ import { gql } from "apollo-server-express";
 
 export const typeDefs = gql`
   scalar DateTime
-  scalar Upload
+  # scalar Upload
 
   type File {
     filename: String!
@@ -81,7 +81,8 @@ export const typeDefs = gql`
       startAfter: Int
     ): [Post]
     post(slug: String!): Post
-    user(email: String!): User
+    userByEmail(email: String!): User
+    userByUsername(username: String!): User
     categories: [Category]
     likedBy(id: Int): Post
   }
@@ -109,6 +110,6 @@ export const typeDefs = gql`
     changePublished(id: Int!, published: Boolean!): Post
     likePost(id: Int): Post
     # uploadProfileImage(userId: Int, image: String): User
-    singleUpload(file: Upload!): File!
+    # singleUpload(file: Upload!): File!
   }
 `;

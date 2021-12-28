@@ -10,7 +10,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ExploreContext } from "../lib/context";
 import { Category, Post } from "../lib/types";
-import type { GetStaticProps } from "next";
+import type { GetServerSideProps } from "next";
 
 interface CategoryPosts {
   [categoryName: string]: Post[];
@@ -152,7 +152,7 @@ const Home = ({ categoryPosts }: IndexProps) => {
 
 export default Home;
 
-export const getServerSideProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async () => {
   const apolloClient = initializeApollo();
 
   const categoriesRes = await apolloClient.query({

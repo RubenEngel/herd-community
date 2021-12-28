@@ -4,7 +4,6 @@ import { useLazyQuery } from "@apollo/client";
 import Loading from "./loading";
 import { Waypoint } from "react-waypoint";
 import { GET_POSTS } from "../lib/apolloQueries";
-import { motion } from "framer-motion";
 // import { Post } from "../lib/types";
 
 export default function PostList({

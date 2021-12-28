@@ -47,14 +47,13 @@ export const resolvers = {
   DateTime: dateScalar,
   // This maps the `Upload` scalar to the implementation provided
   // by the `graphql-upload` package.
-  Upload: GraphQLUpload,
+  // Upload: GraphQLUpload,
   Query: {
     posts: async (
       _,
       { published, category, limit, startAfter },
       { userEmail }
     ) => {
-      checkAuth(userEmail);
       try {
         if (category?.toLowerCase() === "all") category = null;
         let cursorParams = {};
@@ -106,10 +105,23 @@ export const resolvers = {
         },
       });
     },
-    user: async (_, { email }) => {
+    userByEmail: async (_, { email }) => {
       return prisma.user.findUnique({
         where: {
           email: email,
+        },
+      });
+    },
+    userByUsername: async (_, { username }) => {
+      return prisma.user.findUnique({
+        where: {
+          username: username,
+        },
+        include: {
+          posts: true,
+          followers: true,
+          following: true,
+          likedPosts: true,
         },
       });
     },
@@ -249,20 +261,20 @@ export const resolvers = {
     //     return console.log("Couldn't upload image");
     //   }
     // },
-    singleUpload: async (_, { file }) => {
-      const { createReadStream, filename, mimetype, encoding } = await file;
+    // singleUpload: async (_, { file }) => {
+    //   const { createReadStream, filename, mimetype, encoding } = await file;
 
-      // Invoking the `createReadStream` will return a Readable Stream.
-      // See https://nodejs.org/api/stream.html#stream_readable_streams
-      const stream = createReadStream();
+    //   // Invoking the `createReadStream` will return a Readable Stream.
+    //   // See https://nodejs.org/api/stream.html#stream_readable_streams
+    //   const stream = createReadStream();
 
-      // This is purely for demonstration purposes and will overwrite the
-      // local-file-output.txt in the current working directory on EACH upload.
-      const out = require("fs").createWriteStream("local-file-output.txt");
-      stream.pipe(out);
-      await finished(out);
+    //   // This is purely for demonstration purposes and will overwrite the
+    //   // local-file-output.txt in the current working directory on EACH upload.
+    //   const out = require("fs").createWriteStream("local-file-output.txt");
+    //   stream.pipe(out);
+    //   await finished(out);
 
-      return { filename, mimetype, encoding };
-    },
+    //   return { filename, mimetype, encoding };
+    // },
   },
 };

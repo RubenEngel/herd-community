@@ -33,9 +33,6 @@ export default function SmallPostPreview({
           duration: 0.2,
         },
       }}
-      whileTap={{
-        scale: 0.9,
-      }}
     >
       <div className="grid grid-cols-5 gap-2">
         {/* Image */}
