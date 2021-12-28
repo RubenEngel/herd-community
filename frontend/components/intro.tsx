@@ -29,13 +29,13 @@ const Intro: React.FC<{ setFirstLoad?: Dispatch<SetStateAction<boolean>> }> = ({
               opacity: 1,
             }}
             transition={{
-              delay: 0.22 * index,
+              delay: 0.15 * index,
               // ease: "easeInOut",
               type: "spring",
               // repeat: Infinity,
               // repeatType: "reverse",
               // duration: "HERD.".length * 0.2,
-              duration: 0.5,
+              duration: 0.3,
             }}
             className="mx-1"
           >
@@ -58,8 +58,8 @@ const Intro: React.FC<{ setFirstLoad?: Dispatch<SetStateAction<boolean>> }> = ({
             // y: { delay: 0.5 },
             // scale: { delay: 0.7 },
             type: "spring",
-            delay: 0.8,
-            duration: 0.8,
+            delay: 0.6,
+            duration: 0.7,
           },
         }}
         transition={{ type: "spring" }}
