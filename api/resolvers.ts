@@ -1,9 +1,9 @@
 import { ApolloError } from "apollo-server-express";
 import { PrismaClient } from "@prisma/client";
 import { GraphQLScalarType } from "graphql";
-import cloudinary from "cloudinary/lib/v2";
-import { GraphQLUpload } from "graphql-upload";
-import { finished } from "stream/promises";
+// import cloudinary from "cloudinary/lib/v2";
+// import { GraphQLUpload } from "graphql-upload";
+// import { finished } from "stream/promises";
 import "./lib/cloudinaryConfig";
 
 const dateScalar = new GraphQLScalarType({
@@ -20,28 +20,28 @@ const prisma = new PrismaClient({
   log: ["info"],
 });
 
-const checkAuth = async (userEmail: string) => {
-  const user = await prisma.user.findUnique({ where: { email: userEmail } });
-  if (user) {
-    return true;
-  } else {
-    return false;
-  }
-};
+// const checkAuth = async (userEmail: string) => {
+//   const user = await prisma.user.findUnique({ where: { email: userEmail } });
+//   if (user) {
+//     return true;
+//   } else {
+//     return false;
+//   }
+// };
 
-const signUploadForm = () => {
-  const timestamp = Math.round(new Date().getTime() / 1000);
+// const signUploadForm = () => {
+//   const timestamp = Math.round(new Date().getTime() / 1000);
 
-  const signature = cloudinary.utils.api_sign_request(
-    {
-      timestamp: timestamp,
-      folder: "profile_pictures",
-    },
-    process.env.CLOUDINARY_API_SECRET
-  );
+//   const signature = cloudinary.utils.api_sign_request(
+//     {
+//       timestamp: timestamp,
+//       folder: "profile_pictures",
+//     },
+//     process.env.CLOUDINARY_API_SECRET
+//   );
 
-  return { timestamp, signature };
-};
+//   return { timestamp, signature };
+// };
 
 export const resolvers = {
   DateTime: dateScalar,
