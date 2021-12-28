@@ -5,7 +5,7 @@ import Categories from "../categories";
 import { motion } from "framer-motion";
 import PreviewImage from "./preview-image";
 import { Post } from "../../lib/types";
-import Button from "../button";
+import AnimatedButton from "../button";
 
 interface PostPreviewProps extends Partial<Post> {
   animateY?: number | string;
@@ -35,12 +35,12 @@ export default function PostPreview({
           bounce: 0.2,
         }}
         whileHover={{
-          scale: 1.03,
+          scale: 1.02,
           transition: {
             duration: 0.2,
           },
         }}
-        className="flex mx-auto my-2 flex-col justify-center rounded-lg "
+        className="flex mx-auto my-2 flex-col justify-center rounded-lg"
       >
         {/* Image */}
         <div className="mb-1">
@@ -58,11 +58,11 @@ export default function PostPreview({
         </div>
         {/* Title */}
 
-        <Button className="text-lg mb-2 text-left font-serif">
+        <AnimatedButton className="text-lg mb-2 text-left font-serif">
           <Link scroll={false} as={`/posts/${slug}`} href="/posts/[slug]">
             <a aria-label={title}>{title}</a>
           </Link>
-        </Button>
+        </AnimatedButton>
 
         {/* Date and Author */}
         <div className="text-sm flex flex-row justify-between items-center">

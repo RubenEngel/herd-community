@@ -105,7 +105,7 @@ export default function Header() {
             whileHover={{ scale: 1.1 }}
           >
             <h1 className="text-6xl font-bold leading-tight text-center">
-              <Link scroll={false} href="/">
+              <Link scroll={false} href="/home">
                 <a>HERD.</a>
               </Link>
             </h1>
@@ -144,7 +144,7 @@ export default function Header() {
               className="pt-4 -z-10"
             >
               <motion.button
-                whileHover={{ scale: 1.05 }}
+                whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => {
                   setCategoryNavbarOpen(!categoryNavbarOpen);

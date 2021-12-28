@@ -1,5 +1,5 @@
 import React from "react";
-import { AnimatePresence, motion, Variants } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 
 const Loading = ({ fontSize = "text-2xl" }) => {
   const brand = "HERD.";

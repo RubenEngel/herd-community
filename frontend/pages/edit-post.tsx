@@ -14,9 +14,8 @@ import Tags from "../components/post-content/tags";
 import { useRouter } from "next/router";
 import { Post } from "../lib/types";
 import { v4 as uuid } from "uuid";
-import { time } from "console";
 import { AnimatePresence, motion } from "framer-motion";
-import Button from "../components/button";
+import AnimatedButton from "../components/button";
 
 // TODO: Check if user admin again
 
@@ -172,7 +171,7 @@ const EditPost = () => {
     if (editData || submitData || publishedData) {
       toast.success("Success", { position: "bottom-right" });
       localStorage.setItem("postData", JSON.stringify(emptyPostData));
-      router.push("/");
+      router.push("/home");
     }
   }, [editLoading, submitLoading, publishedLoading]);
 
@@ -218,7 +217,7 @@ const EditPost = () => {
       }
     };
     return (
-      <Button
+      <AnimatedButton
         className={`px-3 py-1 mr-4 mb-3 text-md rounded-full uppercase ${
           postData.categories?.includes(categoryName)
             ? "bg-green-500 text-white"
@@ -227,7 +226,7 @@ const EditPost = () => {
         onClick={handleChange}
       >
         {formatString(categoryName, "_")}
-      </Button>
+      </AnimatedButton>
     );
   };
 
@@ -281,7 +280,7 @@ const EditPost = () => {
             {/*  Current Tags */}
             <div className="flex flex-row flex-wrap">
               {postData.tags?.map((tagName) => (
-                <Button
+                <AnimatedButton
                   key={uuid()}
                   id={tagName}
                   onClick={(e) =>
@@ -293,7 +292,7 @@ const EditPost = () => {
                   className="cursor-pointer py-1 px-3 mr-2 mb-3 text-md rounded-full text-white bg-green-500 hover:bg-red-500 hover:text-gray-100"
                 >
                   {tagName}
-                </Button>
+                </AnimatedButton>
               ))}
             </div>
             {/* Add Tags */}
@@ -304,7 +303,7 @@ const EditPost = () => {
                 value={tag}
                 onChange={(e) => setTag(e.target.value)}
               />
-              <Button
+              <AnimatedButton
                 className="ml-2 px-3 py-1 text-white bg-green-500 rounded-lg uppercase text-sm"
                 onClick={() => {
                   setPostData({
@@ -315,7 +314,7 @@ const EditPost = () => {
                 }}
               >
                 Add tag
-              </Button>
+              </AnimatedButton>
             </div>
             {/* Image */}
             <SubmitHeading>Featured Image URL</SubmitHeading>
@@ -341,7 +340,7 @@ const EditPost = () => {
             {/* Mutation and preview buttons */}
             <div className="flex flex-row flex-wrap mb-6 mx-auto justify-center">
               {existingPostData?.post?.published && (
-                <Button
+                <AnimatedButton
                   disabled={!isEditable}
                   className={
                     "bg-blue-500 hover:bg-blue-600 text-md py-2 px-4 mx-2 mb-3 text-white rounded-xl uppercase"
@@ -349,11 +348,11 @@ const EditPost = () => {
                   onClick={() => handleChangePublished(false)}
                 >
                   <h4>Unpublish</h4>
-                </Button>
+                </AnimatedButton>
               )}
               {String(userData?.role) === "ADMIN" &&
                 existingPostData?.post.published === false && (
-                  <Button
+                  <AnimatedButton
                     disabled={!isEditable}
                     className={
                       "bg-blue-500 hover:bg-blue-600 text-md py-2 px-4 mx-2 mb-3 text-white rounded-xl uppercase"
@@ -363,17 +362,17 @@ const EditPost = () => {
                     }}
                   >
                     <h4>Publish</h4>
-                  </Button>
+                  </AnimatedButton>
                 )}
               {/* Preview */}
-              <Button
+              <AnimatedButton
                 disabled={!isEditable}
                 className="disabled:bg-gray-400 bg-blue-500 hover:bg-blue-600 text-md px-4 py-2 mx-2 mb-3 text-white rounded-xl uppercase"
                 onClick={() => setShowPreview(!showPreview)}
               >
                 <h4>{showPreview ? "Hide preview" : "Show preview"}</h4>
-              </Button>
-              <Button
+              </AnimatedButton>
+              <AnimatedButton
                 onClick={() => {
                   if (router.query.slug) {
                     handleEdit();
@@ -392,7 +391,7 @@ const EditPost = () => {
                     {!dataComplete && "(Incomplete fields)"}
                   </p>
                 </h4>
-              </Button>
+              </AnimatedButton>
             </div>
 
             {showPreview && (

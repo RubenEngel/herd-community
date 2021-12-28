@@ -19,17 +19,19 @@ export default function Avatar({ author }: { author: User }) {
     <>
       {author && (
         <div className="flex items-center">
-          {author.imageUrl ? (
-            <img
-              src={author.imageUrl}
-              className="w-4 h-4 rounded-full"
-              alt={displayName}
-            />
-          ) : (
-            <FaUserCircle className="text-md" />
-          )}
+          <div className="mr-1 text-md">
+            {author.imageUrl ? (
+              <img
+                src={author.imageUrl}
+                className="w-7 h-7 rounded-full"
+                alt={displayName}
+              />
+            ) : (
+              <FaUserCircle />
+            )}
+          </div>
 
-          <div className="ml-1">{displayName}</div>
+          <div className="ml-1 font-serif">{displayName}</div>
         </div>
       )}
     </>

@@ -79,7 +79,6 @@ function MyApp({ Component, pageProps }: AppProps) {
                 {firstLoad ? (
                   <Intro key={router.route} setFirstLoad={setFirstLoad} />
                 ) : (
-                  // When site has been entered
                   <Layout>
                     <AnimatePresence
                       onExitComplete={() => window?.scrollTo(0, 0)}
