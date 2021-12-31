@@ -124,7 +124,7 @@ export default function Header() {
                 <img
                   width="30px"
                   height="30px"
-                  className="rounded-full"
+                  className="rounded-full object-cover"
                   src={userData.imageUrl}
                 />
               ) : (
@@ -134,41 +134,41 @@ export default function Header() {
             </button>
           </motion.div>
         </div>
-        <AnimatePresence>
-          {/* Category indicator */}
-          {showCategory && !pageLoading && (
-            <>
-              <motion.div
-                key="explore-dropdown"
-                initial={{ y: -40 }}
-                animate={{ y: 0 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.5 }}
-                className="pt-4 -z-10"
+
+        {/* Category indicator */}
+        {showCategory && !pageLoading && (
+          <>
+            <motion.div
+              key="explore-dropdown"
+              initial={{ y: -40 }}
+              animate={{ y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="pt-4 -z-10"
+            >
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => {
+                  setCategoryNavbarOpen(!categoryNavbarOpen);
+                  setProfileNavbarOpen(false);
+                  setMenuNavbarOpen(false);
+                }}
+                className="flex flex-row items-center mx-auto focus:outline-none font-serif"
               >
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => {
-                    setCategoryNavbarOpen(!categoryNavbarOpen);
-                    setProfileNavbarOpen(false);
-                    setMenuNavbarOpen(false);
-                  }}
-                  className="flex flex-row items-center mx-auto focus:outline-none font-serif"
-                >
-                  <p className="uppercase nav-item">
-                    Browsing {formatString(category, "_")}
-                  </p>
-                  <RiArrowDropDownFill className="text-3xl" />
-                </motion.button>
-              </motion.div>
-              <AnimatePresence>
-                {categoryNavbarOpen && (
-                  <CategoryDropdown setIsOpen={setCategoryNavbarOpen} />
-                )}
-              </AnimatePresence>
-            </>
-          )}
+                <p className="uppercase nav-item">
+                  Browsing {formatString(category, "_")}
+                </p>
+                <RiArrowDropDownFill className="text-3xl" />
+              </motion.button>
+            </motion.div>
+            <AnimatePresence>
+              {categoryNavbarOpen && (
+                <CategoryDropdown setIsOpen={setCategoryNavbarOpen} />
+              )}
+            </AnimatePresence>
+          </>
+        )}
+        <AnimatePresence>
           {/* Menu dropdown */}
           {menuNavbarOpen && (
             <MenuDropdown key={"menu-dropdown"} setIsOpen={setMenuNavbarOpen} />

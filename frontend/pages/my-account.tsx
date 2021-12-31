@@ -4,7 +4,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { UserContext, SignInContext } from "../lib/context";
 import { FaUserCircle } from "react-icons/fa";
 import firebase from "../lib/firebase";
-import AnimatedButton from "../components/button";
+import AnimatedButton from "../components/animated-button";
 import { gql, useMutation } from "@apollo/client";
 import router from "next/router";
 // import { UPLOAD_PROFILE_IMAGE } from "../lib/apolloQueries";
@@ -84,10 +84,6 @@ const MyAccount = () => {
                 <FaUserCircle className="text-9xl " />
               )}
             </div>
-            {/* <input type="file" name="image" onChange={handleSubmit} /> */}
-            {/* <UploadFile /> */}
-            {/* <Button onClick={handleSubmitFile}>Upload</Button> */}
-            {/* <Button>Remove</Button> */}
             {/* User details */}
             <div className="mt-10">
               <label>Email</label>

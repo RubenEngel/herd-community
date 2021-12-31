@@ -1,7 +1,7 @@
 import cn from "classnames";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import AnimatedButton from "../button";
+import AnimatedButton from "../animated-button";
 
 interface PreviewImageProps {
   title: string;

@@ -5,7 +5,7 @@ import Categories from "../categories";
 import { motion } from "framer-motion";
 import PreviewImage from "./preview-image";
 import { Post } from "../../lib/types";
-import AnimatedButton from "../button";
+import AnimatedButton from "../animated-button";
 
 interface PostPreviewProps extends Partial<Post> {
   animateY?: number | string;

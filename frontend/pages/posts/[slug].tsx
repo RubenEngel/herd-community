@@ -142,25 +142,28 @@ export default function PostPage({ post }: PostProps) {
   const [startedReading, setStartedReading] = useState(false);
   const [percentageComplete, setPercentageComplete] = useState(0);
   const [reachedEnd, setReachedEnd] = useState<boolean>(false);
-  const { scrollY, scrollYProgress } = useViewportScroll();
-  const scrollYSpring = useSpring(scrollYProgress, {
-    stiffness: 400,
-    damping: 90,
-  });
-  useEffect(() =>
-    scrollY.onChange((value) => {
+  const { scrollY } = useViewportScroll();
+  const [intialPageHeight, setInitialPageHeight] = useState<number>();
+  useEffect(() => {
+    setInitialPageHeight(
+      window.document.body.offsetHeight - window.innerHeight
+    );
+  }, []);
+  useEffect(() => {
+    return scrollY.onChange((value) => {
       if (value > 60) {
         setStartedReading(true);
       } else {
         setStartedReading(false);
       }
-    })
-  );
-  // <---
-
+    });
+  });
   useEffect(() => {
-    scrollYSpring.onChange((value) => setPercentageComplete(value * 100));
-  }, [scrollYSpring]);
+    return scrollY.onChange((value) => {
+      setPercentageComplete((value / intialPageHeight) * 100);
+    });
+  }, [scrollY, intialPageHeight]);
+  // <---
 
   return (
     <>
@@ -176,7 +179,7 @@ export default function PostPage({ post }: PostProps) {
               <meta property="og:image" content={post.featuredImage} />
             </Head>
             <AnimatePresence>
-              {startedReading && (
+              {startedReading && percentageComplete < 100 && (
                 <PostInteractions
                   likeCount={likedBy?.length}
                   slug={post.slug}
@@ -198,7 +201,7 @@ export default function PostPage({ post }: PostProps) {
               likeCount={likedBy?.length}
               likedByDataLoading={likedByDataLoading}
             />
-            {!reachedEnd && startedReading && (
+            {startedReading && percentageComplete < 100 && (
               <div className="w-screen">
                 <motion.div
                   style={{
@@ -207,7 +210,7 @@ export default function PostPage({ post }: PostProps) {
                     left: "0px",
                     top: "68px",
                     height: "8px",
-                    width: ((percentageComplete - 3) / 80) * 100 + "%",
+                    width: Math.min(100, percentageComplete) + "%",
                   }}
                 />
               </div>

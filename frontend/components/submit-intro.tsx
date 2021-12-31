@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { SignInContext, UserContext } from "../lib/context";
-import AnimatedButton from "./button";
+import AnimatedButton from "./animated-button";
 
 const StepHeading = ({ children }) => (
   <h2 className="text-md font-bold mb-2 mt-5">{children}</h2>

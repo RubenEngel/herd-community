@@ -17,7 +17,7 @@ const PageLoading = () => {
         y: 50,
         scale: 0,
       }}
-      className="h-50-screen flex flex-col justify-center items-center "
+      className="h-50-screen flex flex-col justify-center items-center text-3xl md:text-5xl"
       transition={{
         type: "spring",
         bounce: 0,

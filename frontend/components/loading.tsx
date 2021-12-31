@@ -1,7 +1,7 @@
 import React from "react";
 import { motion, Variants } from "framer-motion";
 
-const Loading = ({ fontSize = "text-2xl" }) => {
+const Loading = () => {
   const brand = "HERD.";
 
   const variants: Variants = {
@@ -16,13 +16,14 @@ const Loading = ({ fontSize = "text-2xl" }) => {
   const staggerTime = 0.15;
 
   return (
-    <div className={`text-primary text-center ${fontSize} flex justify-center`}>
+    <div className={`text-primary text-center flex justify-center`}>
       {brand.split("").map((letter, i) => (
-        <motion.h1
+        <motion.span
           key={i}
           variants={variants}
           animate="up"
           initial="down"
+          className=" font-serif font-bold" // text-3xl md:text-5xl
           transition={{
             repeat: Infinity,
             repeatType: "reverse",
@@ -31,7 +32,7 @@ const Loading = ({ fontSize = "text-2xl" }) => {
           }}
         >
           {letter}
-        </motion.h1>
+        </motion.span>
       ))}
     </div>
   );

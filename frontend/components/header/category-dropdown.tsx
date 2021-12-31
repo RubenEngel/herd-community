@@ -2,32 +2,14 @@ import React, { useContext } from "react";
 import { motion } from "framer-motion";
 import { ExploreContext } from "../../lib/context";
 import NavItem from "../nav-item";
+import {
+  menuVariants,
+  transition,
+  itemVariants,
+} from "../../lib/dropdownVariants";
 
-function CategoryDropdown({ setIsOpen }) {
+const CategoryDropdown = ({ setIsOpen }) => {
   const { setCategory } = useContext(ExploreContext);
-
-  const menuVariants = {
-    show: { opacity: 1, y: 0 },
-    hidden: { opacity: 0, y: "-100%" },
-    exit: { opacity: 0, transition: { duration: 0.2 } },
-  };
-
-  const itemVariants = {
-    hidden: {
-      y: 20,
-      opacity: 0,
-    },
-    show: {
-      y: 0,
-      opacity: 1,
-    },
-  };
-
-  const transition = {
-    type: "spring",
-    bounce: 0,
-    duration: 0.3,
-  };
 
   return (
     <motion.div
@@ -115,6 +97,6 @@ function CategoryDropdown({ setIsOpen }) {
       </motion.nav>
     </motion.div>
   );
-}
+};
 
 export default CategoryDropdown;

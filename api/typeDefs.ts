@@ -4,6 +4,11 @@ export const typeDefs = gql`
   scalar DateTime
   # scalar Upload
 
+  type SignedUploadResponse {
+    timestamp: Int
+    signature: String
+  }
+
   type File {
     filename: String!
     mimetype: String!
@@ -107,9 +112,14 @@ export const typeDefs = gql`
       categories: [String]
       tags: [String]
     ): Post
+    updateUser(
+      firstName: String
+      lastName: String
+      username: String
+      imageUrl: String
+    ): User
     changePublished(id: Int!, published: Boolean!): Post
     likePost(id: Int): Post
-    # uploadProfileImage(userId: Int, image: String): User
-    # singleUpload(file: Upload!): File!
+    signUpload: SignedUploadResponse
   }
 `;

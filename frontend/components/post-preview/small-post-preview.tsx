@@ -4,7 +4,7 @@ import PreviewImage from "./preview-image";
 import { motion } from "framer-motion";
 import Date from "../date";
 import { Post, User } from "../../lib/types";
-import AnimatedButton from "../button";
+import AnimatedButton from "../animated-button";
 
 interface SmallPostPreviewProps {
   title: Post["title"];

@@ -15,7 +15,7 @@ import { useRouter } from "next/router";
 import { Post } from "../lib/types";
 import { v4 as uuid } from "uuid";
 import { AnimatePresence, motion } from "framer-motion";
-import AnimatedButton from "../components/button";
+import AnimatedButton from "../components/animated-button";
 
 // TODO: Check if user admin again
 

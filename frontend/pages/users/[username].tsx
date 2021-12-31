@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Loading from "../../components/loading";
 import { addApolloState, initializeApollo } from "../../lib/apolloClient";
 import capitalizeFirstLetter from "../../lib/capitalizeFirstLetter";
@@ -10,6 +10,8 @@ import {
 } from "../../lib/apolloQueries";
 import { User } from "../../lib/types";
 import { FaUserCircle } from "react-icons/fa";
+import { UserContext } from "../../lib/context";
+import UploadProfileImage from "../../components/upload-profile-image";
 
 interface UserPageProps {
   user: Omit<User, "email">;
@@ -17,6 +19,22 @@ interface UserPageProps {
 
 const UserPage = ({ user }: UserPageProps) => {
   const router = useRouter();
+
+  const { userData } = useContext(UserContext);
+
+  const [ownProfile, setOwnProfile] = useState(false);
+
+  const [profileImage, setProfileImage] = useState(user.imageUrl);
+
+  const cancelUpload = () => {
+    setProfileImage(user.imageUrl);
+  };
+
+  useEffect(() => {
+    if (userData.username === user.username) {
+      setOwnProfile(true);
+    }
+  }, [userData]);
 
   return (
     <>
@@ -34,14 +52,26 @@ const UserPage = ({ user }: UserPageProps) => {
                 )} ${capitalizeFirstLetter(user.lastName)}`
               : `${capitalizeFirstLetter(user.firstName)}`}
           </h1>
+          <h4>@{user.username}</h4>
           <div className="text-8xl mx-auto flex justify-center my-6">
-            {user.imageUrl ? (
-              <img className="w-32 h-32 rounded-full" src={user.imageUrl}></img>
+            {profileImage ? (
+              <img
+                className="w-32 h-32 rounded-full object-cover"
+                src={profileImage}
+              ></img>
             ) : (
               <FaUserCircle />
             )}
           </div>
-          <h4>@{user.username}</h4>
+
+          {ownProfile && (
+            <>
+              <UploadProfileImage
+                cancelUpload={cancelUpload}
+                setProfileImage={setProfileImage}
+              />
+            </>
+          )}
         </div>
       )}
     </>

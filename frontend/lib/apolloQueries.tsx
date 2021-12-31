@@ -185,6 +185,23 @@ export const UPDATE_POST = gql`
   }
 `;
 
+export const UPDATE_USER_IMAGE = gql`
+  mutation UpdateUserImage($imageUrl: String) {
+    updateUser(imageUrl: $imageUrl) {
+      imageUrl
+    }
+  }
+`;
+
+export const SIGN_CLOUDINARY_UPLOAD = gql`
+  mutation {
+    signUpload {
+      timestamp
+      signature
+    }
+  }
+`;
+
 export const ADD_USER = gql`
   mutation CreateUser($email: String) {
     createUser(email: $email) {
@@ -216,15 +233,6 @@ export const LIKE_POST = gql`
       _count {
         likedBy
       }
-    }
-  }
-`;
-
-export const UPLOAD_PROFILE_IMAGE = gql`
-  mutation ($userId: Int, $image: String) {
-    uploadProfileImage(userId: $userId, image: $image) {
-      id
-      imageUrl
     }
   }
 `;
