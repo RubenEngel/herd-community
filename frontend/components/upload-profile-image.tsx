@@ -1,4 +1,4 @@
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import AnimatedButton from "./animated-button";
@@ -9,10 +9,9 @@ import {
 } from "../lib/apolloQueries";
 
 // TODO: .env this
-const cloudinaryUploadUrl =
-  "https://api.cloudinary.com/v1_1/dnsihvop5/auto/upload";
+const cloudinaryUploadUrl = process.env.CLOUDINARY_UPLOAD_URL;
 
-const cloudinaryApiKey = "798653816451577";
+const cloudinaryApiKey = process.env.CLOUDINARY_API_KEY;
 
 //  --- Upload Component
 const UploadFile = ({
@@ -69,12 +68,12 @@ const UploadFile = ({
           method: "POST",
           body: formData,
         });
-        if (response.ok === false) {
-          return toast.error("Error", { position: "bottom-right" });
-        } else {
+        if (response.ok === true) {
           setUploadLoading(false);
           setUploadReady(false);
           toast.success("Success", { position: "bottom-right" });
+        } else {
+          return toast.error("Error", { position: "bottom-right" });
         }
         return response.json();
       };
