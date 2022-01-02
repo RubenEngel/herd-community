@@ -94,7 +94,21 @@ const UploadFile = ({
   return (
     <>
       {!uploadReady ? (
-        <input type="file" onChange={onChange} />
+        <>
+          <label
+            className="bg-primary text-secondary p-2 rounded-xl mt-20 cursor-pointer"
+            htmlFor="file-upload"
+          >
+            Upload
+          </label>
+          <input
+            className="hidden"
+            type="file"
+            id="file-upload"
+            onChange={onChange}
+          />
+          <div className="mt-20"></div>
+        </>
       ) : (
         <>
           <AnimatedButton

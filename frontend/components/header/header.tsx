@@ -122,9 +122,7 @@ export default function Header() {
             >
               {userData?.imageUrl ? (
                 <img
-                  width="30px"
-                  height="30px"
-                  className="rounded-full object-cover"
+                  className="object-cover rounded-full w-10 h-10"
                   src={userData.imageUrl}
                 />
               ) : (

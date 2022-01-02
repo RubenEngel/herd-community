@@ -27,6 +27,7 @@ import formatString from "../../lib/formatString";
 import { ExploreContext } from "../../lib/context";
 import PostInteractions from "../../components/header/post-interactions";
 import { useMutation, useQuery } from "@apollo/client";
+import ProgressBar from "../../components/progress-bar";
 
 interface PostProps {
   post: Post;
@@ -202,20 +203,8 @@ export default function PostPage({ post }: PostProps) {
               likedByDataLoading={likedByDataLoading}
             />
             {startedReading && percentageComplete < 100 && (
-              <div className="w-screen">
-                <motion.div
-                  style={{
-                    background: "#50C878",
-                    position: "fixed",
-                    left: "0px",
-                    top: "68px",
-                    height: "8px",
-                    width: Math.min(100, percentageComplete) + "%",
-                  }}
-                />
-              </div>
+              <ProgressBar percentageComplete={percentageComplete} />
             )}
-            <motion.div></motion.div>
             <PostBody content={post.content} />
           </article>
           <div>

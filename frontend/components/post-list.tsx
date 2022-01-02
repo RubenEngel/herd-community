@@ -56,7 +56,7 @@ export default function PostList({
           />
         ))}
       {loading && (
-        <div className="mt-20">
+        <div className="mt-20 text-2xl">
           <Loading />
         </div>
       )}
