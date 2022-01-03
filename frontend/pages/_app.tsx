@@ -17,7 +17,6 @@ import Intro from "../components/intro";
 import PageLoading from "../components/page-loading";
 import SignInModal from "../components/sign-in-modal";
 import PageTransition from "../components/page-transition";
-// import { CloudinaryContext } from "cloudinary-react";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const apolloClient = useApollo(pageProps);

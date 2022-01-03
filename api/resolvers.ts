@@ -2,9 +2,6 @@ import { ApolloError } from "apollo-server-express";
 import { PrismaClient } from "@prisma/client";
 import { GraphQLScalarType } from "graphql";
 import cloudinary from "cloudinary/lib/v2";
-import types from "cloudinary/";
-// import { GraphQLUpload } from "graphql-upload";
-// import { finished } from "stream/promises";
 import "./lib/cloudinaryConfig";
 
 const dateScalar = new GraphQLScalarType({

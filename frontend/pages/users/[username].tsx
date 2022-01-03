@@ -31,7 +31,8 @@ const UserPage = ({ user }: UserPageProps) => {
   };
 
   useEffect(() => {
-    if (userData.username === user.username) {
+    if (!userData) return;
+    if (userData?.username === user.username) {
       setOwnProfile(true);
     }
   }, [userData]);
