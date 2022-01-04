@@ -25,6 +25,18 @@ export const GET_USER_BY_USERNAME = gql`
       lastName
       username
       imageUrl
+      # posts {
+      #   slug
+      #   title
+      #   content
+      # }
+      _count {
+        posts
+        followers
+        following
+        likedPosts
+        comments
+      }
     }
   }
 `;
@@ -78,12 +90,14 @@ export const GET_POSTS = gql`
     $category: String
     $limit: Int!
     $startAfter: Int
+    $authorId: Int
   ) {
     posts(
       published: $published
       category: $category
       limit: $limit
       startAfter: $startAfter
+      authorId: $authorId
     ) {
       id
       slug

@@ -45,7 +45,7 @@ export const resolvers = {
   DateTime: dateScalar,
 
   Query: {
-    posts: async (_, { published, category, limit, startAfter }) => {
+    posts: async (_, { published, category, limit, startAfter, authorId }) => {
       try {
         if (category?.toLowerCase() === "all") category = null;
         let cursorParams = {};
@@ -69,6 +69,9 @@ export const resolvers = {
               },
             },
             published: published,
+            author: {
+              id: authorId,
+            },
           },
           include: {
             categories: true,
@@ -114,6 +117,15 @@ export const resolvers = {
           followers: true,
           following: true,
           likedPosts: true,
+          _count: {
+            select: {
+              posts: true,
+              followers: true,
+              following: true,
+              likedPosts: true,
+              comments: true,
+            },
+          },
         },
       });
     },

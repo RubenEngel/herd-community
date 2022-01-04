@@ -2,7 +2,6 @@ import { gql } from "apollo-server-express";
 
 export const typeDefs = gql`
   scalar DateTime
-  # scalar Upload
 
   type SignedUploadResponse {
     timestamp: Int
@@ -29,10 +28,15 @@ export const typeDefs = gql`
     likedComments: [Comment]
     following: [User]
     followers: [User]
+    _count: UserRelationCounts
   }
 
-  type LikedByCount {
-    likedBy: Int
+  type UserRelationCounts {
+    posts: Int
+    followers: Int
+    following: Int
+    likedPosts: Int
+    comments: Int
   }
 
   type Post {
@@ -44,13 +48,18 @@ export const typeDefs = gql`
     title: String
     featuredImage: String
     content: String
+    # excerpt: String
     author: User
     authorEmail: String
     comments: [Comment]
     likedBy: [User]
-    _count: LikedByCount
     categories: [Category]
     tags: [String]
+    _count: PostRelationCounts
+  }
+
+  type PostRelationCounts {
+    likedBy: Int
   }
 
   type Category {
@@ -84,6 +93,7 @@ export const typeDefs = gql`
       category: String
       limit: Int
       startAfter: Int
+      authorId: Int
     ): [Post]
     post(slug: String!): Post
     userByEmail(email: String!): User

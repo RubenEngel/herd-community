@@ -1,5 +1,5 @@
 import { useMutation } from "@apollo/client";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import toast from "react-hot-toast";
 import AnimatedButton from "./animated-button";
 import Loading from "./loading";
@@ -7,8 +7,9 @@ import {
   SIGN_CLOUDINARY_UPLOAD,
   UPDATE_USER_IMAGE,
 } from "../lib/apolloQueries";
+import { FiEdit3 } from "react-icons/fi";
+import { FaCheck, FaTimes } from "react-icons/fa";
 
-// TODO: .env this
 const cloudinaryUploadUrl = process.env.CLOUDINARY_UPLOAD_URL;
 
 const cloudinaryApiKey = process.env.CLOUDINARY_API_KEY;
@@ -89,44 +90,46 @@ const UploadFile = ({
     }
   };
 
+  const startUploadRef = useRef(null);
+
   if (uploadLoading) return <Loading />;
 
   return (
     <>
       {!uploadReady ? (
         <>
-          <label
-            className="bg-primary text-secondary p-2 rounded-xl mt-20 cursor-pointer"
-            htmlFor="file-upload"
+          <AnimatedButton
+            className="bg-primary text-secondary p-3 text-2xl rounded-full cursor-pointer shadow-lg"
+            onClick={() => startUploadRef.current.click()}
           >
-            Upload
-          </label>
+            <FiEdit3 />
+          </AnimatedButton>
           <input
             className="hidden"
             type="file"
             id="file-upload"
             onChange={onChange}
+            ref={startUploadRef}
           />
-          <div className="mt-20"></div>
         </>
       ) : (
-        <>
+        <div className="flex relative left-2">
           <AnimatedButton
             onClick={onSubmit}
-            className="bg-green-600 mx-2 text-secondary px-3 py-2 my-4 rounded-xl"
+            className="bg-green-600 text-secondary p-3 rounded-full"
           >
-            Confirm
+            <FaCheck />
           </AnimatedButton>
           <AnimatedButton
             onClick={() => {
               cancelUpload();
               setUploadReady(false);
             }}
-            className="bg-red-600 mx-2 text-secondary px-3 py-2 my-4 rounded-xl"
+            className="bg-red-600 text-secondary p-3 rounded-full"
           >
-            Cancel
+            <FaTimes />
           </AnimatedButton>
-        </>
+        </div>
       )}
     </>
   );

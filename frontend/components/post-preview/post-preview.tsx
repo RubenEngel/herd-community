@@ -34,12 +34,6 @@ export default function PostPreview({
           duration: 0.7,
           bounce: 0.2,
         }}
-        whileHover={{
-          scale: 1.02,
-          transition: {
-            duration: 0.2,
-          },
-        }}
         className="flex mx-auto my-2 flex-col justify-center rounded-lg"
       >
         {/* Image */}
@@ -48,8 +42,8 @@ export default function PostPreview({
             title={title}
             coverImage={featuredImage}
             slug={slug}
-            width={1000}
-            height={900}
+            width={600}
+            height={400}
           />
         </div>
         {/* Categories */}
@@ -57,13 +51,11 @@ export default function PostPreview({
           <Categories categories={categories} />
         </div>
         {/* Title */}
-
         <AnimatedButton className="text-lg mb-2 text-left font-serif">
           <Link scroll={false} as={`/posts/${slug}`} href="/posts/[slug]">
             <a aria-label={title}>{title}</a>
           </Link>
         </AnimatedButton>
-
         {/* Date and Author */}
         <div className="text-sm flex flex-row justify-between items-center">
           <Avatar author={author} />

@@ -16,18 +16,14 @@ import { addApolloState, initializeApollo } from "../../lib/apolloClient";
 import { Post } from "../../lib/types";
 import PostList from "../../components/post-list";
 import { SignInContext, UserContext } from "../../lib/context";
-import {
-  motion,
-  useViewportScroll,
-  AnimatePresence,
-  useSpring,
-} from "framer-motion";
+import { useViewportScroll, AnimatePresence } from "framer-motion";
 import { Waypoint } from "react-waypoint";
 import formatString from "../../lib/formatString";
 import { ExploreContext } from "../../lib/context";
 import PostInteractions from "../../components/header/post-interactions";
 import { useMutation, useQuery } from "@apollo/client";
 import ProgressBar from "../../components/progress-bar";
+import { getDisplayName } from "../../lib/getDisplayName";
 
 interface PostProps {
   post: Post;
@@ -146,9 +142,11 @@ export default function PostPage({ post }: PostProps) {
   const { scrollY } = useViewportScroll();
   const [intialPageHeight, setInitialPageHeight] = useState<number>();
   useEffect(() => {
+    // if (window.innerHeight > 600) {
     setInitialPageHeight(
       window.document.body.offsetHeight - window.innerHeight
     );
+    // }
   }, []);
   useEffect(() => {
     return scrollY.onChange((value) => {
@@ -207,18 +205,16 @@ export default function PostPage({ post }: PostProps) {
             )}
             <PostBody content={post.content} />
           </article>
-          <div>
-            <Waypoint
-              bottomOffset={100}
-              onEnter={() => {
-                setReachedEnd(true);
-              }}
-            >
-              <h1 className="text-4xl text-center mb-8 uppercase">
-                More Posts from {formatString(category, "_")}
-              </h1>
-            </Waypoint>
-          </div>
+          <Waypoint
+            bottomOffset={100}
+            onEnter={() => {
+              setReachedEnd(true);
+            }}
+          >
+            <h1 className="text-4xl text-center mb-8 uppercase">
+              More Posts from {formatString(category, "_")}
+            </h1>
+          </Waypoint>
           <PostList
             published
             startLoad={reachedEnd}

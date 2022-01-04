@@ -22,7 +22,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   const apolloClient = useApollo(pageProps);
   const router = useRouter();
   const [pageLoading, setPageLoading] = useState(false);
-  const [user, loading] = useAuthState(auth);
+  const [user] = useAuthState(auth);
   const [userData, setUserData] = useState<User>(null);
   const [firstLoad, setFirstLoad] = useState(true);
   const [category, setCategory] = useState("all");
@@ -75,27 +75,27 @@ function MyApp({ Component, pageProps }: AppProps) {
         <UserContext.Provider value={{ userAuth: user, userData }}>
           <SignInContext.Provider value={setShowSignIn}>
             <AnimatePresence exitBeforeEnter>
-              {firstLoad ? (
-                <Intro key={router.route} setFirstLoad={setFirstLoad} />
-              ) : (
-                <Layout>
-                  <AnimatePresence
-                    onExitComplete={() => window?.scrollTo(0, 0)}
-                    exitBeforeEnter
-                  >
-                    {pageLoading ? (
-                      <PageLoading key={"page-loading"} />
-                    ) : (
-                      <PageTransition key={router.asPath}>
-                        <Component {...pageProps} />
-                      </PageTransition>
-                    )}
-                  </AnimatePresence>
-                  {!user && showSignIn && (
-                    <SignInModal setShowSignIn={setShowSignIn} />
+              {/* {firstLoad ? ( */}
+              {/* <Intro key={router.route} setFirstLoad={setFirstLoad} /> */}
+              {/* ) : ( */}
+              <Layout>
+                <AnimatePresence
+                  onExitComplete={() => window?.scrollTo(0, 0)}
+                  exitBeforeEnter
+                >
+                  {pageLoading ? (
+                    <PageLoading key={"page-loading"} />
+                  ) : (
+                    <PageTransition key={router.asPath}>
+                      <Component {...pageProps} />
+                    </PageTransition>
                   )}
-                </Layout>
-              )}
+                </AnimatePresence>
+                {!user && showSignIn && (
+                  <SignInModal setShowSignIn={setShowSignIn} />
+                )}
+              </Layout>
+              {/* )} */}
             </AnimatePresence>
             <Toaster />
           </SignInContext.Provider>

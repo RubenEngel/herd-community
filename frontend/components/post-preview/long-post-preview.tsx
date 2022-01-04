@@ -1,26 +1,24 @@
+import React from "react";
 import Avatar from "../avatar";
 import Link from "next/link";
 import PreviewImage from "./preview-image";
 import { motion } from "framer-motion";
 import Date from "../date";
-import { Post, User } from "../../lib/types";
+import { Post } from "../../lib/types";
 import AnimatedButton from "../animated-button";
+import { BiCommentDetail, BiLike } from "react-icons/bi";
+import Categories from "../categories";
 
-interface SmallPostPreviewProps {
-  title: Post["title"];
-  featuredImage: Post["featuredImage"];
-  author: User;
-  slug: Post["slug"];
-  createdAt: Post["createdAt"];
-}
+interface PostPreviewProps extends Partial<Post> {}
 
-export default function SmallPostPreview({
+const LongPostPreview = ({
   title,
   createdAt,
   featuredImage,
   author,
   slug,
-}: SmallPostPreviewProps) {
+  categories,
+}: PostPreviewProps) => {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -41,7 +39,7 @@ export default function SmallPostPreview({
         </div>
         <div className="col-span-4">
           {/* Title */}
-          <AnimatedButton className="text-left text-sm md:text-base mb-2 leading-snug font-serif text-ellipsis">
+          <AnimatedButton className="text-left text-xl mb-2 leading-snug font-serif text-ellipsis">
             <Link scroll={false} as={`/posts/${slug}`} href="/posts/[slug]">
               <a className="">{title}</a>
             </Link>
@@ -51,9 +49,21 @@ export default function SmallPostPreview({
           <div className="mb-2 text-xs">
             <Date date={createdAt}></Date>
           </div>
-          <div className="lg:flex justify-between text-sm">
+          {/* Categories */}
+          <div className="my-2">
+            <Categories categories={categories} />
+          </div>
+          <div className="flex">
             <div className="flex flex-row justify-start items-center col-span-3 ">
               <Avatar author={author} />
+            </div>
+            <div className="flex items-center mx-3">
+              <BiLike />
+              <h4 className="ml-1">2</h4>
+            </div>
+            <div className="flex items-center mx-3">
+              <BiCommentDetail />
+              <h4 className="ml-1">3</h4>
             </div>
           </div>
           {/* Author */}
@@ -61,4 +71,6 @@ export default function SmallPostPreview({
       </div>
     </motion.div>
   );
-}
+};
+
+export default LongPostPreview;

@@ -4,18 +4,19 @@ import { useLazyQuery } from "@apollo/client";
 import Loading from "./loading";
 import { Waypoint } from "react-waypoint";
 import { GET_POSTS } from "../lib/apolloQueries";
-// import { Post } from "../lib/types";
 
 export default function PostList({
   published,
   startLoad = true,
   category,
   limit,
+  authorId,
 }: {
-  startLoad: boolean;
-  category: string;
   limit: number;
   published: boolean;
+  startLoad?: boolean;
+  category?: string;
+  authorId?: number;
 }) {
   const [getPosts, { loading, error, data, fetchMore }] = useLazyQuery(
     GET_POSTS,
@@ -25,6 +26,7 @@ export default function PostList({
         limit: limit,
         category: category,
         startAfter: null,
+        authorId: authorId,
       },
       notifyOnNetworkStatusChange: true,
     }
@@ -61,18 +63,16 @@ export default function PostList({
         </div>
       )}
       {data.posts.length > 0 && (
-        <div>
-          <Waypoint
-            onEnter={() => {
-              const endCursor = data.posts[data.posts.length - 1].id;
-              fetchMore({
-                variables: {
-                  startAfter: endCursor,
-                },
-              });
-            }}
-          ></Waypoint>
-        </div>
+        <Waypoint
+          onEnter={() => {
+            const endCursor = data.posts[data.posts.length - 1].id;
+            fetchMore({
+              variables: {
+                startAfter: endCursor,
+              },
+            });
+          }}
+        ></Waypoint>
       )}
     </div>
   );

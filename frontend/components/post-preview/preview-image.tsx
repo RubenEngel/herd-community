@@ -1,5 +1,4 @@
 import cn from "classnames";
-import { motion } from "framer-motion";
 import Link from "next/link";
 import AnimatedButton from "../animated-button";
 
@@ -11,21 +10,20 @@ interface PreviewImageProps {
   height: number;
 }
 
-export default function PreviewImage({
+const PreviewImage = ({
   title,
   coverImage,
   slug,
   width,
   height,
-}: PreviewImageProps) {
+}: PreviewImageProps) => {
   const image = (
     <img
       src={coverImage}
       width={width}
       height={height}
-      className={cn("shadow-small m-auto", {
-        "hover:shadow-medium object-cover transition-shadow duration-200 rounded-xl":
-          slug,
+      className={cn("shadow-small m-auto object-cover", {
+        "hover:shadow-medium transition-shadow duration-200 rounded-lg": slug,
       })}
     />
   );
@@ -42,4 +40,6 @@ export default function PreviewImage({
       )}
     </div>
   );
-}
+};
+
+export default PreviewImage;

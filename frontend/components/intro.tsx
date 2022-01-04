@@ -30,11 +30,7 @@ const Intro: React.FC<{ setFirstLoad?: Dispatch<SetStateAction<boolean>> }> = ({
             }}
             transition={{
               delay: 0.15 * index,
-              // ease: "easeInOut",
               type: "spring",
-              // repeat: Infinity,
-              // repeatType: "reverse",
-              // duration: "HERD.".length * 0.2,
               duration: 0.4,
             }}
             className="mx-1"
@@ -50,8 +46,6 @@ const Intro: React.FC<{ setFirstLoad?: Dispatch<SetStateAction<boolean>> }> = ({
           x: 0,
           scale: 1,
           transition: {
-            // y: { delay: 0.5 },
-            // scale: { delay: 0.7 },
             type: "spring",
             delay: 0.6,
             duration: 0.7,
@@ -65,9 +59,7 @@ const Intro: React.FC<{ setFirstLoad?: Dispatch<SetStateAction<boolean>> }> = ({
             setFirstLoad(false);
             if (router.route === "/") router.push("/home");
           }}
-          drag
           whileHover={{ scale: 1.2, transition: { delay: 0 } }}
-          dragConstraints={{ top: 0, bottom: 0, left: 0, right: 0 }}
         >
           <motion.div
             initial={{ scale: 0 }}

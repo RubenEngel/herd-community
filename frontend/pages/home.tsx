@@ -112,7 +112,7 @@ const Home = ({ categoryPosts }: IndexProps) => {
                 createdAt={post.createdAt}
                 key={post.id}
                 title={post.title}
-                coverImage={post.featuredImage}
+                featuredImage={post.featuredImage}
                 author={post.author}
                 slug={post.slug}
               />

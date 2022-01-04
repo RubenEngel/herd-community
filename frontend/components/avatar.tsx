@@ -1,22 +1,10 @@
 import { FaUserCircle } from "react-icons/fa";
 import { User } from "../lib/types";
-import capitalizeFirstLetter from "../lib/capitalizeFirstLetter";
 import AnimatedButton from "./animated-button";
 import Link from "next/link";
+import { getDisplayName } from "../lib/getDisplayName";
 
 const Avatar = ({ author }: { author: User }) => {
-  const firstName = author?.firstName
-    ? capitalizeFirstLetter(author.firstName)
-    : null;
-  const lastName = author?.lastName
-    ? capitalizeFirstLetter(author.lastName)
-    : undefined;
-
-  const displayName =
-    firstName || lastName
-      ? `${firstName || ""} ${lastName || ""}`
-      : "HERD Author";
-
   return (
     <>
       {author && (
@@ -27,14 +15,16 @@ const Avatar = ({ author }: { author: User }) => {
                 {author.imageUrl ? (
                   <img
                     src={author.imageUrl}
-                    className="w-7 h-7 rounded-full"
-                    alt={displayName}
+                    className="w-6 h-6 rounded-full"
+                    alt={getDisplayName(author)}
                   />
                 ) : (
-                  <FaUserCircle />
+                  <FaUserCircle className="w-5 h- rounded-full" />
                 )}
               </div>
-              <div className="ml-1 font-serif text-left">{displayName}</div>
+              <div className="ml-1 font-serif text-left text-base">
+                {getDisplayName(author)}
+              </div>
             </a>
           </Link>
         </AnimatedButton>

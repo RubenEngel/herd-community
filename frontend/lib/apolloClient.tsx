@@ -17,6 +17,7 @@ let apolloClient: ApolloClient<NormalizedCacheObject>;
 const authLink = setContext(async (_, { headers }) => {
   // return the headers to the context so httpLink can read them
 
+  // TODO: Stop using user email. JWT tokens instead?
   const authEmail = await auth.currentUser?.email;
   const isVerified = await auth.currentUser?.emailVerified;
 
@@ -41,7 +42,7 @@ function createApolloClient() {
         Query: {
           fields: {
             posts: {
-              keyArgs: ["category", "published"],
+              keyArgs: ["category", "published", "authorId"],
               merge(
                 existing: { __ref: string }[] = [],
                 incoming: { __ref: string }[]

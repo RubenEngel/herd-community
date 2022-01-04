@@ -46,7 +46,6 @@ export default function HomeCategory({
           author={latestPost.author}
           slug={latestPost.slug}
           categories={latestPost.categories}
-          // animateScale={0.5}
         />
 
         {latestStories.map((post) => (
@@ -54,7 +53,7 @@ export default function HomeCategory({
             createdAt={post.createdAt}
             key={post.slug}
             title={post.title}
-            coverImage={post.featuredImage}
+            featuredImage={post.featuredImage}
             author={post.author}
             slug={post.slug}
           />
