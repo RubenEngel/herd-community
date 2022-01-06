@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { BiUpvote } from "react-icons/bi";
+import { BiLike, BiUpvote } from "react-icons/bi";
 import { FiShare, FiEdit3 } from "react-icons/fi";
 // import { BiCommentDetail } from "react-icons/bi";
 // import { useRouter } from "next/router";
@@ -74,9 +74,7 @@ const PostInteractions: React.FC<{
         </Link>
       )}
       <InteractionButton onClick={handleLike}>
-        <BiUpvote
-          className={`${isLiked ? "text-green-600" : "text-primary"}`}
-        />
+        <BiLike className={`${isLiked ? "text-green-600" : "text-primary"}`} />
         {likeCount > 0 && <div className="text-sm block">{likeCount}</div>}
       </InteractionButton>
       {isSharable && (

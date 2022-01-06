@@ -19,7 +19,7 @@ export default function Categories({ categories }: { categories: Category[] }) {
             scale: 0.9,
           }}
           key={category.name}
-          className="text-md border mr-2 mb-2 bg-primary px-3 rounded-xl text-secondary"
+          className="font-serif text-sm border mr-2 mb-2 bg-primary px-2 rounded-xl text-secondary leading-6"
         >
           <Link scroll={false} href={"/explore"}>
             <a onClick={() => setCategory(category.name)}>

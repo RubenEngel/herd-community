@@ -14,11 +14,13 @@ const AnimatedButton = ({
   variant,
   onClick,
   className,
+  disabled,
 }: {
   children: React.ReactNode;
   variant?: ButtonVariants;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
-  className: string;
+  className?: string;
+  disabled?: boolean;
 }) => {
   const buttonBackground = () => {
     switch (variant) {
@@ -39,6 +41,7 @@ const AnimatedButton = ({
 
   return (
     <motion.button
+      disabled={disabled}
       className={`${className} ${buttonBackground()} ${
         variant &&
         "font-serif text-md rounded-lg px-6 py-1 hover:shadow-md transition-shadow duration-100"

@@ -255,7 +255,7 @@ const EditPost = () => {
         ) : (
           <motion.div
             key={"post-editor"}
-            initial={{ y: -100 }}
+            initial={{ y: 100 }}
             animate={{ y: 0 }}
             className="flex flex-col"
           >
@@ -279,10 +279,9 @@ const EditPost = () => {
             <SubmitHeading>Tags</SubmitHeading>
             {/*  Current Tags */}
             <div className="flex flex-row flex-wrap">
-              {postData.tags?.map((tagName) => (
+              {postData.tags?.map((tagName, index) => (
                 <AnimatedButton
-                  key={uuid()}
-                  id={tagName}
+                  key={tagName + index}
                   onClick={(e) =>
                     setPostData({
                       ...postData,

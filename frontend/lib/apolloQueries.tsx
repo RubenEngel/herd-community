@@ -2,34 +2,32 @@ import { gql } from "@apollo/client";
 
 // --------------- Queries
 
+const CORE_USER_FIELDS = gql`
+  fragment CoreUserFields on User {
+    id
+    role
+    firstName
+    lastName
+    username
+    imageUrl
+  }
+`;
+
 export const GET_USER_BY_EMAIL = gql`
+  ${CORE_USER_FIELDS}
   query GetUserByEmail($email: String!) {
     userByEmail(email: $email) {
-      id
+      ...CoreUserFields
       email
-      role
-      firstName
-      lastName
-      username
-      imageUrl
     }
   }
 `;
 
 export const GET_USER_BY_USERNAME = gql`
+  ${CORE_USER_FIELDS}
   query GetUserByUsername($username: String!) {
     userByUsername(username: $username) {
-      id
-      role
-      firstName
-      lastName
-      username
-      imageUrl
-      # posts {
-      #   slug
-      #   title
-      #   content
-      # }
+      ...CoreUserFields
       _count {
         posts
         followers
@@ -49,42 +47,44 @@ export const GET_ALL_POST_SLUGS = gql`
   }
 `;
 
+const CORE_POST_FIELDS = gql`
+  fragment CorePostFields on Post {
+    id
+    slug
+    published
+    title
+    createdAt
+    featuredImage
+    author {
+      firstName
+      lastName
+      imageUrl
+      username
+    }
+    categories {
+      name
+    }
+    tags
+    wordCount
+    _count {
+      likedBy
+      comments
+    }
+  }
+`;
+
 export const GET_POST = gql`
+  ${CORE_POST_FIELDS}
   query GetPost($slug: String!) {
     post(slug: $slug) {
-      id
-      slug
-      title
-      createdAt
-      featuredImage
-      published
-      author {
-        firstName
-        lastName
-        imageUrl
-        username
-      }
-      authorEmail
-      categories {
-        name
-      }
-      tags
+      ...CorePostFields
       content
-      # likedBy {
-      #   id
-      #   firstName
-      #   lastName
-      #   imageUrl
-      #   username
-      # }
-      _count {
-        likedBy
-      }
     }
   }
 `;
 
 export const GET_POSTS = gql`
+  ${CORE_POST_FIELDS}
   query GetPosts(
     $published: Boolean
     $category: String
@@ -99,23 +99,29 @@ export const GET_POSTS = gql`
       startAfter: $startAfter
       authorId: $authorId
     ) {
-      id
-      slug
-      published
-      title
-      createdAt
-      featuredImage
-      authorEmail
-      author {
-        firstName
-        lastName
-        imageUrl
-        username
-      }
-      categories {
-        name
-      }
-      tags
+      ...CorePostFields
+    }
+  }
+`;
+
+export const GET_POSTS_WITH_EXCERPT = gql`
+  ${CORE_POST_FIELDS}
+  query GetPosts(
+    $published: Boolean
+    $category: String
+    $limit: Int!
+    $startAfter: Int
+    $authorId: Int
+  ) {
+    posts(
+      published: $published
+      category: $category
+      limit: $limit
+      startAfter: $startAfter
+      authorId: $authorId
+    ) {
+      ...CorePostFields
+      excerpt
     }
   }
 `;

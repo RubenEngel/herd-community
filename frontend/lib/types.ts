@@ -1,20 +1,18 @@
-// import type {
-//   Post as PrismaPost,
-//   User as PrismaUser,
-//   Role as PrismaRole,
-//   Category as PrimsaCategory,
-// } from "../../api/node_modules/.prisma/client/index";
+import type {
+  Post as PrismaPost,
+  User as PrismaUser,
+  Role as PrismaRole,
+  Category as PrimsaCategory,
+} from "../../api/node_modules/.prisma/client/index";
 
 // ----------- Enums
 
-// export type Role = PrismaRole;
 export enum Role {
   USER = "USER",
   ADMIN = "ADMIN",
 }
 
 // ----------- Types
-// export interface User extends PrismaUser {}
 
 export interface User {
   id: number;
@@ -24,16 +22,14 @@ export interface User {
   firstName: string | null;
   lastName: string | null;
   imageUrl: string | null;
+  _count: {
+    posts: number | null;
+    followers: number | null;
+    following: number | null;
+    likedPosts: number | null;
+    comments: number | null;
+  };
 }
-
-// export interface Post extends PrismaPost {
-//   author: User;
-//   categories: Category[];
-//   likedBy: User[];
-//   _count: {
-//     likedBy: number;
-//   };
-// }
 
 export interface Post {
   id: number;
@@ -45,6 +41,8 @@ export interface Post {
   title: string;
   featuredImage: string | null;
   content: string;
+  excerpt: string;
+  wordCount: number;
   authorEmail: string | null;
   tags: string[];
   author: User;
@@ -52,22 +50,11 @@ export interface Post {
   likedBy: User[];
   _count: {
     likedBy: number;
+    comments: number;
   };
 }
-
-// export interface Category extends PrimsaCategory {}
 
 export interface Category {
   id: number;
   name: string;
 }
-// ----------- Inputs
-
-// export interface PostInput {
-//   slug: string;
-//   title: string;
-//   content: string;
-//   categories: string[];
-//   tags: string[];
-//   authorId: string;
-// }

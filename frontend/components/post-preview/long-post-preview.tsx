@@ -8,8 +8,17 @@ import { Post } from "../../lib/types";
 import AnimatedButton from "../animated-button";
 import { BiCommentDetail, BiLike } from "react-icons/bi";
 import Categories from "../categories";
+import { FiClock } from "react-icons/fi";
 
-interface PostPreviewProps extends Partial<Post> {}
+interface PostPreviewProps extends Partial<Post> {
+  likeCount: number;
+  commentCount: number;
+}
+
+const getMinuteRead = (wordCount: number) => {
+  // 250 WPM reading speed
+  return Math.round(wordCount / 250);
+};
 
 const LongPostPreview = ({
   title,
@@ -18,55 +27,76 @@ const LongPostPreview = ({
   author,
   slug,
   categories,
+  excerpt,
+  wordCount,
+  likeCount,
+  commentCount,
 }: PostPreviewProps) => {
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ bounce: 0, duration: 0.5 }}
+      initial={{ y: 100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ type: "spring", duration: 0.7, bounce: 0.2 }}
       className="rounded-lg my-6"
     >
-      <div className="grid grid-cols-6 gap-2">
+      <div className="md:grid grid-cols-6 gap-2">
         {/* Image */}
-        <div className="mr-2 col-span-2">
-          <PreviewImage
-            title={title}
-            coverImage={featuredImage}
-            slug={slug}
-            width={300}
-            height={300}
-          />
+        <div className="mx-au mr-2 mb-4 col-span-2">
+          <PreviewImage title={title} coverImage={featuredImage} slug={slug} />
         </div>
         <div className="col-span-4">
           {/* Title */}
           <AnimatedButton className="text-left text-xl mb-2 leading-snug font-serif text-ellipsis">
             <Link scroll={false} as={`/posts/${slug}`} href="/posts/[slug]">
-              <a className="">{title}</a>
+              <a>{title}</a>
             </Link>
           </AnimatedButton>
-
           {/* Date */}
           <div className="mb-2 text-xs">
             <Date date={createdAt}></Date>
           </div>
           {/* Categories */}
-          <div className="my-2">
+          <div className="my-3">
             <Categories categories={categories} />
           </div>
+          {/* Avatar and Interactions */}
           <div className="flex">
+            {/* Author */}
             <div className="flex flex-row justify-start items-center col-span-3 ">
               <Avatar author={author} />
             </div>
-            <div className="flex items-center mx-3">
-              <BiLike />
-              <h4 className="ml-1">2</h4>
-            </div>
-            <div className="flex items-center mx-3">
-              <BiCommentDetail />
-              <h4 className="ml-1">3</h4>
-            </div>
+            {/* Likes and Comments */}
+            {likeCount ? (
+              <div className="flex items-center mx-3">
+                <BiLike className="w-5 h-5" />
+                <h4 className="ml-1">{likeCount}</h4>
+              </div>
+            ) : null}
+            {commentCount ? (
+              <div className="flex items-center mx-3">
+                <BiCommentDetail className="w-5 h-5" />
+                <h4 className="ml-1">{commentCount}</h4>
+              </div>
+            ) : null}
           </div>
-          {/* Author */}
+          <div
+            className="mt-5"
+            dangerouslySetInnerHTML={{ __html: excerpt }}
+          ></div>
+          <div className="flex items-center">
+            <div className="flex items-center mr-3">
+              <FiClock className="mr-2" />
+              <h4>{getMinuteRead(wordCount)} minute read</h4>
+            </div>
+            <span className="text-3xl">&#183;</span>
+            <AnimatedButton className="p-4 text-sm">
+              <Link scroll={false} as={`/posts/${slug}`} href="/posts/[slug]">
+                <a>
+                  <h4>Continue Reading...</h4>
+                </a>
+              </Link>
+            </AnimatedButton>
+          </div>
         </div>
       </div>
     </motion.div>

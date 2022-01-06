@@ -6,8 +6,8 @@ interface PreviewImageProps {
   title: string;
   coverImage: string;
   slug: string;
-  width: number;
-  height: number;
+  width?: number;
+  height?: number;
 }
 
 const PreviewImage = ({

@@ -48,7 +48,8 @@ export const typeDefs = gql`
     title: String
     featuredImage: String
     content: String
-    # excerpt: String
+    excerpt: String
+    wordCount: Int
     author: User
     authorEmail: String
     comments: [Comment]
@@ -60,6 +61,7 @@ export const typeDefs = gql`
 
   type PostRelationCounts {
     likedBy: Int
+    comments: Int
   }
 
   type Category {

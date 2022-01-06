@@ -36,6 +36,8 @@ model Post {
   title         String
   featuredImage String?
   content       String
+  excerpt       String?
+  wordCount     Int?
   author        User?      @relation(name: "PostHasAuthor", fields: [authorEmail], references: [email])
   authorEmail   String?
   comments      Comment[]  @relation("PostHasComment")

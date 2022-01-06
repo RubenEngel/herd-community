@@ -8,7 +8,7 @@ export const menuVariants: Variants = {
 
 export const itemVariants: Variants = {
   hidden: {
-    y: 20,
+    y: -10,
     opacity: 0,
   },
   show: {

@@ -13,7 +13,7 @@ import {
   LIKED_BY,
 } from "../../lib/apolloQueries";
 import { addApolloState, initializeApollo } from "../../lib/apolloClient";
-import { Post } from "../../lib/types";
+import { Post, User } from "../../lib/types";
 import PostList from "../../components/post-list";
 import { SignInContext, UserContext } from "../../lib/context";
 import { useViewportScroll, AnimatePresence } from "framer-motion";
@@ -23,8 +23,7 @@ import { ExploreContext } from "../../lib/context";
 import PostInteractions from "../../components/header/post-interactions";
 import { useMutation, useQuery } from "@apollo/client";
 import ProgressBar from "../../components/progress-bar";
-import { getDisplayName } from "../../lib/getDisplayName";
-
+import UserCard from "../../components/user-card";
 interface PostProps {
   post: Post;
 }
@@ -77,7 +76,7 @@ export default function PostPage({ post }: PostProps) {
     username: string;
   }[];
 
-  const [likedBy, setLikedBy] = useState<LikedBy>([]);
+  const [likedBy, setLikedBy] = useState<LikedBy>();
 
   useEffect(() => {
     if (!userData) return;
@@ -135,6 +134,14 @@ export default function PostPage({ post }: PostProps) {
     }
   };
 
+  // ---- User follows
+
+  // const handleFollow = () => {
+
+  // }
+
+  // useMutation
+
   // ---> Scroll progress bar
   const [startedReading, setStartedReading] = useState(false);
   const [percentageComplete, setPercentageComplete] = useState(0);
@@ -142,11 +149,9 @@ export default function PostPage({ post }: PostProps) {
   const { scrollY } = useViewportScroll();
   const [intialPageHeight, setInitialPageHeight] = useState<number>();
   useEffect(() => {
-    // if (window.innerHeight > 600) {
     setInitialPageHeight(
       window.document.body.offsetHeight - window.innerHeight
     );
-    // }
   }, []);
   useEffect(() => {
     return scrollY.onChange((value) => {
@@ -197,13 +202,20 @@ export default function PostPage({ post }: PostProps) {
               author={post.author}
               categories={post.categories}
               tags={post.tags}
-              likeCount={likedBy?.length}
+              likeCount={likedBy?.length || post._count.likedBy}
+              commentCount={post._count.comments}
               likedByDataLoading={likedByDataLoading}
             />
             {startedReading && percentageComplete < 100 && (
               <ProgressBar percentageComplete={percentageComplete} />
             )}
             <PostBody content={post.content} />
+            <UserCard
+              isFollowing={false}
+              ownProfile={false}
+              user={post.author}
+              handleFollow={() => console.log("follow")}
+            />
           </article>
           <Waypoint
             bottomOffset={100}

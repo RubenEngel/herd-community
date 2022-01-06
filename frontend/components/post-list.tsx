@@ -55,6 +55,8 @@ export default function PostList({
             slug={post.slug}
             categories={post.categories}
             animateY={"50%"}
+            likeCount={post._count.likedBy}
+            commentCount={post._count.comments}
           />
         ))}
       {loading && (

@@ -67,14 +67,14 @@ const UserPage = ({ user }: UserPageProps) => {
       ) : (
         <>
           <div className="flex mt-10 justify-center">
-            <div className="mr-7 relative">
+            <div className="mr-3 relative">
               {profileImage ? (
                 <img
-                  className="w-32 h-32 rounded-full object-cover"
+                  className="w-28 h-28 rounded-full object-cover"
                   src={profileImage}
                 ></img>
               ) : (
-                <FaUserCircle className="w-32 h-32 rounded-full" />
+                <FaUserCircle className="w-28 h-28 rounded-full" />
               )}
               {ownProfile && (
                 <div className="absolute -top-3 -right-3">
@@ -93,7 +93,7 @@ const UserPage = ({ user }: UserPageProps) => {
                     )} ${capitalizeFirstLetter(user.lastName)}`
                   : `${capitalizeFirstLetter(user.firstName)}`}
               </h1>
-              <h4 className="text-xl">@{user.username}</h4>
+              <h4 className="text-lg">@{user.username}</h4>
               {ownProfile && (
                 <AnimatedButton variant={"primary"} className="mt-3 mr-2">
                   Edit Details
@@ -129,7 +129,7 @@ const UserPage = ({ user }: UserPageProps) => {
 
           <hr className="my-10" />
           <ProfilePostList
-            limit={6}
+            limit={3}
             maxLength={user._count.posts}
             published
             authorId={user.id}

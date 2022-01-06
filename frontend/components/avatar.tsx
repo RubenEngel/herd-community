@@ -4,25 +4,41 @@ import AnimatedButton from "./animated-button";
 import Link from "next/link";
 import { getDisplayName } from "../lib/getDisplayName";
 
-const Avatar = ({ author }: { author: User }) => {
+const Avatar = ({
+  author,
+  small = false,
+}: {
+  author: User;
+  small?: boolean;
+}) => {
   return (
     <>
       {author && (
         <AnimatedButton className="mr-3">
           <Link href={"/users/[username]"} as={`/users/${author.username}`}>
             <a className="flex items-center">
-              <div className="mr-1 text-md">
+              <div>
                 {author.imageUrl ? (
                   <img
                     src={author.imageUrl}
-                    className="w-6 h-6 rounded-full"
+                    className={`rounded-full ${
+                      small ? "w-4 h-4 mr-1" : "w-5 h-5 mr-2"
+                    }`}
                     alt={getDisplayName(author)}
                   />
                 ) : (
-                  <FaUserCircle className="w-5 h- rounded-full" />
+                  <FaUserCircle
+                    className={`rounded-full ${
+                      small ? "w-4 h-4 mr-1" : "w-5 h-5 mr-2"
+                    }`}
+                  />
                 )}
               </div>
-              <div className="ml-1 font-serif text-left text-base">
+              <div
+                className={`font-serif text-left  ${
+                  small ? "text-sm" : "text-base"
+                }`}
+              >
                 {getDisplayName(author)}
               </div>
             </a>

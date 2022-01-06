@@ -46,6 +46,8 @@ export default function HomeCategory({
           author={latestPost.author}
           slug={latestPost.slug}
           categories={latestPost.categories}
+          likeCount={latestPost._count.likedBy}
+          commentCount={latestPost._count.comments}
         />
 
         {latestStories.map((post) => (
@@ -56,6 +58,8 @@ export default function HomeCategory({
             featuredImage={post.featuredImage}
             author={post.author}
             slug={post.slug}
+            likeCount={post._count.likedBy}
+            commentCount={post._count.comments}
           />
         ))}
       </div>

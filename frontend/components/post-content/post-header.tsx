@@ -7,6 +7,7 @@ import Tags from "../../components/post-content/tags";
 import { Post } from "../../lib/types";
 import Loading from "../loading";
 import { motion, Transition, Variants } from "framer-motion";
+import { BiCommentDetail, BiLike } from "react-icons/bi";
 
 interface PostHeaderProps {
   title: Post["title"];
@@ -16,6 +17,7 @@ interface PostHeaderProps {
   categories?: Post["categories"];
   tags?: Post["tags"];
   likeCount?: number;
+  commentCount?: number;
   likedByDataLoading?: boolean;
 }
 
@@ -27,11 +29,11 @@ const PostHeader: React.FC<PostHeaderProps> = ({
   categories,
   tags,
   likeCount,
-  // likedByDataLoading,
+  commentCount,
 }) => {
   const variants: Variants = {
     hidden: {
-      y: -50,
+      y: 100,
       opacity: 0,
     },
     show: {
@@ -56,14 +58,11 @@ const PostHeader: React.FC<PostHeaderProps> = ({
         transition={transition}
       >
         <PostTitle>{title}</PostTitle>
-        <div className="flex justify-between items-center">
+        <div className="mb-2 sm:mb-0 text-sm md:text-base">
+          {date && <Date date={date} />}
+        </div>
+        <div className="flex justify-between items-center my-3">
           {categories && <Categories categories={categories} />}
-          {/* {likedByDataLoading && <Loading fontSize="text-sm" />} */}
-          {likeCount > 0 && (
-            <div className="mb-2">{`${likeCount} like${
-              likeCount > 1 ? "s" : ""
-            }`}</div>
-          )}
         </div>
       </motion.div>
 
@@ -71,17 +70,30 @@ const PostHeader: React.FC<PostHeaderProps> = ({
         variants={variants}
         initial={"hidden"}
         animate={"show"}
-        transition={transition}
-        className="flex flex-col sm:flex-row justify-between mb-6 "
+        transition={{ ...transition, delay: 0.3 }}
+        className="flex sm:flex-row justify-between mb-6 "
       >
-        <div className="mb-2 sm:mb-0">{date && <Date date={date} />}</div>
         <div>
           <Avatar author={author} />
+        </div>
+        <div className="flex">
+          {likeCount ? (
+            <div className="flex items-center mx-3">
+              <BiLike className="w-5 h-5" />
+              <h4 className="ml-1">{likeCount}</h4>
+            </div>
+          ) : null}
+          {commentCount ? (
+            <div className="flex items-center mx-3">
+              <BiCommentDetail className="w-5 h-5" />
+              <h4 className="ml-1">{commentCount}</h4>
+            </div>
+          ) : null}
         </div>
       </motion.div>
       <motion.div
         variants={variants}
-        initial={{ opacity: 0 }}
+        initial={{ opacity: 0, y: 100 }}
         animate={"show"}
         transition={{ ...transition, delay: 0.3 }}
         className="mb-8"

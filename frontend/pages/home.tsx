@@ -27,6 +27,22 @@ const Home = ({ categoryPosts }: IndexProps) => {
 
   const { setCategory } = useContext(ExploreContext);
 
+  const variants = {
+    hidden: {
+      y: 100,
+      opacity: 0,
+    },
+    show: {
+      opacity: 1,
+      y: 0,
+    },
+  };
+
+  const transition = {
+    type: "spring",
+    bounce: 0,
+  };
+
   return (
     <>
       <motion.div>
@@ -37,6 +53,10 @@ const Home = ({ categoryPosts }: IndexProps) => {
         <div className="px-4">
           <Link scroll={false} href="/explore">
             <motion.button
+              variants={variants}
+              transition={transition}
+              initial={"hidden"}
+              animate="show"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.9 }}
               className="flex max-w-screen-md justify-center mx-auto bg-primary w-full text-secondary items-center rounded-xl p-1 lg:p-2 font-bold"
@@ -55,11 +75,11 @@ const Home = ({ categoryPosts }: IndexProps) => {
           {desktopLatestPosts.map((post, index) => (
             <motion.div
               key={index}
-              initial={{ y: 100, opacity: 0 }}
-              animate={{ opacity: 1, y: 0 }}
+              variants={variants}
+              initial={"hidden"}
+              animate={"show"}
               transition={{
-                type: "spring",
-                bounce: 0,
+                ...transition,
                 delay: 0.3 + 0.15 * index,
               }}
               className="p-6"
@@ -71,6 +91,8 @@ const Home = ({ categoryPosts }: IndexProps) => {
                 author={post.author}
                 slug={post.slug}
                 categories={post.categories}
+                likeCount={post._count.likedBy}
+                commentCount={post._count.comments}
               />
             </motion.div>
           ))}
@@ -78,11 +100,11 @@ const Home = ({ categoryPosts }: IndexProps) => {
         {/* ------------------ Mobile Latest Posts ---------------- */}
         <div className="p-4 md:hidden">
           <motion.div
-            initial={{ y: 100, opacity: 0 }}
-            animate={{ opacity: 1, y: 0 }}
+            variants={variants}
+            initial={"hidden"}
+            animate={"show"}
             transition={{
-              type: "spring",
-              bounce: 0,
+              ...transition,
               delay: 0.4,
             }}
           >
@@ -94,17 +116,19 @@ const Home = ({ categoryPosts }: IndexProps) => {
               author={latestPost.author}
               slug={latestPost.slug}
               categories={latestPost.categories}
+              likeCount={latestPost._count.likedBy}
+              commentCount={latestPost._count.comments}
             />
           </motion.div>
 
           {mobileLatestPosts.map((post, index) => (
             <motion.div
               key={index}
-              initial={{ y: 100, opacity: 0 }}
-              animate={{ opacity: 1, y: 0 }}
+              variants={variants}
+              initial={"hidden"}
+              animate={"show"}
               transition={{
-                type: "spring",
-                bounce: 0,
+                ...transition,
                 delay: 0.5 + 0.2 * index,
               }}
             >
@@ -115,6 +139,8 @@ const Home = ({ categoryPosts }: IndexProps) => {
                 featuredImage={post.featuredImage}
                 author={post.author}
                 slug={post.slug}
+                likeCount={post._count.likedBy}
+                commentCount={post._count.comments}
               />
             </motion.div>
           ))}
@@ -128,11 +154,11 @@ const Home = ({ categoryPosts }: IndexProps) => {
               return (
                 <motion.div
                   key={index}
-                  initial={{ y: 100, opacity: 0 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  variants={variants}
+                  initial={"hidden"}
+                  animate={"show"}
                   transition={{
-                    type: "spring",
-                    bounce: 0.05,
+                    ...transition,
                     delay: 0.8 + 0.15 * index,
                   }}
                 >

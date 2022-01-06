@@ -61,6 +61,7 @@ const SubmitIntro = ({ setReady }: SubmitIntroProps) => {
       </p>
       <div className="text-center">
         <AnimatedButton
+          variant="primary"
           onClick={() => {
             if (userAuth) {
               setReady(true);
@@ -68,7 +69,7 @@ const SubmitIntro = ({ setReady }: SubmitIntroProps) => {
               setShowSignIn(true);
             }
           }}
-          className="bg-primary text-white mt-10 px-8 py-4 mb-5 rounded-lg mx-auto uppercase"
+          className="mt-10 px-8 py-4 mb-5 uppercase"
         >
           <h4>I'm ready to write!</h4>
         </AnimatedButton>

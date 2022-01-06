@@ -4,11 +4,11 @@ import styles from "./post-body.module.css";
 export default function PostBody({ content }) {
   const variants: Variants = {
     hidden: {
-      // y: 50,
+      y: 100,
       opacity: 0,
     },
     show: {
-      // y: 0,
+      y: 0,
       opacity: 1,
     },
   };

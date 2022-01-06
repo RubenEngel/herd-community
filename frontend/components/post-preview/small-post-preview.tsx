@@ -5,13 +5,16 @@ import { motion } from "framer-motion";
 import Date from "../date";
 import { Post, User } from "../../lib/types";
 import AnimatedButton from "../animated-button";
+import { BiCommentDetail, BiLike } from "react-icons/bi";
 
 interface SmallPostPreviewProps {
-  title: Post["title"];
-  featuredImage: Post["featuredImage"];
+  title: string;
+  featuredImage: string;
   author: User;
-  slug: Post["slug"];
-  createdAt: Post["createdAt"];
+  slug: string;
+  createdAt: Date;
+  likeCount: number;
+  commentCount: number;
 }
 
 export default function SmallPostPreview({
@@ -20,6 +23,8 @@ export default function SmallPostPreview({
   featuredImage,
   author,
   slug,
+  likeCount,
+  commentCount,
 }: SmallPostPreviewProps) {
   return (
     <motion.div
@@ -41,22 +46,36 @@ export default function SmallPostPreview({
         </div>
         <div className="col-span-4">
           {/* Title */}
-          <AnimatedButton className="text-left text-sm md:text-base mb-2 leading-snug font-serif text-ellipsis">
+          <AnimatedButton className="text-left text-base lg:text-lg mb-2 leading-snug font-serif text-ellipsis">
             <Link scroll={false} as={`/posts/${slug}`} href="/posts/[slug]">
               <a className="">{title}</a>
             </Link>
           </AnimatedButton>
-
           {/* Date */}
           <div className="mb-2 text-xs">
             <Date date={createdAt}></Date>
           </div>
-          <div className="lg:flex justify-between text-sm">
+          <div className="flex justify-between text-sm">
             <div className="flex flex-row justify-start items-center col-span-3 ">
-              <Avatar author={author} />
+              <Avatar small author={author} />
+            </div>
+            <div className="flex">
+              {likeCount ? (
+                <div className="flex items-center mx-3">
+                  <BiLike className="w-4 h-4" />
+                  <span className="ml-1 font-serif text-sm">{likeCount}</span>
+                </div>
+              ) : null}
+              {commentCount ? (
+                <div className="flex items-center mx-3">
+                  <BiCommentDetail className="w-4 h-4" />
+                  <span className="ml-1 font-serif text-sm">
+                    {commentCount}
+                  </span>
+                </div>
+              ) : null}
             </div>
           </div>
-          {/* Author */}
         </div>
       </div>
     </motion.div>

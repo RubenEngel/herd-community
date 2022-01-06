@@ -6,8 +6,11 @@ import { motion } from "framer-motion";
 import PreviewImage from "./preview-image";
 import { Post } from "../../lib/types";
 import AnimatedButton from "../animated-button";
+import { BiCommentDetail, BiLike } from "react-icons/bi";
 
 interface PostPreviewProps extends Partial<Post> {
+  likeCount: number;
+  commentCount: number;
   animateY?: number | string;
   animateScale?: number;
   animateOpacity?: number;
@@ -20,6 +23,8 @@ export default function PostPreview({
   categories,
   author,
   slug,
+  likeCount,
+  commentCount,
   animateY = 0,
   animateScale = 1,
   animateOpacity = 0,
@@ -51,15 +56,31 @@ export default function PostPreview({
           <Categories categories={categories} />
         </div>
         {/* Title */}
-        <AnimatedButton className="text-lg mb-2 text-left font-serif">
+        <AnimatedButton className="text-lg mb-1 text-left font-serif">
           <Link scroll={false} as={`/posts/${slug}`} href="/posts/[slug]">
             <a aria-label={title}>{title}</a>
           </Link>
         </AnimatedButton>
+        <div className="text-xs mb-3">
+          <Date date={createdAt} />
+        </div>
         {/* Date and Author */}
         <div className="text-sm flex flex-row justify-between items-center">
           <Avatar author={author} />
-          <Date date={createdAt} />
+          <div className="flex">
+            {likeCount ? (
+              <div className="flex items-center mx-3">
+                <BiLike className="w-5 h-5" />
+                <h4 className="ml-1">{likeCount}</h4>
+              </div>
+            ) : null}
+            {commentCount ? (
+              <div className="flex items-center mx-3">
+                <BiCommentDetail className="w-5 h-5" />
+                <h4 className="ml-1">{commentCount}</h4>
+              </div>
+            ) : null}
+          </div>
         </div>
       </motion.div>
     </>

@@ -4,6 +4,8 @@ import { GraphQLScalarType } from "graphql";
 import cloudinary from "cloudinary/lib/v2";
 import "./lib/cloudinaryConfig";
 
+// TODO:
+
 const dateScalar = new GraphQLScalarType({
   name: "DateTime",
   parseValue(value) {
@@ -17,6 +19,30 @@ const dateScalar = new GraphQLScalarType({
 const prisma = new PrismaClient({
   log: ["info"],
 });
+
+const getWordCount = (content: string) => {
+  const wordCount = content
+    .replace(/<[^>]*>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .split(" ").length;
+  return wordCount;
+};
+
+const getExcerpt = (content: string) => {
+  const paragraphRegex = /<p(.*?)>(.*?)<\/p>/g;
+  const matches = content.match(paragraphRegex);
+  if (!matches) return;
+  for (let exceprtIndex = 0; exceprtIndex < matches.length; exceprtIndex++) {
+    const exceprtParagraph = matches[exceprtIndex];
+    // a length that is too short for a good excerpt
+    if (exceprtParagraph.length < 100) {
+      continue;
+    } else {
+      return matches[exceprtIndex];
+    }
+  }
+};
 
 const checkAuth = async (userEmail: string) => {
   const user = await prisma.user.findUnique({ where: { email: userEmail } });
@@ -76,6 +102,12 @@ export const resolvers = {
           include: {
             categories: true,
             author: true,
+            _count: {
+              select: {
+                likedBy: true,
+                comments: true,
+              },
+            },
           },
           orderBy: {
             createdAt: "desc",
@@ -162,6 +194,8 @@ export const resolvers = {
             title: title,
             featuredImage: featuredImage,
             content: content,
+            excerpt: getExcerpt(content),
+            wordCount: getWordCount(content),
             categories: {
               connect: categories?.map((categoryName) => ({
                 name: categoryName.toLowerCase().split(" ").join("_"),
@@ -169,7 +203,7 @@ export const resolvers = {
             },
             tags: tags,
             author: { connect: { email: authorEmail } },
-            published: true,
+            published: false,
           },
         });
       } catch (error) {
@@ -190,6 +224,8 @@ export const resolvers = {
             title: title,
             featuredImage: featuredImage,
             content: content,
+            excerpt: content ? getExcerpt(content) : undefined,
+            wordCount: content ? getWordCount(content) : undefined,
             categories: {
               set: categories.map((category) => ({ name: category })),
             },
