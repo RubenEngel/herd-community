@@ -1,9 +1,9 @@
-import { useEffect } from "react";
-import PostPreview from "./post-preview/post-preview";
 import { useLazyQuery } from "@apollo/client";
-import Loading from "./loading";
+import { useEffect } from "react";
 import { Waypoint } from "react-waypoint";
 import { GET_POSTS } from "../lib/apolloQueries";
+import Loading from "./loading";
+import PostPreview from "./post-preview/post-preview";
 
 export default function PostList({
   published,
@@ -37,7 +37,7 @@ export default function PostList({
   }, [category]);
 
   return !data ? (
-    <div className="h-50-screen flex justify-center items-center">
+    <div className="h-50-screen flex justify-center items-center text-2xl md:text-3xl tracking-wide">
       <Loading />
     </div>
   ) : (
@@ -60,7 +60,7 @@ export default function PostList({
           />
         ))}
       {loading && (
-        <div className="mt-20 text-2xl">
+        <div className="mt-20 text-2xl md:text-3xl tracking-wide">
           <Loading />
         </div>
       )}

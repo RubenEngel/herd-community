@@ -1,12 +1,22 @@
 import { motion } from "framer-motion";
+import { route } from "next/dist/next-server/server/router";
 import { useRouter } from "next/router";
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useEffect } from "react";
 import { BsArrowUp } from "react-icons/bs";
 
 const Intro: React.FC<{ setFirstLoad?: Dispatch<SetStateAction<boolean>> }> = ({
   setFirstLoad,
 }) => {
   const router = useRouter();
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (setFirstLoad) setFirstLoad(false);
+      if (router.route === "/") {
+        router.push("/home");
+      }
+    }, 800);
+  }, []);
 
   return (
     <motion.div
@@ -53,7 +63,7 @@ const Intro: React.FC<{ setFirstLoad?: Dispatch<SetStateAction<boolean>> }> = ({
         }}
         transition={{ type: "spring" }}
       >
-        <motion.button
+        {/* <motion.button
           className="bg-primary mt-20 text-white px-4 py-2 rounded-full text-3xl shadow-lg"
           onClick={() => {
             setFirstLoad(false);
@@ -68,7 +78,7 @@ const Intro: React.FC<{ setFirstLoad?: Dispatch<SetStateAction<boolean>> }> = ({
           >
             <BsArrowUp />
           </motion.div>
-        </motion.button>
+        </motion.button> */}
       </motion.div>
     </motion.div>
   );

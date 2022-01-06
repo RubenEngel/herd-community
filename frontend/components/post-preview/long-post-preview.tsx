@@ -34,9 +34,9 @@ const LongPostPreview = ({
 }: PostPreviewProps) => {
   return (
     <motion.div
-      initial={{ y: 100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ type: "spring", duration: 0.7, bounce: 0.2 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ ease: "easeInOut", duration: 0.4 }}
       className="rounded-lg my-6"
     >
       <div className="md:grid grid-cols-6 gap-2">
@@ -60,24 +60,26 @@ const LongPostPreview = ({
             <Categories categories={categories} />
           </div>
           {/* Avatar and Interactions */}
-          <div className="flex">
+          <div className="flex justify-between">
             {/* Author */}
             <div className="flex flex-row justify-start items-center col-span-3 ">
               <Avatar author={author} />
             </div>
+            <div>
+              {likeCount ? (
+                <div className="flex items-center mx-3">
+                  <BiLike className="w-5 h-5" />
+                  <h4 className="ml-1">{likeCount}</h4>
+                </div>
+              ) : null}
+              {commentCount ? (
+                <div className="flex items-center mx-3">
+                  <BiCommentDetail className="w-5 h-5" />
+                  <h4 className="ml-1">{commentCount}</h4>
+                </div>
+              ) : null}
+            </div>
             {/* Likes and Comments */}
-            {likeCount ? (
-              <div className="flex items-center mx-3">
-                <BiLike className="w-5 h-5" />
-                <h4 className="ml-1">{likeCount}</h4>
-              </div>
-            ) : null}
-            {commentCount ? (
-              <div className="flex items-center mx-3">
-                <BiCommentDetail className="w-5 h-5" />
-                <h4 className="ml-1">{commentCount}</h4>
-              </div>
-            ) : null}
           </div>
           <div
             className="mt-5"

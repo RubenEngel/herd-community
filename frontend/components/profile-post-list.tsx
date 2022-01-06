@@ -22,12 +22,10 @@ const ProfilePostList = ({
   const {
     data,
     loading,
-    // error,
     fetchMore,
   }: {
     data: { posts: Post[] };
     loading: boolean;
-    // error?: any;
     fetchMore: any;
   } = useQuery(GET_POSTS_WITH_EXCERPT, {
     variables: {

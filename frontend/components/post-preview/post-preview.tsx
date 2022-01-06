@@ -36,8 +36,8 @@ export default function PostPreview({
         animate={{ scale: 1, y: 0, opacity: 1 }}
         transition={{
           type: "spring",
-          duration: 0.7,
-          bounce: 0.2,
+          duration: 0.6,
+          bounce: 0.1,
         }}
         className="flex mx-auto my-2 flex-col justify-center rounded-lg"
       >
@@ -70,14 +70,14 @@ export default function PostPreview({
           <div className="flex">
             {likeCount ? (
               <div className="flex items-center mx-3">
-                <BiLike className="w-5 h-5" />
-                <h4 className="ml-1">{likeCount}</h4>
+                <BiLike className="w-4 h-4" />
+                <span className="ml-1 font-serif">{likeCount}</span>
               </div>
             ) : null}
             {commentCount ? (
               <div className="flex items-center mx-3">
-                <BiCommentDetail className="w-5 h-5" />
-                <h4 className="ml-1">{commentCount}</h4>
+                <BiCommentDetail className="w-4 h-4" />
+                <span className="ml-1 font-serif">{commentCount}</span>
               </div>
             ) : null}
           </div>

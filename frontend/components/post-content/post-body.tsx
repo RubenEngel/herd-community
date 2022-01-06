@@ -14,9 +14,9 @@ export default function PostBody({ content }) {
   };
 
   const transition: Transition = {
-    duration: 0.4,
-    ease: "easeInOut",
-    // bounce: 0,
+    type: "spring",
+    duration: 0.6,
+    bounce: 0.1,
   };
 
   return (

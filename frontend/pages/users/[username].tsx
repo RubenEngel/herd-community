@@ -67,7 +67,7 @@ const UserPage = ({ user }: UserPageProps) => {
       ) : (
         <>
           <div className="flex mt-10 justify-center">
-            <div className="mr-3 relative">
+            <div className="mr-6 relative">
               {profileImage ? (
                 <img
                   className="w-28 h-28 rounded-full object-cover"

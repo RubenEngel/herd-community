@@ -43,10 +43,9 @@ const PostHeader: React.FC<PostHeaderProps> = ({
   };
 
   const transition: Transition = {
-    // type: "spring",
-    ease: "easeInOut",
-    duration: 0.4,
-    // bounce: 0,
+    type: "spring",
+    duration: 0.6,
+    bounce: 0.1,
   };
 
   return (

@@ -75,27 +75,27 @@ function MyApp({ Component, pageProps }: AppProps) {
         <UserContext.Provider value={{ userAuth: user, userData }}>
           <SignInContext.Provider value={setShowSignIn}>
             <AnimatePresence exitBeforeEnter>
-              {/* {firstLoad ? ( */}
-              {/* <Intro key={router.route} setFirstLoad={setFirstLoad} /> */}
-              {/* ) : ( */}
-              <Layout>
-                <AnimatePresence
-                  onExitComplete={() => window?.scrollTo(0, 0)}
-                  exitBeforeEnter
-                >
-                  {pageLoading ? (
-                    <PageLoading key={"page-loading"} />
-                  ) : (
-                    <PageTransition key={router.asPath}>
-                      <Component {...pageProps} />
-                    </PageTransition>
+              {firstLoad ? (
+                <Intro key={router.route} setFirstLoad={setFirstLoad} />
+              ) : (
+                <Layout>
+                  <AnimatePresence
+                    onExitComplete={() => window?.scrollTo(0, 0)}
+                    exitBeforeEnter
+                  >
+                    {pageLoading ? (
+                      <PageLoading key={"page-loading"} />
+                    ) : (
+                      <PageTransition key={router.asPath}>
+                        <Component {...pageProps} />
+                      </PageTransition>
+                    )}
+                  </AnimatePresence>
+                  {!user && showSignIn && (
+                    <SignInModal setShowSignIn={setShowSignIn} />
                   )}
-                </AnimatePresence>
-                {!user && showSignIn && (
-                  <SignInModal setShowSignIn={setShowSignIn} />
-                )}
-              </Layout>
-              {/* )} */}
+                </Layout>
+              )}
             </AnimatePresence>
             <Toaster />
           </SignInContext.Provider>
