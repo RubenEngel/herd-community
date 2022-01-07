@@ -17,6 +17,8 @@ import AnimatedButton from "../../components/animated-button";
 import ProfilePostList from "../../components/profile-post-list";
 import { useMutation } from "@apollo/client";
 import toast from "react-hot-toast";
+import { BsArrowDown } from "react-icons/bs";
+import { AnimatePresence, motion, Variants } from "framer-motion";
 
 interface UserPageProps {
   user: Omit<User, "email"> & {
@@ -31,9 +33,17 @@ interface UserPageProps {
   };
 }
 
-const ProfileStat = ({ title, count }: { title: string; count: number }) => {
+const ProfileStat = ({
+  title,
+  count,
+  onClick,
+}: {
+  title: string;
+  count: number;
+  onClick: () => void;
+}) => {
   return (
-    <AnimatedButton className="mx-5 text-center">
+    <AnimatedButton onClick={onClick} className="mx-5 text-center">
       <h4 className="">{title}</h4>
       <h4>{count}</h4>
     </AnimatedButton>
@@ -103,11 +113,19 @@ const UserPage = ({ user }: UserPageProps) => {
     }
   };
 
-  useEffect(() => {
-    console.log(user.followers);
-    console.log(isFollowing);
-    console.log(user.followers);
-  }, [isFollowing]);
+  // ---- modal open state
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const variants: Variants = {
+    hidden: {
+      opacity: 0,
+      y: 1000,
+    },
+    show: {
+      opacity: 1,
+      y: 0,
+    },
+  };
 
   if (!user) return <h1 className="text-center mt-44">User doesn't exist</h1>;
 
@@ -119,6 +137,43 @@ const UserPage = ({ user }: UserPageProps) => {
         </div>
       ) : (
         <>
+          {/* Modal */}
+          <AnimatePresence exitBeforeEnter>
+            {modalOpen && (
+              <motion.div
+                key={"modal-background"}
+                className="w-screen h-screen z-10 fixed left-0 bottom-0 bg-primary flex justify-center items-center pt-36"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ ease: "easeInOut", duration: 0 }}
+              >
+                <motion.div
+                  key={"modal-content"}
+                  drag
+                  dragConstraints={{ top: 0, left: 0, right: 0 }}
+                  dragElastic={{ left: 0, right: 0, top: 0 }}
+                  dragMomentum={false}
+                  className="bg-white h-full w-full rounded-t-3xl justify-center max-w-4xl"
+                  variants={variants}
+                  initial={"hidden"}
+                  animate={"show"}
+                  exit={"hidden"}
+                  transition={{ type: "spring", bounce: 0, duration: 0.5 }}
+                >
+                  {/* Close button */}
+                  <AnimatedButton
+                    onClick={() => setModalOpen(false)}
+                    className="bg-white h-10 w-10 rounded-full flex justify-center items-center mx-auto relative bottom-2"
+                  >
+                    <BsArrowDown className="h-6 w-6" />
+                  </AnimatedButton>
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* User Card */}
           <div className="flex mt-10 justify-center">
             <div className="mr-6 relative">
               {profileImage ? (
@@ -167,14 +222,35 @@ const UserPage = ({ user }: UserPageProps) => {
               )}
             </div>
           </div>
+          {/* Profile stats */}
           <div className="flex mt-10 md:justify-center overflow-auto md:overflow-hidden">
-            <ProfileStat title="Posts" count={user._count.posts} />
-            <ProfileStat title="Followers" count={followedBy.length} />
-            <ProfileStat title="Following" count={user._count.following} />
-            <ProfileStat title="Liked Posts" count={user._count.likedPosts} />
-            <ProfileStat title="Comments" count={user._count.comments} />
+            <ProfileStat
+              onClick={() => setModalOpen(true)}
+              title="Posts"
+              count={user._count.posts}
+            />
+            <ProfileStat
+              onClick={() => setModalOpen(true)}
+              title="Followers"
+              count={followedBy.length}
+            />
+            <ProfileStat
+              onClick={() => setModalOpen(true)}
+              title="Following"
+              count={user._count.following}
+            />
+            <ProfileStat
+              onClick={() => setModalOpen(true)}
+              title="Liked Posts"
+              count={user._count.likedPosts}
+            />
+            <ProfileStat
+              onClick={() => setModalOpen(true)}
+              title="Comments"
+              count={user._count.comments}
+            />
           </div>
-
+          {/* Post list */}
           <hr className="my-10" />
           <ProfilePostList
             limit={3}

@@ -50,10 +50,10 @@ export default function Header() {
   return (
     <>
       {/* Date and social icons */}
-      <div className="bg-primary text-secondary text-center uppercase font-light py-2 px-4 md:px-16 z-10 ">
+      <div className="bg-primary text-secondary text-center uppercase font-light py-2 px-4 z-20 md:px-16">
         <div className="flex justify-between items-center max-w-6xl m-auto transition-all">
           {/* Social Media Links */}
-          <div className="flex flex-row justify-center">
+          <div className="flex flex-row justify-center z-20">
             <h3 className="hidden md:block mr-6 text-md">Follow Us</h3>
             <a href="https://www.facebook.com/HERD.UK/" target="_blank">
               <FaFacebookF className="mx-1 text-xl " />
@@ -70,7 +70,7 @@ export default function Header() {
           </div>
           {/* Date and Time */}
           <div>
-            <h3 className="text-md xs:text-md relative">
+            <h3 className="text-md xs:text-md relative z-20">
               <time className="block md:hidden">
                 {format(new Date(), "LLLL	d, yyyy")}
               </time>
@@ -83,7 +83,7 @@ export default function Header() {
       </div>
 
       {/* Main section of header */}
-      <div className="sticky top-0 text-secondary bg-primary px-6 py-2 z-10 shadow-xl">
+      <div className="sticky top-0 text-secondary bg-primary px-6 py-2 z-20 shadow-xl">
         <div className="flex justify-between items-center max-w-6xl m-auto">
           {/* Menu dropdwon button */}
           <motion.div whileTap={{ scale: 0.8 }} whileHover={{ scale: 1.1 }}>

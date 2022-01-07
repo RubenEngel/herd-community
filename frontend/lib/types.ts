@@ -1,9 +1,9 @@
-import type {
-  Post as PrismaPost,
-  User as PrismaUser,
-  Role as PrismaRole,
-  Category as PrimsaCategory,
-} from "../../api/node_modules/.prisma/client/index";
+// import type {
+//   Post as PrismaPost,
+//   User as PrismaUser,
+//   Role as PrismaRole,
+//   Category as PrimsaCategory,
+// } from "../../api/node_modules/.prisma/client/index";
 
 // ----------- Enums
 

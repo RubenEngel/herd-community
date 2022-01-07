@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import React, { useEffect } from "react";
+import React from "react";
 import { Waypoint } from "react-waypoint";
 import { GET_POSTS_WITH_EXCERPT } from "../lib/apolloQueries";
 import { Post } from "../lib/types";
@@ -39,10 +39,10 @@ const ProfilePostList = ({
   return (
     <div className="mx-auto max-w-2xl">
       {!loading && !data && <h1>No Posts</h1>}
-      {data?.posts.map((post) => (
+      {data?.posts.map((post, index) => (
         <>
           <LongPostPreview
-            key={post.slug}
+            key={post.slug + index + "profile"}
             title={post.title}
             createdAt={post.createdAt}
             featuredImage={post.featuredImage}

@@ -341,9 +341,8 @@ const EditPost = () => {
               {existingPostData?.post?.published && (
                 <AnimatedButton
                   disabled={!isEditable}
-                  className={
-                    "bg-blue-500 hover:bg-blue-600 text-md py-2 px-4 mx-2 mb-3 text-white rounded-xl uppercase"
-                  }
+                  variant="red-outline"
+                  className="mx-2 my-2"
                   onClick={() => handleChangePublished(false)}
                 >
                   <h4>Unpublish</h4>
@@ -353,9 +352,8 @@ const EditPost = () => {
                 existingPostData?.post.published === false && (
                   <AnimatedButton
                     disabled={!isEditable}
-                    className={
-                      "bg-blue-500 hover:bg-blue-600 text-md py-2 px-4 mx-2 mb-3 text-white rounded-xl uppercase"
-                    }
+                    variant="green-outline"
+                    className="mx-2 my-2"
                     onClick={() => {
                       handleChangePublished(true);
                     }}
@@ -366,11 +364,15 @@ const EditPost = () => {
               {/* Preview */}
               <AnimatedButton
                 disabled={!isEditable}
-                className="disabled:bg-gray-400 bg-blue-500 hover:bg-blue-600 text-md px-4 py-2 mx-2 mb-3 text-white rounded-xl uppercase"
+                variant="primary-outline"
+                className="mx-2 my-2"
                 onClick={() => setShowPreview(!showPreview)}
               >
                 <h4>{showPreview ? "Hide preview" : "Show preview"}</h4>
               </AnimatedButton>
+              {/* <AnimatedButton>
+                <h4>Save</h4>
+              </AnimatedButton> */}
               <AnimatedButton
                 onClick={() => {
                   if (router.query.slug) {
@@ -380,14 +382,13 @@ const EditPost = () => {
                   }
                 }}
                 disabled={!dataComplete || !isEditable}
-                className={`disabled:bg-gray-400 disabled:opacity-50 bg-green-500 ${
-                  dataComplete && "hover:bg-green-700"
-                } text-md py-2 px-4 mx-2 mb-3 text-white  rounded-xl uppercase`}
+                variant="green"
+                className="mx-2 my-2"
               >
                 <h4>
                   {router.query.slug ? "Submit Edits" : "Submit Post"}
-                  <p className="text-xs">
-                    {!dataComplete && "(Incomplete fields)"}
+                  <p className="text-xs uppercase">
+                    {!dataComplete && "(Incomplete Fields)"}
                   </p>
                 </h4>
               </AnimatedButton>
