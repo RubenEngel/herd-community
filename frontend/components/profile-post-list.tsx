@@ -42,6 +42,7 @@ const ProfilePostList = ({
       {data?.posts.map((post) => (
         <>
           <LongPostPreview
+            key={post.slug}
             title={post.title}
             createdAt={post.createdAt}
             featuredImage={post.featuredImage}

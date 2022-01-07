@@ -44,7 +44,7 @@ const AnimatedButton = ({
       disabled={disabled}
       className={`${className} ${buttonBackground()} ${
         variant &&
-        "font-serif text-md rounded-lg px-6 py-1 hover:shadow-md transition-shadow duration-100"
+        "font-serif text-md rounded-lg px-6 py-1 hover:shadow-md transition-shadow duration-100 disabled:opacity-30"
       }`}
       whileTap={{ scale: 0.95 }}
       whileHover={{ scale: 1.03 }}

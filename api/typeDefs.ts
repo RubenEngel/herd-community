@@ -132,6 +132,9 @@ export const typeDefs = gql`
     ): User
     changePublished(id: Int!, published: Boolean!): Post
     likePost(id: Int): Post
+    unlikePost(id: Int): Post
+    followUser(userId: Int): User
+    unfollowUser(userId: Int): User
     signUpload: SignedUploadResponse
   }
 `;

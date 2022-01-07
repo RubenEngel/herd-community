@@ -11,9 +11,10 @@ import {
   GET_ALL_POST_SLUGS,
   LIKE_POST,
   LIKED_BY,
+  UNLIKE_POST,
 } from "../../lib/apolloQueries";
 import { addApolloState, initializeApollo } from "../../lib/apolloClient";
-import { Post, User } from "../../lib/types";
+import { Post } from "../../lib/types";
 import PostList from "../../components/post-list";
 import { SignInContext, UserContext } from "../../lib/context";
 import { useViewportScroll, AnimatePresence } from "framer-motion";
@@ -24,6 +25,7 @@ import PostInteractions from "../../components/header/post-interactions";
 import { useMutation, useQuery } from "@apollo/client";
 import ProgressBar from "../../components/progress-bar";
 import UserCard from "../../components/user-card";
+import toast from "react-hot-toast";
 interface PostProps {
   post: Post;
 }
@@ -51,10 +53,13 @@ export default function PostPage({ post }: PostProps) {
   }, [userData]);
 
   // ----- Post liking function and state
-  const [
-    likePost,
-    { data: likeMutationData, error: likeError, loading: likeLoading },
-  ] = useMutation(LIKE_POST, {
+  const [likePost, { loading: likeLoading }] = useMutation(LIKE_POST, {
+    variables: {
+      id: post?.id,
+    },
+  });
+
+  const [unlikePost, { loading: unlikeLoading }] = useMutation(UNLIKE_POST, {
     variables: {
       id: post?.id,
     },
@@ -81,28 +86,38 @@ export default function PostPage({ post }: PostProps) {
   useEffect(() => {
     if (!userData) return;
     if (likedByData) {
+      console.log(likedByData.likedBy.likedBy);
       const likedByArray: LikedBy = likedByData.likedBy.likedBy;
       setLikedBy(likedByArray);
       setIsLiked(likedByArray.some((user) => user.id === userData.id));
     }
   }, [likedByData, userData]);
 
-  useEffect(() => {
-    if (!userData) return;
-    if (likeMutationData) {
-      const likedByArray: LikedBy = likeMutationData.likePost.likedBy;
-      setLikedBy(likedByArray);
-      setIsLiked(likedByArray.some((user) => user.id === userData.id));
-    }
-  }, [likeMutationData, userData]);
-
   const [isLiked, setIsLiked] = useState(false);
 
   const { category } = useContext(ExploreContext);
 
-  const handleLike = () => {
+  const handleLike = async () => {
     if (!userData) return setShowSignin(true);
-    if (!isLiked) likePost();
+    if (!isLiked) {
+      try {
+        const likeRes = await likePost();
+        const likedByArray: LikedBy = likeRes.data.likePost.likedBy;
+        setLikedBy(likedByArray);
+        setIsLiked(likedByArray.some((user) => user.id === userData.id));
+      } catch (error) {
+        toast.error("Error", { position: "bottom-right" });
+      }
+    } else {
+      try {
+        const unlikeRes = await unlikePost();
+        const likedByArray: LikedBy = unlikeRes.data.unlikePost.likedBy;
+        setLikedBy(likedByArray);
+        setIsLiked(likedByArray.some((user) => user.id === userData.id));
+      } catch (error) {
+        toast.error("Error", { position: "bottom-right" });
+      }
+    }
   };
 
   // ---- Post sharing
@@ -133,14 +148,6 @@ export default function PostPage({ post }: PostProps) {
       );
     }
   };
-
-  // ---- User follows
-
-  // const handleFollow = () => {
-
-  // }
-
-  // useMutation
 
   // ---> Scroll progress bar
   const [startedReading, setStartedReading] = useState(false);
@@ -185,6 +192,7 @@ export default function PostPage({ post }: PostProps) {
             <AnimatePresence>
               {startedReading && percentageComplete < 100 && (
                 <PostInteractions
+                  likeLoading={likeLoading || unlikeLoading}
                   likeCount={likedBy?.length}
                   slug={post.slug}
                   isEditable={isEditable}
@@ -202,7 +210,7 @@ export default function PostPage({ post }: PostProps) {
               author={post.author}
               categories={post.categories}
               tags={post.tags}
-              likeCount={likedBy?.length || post._count.likedBy}
+              likeCount={likedBy ? likedBy.length : post._count.likedBy}
               commentCount={post._count.comments}
               likedByDataLoading={likedByDataLoading}
             />

@@ -28,8 +28,8 @@ const CategoryDropdown = ({ setIsOpen }) => {
         initial="hidden"
         transition={{
           ...transition,
-          staggerChildren: 0.05,
-          delayChildren: 0.1,
+          staggerChildren: 0.02,
+          delayChildren: 0.05,
         }}
       >
         <ul>

@@ -4,16 +4,23 @@ import React, { useContext, useEffect, useState } from "react";
 import Loading from "../../components/loading";
 import { addApolloState, initializeApollo } from "../../lib/apolloClient";
 import capitalizeFirstLetter from "../../lib/capitalizeFirstLetter";
-import { GET_USER_BY_USERNAME } from "../../lib/apolloQueries";
+import {
+  FOLLOW_USER,
+  GET_USER_BY_USERNAME,
+  UNFOLLOW_USER,
+} from "../../lib/apolloQueries";
 import { User } from "../../lib/types";
 import { FaUserCircle } from "react-icons/fa";
 import { UserContext } from "../../lib/context";
 import UploadProfileImage from "../../components/upload-profile-image";
 import AnimatedButton from "../../components/animated-button";
 import ProfilePostList from "../../components/profile-post-list";
+import { useMutation } from "@apollo/client";
+import toast from "react-hot-toast";
 
 interface UserPageProps {
   user: Omit<User, "email"> & {
+    followers: User[];
     _count: {
       posts: number;
       followers: number;
@@ -36,6 +43,7 @@ const ProfileStat = ({ title, count }: { title: string; count: number }) => {
 const UserPage = ({ user }: UserPageProps) => {
   const router = useRouter();
 
+  // current logged in user's data
   const { userData } = useContext(UserContext);
 
   const [ownProfile, setOwnProfile] = useState(false);
@@ -51,10 +59,55 @@ const UserPage = ({ user }: UserPageProps) => {
     if (userData?.username === user?.username) {
       setOwnProfile(true);
     }
+    setIsFollowing(
+      user.followers.some((follower) => follower.id === userData.id)
+    );
   }, [userData]);
 
-  // TODO: check user is following
-  const [isFollowing, setIsFollowing] = useState(false);
+  // ---- Follow users
+  const [followedBy, setFollowedBy] = useState<{ id: number }[]>(
+    user.followers
+  );
+  const [isFollowing, setIsFollowing] = useState(
+    user.followers.some((follower) => follower.id === userData.id)
+  );
+  const [followUser, { loading: followLoading }] = useMutation(FOLLOW_USER);
+  const [unfollowUser, { loading: unfollowLoading }] =
+    useMutation(UNFOLLOW_USER);
+
+  const handleFollow = async () => {
+    if (!isFollowing) {
+      try {
+        const res = await followUser({
+          variables: { userId: user.id },
+        });
+        const newFollowers = res.data.followUser.followers;
+        setFollowedBy(newFollowers);
+        setIsFollowing(
+          newFollowers.some((follower) => follower.id === userData.id)
+        );
+      } catch (error) {
+        toast.error("Error", { position: "bottom-right" });
+      }
+    } else {
+      try {
+        const res = await unfollowUser({ variables: { userId: user.id } });
+        const newFollowers = res.data.unfollowUser.followers;
+        setFollowedBy(newFollowers);
+        setIsFollowing(
+          newFollowers.some((follower) => follower.id === userData.id)
+        );
+      } catch (error) {
+        toast.error("Error", { position: "bottom-right" });
+      }
+    }
+  };
+
+  useEffect(() => {
+    console.log(user.followers);
+    console.log(isFollowing);
+    console.log(user.followers);
+  }, [isFollowing]);
 
   if (!user) return <h1 className="text-center mt-44">User doesn't exist</h1>;
 
@@ -99,29 +152,24 @@ const UserPage = ({ user }: UserPageProps) => {
                   Edit Details
                 </AnimatedButton>
               )}
-              {!ownProfile &&
-                (isFollowing ? (
-                  <AnimatedButton
-                    variant={"green"}
-                    className="mt-3 mr-2"
-                    onClick={() => setIsFollowing(false)}
-                  >
-                    Following
-                  </AnimatedButton>
-                ) : (
-                  <AnimatedButton
-                    variant={"green-outline"}
-                    className="mt-3 mr-2"
-                    onClick={() => setIsFollowing(true)}
-                  >
-                    Follow
-                  </AnimatedButton>
-                ))}
+              {!ownProfile && (
+                <AnimatedButton
+                  variant={isFollowing ? "green" : "green-outline"}
+                  className="mt-3 mr-2"
+                  disabled={followLoading || unfollowLoading}
+                  onClick={
+                    // setIsFollowing((prevFollowing) => !prevFollowing)
+                    handleFollow
+                  }
+                >
+                  {isFollowing ? "Following" : "Follow"}
+                </AnimatedButton>
+              )}
             </div>
           </div>
           <div className="flex mt-10 md:justify-center overflow-auto md:overflow-hidden">
             <ProfileStat title="Posts" count={user._count.posts} />
-            <ProfileStat title="Followers" count={user._count.followers} />
+            <ProfileStat title="Followers" count={followedBy.length} />
             <ProfileStat title="Following" count={user._count.following} />
             <ProfileStat title="Liked Posts" count={user._count.likedPosts} />
             <ProfileStat title="Comments" count={user._count.comments} />

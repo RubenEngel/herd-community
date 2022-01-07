@@ -15,7 +15,7 @@ const InteractionButton = (props) => {
         transition: { duration: 0.2 },
       }}
       whileTap={{ scale: 1.4 }}
-      className={`text-3xl p-4 flex flex-col items-center`}
+      className={`text-3xl p-4 flex flex-col items-center disabled:opacity-30`}
     >
       {props.children}
     </motion.button>
@@ -40,6 +40,7 @@ const PostInteractions: React.FC<{
   slug: string;
   likeCount: number;
   handleLike: () => void;
+  likeLoading: boolean;
   handleShare: () => void;
   isSharable: boolean;
 }> = ({
@@ -47,6 +48,7 @@ const PostInteractions: React.FC<{
   isLiked,
   slug,
   handleLike,
+  likeLoading,
   handleShare,
   likeCount,
   isSharable,
@@ -73,7 +75,7 @@ const PostInteractions: React.FC<{
           </a>
         </Link>
       )}
-      <InteractionButton onClick={handleLike}>
+      <InteractionButton disabled={likeLoading} onClick={handleLike}>
         <BiLike className={`${isLiked ? "text-green-600" : "text-primary"}`} />
         {likeCount > 0 && <div className="text-sm block">{likeCount}</div>}
       </InteractionButton>

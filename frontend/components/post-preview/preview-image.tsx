@@ -19,6 +19,7 @@ const PreviewImage = ({
 }: PreviewImageProps) => {
   const image = (
     <img
+      alt={title}
       src={coverImage}
       width={width}
       height={height}

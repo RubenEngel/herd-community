@@ -28,6 +28,12 @@ export const GET_USER_BY_USERNAME = gql`
   query GetUserByUsername($username: String!) {
     userByUsername(username: $username) {
       ...CoreUserFields
+      followers {
+        id
+      }
+      following {
+        id
+      }
       _count {
         posts
         followers
@@ -235,6 +241,26 @@ export const ADD_USER = gql`
   }
 `;
 
+export const FOLLOW_USER = gql`
+  mutation FollowUser($userId: Int) {
+    followUser(userId: $userId) {
+      followers {
+        id
+      }
+    }
+  }
+`;
+
+export const UNFOLLOW_USER = gql`
+  mutation UnfollowUser($userId: Int) {
+    unfollowUser(userId: $userId) {
+      followers {
+        id
+      }
+    }
+  }
+`;
+
 export const CHANGE_PUBLISHED = gql`
   mutation ChangePublished($id: Int!, $published: Boolean!) {
     changePublished(id: $id, published: $published) {
@@ -247,6 +273,19 @@ export const CHANGE_PUBLISHED = gql`
 export const LIKE_POST = gql`
   mutation LikePost($id: Int!) {
     likePost(id: $id) {
+      likedBy {
+        id
+      }
+      _count {
+        likedBy
+      }
+    }
+  }
+`;
+
+export const UNLIKE_POST = gql`
+  mutation UnlikePost($id: Int!) {
+    unlikePost(id: $id) {
       likedBy {
         id
       }

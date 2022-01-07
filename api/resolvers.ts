@@ -36,7 +36,7 @@ const getExcerpt = (content: string) => {
   for (let exceprtIndex = 0; exceprtIndex < matches.length; exceprtIndex++) {
     const exceprtParagraph = matches[exceprtIndex];
     // a length that is too short for a good excerpt
-    if (exceprtParagraph.length < 100) {
+    if (exceprtParagraph.length < 200) {
       continue;
     } else {
       return matches[exceprtIndex];
@@ -287,6 +287,70 @@ export const resolvers = {
             likedBy: {
               connect: { email: userEmail },
             },
+          },
+        });
+      } catch (error) {
+        throw new ApolloError(error as string);
+      }
+    },
+    unlikePost: async (_, { id }, { userEmail }) => {
+      try {
+        return await prisma.post.update({
+          where: {
+            id,
+          },
+          include: {
+            likedBy: true,
+            _count: {
+              select: { likedBy: true },
+            },
+          },
+          data: {
+            likedBy: {
+              disconnect: { email: userEmail },
+            },
+          },
+        });
+      } catch (error) {
+        throw new ApolloError(error as string);
+      }
+    },
+    followUser: async (_, { userId }, { userEmail }) => {
+      try {
+        return await prisma.user.update({
+          where: {
+            id: userId,
+          },
+          data: {
+            followers: {
+              connect: {
+                email: userEmail,
+              },
+            },
+          },
+          select: {
+            followers: true,
+          },
+        });
+      } catch (error) {
+        throw new ApolloError(error as string);
+      }
+    },
+    unfollowUser: async (_, { userId }, { userEmail }) => {
+      try {
+        return await prisma.user.update({
+          where: {
+            id: userId,
+          },
+          data: {
+            followers: {
+              disconnect: {
+                email: userEmail,
+              },
+            },
+          },
+          select: {
+            followers: true,
           },
         });
       } catch (error) {
