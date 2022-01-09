@@ -26,7 +26,7 @@ export const GET_USER_BY_EMAIL = gql`
 export const GET_USER_BY_USERNAME = gql`
   ${CORE_USER_FIELDS}
   query GetUserByUsername($username: String!) {
-    userByUsername(username: $username) {
+    user(username: $username) {
       ...CoreUserFields
       followers {
         id
@@ -45,10 +45,40 @@ export const GET_USER_BY_USERNAME = gql`
   }
 `;
 
+export const GET_FOLLOWED = gql`
+  query GetFollowedUsers($username: String) {
+    user(username: $username) {
+      following {
+        id
+        firstName
+        lastName
+        username
+        imageUrl
+      }
+    }
+  }
+`;
+
+export const GET_FOLLOWERS = gql`
+  query GetFollowedUsers($username: String) {
+    user(username: $username) {
+      followers {
+        id
+        firstName
+        lastName
+        username
+        imageUrl
+      }
+    }
+  }
+`;
+
 export const GET_ALL_POST_SLUGS = gql`
   query GetAllPostSlugs {
     posts {
-      slug
+      posts {
+        slug
+      }
     }
   }
 `;
@@ -62,6 +92,7 @@ const CORE_POST_FIELDS = gql`
     createdAt
     featuredImage
     author {
+      id
       firstName
       lastName
       imageUrl
@@ -94,7 +125,7 @@ export const GET_POSTS = gql`
   query GetPosts(
     $published: Boolean
     $category: String
-    $limit: Int!
+    $limit: Int
     $startAfter: Int
     $authorId: Int
   ) {
@@ -105,7 +136,10 @@ export const GET_POSTS = gql`
       startAfter: $startAfter
       authorId: $authorId
     ) {
-      ...CorePostFields
+      posts {
+        ...CorePostFields
+      }
+      _count
     }
   }
 `;
@@ -115,7 +149,7 @@ export const GET_POSTS_WITH_EXCERPT = gql`
   query GetPosts(
     $published: Boolean
     $category: String
-    $limit: Int!
+    $limit: Int
     $startAfter: Int
     $authorId: Int
   ) {
@@ -126,8 +160,33 @@ export const GET_POSTS_WITH_EXCERPT = gql`
       startAfter: $startAfter
       authorId: $authorId
     ) {
-      ...CorePostFields
-      excerpt
+      posts {
+        ...CorePostFields
+        excerpt
+      }
+      _count
+    }
+  }
+`;
+
+export const GET_USER_LIKED_POSTS = gql`
+  ${CORE_POST_FIELDS}
+  query GetUserLikedPosts(
+    $likedByUserId: Int
+    $limit: Int
+    $published: Boolean
+    $startAfter: Int
+  ) {
+    posts(
+      likedByUserId: $likedByUserId
+      limit: $limit
+      startAfter: $startAfter
+      published: $published
+    ) {
+      posts {
+        ...CorePostFields
+      }
+      _count
     }
   }
 `;

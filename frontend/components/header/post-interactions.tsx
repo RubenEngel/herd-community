@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { motion } from "framer-motion";
 import { BiLike, BiUpvote } from "react-icons/bi";
 import { FiShare, FiEdit3 } from "react-icons/fi";
-// import { BiCommentDetail } from "react-icons/bi";
-// import { useRouter } from "next/router";
+import { BiCommentDetail } from "react-icons/bi";
 import Link from "next/link";
 
 const InteractionButton = (props) => {
@@ -43,6 +42,7 @@ const PostInteractions: React.FC<{
   likeLoading: boolean;
   handleShare: () => void;
   isSharable: boolean;
+  setShowComments: Dispatch<SetStateAction<boolean>>;
 }> = ({
   isEditable,
   isLiked,
@@ -52,6 +52,7 @@ const PostInteractions: React.FC<{
   handleShare,
   likeCount,
   isSharable,
+  setShowComments,
 }) => {
   return (
     <motion.div
@@ -77,16 +78,18 @@ const PostInteractions: React.FC<{
       )}
       <InteractionButton disabled={likeLoading} onClick={handleLike}>
         <BiLike className={`${isLiked ? "text-green-600" : "text-primary"}`} />
-        {likeCount > 0 && <div className="text-sm block">{likeCount}</div>}
+        {likeCount > 0 && (
+          <div className="text-sm block font-serif">{likeCount}</div>
+        )}
       </InteractionButton>
       {isSharable && (
         <InteractionButton onClick={handleShare}>
           <FiShare />
         </InteractionButton>
       )}
-      {/* <InteractionButton>
+      <InteractionButton onClick={() => setShowComments(true)}>
         <BiCommentDetail />
-      </InteractionButton> */}
+      </InteractionButton>
     </motion.div>
   );
 };

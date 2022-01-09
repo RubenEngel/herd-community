@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext, useMemo } from "react";
+import { useEffect, useState, useContext } from "react";
 import { GetStaticProps, GetStaticPaths } from "next";
 import { useRouter } from "next/router";
 import ErrorPage from "next/error";
@@ -15,7 +15,7 @@ import {
 } from "../../lib/apolloQueries";
 import { addApolloState, initializeApollo } from "../../lib/apolloClient";
 import { Post } from "../../lib/types";
-import PostList from "../../components/post-list";
+import PostGrid from "../../components/post-grid";
 import { SignInContext, UserContext } from "../../lib/context";
 import { useViewportScroll, AnimatePresence } from "framer-motion";
 import { Waypoint } from "react-waypoint";
@@ -26,6 +26,7 @@ import { useMutation, useQuery } from "@apollo/client";
 import ProgressBar from "../../components/progress-bar";
 import UserCard from "../../components/user-card";
 import toast from "react-hot-toast";
+import Modal from "../../components/modal";
 interface PostProps {
   post: Post;
 }
@@ -86,7 +87,6 @@ export default function PostPage({ post }: PostProps) {
   useEffect(() => {
     if (!userData) return;
     if (likedByData) {
-      console.log(likedByData.likedBy.likedBy);
       const likedByArray: LikedBy = likedByData.likedBy.likedBy;
       setLikedBy(likedByArray);
       setIsLiked(likedByArray.some((user) => user.id === userData.id));
@@ -128,7 +128,6 @@ export default function PostPage({ post }: PostProps) {
   }, []);
 
   const handleShare = async () => {
-    console.log(navigator);
     if (navigator.share) {
       try {
         await navigator
@@ -176,6 +175,10 @@ export default function PostPage({ post }: PostProps) {
   }, [scrollY, intialPageHeight]);
   // <---
 
+  // ----- Comments
+  const [showComments, setShowComments] = useState(false);
+  // <----
+
   return (
     <>
       {router.isFallback ? (
@@ -190,6 +193,13 @@ export default function PostPage({ post }: PostProps) {
               <meta property="og:image" content={post.featuredImage} />
             </Head>
             <AnimatePresence>
+              {showComments && (
+                <Modal title="Comments" setModalOpen={setShowComments}>
+                  <h1>Testing</h1>
+                </Modal>
+              )}
+            </AnimatePresence>
+            <AnimatePresence>
               {startedReading && percentageComplete < 100 && (
                 <PostInteractions
                   likeLoading={likeLoading || unlikeLoading}
@@ -200,6 +210,7 @@ export default function PostPage({ post }: PostProps) {
                   isSharable={isSharable}
                   handleLike={handleLike}
                   handleShare={handleShare}
+                  setShowComments={setShowComments}
                 />
               )}
             </AnimatePresence>
@@ -218,12 +229,9 @@ export default function PostPage({ post }: PostProps) {
               <ProgressBar percentageComplete={percentageComplete} />
             )}
             <PostBody content={post.content} />
-            <UserCard
-              isFollowing={false}
-              ownProfile={false}
-              user={post.author}
-              handleFollow={() => console.log("follow")}
-            />
+            <div className="mb-16">
+              <UserCard linked={true} editable={false} user={post.author} />
+            </div>
           </article>
           <Waypoint
             bottomOffset={100}
@@ -235,11 +243,11 @@ export default function PostPage({ post }: PostProps) {
               More Posts from {formatString(category, "_")}
             </h1>
           </Waypoint>
-          <PostList
+          <PostGrid
             published
             startLoad={reachedEnd}
             category={category}
-            limit={3}
+            limit={6}
           />
         </>
       )}
@@ -261,7 +269,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     props: {
       post: post,
     },
-    revalidate: 30,
+    revalidate: 1,
   });
 };
 
@@ -273,7 +281,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   });
 
   return {
-    paths: response.data.posts.map((post) => `/posts/${post.slug}`) || [],
+    paths: response.data.posts.posts.map((post) => `/posts/${post.slug}`) || [],
     fallback: true,
   };
 };

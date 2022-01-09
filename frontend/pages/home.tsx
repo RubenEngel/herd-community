@@ -200,7 +200,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       query: GET_POSTS,
       variables: { published: true, category: category, limit: limit },
     });
-    const posts: Post[] = postsRes.data.posts;
+    const posts: Post[] = postsRes.data.posts.posts;
     categoryPosts[category] = [];
     categoryPosts[category].push(...posts);
   }
@@ -209,6 +209,5 @@ export const getServerSideProps: GetServerSideProps = async () => {
     props: {
       categoryPosts,
     },
-    // revalidate: 30,
   });
 };

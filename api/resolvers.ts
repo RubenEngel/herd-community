@@ -1,5 +1,5 @@
 import { ApolloError } from "apollo-server-express";
-import { PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 import { GraphQLScalarType } from "graphql";
 import cloudinary from "cloudinary/lib/v2";
 import "./lib/cloudinaryConfig";
@@ -71,7 +71,10 @@ export const resolvers = {
   DateTime: dateScalar,
 
   Query: {
-    posts: async (_, { published, category, limit, startAfter, authorId }) => {
+    posts: async (
+      _,
+      { published, category, limit, startAfter, authorId, likedByUserId }
+    ) => {
       try {
         if (category?.toLowerCase() === "all") category = null;
         let cursorParams = {};
@@ -83,9 +86,8 @@ export const resolvers = {
             },
           };
         }
-        return prisma.post.findMany({
-          ...cursorParams,
-          take: limit,
+
+        let variables: any = {
           where: {
             categories: {
               some: {
@@ -99,20 +101,54 @@ export const resolvers = {
               id: authorId,
             },
           },
-          include: {
-            categories: true,
-            author: true,
-            _count: {
-              select: {
-                likedBy: true,
-                comments: true,
+        };
+
+        if (likedByUserId) {
+          variables = {
+            ...variables,
+            where: {
+              ...variables.where,
+              likedBy: {
+                some: {
+                  id: likedByUserId,
+                },
               },
             },
-          },
-          orderBy: {
-            createdAt: "desc",
-          },
-        });
+          };
+        }
+
+        const [posts, postCount] = await prisma.$transaction([
+          prisma.post.findMany({
+            ...cursorParams,
+            take: limit,
+            ...variables,
+            select: {
+              id: true,
+              title: true,
+              featuredImage: true,
+              slug: true,
+              categories: true,
+              author: true,
+              createdAt: true,
+              excerpt: true,
+              published: true,
+              wordCount: true,
+              tags: true,
+              _count: {
+                select: {
+                  likedBy: true,
+                  comments: true,
+                },
+              },
+            },
+            orderBy: {
+              createdAt: "desc",
+            },
+          }),
+          prisma.post.count({ ...variables }),
+        ]);
+
+        return { posts, _count: postCount };
       } catch (error) {
         throw new ApolloError(error as string);
       }
@@ -139,10 +175,11 @@ export const resolvers = {
         },
       });
     },
-    userByUsername: async (_, { username }) => {
+    user: async (_, { username, id }) => {
       return prisma.user.findUnique({
         where: {
           username: username,
+          id: id,
         },
         include: {
           posts: true,

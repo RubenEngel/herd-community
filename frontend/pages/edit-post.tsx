@@ -171,7 +171,7 @@ const EditPost = () => {
     if (editData || submitData || publishedData) {
       toast.success("Success", { position: "bottom-right" });
       localStorage.setItem("postData", JSON.stringify(emptyPostData));
-      router.push("/home");
+      router.push(`/posts/${formatSlug(postData.title)}`);
     }
   }, [editLoading, submitLoading, publishedLoading]);
 

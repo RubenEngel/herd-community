@@ -37,7 +37,7 @@ const LongPostPreview = ({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ ease: "easeInOut", duration: 0.4 }}
-      className="rounded-lg my-6"
+      className="rounded-lg my-6 text-left"
     >
       <div className="md:grid grid-cols-6 gap-2">
         {/* Image */}
@@ -46,7 +46,7 @@ const LongPostPreview = ({
         </div>
         <div className="col-span-4">
           {/* Title */}
-          <AnimatedButton className="text-left text-xl mb-2 leading-snug font-serif text-ellipsis">
+          <AnimatedButton className="text-left text-xl mb-2 leading-snug font-serif">
             <Link scroll={false} as={`/posts/${slug}`} href="/posts/[slug]">
               <a>{title}</a>
             </Link>

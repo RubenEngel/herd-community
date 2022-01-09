@@ -13,8 +13,8 @@ interface SmallPostPreviewProps {
   author: User;
   slug: string;
   createdAt: Date;
-  likeCount: number;
-  commentCount: number;
+  likeCount?: number;
+  commentCount?: number;
 }
 
 export default function SmallPostPreview({

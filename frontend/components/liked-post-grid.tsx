@@ -1,32 +1,28 @@
 import { useLazyQuery } from "@apollo/client";
 import { useEffect } from "react";
 import { Waypoint } from "react-waypoint";
-import { GET_POSTS } from "../lib/apolloQueries";
+import { GET_USER_LIKED_POSTS } from "../lib/apolloQueries";
 import Loading from "./loading";
 import PostPreview from "./post-preview/post-preview";
 
-export default function PostList({
-  published,
+export default function LikedPostGrid({
   startLoad = true,
   category,
-  limit,
-  authorId,
+  likedByUserId,
 }: {
   limit: number;
   published: boolean;
   startLoad?: boolean;
   category?: string;
   authorId?: number;
+  likedByUserId?: number;
 }) {
   const [getPosts, { loading, error, data, fetchMore }] = useLazyQuery(
-    GET_POSTS,
+    GET_USER_LIKED_POSTS,
     {
       variables: {
-        published: published,
-        limit: limit,
-        category: category,
-        startAfter: null,
-        authorId: authorId,
+        likedByUserId: likedByUserId,
+        limit: 9,
       },
       notifyOnNetworkStatusChange: true,
     }
@@ -45,7 +41,7 @@ export default function PostList({
       {error && <h1 className="text-4xl text-center">An Error Occurred</h1>}
 
       {startLoad &&
-        data.posts.map((post) => (
+        data.posts.posts.map((post) => (
           <PostPreview
             key={post.slug}
             title={post.title}
@@ -54,9 +50,9 @@ export default function PostList({
             author={post.author}
             slug={post.slug}
             categories={post.categories}
-            animateY={"50%"}
-            likeCount={post._count.likedBy}
-            commentCount={post._count.comments}
+            // animateY={"50%"}
+            likeCount={post._count?.likedBy}
+            commentCount={post._count?.comments}
           />
         ))}
       {loading && (
@@ -64,18 +60,20 @@ export default function PostList({
           <Loading />
         </div>
       )}
-      {data.posts.length > 0 && (
-        <Waypoint
-          onEnter={() => {
-            const endCursor = data.posts[data.posts.length - 1].id;
-            fetchMore({
-              variables: {
-                startAfter: endCursor,
-              },
-            });
-          }}
-        ></Waypoint>
-      )}
+      {data.posts.posts.length > 0 &&
+        data.posts.posts.length < (data.posts._count || Infinity) && (
+          <Waypoint
+            onEnter={() => {
+              const endCursor =
+                data.posts.posts[data.posts.posts.length - 1].id;
+              fetchMore({
+                variables: {
+                  startAfter: endCursor,
+                },
+              });
+            }}
+          ></Waypoint>
+        )}
     </div>
   );
 }

@@ -15,7 +15,7 @@ const cloudinaryUploadUrl = process.env.CLOUDINARY_UPLOAD_URL;
 const cloudinaryApiKey = process.env.CLOUDINARY_API_KEY;
 
 //  --- Upload Component
-const UploadFile = ({
+const UploadProfileImage = ({
   setProfileImage,
   cancelUpload,
 }: {
@@ -135,4 +135,4 @@ const UploadFile = ({
   );
 };
 
-export default UploadFile;
+export default UploadProfileImage;

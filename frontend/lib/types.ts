@@ -22,6 +22,8 @@ export interface User {
   firstName: string | null;
   lastName: string | null;
   imageUrl: string | null;
+  followers: User[];
+  following: User[];
   _count: {
     posts: number | null;
     followers: number | null;

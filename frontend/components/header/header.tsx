@@ -141,7 +141,7 @@ export default function Header() {
               initial={{ y: -40 }}
               animate={{ y: 0 }}
               transition={{ duration: 0.5 }}
-              className="pt-4 -z-10"
+              className="pt-4"
             >
               <motion.button
                 whileHover={{ scale: 1.02 }}

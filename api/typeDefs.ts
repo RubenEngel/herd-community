@@ -89,6 +89,11 @@ export const typeDefs = gql`
     EDITOR
   }
 
+  type PostQuery {
+    posts: [Post]
+    _count: Int
+  }
+
   type Query {
     posts(
       published: Boolean
@@ -96,10 +101,11 @@ export const typeDefs = gql`
       limit: Int
       startAfter: Int
       authorId: Int
-    ): [Post]
+      likedByUserId: Int
+    ): PostQuery
     post(slug: String!): Post
     userByEmail(email: String!): User
-    userByUsername(username: String!): User
+    user(username: String, id: Int): User
     categories: [Category]
     likedBy(id: Int): Post
   }

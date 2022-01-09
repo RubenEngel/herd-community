@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import React from "react";
-import PostList from "../components/post-list";
+import PostGrid from "../components/post-grid";
 import { ExploreContext } from "../lib/context";
 
 export default function Explore() {
@@ -8,12 +8,7 @@ export default function Explore() {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-      <PostList
-        published={true}
-        startLoad={true}
-        limit={6}
-        category={category}
-      />
+      <PostGrid published={true} limit={6} category={category} />
     </motion.div>
   );
 }

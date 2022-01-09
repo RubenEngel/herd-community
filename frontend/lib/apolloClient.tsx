@@ -42,18 +42,29 @@ function createApolloClient() {
         Query: {
           fields: {
             posts: {
-              keyArgs: ["category", "published", "authorId"],
+              keyArgs: ["category", "published", "authorId", "likedByUserId"],
               merge(
-                existing: { __ref: string }[] = [],
-                incoming: { __ref: string }[]
+                existing: {
+                  posts: { __ref: string }[];
+                  __typename?: string;
+                  _count?: number;
+                } = { posts: [] },
+                incoming: {
+                  posts: { __ref: string }[];
+                  __typename: string;
+                  _count: number;
+                }
               ) {
-                const existingRefs: string[] = existing.map(
+                const existingRefs: string[] = existing.posts?.map(
                   (postRef) => postRef.__ref
                 );
-                const newPosts: { __ref: string }[] = incoming.filter(
-                  (postRef) => !existingRefs.includes(postRef.__ref)
+                const newPosts: { __ref: string }[] = incoming.posts.filter(
+                  (postRef) => !existingRefs?.includes(postRef.__ref)
                 );
-                return [...existing, ...newPosts];
+                return {
+                  ...incoming,
+                  posts: [...existing?.posts, ...newPosts],
+                };
               },
             },
           },

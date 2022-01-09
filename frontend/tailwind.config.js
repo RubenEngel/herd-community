@@ -34,6 +34,9 @@ module.exports = {
       lineHeight: {
         tight: 1.2,
       },
+      height: {
+        content: "calc(100% - 120px)",
+      },
       minWidth: {
         sm: "24rem",
       },
