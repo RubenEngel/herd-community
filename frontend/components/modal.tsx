@@ -45,7 +45,7 @@ const Modal = ({
         dragElastic={{ left: 0, right: 0, top: 0, bottom: 0.5 }}
         dragMomentum={false}
         onDragEnd={(_event, info) => onDragEnd(info)}
-        className="bg-white w-full h-content rounded-t-3xl justify-center max-w-4xl text-center absolute bottom-0 "
+        className="bg-white w-full h-content rounded-t-3xl justify-center max-w-4xl text-center absolute bottom-0 overscroll-contain"
         variants={variants}
         initial={"hidden"}
         animate={"show"}
