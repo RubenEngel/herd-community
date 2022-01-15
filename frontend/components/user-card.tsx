@@ -2,13 +2,20 @@ import { User } from "../lib/types";
 import AnimatedButton from "./animated-button";
 import { FaUserCircle } from "react-icons/fa";
 import capitalizeFirstLetter from "../lib/capitalizeFirstLetter";
-import { useContext, useEffect, useState } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { FOLLOW_USER, GET_FOLLOWED, UNFOLLOW_USER } from "../lib/apolloQueries";
 import toast from "react-hot-toast";
 import UploadProfileImage from "./upload-profile-image";
 import { UserContext } from "../lib/context";
 import Link from "next/link";
+import router from "next/router";
 
 interface UserCardProps {
   user: Omit<User, "email"> & {
@@ -30,6 +37,64 @@ interface UserCardProps {
     >
   >;
 }
+
+const ProfileImage = ({
+  profileImageUrl,
+  ownProfile,
+  editable,
+  cancelUpload,
+  setProfileImage,
+}: {
+  profileImageUrl: string;
+  ownProfile: boolean;
+  editable: boolean;
+  cancelUpload: () => void;
+  setProfileImage: Dispatch<SetStateAction<string>>;
+}) => {
+  return (
+    <>
+      {profileImageUrl ? (
+        <img
+          className="w-28 h-28 rounded-full object-cover"
+          src={profileImageUrl}
+        ></img>
+      ) : (
+        <FaUserCircle className="w-28 h-28 rounded-full" />
+      )}
+      {ownProfile && editable && (
+        <div className="absolute -top-3 -right-3">
+          <UploadProfileImage
+            cancelUpload={cancelUpload}
+            setProfileImage={setProfileImage}
+          />
+        </div>
+      )}
+    </>
+  );
+};
+
+const ProfileName = ({
+  firstName,
+  lastName,
+  username,
+}: {
+  firstName: string;
+  lastName: string;
+  username: string;
+}) => {
+  return (
+    <>
+      <h1 className="text-3xl">
+        {lastName
+          ? `${capitalizeFirstLetter(firstName)} ${capitalizeFirstLetter(
+              lastName
+            )}`
+          : `${capitalizeFirstLetter(firstName)}`}
+      </h1>
+      <h4 className="text-lg">@{username}</h4>
+    </>
+  );
+};
 
 const UserCard = ({
   user,
@@ -65,7 +130,7 @@ const UserCard = ({
     useMutation(UNFOLLOW_USER);
 
   useEffect(() => {
-    if (!userData || !user) return;
+    if (!userData || !user || ownProfile) return;
     if (userData?.username === user?.username) {
       setOwnProfile(true);
     }
@@ -75,7 +140,6 @@ const UserCard = ({
     if (!followerData) {
       return;
     } else {
-      console.log(followerData);
       setIsFollowing(
         followerData.user.following.some(
           (followedUser) => followedUser.id === user.id
@@ -112,48 +176,10 @@ const UserCard = ({
     }
   };
 
-  const ProfileImage = () => {
-    return (
-      <>
-        {profileImageUrl ? (
-          <img
-            className="w-28 h-28 rounded-full object-cover"
-            src={profileImageUrl}
-          ></img>
-        ) : (
-          <FaUserCircle className="w-28 h-28 rounded-full" />
-        )}
-        {ownProfile && editable && (
-          <div className="absolute -top-3 -right-3">
-            <UploadProfileImage
-              cancelUpload={cancelUpload}
-              setProfileImage={setProfileImage}
-            />
-          </div>
-        )}
-      </>
-    );
-  };
-
-  const ProfileName = () => {
-    return (
-      <>
-        <h1 className="text-3xl">
-          {user.lastName
-            ? `${capitalizeFirstLetter(user.firstName)} ${capitalizeFirstLetter(
-                user.lastName
-              )}`
-            : `${capitalizeFirstLetter(user.firstName)}`}
-        </h1>
-        <h4 className="text-lg">@{user.username}</h4>
-      </>
-    );
-  };
-
   return (
     <div
       className={`flex justify-center z-10 mx-auto text-left p-5 ${
-        !editable && "items-center"
+        !editable || (router.route === "/my-account" && "items-center")
       }`}
     >
       <div className="mr-6 relative z-0">
@@ -161,12 +187,24 @@ const UserCard = ({
           <AnimatedButton>
             <Link href={`/users/${user.username}`}>
               <a href="">
-                <ProfileImage />
+                <ProfileImage
+                  profileImageUrl={profileImageUrl}
+                  cancelUpload={cancelUpload}
+                  ownProfile={ownProfile}
+                  editable={editable}
+                  setProfileImage={setProfileImage}
+                />
               </a>
             </Link>
           </AnimatedButton>
         ) : (
-          <ProfileImage />
+          <ProfileImage
+            profileImageUrl={profileImageUrl}
+            cancelUpload={cancelUpload}
+            ownProfile={ownProfile}
+            editable={editable}
+            setProfileImage={setProfileImage}
+          />
         )}
       </div>
       <div className={`text-left ${editable && ""}`}>
@@ -174,15 +212,27 @@ const UserCard = ({
           <AnimatedButton className="block text-left">
             <Link href={`/users/${user.username}`}>
               <a href="">
-                <ProfileName />
+                <ProfileName
+                  firstName={user.firstName}
+                  lastName={user.lastName}
+                  username={user.username}
+                />
               </a>
             </Link>
           </AnimatedButton>
         ) : (
-          <ProfileName />
+          <ProfileName
+            firstName={user.firstName}
+            lastName={user.lastName}
+            username={user.username}
+          />
         )}
-        {ownProfile && editable && (
-          <AnimatedButton variant={"primary"} className="mt-3 mr-2">
+        {ownProfile && editable && router.route !== "/my-account" && (
+          <AnimatedButton
+            variant={"primary"}
+            className="mt-3 mr-2"
+            onClick={() => router.push("/my-account")}
+          >
             Edit Details
           </AnimatedButton>
         )}

@@ -26,7 +26,7 @@ const Editor = dynamic(() => import("../components/ck-editor"), {
 const SubmitHeading = ({ children }) => <h2 className="mb-2">{children}</h2>;
 
 const InputBox = (props) => (
-  <input {...props} className="border-2 border-gray-300 mb-8 p-2 tex-lg" />
+  <input {...props} className="border-2 border-gray-300 mb-8 p-2 text-lg" />
 );
 
 export interface SubmitPostData {

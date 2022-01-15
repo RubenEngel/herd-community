@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { UserContext, SignInContext } from "../../lib/context";
+import { UserContext } from "../../lib/context";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import NavItem from "../nav-item";
@@ -8,10 +8,13 @@ import {
   transition,
   itemVariants,
 } from "../../lib/dropdownVariants";
+import { useUser } from "@auth0/nextjs-auth0";
+import router from "next/router";
 
 const ProfileDropdown = ({ setIsOpen }) => {
-  const { userAuth, userData } = useContext(UserContext);
-  const setShowSignIn = useContext(SignInContext);
+  const { userData } = useContext(UserContext);
+
+  const { user: userAuth } = useUser();
 
   return (
     <>
@@ -36,18 +39,19 @@ const ProfileDropdown = ({ setIsOpen }) => {
           }}
         >
           <ul>
-            {!userAuth && (
+            {!userAuth ? (
               <NavItem
                 variants={itemVariants}
                 onClick={() => {
                   setIsOpen(false);
-                  setShowSignIn(true);
+                  // setShowSignIn(true);
+                  router.push("/api/auth/login");
+                  // signIn();
                 }}
               >
                 Sign In
               </NavItem>
-            )}
-            {userAuth && (
+            ) : (
               <>
                 {userData?.role.toString() === "ADMIN" && (
                   <NavItem

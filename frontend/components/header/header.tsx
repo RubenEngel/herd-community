@@ -17,6 +17,7 @@ import ProfileDropdown from "./profile-dropdown";
 import CategoryDropdown from "./category-dropdown";
 import { ExploreContext, UserContext } from "../../lib/context";
 import formatString from "../../lib/formatString";
+import { useUser } from "@auth0/nextjs-auth0";
 
 export default function Header() {
   const router = useRouter();
@@ -41,6 +42,8 @@ export default function Header() {
   }, [router]);
 
   const { userData } = useContext(UserContext);
+
+  const { user } = useUser();
   const { category } = useContext(ExploreContext);
 
   const [menuNavbarOpen, setMenuNavbarOpen] = useState(false);
@@ -105,7 +108,7 @@ export default function Header() {
             whileHover={{ scale: 1.1 }}
           >
             <h1 className="text-6xl font-bold leading-tight text-center">
-              <Link scroll={false} href="/home">
+              <Link scroll={false} href="/">
                 <a>HERD.</a>
               </Link>
             </h1>

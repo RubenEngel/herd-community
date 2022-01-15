@@ -22,10 +22,6 @@ const UserGrid = ({ user, type }: FollowedUserProps) => {
     variables: { username: user?.username },
   });
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-
   return (
     <div className="px-3 md:px-4 grid grid-cols-1 md:grid-cols-2 gap-6 mb-32 content-start items-center justify-start">
       {type === "following" &&

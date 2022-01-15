@@ -12,9 +12,9 @@ const Intro: React.FC<{ setFirstLoad?: Dispatch<SetStateAction<boolean>> }> = ({
   useEffect(() => {
     setTimeout(() => {
       if (setFirstLoad) setFirstLoad(false);
-      if (router.route === "/") {
-        router.push("/home");
-      }
+      // if (router.route === "/") {
+      //   router.push("/home");
+      // }
     }, 800);
   }, []);
 

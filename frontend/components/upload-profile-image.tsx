@@ -1,5 +1,5 @@
 import { useMutation } from "@apollo/client";
-import { useRef, useState } from "react";
+import { memo, useContext, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import AnimatedButton from "./animated-button";
 import Loading from "./loading";
@@ -9,12 +9,13 @@ import {
 } from "../lib/apolloQueries";
 import { FiEdit3 } from "react-icons/fi";
 import { FaCheck, FaTimes } from "react-icons/fa";
+import { UserContext } from "../lib/context";
 
 const cloudinaryUploadUrl = process.env.CLOUDINARY_UPLOAD_URL;
 
 const cloudinaryApiKey = process.env.CLOUDINARY_API_KEY;
 
-//  --- Upload Component
+// --- Upload Component
 const UploadProfileImage = ({
   setProfileImage,
   cancelUpload,
@@ -30,6 +31,8 @@ const UploadProfileImage = ({
   const [image, setImage] = useState();
   const [uploadReady, setUploadReady] = useState(false);
   const [uploadLoading, setUploadLoading] = useState(false);
+
+  const { userData, setUserData } = useContext(UserContext);
 
   const previewFile = (file) => {
     const reader = new FileReader();
@@ -79,14 +82,22 @@ const UploadProfileImage = ({
         return response.json();
       };
       const data = await uploadFile();
-      updateProfileImageMutation({
+      const newImageUrlData = await updateProfileImageMutation({
         variables: {
           imageUrl: data.secure_url,
         },
       });
+      setUserData({
+        ...userData,
+        imageUrl: newImageUrlData.data.updateUser.imageUrl,
+      });
       setUploadLoading(false);
     } catch (error) {
       console.error(error);
+      cancelUpload();
+      setUploadLoading(false);
+      setUploadReady(false);
+      toast.error("Error", { position: "bottom-right" });
     }
   };
 
@@ -108,14 +119,14 @@ const UploadProfileImage = ({
             className="hidden"
             type="file"
             id="file-upload"
-            onChange={onChange}
+            onChange={(e) => onChange(e)}
             ref={startUploadRef}
           />
         </>
       ) : (
         <div className="flex relative left-2">
           <AnimatedButton
-            onClick={onSubmit}
+            onClick={() => onSubmit()}
             className="bg-green-600 text-secondary p-3 rounded-full"
           >
             <FaCheck />

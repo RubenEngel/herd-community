@@ -278,6 +278,24 @@ export const UPDATE_USER_IMAGE = gql`
   }
 `;
 
+export const UPDATE_USER_DETAILS = gql`
+  mutation UpdateUserDetails(
+    $firstName: String
+    $lastName: String
+    $username: String
+  ) {
+    updateUser(
+      firstName: $firstName
+      lastName: $lastName
+      username: $username
+    ) {
+      firstName
+      lastName
+      username
+    }
+  }
+`;
+
 export const SIGN_CLOUDINARY_UPLOAD = gql`
   mutation {
     signUpload {

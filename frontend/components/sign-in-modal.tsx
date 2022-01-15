@@ -1,19 +1,7 @@
 import React, { Dispatch, SetStateAction } from "react";
-import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
-import firebase from "../lib/firebase";
 import { motion } from "framer-motion";
-
-export const uiConfig = {
-  // signInSuccessUrl: '/my-account',
-  signInOptions: [
-    {
-      provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
-      signInMethod: firebase.auth.EmailAuthProvider.EMAIL_LINK_SIGN_IN_METHOD,
-    },
-    firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-    firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-  ],
-};
+import AnimatedButton from "./animated-button";
+import { BsArrowRight } from "react-icons/bs";
 
 const SignInModal: React.FC<{
   setShowSignIn: Dispatch<SetStateAction<boolean>>;
@@ -27,10 +15,10 @@ const SignInModal: React.FC<{
         className=" text-secondary w-full relative bottom-10 mx-auto p-2 text-center"
       >
         <h2 className="uppercase">Sign In</h2>
-        <StyledFirebaseAuth
-          uiConfig={uiConfig}
-          firebaseAuth={firebase.auth()}
-        />
+        <AnimatedButton>
+          Sign in
+          <BsArrowRight />
+        </AnimatedButton>
       </motion.div>
       <button
         onClick={() => setShowSignIn(false)}

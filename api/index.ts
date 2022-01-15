@@ -30,6 +30,8 @@ async function startApolloServer(typeDefs, resolvers) {
     path: "/",
   });
 
+  console.log();
+
   const PORT = process.env.PORT || 4000;
   httpServer.listen({ port: PORT }, () => {
     if (PORT !== process.env.PORT)

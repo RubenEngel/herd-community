@@ -38,9 +38,8 @@ const ProfilePostList = ({
     <div className="mx-auto max-w-2xl text-center">
       {!loading && !data && <h1>No Posts</h1>}
       {data?.posts.posts.map((post, index) => (
-        <>
+        <div key={post.slug}>
           <LongPostPreview
-            key={post.slug + index + "profile"}
             title={post.title}
             createdAt={post.createdAt}
             featuredImage={post.featuredImage}
@@ -53,7 +52,7 @@ const ProfilePostList = ({
             commentCount={post._count?.comments}
           />
           <hr />
-        </>
+        </div>
       ))}
       {loading && (
         <div className="my-20 text-2xl">

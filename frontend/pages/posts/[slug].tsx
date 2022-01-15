@@ -39,7 +39,7 @@ export default function PostPage({ post }: PostProps) {
   }
 
   const { userData } = useContext(UserContext);
-  const setShowSignin = useContext(SignInContext);
+  // const setShowSignin = useContext(SignInContext);
 
   // Check if user can edit post, own post or ADMIN account
   const [isEditable, setIsEditable] = useState(false);
@@ -98,7 +98,7 @@ export default function PostPage({ post }: PostProps) {
   const { category } = useContext(ExploreContext);
 
   const handleLike = async () => {
-    if (!userData) return setShowSignin(true);
+    if (!userData) router.push("/api/auth/login");
     if (!isLiked) {
       try {
         const likeRes = await likePost();

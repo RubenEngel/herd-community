@@ -1,8 +1,5 @@
 // next.config.js
 module.exports = {
-  images: {
-    // domains: ["i0.wp.com", "i1.wp.com", "i2.wp.com"],
-  },
   env: {
     API_URL: process.env.API_URL,
     FIREBASE_API_KEY: process.env.FIREBASE_API_KEY,
@@ -15,5 +12,10 @@ module.exports = {
     FIREBASE_SERVICE_CREDENTIALS: process.env.FIREBASE_SERVICE_CREDENTIALS,
     CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY,
     CLOUDINARY_UPLOAD_URL: process.env.CLOUDINARY_UPLOAD_URL,
+    AUTH0_SECRET: process.env.AUTH0_SECRET,
+    AUTH0_BASE_URL: process.env.AUTH0_BASE_URL,
+    AUTH0_ISSUER_BASE_URL: process.env.AUTH0_ISSUER_BASE_URL,
+    AUTH0_CLIENT_ID: process.env.AUTH0_CLIENT_ID,
+    AUTH0_CLIENT_SECRET: process.env.AUTH0_CLIENT_SECRET,
   },
 };

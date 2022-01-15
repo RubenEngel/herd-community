@@ -8,35 +8,37 @@ import {
 import { setContext } from "@apollo/client/link/context";
 import merge from "deepmerge";
 import isEqual from "lodash/isEqual";
-import { auth } from "../lib/firebase";
+import { useUser } from "@auth0/nextjs-auth0";
 
 export const APOLLO_STATE_PROP_NAME = "__APOLLO_STATE__";
 
 let apolloClient: ApolloClient<NormalizedCacheObject>;
 
-const authLink = setContext(async (_, { headers }) => {
-  // return the headers to the context so httpLink can read them
+const getAuthLink = (userEmail: string) => {
+  const httpLink = new HttpLink({
+    uri: process.env.API_URL,
+  });
 
-  // TODO: Stop using user email. JWT tokens instead?
-  const authEmail = await auth.currentUser?.email;
-  const isVerified = await auth.currentUser?.emailVerified;
+  const authLink = setContext(async (_, { headers }) => {
+    // return the headers to the context so httpLink can read them
 
-  return {
-    headers: {
-      ...headers,
-      authorization: isVerified ? authEmail : null,
-    },
-  };
-});
+    // Encrypt email
 
-const httpLink = new HttpLink({
-  uri: process.env.API_URL,
-});
+    return {
+      headers: {
+        ...headers,
+        authorization: userEmail ? userEmail : null,
+      },
+    };
+  });
 
-function createApolloClient() {
+  return authLink.concat(httpLink);
+};
+
+function createApolloClient(userEmail: string) {
   return new ApolloClient({
     ssrMode: typeof window === "undefined",
-    link: authLink.concat(httpLink),
+    link: getAuthLink(userEmail),
     cache: new InMemoryCache({
       typePolicies: {
         Query: {
@@ -74,8 +76,8 @@ function createApolloClient() {
   });
 }
 
-export function initializeApollo(initialState = null) {
-  const _apolloClient = apolloClient ?? createApolloClient();
+export function initializeApollo(initialState = null, userEmail: string) {
+  const _apolloClient = apolloClient ?? createApolloClient(userEmail);
 
   // If your page has Next.js data fetching methods that use Apollo Client, the initial state
   // gets hydrated here
@@ -113,8 +115,8 @@ export function addApolloState(client, pageProps) {
   return pageProps;
 }
 
-export function useApollo(pageProps) {
+export function useApollo(pageProps, userEmail) {
   const state = pageProps[APOLLO_STATE_PROP_NAME];
-  const store = useMemo(() => initializeApollo(state), [state]);
+  const store = useMemo(() => initializeApollo(state, userEmail), [state]);
   return store;
 }

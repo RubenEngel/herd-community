@@ -395,6 +395,7 @@ export const resolvers = {
       }
     },
     signUpload: async (_, __, { userEmail }) => {
+      console.log(userEmail);
       try {
         const isSignedIn = await checkAuth(userEmail);
         if (!isSignedIn) return;

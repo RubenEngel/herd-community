@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import firebase, { firestore } from "../firebase";
-import { auth } from "../firebase";
+import firebase, { firestore } from "./firebase";
+import { auth } from "./firebase";
 
 export const useUserData = () => {
   const [user] = useAuthState(auth);

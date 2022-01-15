@@ -1,3 +1,4 @@
+import router from "next/router";
 import React, { useContext } from "react";
 import { SignInContext, UserContext } from "../lib/context";
 import AnimatedButton from "./animated-button";
@@ -13,7 +14,7 @@ interface SubmitIntroProps {
 const SubmitIntro = ({ setReady }: SubmitIntroProps) => {
   const { userAuth } = useContext(UserContext);
 
-  const setShowSignIn = useContext(SignInContext);
+  // const setShowSignIn = useContext(SignInContext);
 
   return (
     <>
@@ -66,7 +67,7 @@ const SubmitIntro = ({ setReady }: SubmitIntroProps) => {
             if (userAuth) {
               setReady(true);
             } else {
-              setShowSignIn(true);
+              router.push("/api/auth/login");
             }
           }}
           className="mt-10 px-8 py-4 mb-5 uppercase"
