@@ -14,7 +14,7 @@ export const APOLLO_STATE_PROP_NAME = "__APOLLO_STATE__";
 
 let apolloClient: ApolloClient<NormalizedCacheObject>;
 
-const getAuthLink = (userEmail: string) => {
+const getAuthLink = (userEmail?: string) => {
   const httpLink = new HttpLink({
     uri: process.env.API_URL,
   });
@@ -35,7 +35,7 @@ const getAuthLink = (userEmail: string) => {
   return authLink.concat(httpLink);
 };
 
-function createApolloClient(userEmail: string) {
+function createApolloClient(userEmail?: string) {
   return new ApolloClient({
     ssrMode: typeof window === "undefined",
     link: getAuthLink(userEmail),
@@ -76,7 +76,7 @@ function createApolloClient(userEmail: string) {
   });
 }
 
-export function initializeApollo(initialState = null, userEmail: string) {
+export function initializeApollo(initialState = null, userEmail?: string) {
   const _apolloClient = apolloClient ?? createApolloClient(userEmail);
 
   // If your page has Next.js data fetching methods that use Apollo Client, the initial state
@@ -115,7 +115,7 @@ export function addApolloState(client, pageProps) {
   return pageProps;
 }
 
-export function useApollo(pageProps, userEmail) {
+export function useApollo(pageProps, userEmail: string) {
   const state = pageProps[APOLLO_STATE_PROP_NAME];
   const store = useMemo(() => initializeApollo(state, userEmail), [state]);
   return store;
