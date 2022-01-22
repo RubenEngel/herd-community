@@ -15,17 +15,23 @@ import { motion, AnimatePresence } from "framer-motion";
 import MenuDropdown from "./menu-dropdown";
 import ProfileDropdown from "./profile-dropdown";
 import CategoryDropdown from "./category-dropdown";
-import { ExploreContext, UserContext } from "../../lib/context";
-import formatString from "../../lib/formatString";
-import { useUser } from "@auth0/nextjs-auth0";
+import { CategoryContext } from "../context/category-provider";
+import formatString from "../../lib/format-string";
+import { UserContext } from "../context/auth-provider";
 
 export default function Header() {
   const router = useRouter();
 
   const [pageLoading, setPageLoading] = useState(false);
+
   useEffect(() => {
     router.events.on("routeChangeStart", () => setPageLoading(true));
     router.events.on("routeChangeComplete", () => setPageLoading(false));
+
+    return () => {
+      router.events.off("routeChangeStart", () => setPageLoading(true));
+      router.events.off("routeChangeComplete", () => setPageLoading(false));
+    };
   }, [router]);
 
   const [showCategory, setShowCategory] = useState(false);
@@ -43,8 +49,8 @@ export default function Header() {
 
   const { userData } = useContext(UserContext);
 
-  const { user } = useUser();
-  const { category } = useContext(ExploreContext);
+  // const { user } = useUser();
+  const { category } = useContext(CategoryContext);
 
   const [menuNavbarOpen, setMenuNavbarOpen] = useState(false);
   const [profileNavbarOpen, setProfileNavbarOpen] = useState(false);

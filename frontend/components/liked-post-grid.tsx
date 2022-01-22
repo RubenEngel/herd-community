@@ -1,7 +1,7 @@
 import { useLazyQuery } from "@apollo/client";
 import { useEffect } from "react";
 import { Waypoint } from "react-waypoint";
-import { GET_USER_LIKED_POSTS } from "../lib/apolloQueries";
+import { GET_USER_LIKED_POSTS } from "../lib/apollo-queries";
 import Loading from "./loading";
 import PostPreview from "./post-preview/post-preview";
 

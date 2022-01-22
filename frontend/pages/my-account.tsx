@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
-import { UserContext } from "../lib/context";
 import AnimatedButton from "../components/animated-button";
 import router from "next/router";
-import { useUser } from "@auth0/nextjs-auth0";
 import UserCard from "../components/user-card";
 import { User } from "../lib/types";
 import { useMutation } from "@apollo/client";
-import { UPDATE_USER_DETAILS } from "../lib/apolloQueries";
+import { UPDATE_USER_DETAILS } from "../lib/apollo-queries";
+import { UserContext } from "../components/context/auth-provider";
+import { authHeaders, supabase } from "../lib/supabase";
 
 const InputBox = (
   props: React.DetailedHTMLProps<
@@ -22,11 +22,10 @@ const InputBox = (
 
 const MyAccount = () => {
   const { userAuth, userData, setUserData } = useContext(UserContext);
-  const { user } = useUser();
 
   useEffect(() => {
     if (!userAuth) {
-      router.push("/api/auth/login");
+      router.push("/");
     }
   }, [userAuth]);
 
@@ -34,7 +33,9 @@ const MyAccount = () => {
 
   const [edited, setEdited] = useState(false);
 
-  const [updateUserDetails, { loading }] = useMutation(UPDATE_USER_DETAILS);
+  const [updateUserDetails, { loading }] = useMutation(UPDATE_USER_DETAILS, {
+    context: authHeaders(),
+  });
 
   useEffect(() => {
     if (editedData !== userData) {
@@ -74,7 +75,7 @@ const MyAccount = () => {
       <>
         <div className="text-center">
           <h1 className="text-2xl uppercase mb-3">My Account</h1>
-          <p className="mb-5 font-serif">({user.email})</p>
+          <p className="mb-5 font-serif">({userAuth.email})</p>
         </div>
 
         <div className="flex flex-col items-center m-6 text-center">
@@ -132,7 +133,7 @@ const MyAccount = () => {
               variant="red-outline"
               className="mx-4"
               onClick={() => {
-                router.push("/api/auth/logout");
+                supabase.auth.signOut();
               }}
             >
               Sign Out

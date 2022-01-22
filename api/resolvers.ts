@@ -1,10 +1,8 @@
 import { ApolloError } from "apollo-server-express";
-import { Prisma, PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import { GraphQLScalarType } from "graphql";
 import cloudinary from "cloudinary/lib/v2";
 import "./lib/cloudinaryConfig";
-
-// TODO:
 
 const dateScalar = new GraphQLScalarType({
   name: "DateTime",
@@ -395,7 +393,6 @@ export const resolvers = {
       }
     },
     signUpload: async (_, __, { userEmail }) => {
-      console.log(userEmail);
       try {
         const isSignedIn = await checkAuth(userEmail);
         if (!isSignedIn) return;

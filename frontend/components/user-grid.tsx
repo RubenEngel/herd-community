@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
 import React, { useEffect } from "react";
-import { GET_FOLLOWED, GET_FOLLOWERS } from "../lib/apolloQueries";
+import { GET_FOLLOWED, GET_FOLLOWERS } from "../lib/apollo-queries";
 import { User } from "../lib/types";
 import UserCard from "./user-card";
 
@@ -26,11 +26,11 @@ const UserGrid = ({ user, type }: FollowedUserProps) => {
     <div className="px-3 md:px-4 grid grid-cols-1 md:grid-cols-2 gap-6 mb-32 content-start items-center justify-start">
       {type === "following" &&
         data?.user.following.map((user) => (
-          <UserCard editable={false} linked user={user} />
+          <UserCard key={user.id} editable={false} linked user={user} />
         ))}
       {type === "followers" &&
         data?.user.followers.map((user) => (
-          <UserCard editable={false} linked user={user} />
+          <UserCard key={user.id} editable={false} linked user={user} />
         ))}
     </div>
   );

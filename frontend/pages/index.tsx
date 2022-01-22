@@ -1,16 +1,16 @@
 import { useContext } from "react";
 import Head from "next/head";
-import { initializeApollo, addApolloState } from "../lib/apolloClient";
-import { GET_POSTS, GET_CATEGORIES } from "../lib/apolloQueries";
+import { initializeApollo, addApolloState } from "../lib/apollo-client";
+import { GET_POSTS, GET_CATEGORIES } from "../lib/apollo-queries";
 import PostPreview from "../components/post-preview/post-preview";
 import SmallPostPreview from "../components/post-preview/small-post-preview";
 import HomeCategory from "../components/post-preview/home-category";
 import { AiFillCaretRight } from "react-icons/ai";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ExploreContext } from "../lib/context";
 import { Category, Post } from "../lib/types";
 import type { GetStaticProps } from "next";
+import { CategoryContext } from "../components/context/category-provider";
 // import { useUser } from "@auth0/nextjs-auth0";
 
 interface CategoryPosts {
@@ -26,7 +26,7 @@ const Home = ({ categoryPosts }: IndexProps) => {
   const desktopLatestPosts: Post[] = categoryPosts["all"].slice(0, 3);
   const mobileLatestPosts: Post[] = categoryPosts["all"].slice(1, 4);
 
-  const { setCategory } = useContext(ExploreContext);
+  const { setCategory } = useContext(CategoryContext);
 
   const variants = {
     hidden: {

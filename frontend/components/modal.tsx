@@ -1,7 +1,12 @@
 import { motion, PanInfo, Variants } from "framer-motion";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { BsArrowDown } from "react-icons/bs";
 import AnimatedButton from "./animated-button";
+// import {
+//   disableBodyScroll,
+//   // enableBodyScroll,
+//   clearAllBodyScrollLocks,
+// } from "body-scroll-lock";
 
 const Modal = ({
   setModalOpen,
@@ -29,6 +34,15 @@ const Modal = ({
     },
   };
 
+  // const modalRef = useRef(null);
+
+  // useEffect(() => {
+  //   disableBodyScroll(modalRef, {
+  //     reserveScrollBarGap: true,
+  //   });
+  //   return () => clearAllBodyScrollLocks(modalRef);
+  // }, []);
+
   return (
     <motion.div
       key={"modal-background"}
@@ -51,6 +65,7 @@ const Modal = ({
         animate={"show"}
         exit={"hidden"}
         transition={{ type: "spring", bounce: 0, duration: 0.4 }}
+        // ref={modalRef}
       >
         {/* Close button */}
         <AnimatedButton

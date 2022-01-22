@@ -1,7 +1,7 @@
 import { useLazyQuery } from "@apollo/client";
 import { useEffect } from "react";
 import { Waypoint } from "react-waypoint";
-import { GET_POSTS } from "../lib/apolloQueries";
+import { GET_POSTS } from "../lib/apollo-queries";
 import Loading from "./loading";
 import PostPreview from "./post-preview/post-preview";
 
@@ -12,6 +12,7 @@ export default function PostGrid({
   limit,
   authorId,
   likedByUserId,
+  animate,
 }: {
   limit: number;
   published: boolean;
@@ -19,6 +20,7 @@ export default function PostGrid({
   category?: string;
   authorId?: number;
   likedByUserId?: number;
+  animate: boolean;
 }) {
   const [getPosts, { loading, error, data, fetchMore }] = useLazyQuery(
     GET_POSTS,
@@ -57,7 +59,7 @@ export default function PostGrid({
             author={post.author}
             slug={post.slug}
             categories={post.categories}
-            animateY={"50%"}
+            animateY={animate && "50%"}
             likeCount={post._count?.likedBy}
             commentCount={post._count?.comments}
           />

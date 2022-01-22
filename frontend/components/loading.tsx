@@ -1,7 +1,7 @@
 import React from "react";
 import { motion, Variants } from "framer-motion";
 
-const Loading = () => {
+const Loading = ({ color = "primary" }: { color: "primary" | "secondary" }) => {
   const brand = "HERD.";
 
   const variants: Variants = {
@@ -16,7 +16,11 @@ const Loading = () => {
   const staggerTime = 0.15;
 
   return (
-    <div className={`text-primary text-center flex justify-center`}>
+    <div
+      className={`${
+        color === "primary" ? "text-primary" : "text-secondary"
+      } text-center flex justify-center`}
+    >
       {brand.split("").map((letter, i) => (
         <motion.span
           key={i}

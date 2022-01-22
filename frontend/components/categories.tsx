@@ -1,12 +1,12 @@
-import { ExploreContext } from "../lib/context";
+import { CategoryContext } from "./context/category-provider";
 import { useContext } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Category } from "../lib/types";
-import capitalizeFirstLetter from "../lib/capitalizeFirstLetter";
+import capitalizeFirstLetter from "../lib/capitalize-first-letter";
 
 export default function Categories({ categories }: { categories: Category[] }) {
-  const { setCategory } = useContext(ExploreContext);
+  const { setCategory } = useContext(CategoryContext);
 
   return (
     <div className="flex flex-row flex-wrap no-wrap">

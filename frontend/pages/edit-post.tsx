@@ -1,21 +1,21 @@
 import React, { useState, useEffect, useContext } from "react";
 import dynamic from "next/dynamic";
 import SubmitIntro from "../components/submit-intro";
-import { GET_CATEGORIES, GET_POST } from "../lib/apolloQueries";
-import { useQuery, useMutation, gql } from "@apollo/client";
-import formatString from "../lib/formatString";
-import formatSlug from "../lib/formatSlug";
+import { GET_CATEGORIES, GET_POST } from "../lib/apollo-queries";
+import { useQuery, useMutation } from "@apollo/client";
+import formatString from "../lib/format-string";
+import formatSlug from "../lib/format-slug";
 import toast from "react-hot-toast";
 import PostBody from "../components/post-content/post-body";
 import PostHeader from "../components/post-content/post-header";
-import { ADD_POST, UPDATE_POST, CHANGE_PUBLISHED } from "../lib/apolloQueries";
-import { UserContext } from "../lib/context";
+import { ADD_POST, UPDATE_POST, CHANGE_PUBLISHED } from "../lib/apollo-queries";
 import Tags from "../components/post-content/tags";
 import { useRouter } from "next/router";
 import { Post } from "../lib/types";
-import { v4 as uuid } from "uuid";
 import { AnimatePresence, motion } from "framer-motion";
 import AnimatedButton from "../components/animated-button";
+import { UserContext } from "../components/context/auth-provider";
+import { authHeaders } from "../lib/supabase";
 
 // TODO: Check if user admin again
 
@@ -121,7 +121,9 @@ const EditPost = () => {
   const [
     submitPost,
     { data: submitData, error: submitError, loading: submitLoading },
-  ] = useMutation(ADD_POST);
+  ] = useMutation(ADD_POST, {
+    context: authHeaders(),
+  });
 
   // When submit is pressed, use mutation
   const handleSubmit = () => {
@@ -136,7 +138,9 @@ const EditPost = () => {
 
   // ----------- Post editing
   const [editPost, { data: editData, error: editError, loading: editLoading }] =
-    useMutation(UPDATE_POST);
+    useMutation(UPDATE_POST, {
+      context: authHeaders(),
+    });
 
   const handleEdit = () => {
     editPost({
@@ -152,7 +156,9 @@ const EditPost = () => {
   const [
     changePublished,
     { data: publishedData, loading: publishedLoading, error: publishedError },
-  ] = useMutation(CHANGE_PUBLISHED);
+  ] = useMutation(CHANGE_PUBLISHED, {
+    context: authHeaders(),
+  });
 
   const handleChangePublished = (status: boolean) => {
     changePublished({
@@ -166,10 +172,10 @@ const EditPost = () => {
   // Handle notifications on submit mutation status
   useEffect(() => {
     if (editError || submitError || publishedError) {
-      toast.error("Error", { position: "bottom-right" });
+      toast.error("Error", { position: "bottom-left" });
     }
     if (editData || submitData || publishedData) {
-      toast.success("Success", { position: "bottom-right" });
+      toast.success("Success", { position: "bottom-left" });
       localStorage.setItem("postData", JSON.stringify(emptyPostData));
       router.push(`/posts/${formatSlug(postData.title)}`);
     }
@@ -271,8 +277,11 @@ const EditPost = () => {
             {/* Categories */}
             <SubmitHeading>Select Categories</SubmitHeading>
             <div className="flex mb-6 flex-wrap">
-              {allCategories?.map((categoryName) => (
-                <CategorySelect key={uuid()} categoryName={categoryName} />
+              {allCategories?.map((categoryName, index) => (
+                <CategorySelect
+                  key={categoryName + index}
+                  categoryName={categoryName}
+                />
               ))}
             </div>
             {/* Tags */}

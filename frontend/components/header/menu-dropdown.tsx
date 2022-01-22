@@ -6,7 +6,7 @@ import {
   menuVariants,
   transition,
   itemVariants,
-} from "../../lib/dropdownVariants";
+} from "../../lib/dropdown-variants";
 
 const MenuDropdown: React.FC<{
   setIsOpen: Dispatch<SetStateAction<boolean>>;

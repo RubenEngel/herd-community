@@ -1,15 +1,16 @@
 import { useMutation } from "@apollo/client";
-import { memo, useContext, useEffect, useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import AnimatedButton from "./animated-button";
 import Loading from "./loading";
 import {
   SIGN_CLOUDINARY_UPLOAD,
   UPDATE_USER_IMAGE,
-} from "../lib/apolloQueries";
+} from "../lib/apollo-queries";
 import { FiEdit3 } from "react-icons/fi";
 import { FaCheck, FaTimes } from "react-icons/fa";
-import { UserContext } from "../lib/context";
+import { UserContext } from "./context/auth-provider";
+import { authHeaders } from "../lib/supabase";
 
 const cloudinaryUploadUrl = process.env.CLOUDINARY_UPLOAD_URL;
 
@@ -23,8 +24,12 @@ const UploadProfileImage = ({
   setProfileImage: React.Dispatch<React.SetStateAction<string>>;
   cancelUpload: () => void;
 }) => {
-  const [signUploadMutation] = useMutation(SIGN_CLOUDINARY_UPLOAD);
-  const [updateProfileImageMutation] = useMutation(UPDATE_USER_IMAGE);
+  const [signUploadMutation] = useMutation(SIGN_CLOUDINARY_UPLOAD, {
+    context: authHeaders(),
+  });
+  const [updateProfileImageMutation] = useMutation(UPDATE_USER_IMAGE, {
+    context: authHeaders(),
+  });
 
   const formData = new FormData();
 
@@ -75,9 +80,9 @@ const UploadProfileImage = ({
         if (response.ok === true) {
           setUploadLoading(false);
           setUploadReady(false);
-          toast.success("Success", { position: "bottom-right" });
+          toast.success("Success", { position: "bottom-left" });
         } else {
-          return toast.error("Error", { position: "bottom-right" });
+          return toast.error("Error", { position: "bottom-left" });
         }
         return response.json();
       };
@@ -97,7 +102,7 @@ const UploadProfileImage = ({
       cancelUpload();
       setUploadLoading(false);
       setUploadReady(false);
-      toast.error("Error", { position: "bottom-right" });
+      toast.error("Error", { position: "bottom-left" });
     }
   };
 

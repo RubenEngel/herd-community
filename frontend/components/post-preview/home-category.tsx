@@ -3,9 +3,9 @@ import Link from "next/link";
 import { AiFillCaretRight } from "react-icons/ai";
 import PostPreview from "./post-preview";
 import SmallPostPreview from "./small-post-preview";
-import { ExploreContext } from "../../lib/context";
 import { Post } from "../../lib/types";
 import { motion } from "framer-motion";
+import { CategoryContext } from "../context/category-provider";
 
 export default function HomeCategory({
   posts,
@@ -17,7 +17,7 @@ export default function HomeCategory({
   const latestPost = posts[0];
   const latestStories = posts?.slice(1, 4);
 
-  const { setCategory } = React.useContext(ExploreContext);
+  const { setCategory } = React.useContext(CategoryContext);
 
   return (
     <div>

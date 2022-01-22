@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { UserContext } from "../../lib/context";
+import { UserContext } from "../context/auth-provider";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import NavItem from "../nav-item";
@@ -7,14 +7,13 @@ import {
   menuVariants,
   transition,
   itemVariants,
-} from "../../lib/dropdownVariants";
-import { useUser } from "@auth0/nextjs-auth0";
-import router from "next/router";
+} from "../../lib/dropdown-variants";
+import { SignInContext } from "../context/auth-provider";
 
 const ProfileDropdown = ({ setIsOpen }) => {
-  const { userData } = useContext(UserContext);
+  const { userAuth, userData } = useContext(UserContext);
 
-  const { user: userAuth } = useUser();
+  const setShowSignIn = useContext(SignInContext);
 
   return (
     <>
@@ -44,9 +43,7 @@ const ProfileDropdown = ({ setIsOpen }) => {
                 variants={itemVariants}
                 onClick={() => {
                   setIsOpen(false);
-                  // setShowSignIn(true);
-                  router.push("/api/auth/login");
-                  // signIn();
+                  setShowSignIn(true);
                 }}
               >
                 Sign In

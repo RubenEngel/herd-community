@@ -8,37 +8,18 @@ import {
 import { setContext } from "@apollo/client/link/context";
 import merge from "deepmerge";
 import isEqual from "lodash/isEqual";
-import { useUser } from "@auth0/nextjs-auth0";
+import { supabase } from "./supabase";
 
 export const APOLLO_STATE_PROP_NAME = "__APOLLO_STATE__";
 
 let apolloClient: ApolloClient<NormalizedCacheObject>;
 
-const getAuthLink = (userEmail?: string) => {
-  const httpLink = new HttpLink({
-    uri: process.env.API_URL,
-  });
-
-  const authLink = setContext(async (_, { headers }) => {
-    // return the headers to the context so httpLink can read them
-
-    // Encrypt email
-
-    return {
-      headers: {
-        ...headers,
-        authorization: userEmail ? userEmail : null,
-      },
-    };
-  });
-
-  return authLink.concat(httpLink);
-};
-
-function createApolloClient(userEmail?: string) {
+function createApolloClient() {
   return new ApolloClient({
     ssrMode: typeof window === "undefined",
-    link: getAuthLink(userEmail),
+    link: new HttpLink({
+      uri: process.env.API_URL,
+    }),
     cache: new InMemoryCache({
       typePolicies: {
         Query: {
@@ -76,8 +57,8 @@ function createApolloClient(userEmail?: string) {
   });
 }
 
-export function initializeApollo(initialState = null, userEmail?: string) {
-  const _apolloClient = apolloClient ?? createApolloClient(userEmail);
+export function initializeApollo(initialState = null) {
+  const _apolloClient = apolloClient ?? createApolloClient();
 
   // If your page has Next.js data fetching methods that use Apollo Client, the initial state
   // gets hydrated here
@@ -115,8 +96,8 @@ export function addApolloState(client, pageProps) {
   return pageProps;
 }
 
-export function useApollo(pageProps, userEmail: string) {
+export function useApollo(pageProps) {
   const state = pageProps[APOLLO_STATE_PROP_NAME];
-  const store = useMemo(() => initializeApollo(state, userEmail), [state]);
+  const store = useMemo(() => initializeApollo(state), [state]);
   return store;
 }

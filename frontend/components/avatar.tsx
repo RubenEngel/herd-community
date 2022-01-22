@@ -2,7 +2,7 @@ import { FaUserCircle } from "react-icons/fa";
 import { User } from "../lib/types";
 import AnimatedButton from "./animated-button";
 import Link from "next/link";
-import { getDisplayName } from "../lib/getDisplayName";
+import { getDisplayName } from "../lib/get-display-name";
 
 const Avatar = ({
   author,

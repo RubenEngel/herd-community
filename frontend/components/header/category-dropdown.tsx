@@ -1,15 +1,15 @@
 import React, { useContext } from "react";
 import { motion } from "framer-motion";
-import { ExploreContext } from "../../lib/context";
+import { CategoryContext } from "../context/category-provider";
 import NavItem from "../nav-item";
 import {
   menuVariants,
   transition,
   itemVariants,
-} from "../../lib/dropdownVariants";
+} from "../../lib/dropdown-variants";
 
 const CategoryDropdown = ({ setIsOpen }) => {
-  const { setCategory } = useContext(ExploreContext);
+  const { setCategory } = useContext(CategoryContext);
 
   return (
     <motion.div

@@ -12,21 +12,26 @@ import {
   LIKE_POST,
   LIKED_BY,
   UNLIKE_POST,
-} from "../../lib/apolloQueries";
-import { addApolloState, initializeApollo } from "../../lib/apolloClient";
+} from "../../lib/apollo-queries";
+import { addApolloState, initializeApollo } from "../../lib/apollo-client";
 import { Post } from "../../lib/types";
 import PostGrid from "../../components/post-grid";
-import { SignInContext, UserContext } from "../../lib/context";
 import { useViewportScroll, AnimatePresence } from "framer-motion";
 import { Waypoint } from "react-waypoint";
-import formatString from "../../lib/formatString";
-import { ExploreContext } from "../../lib/context";
+import formatString from "../../lib/format-string";
 import PostInteractions from "../../components/header/post-interactions";
 import { useMutation, useQuery } from "@apollo/client";
 import ProgressBar from "../../components/progress-bar";
 import UserCard from "../../components/user-card";
 import toast from "react-hot-toast";
 import Modal from "../../components/modal";
+import {
+  SignInContext,
+  UserContext,
+} from "../../components/context/auth-provider";
+import { CategoryContext } from "../../components/context/category-provider";
+import { authHeaders } from "../../lib/supabase";
+
 interface PostProps {
   post: Post;
 }
@@ -38,8 +43,9 @@ export default function PostPage({ post }: PostProps) {
     return <ErrorPage statusCode={404} />;
   }
 
+  const setShowSignIn = useContext(SignInContext);
+
   const { userData } = useContext(UserContext);
-  // const setShowSignin = useContext(SignInContext);
 
   // Check if user can edit post, own post or ADMIN account
   const [isEditable, setIsEditable] = useState(false);
@@ -58,12 +64,14 @@ export default function PostPage({ post }: PostProps) {
     variables: {
       id: post?.id,
     },
+    context: authHeaders(),
   });
 
   const [unlikePost, { loading: unlikeLoading }] = useMutation(UNLIKE_POST, {
     variables: {
       id: post?.id,
     },
+    context: authHeaders(),
   });
 
   const { data: likedByData, loading: likedByDataLoading } = useQuery(
@@ -95,10 +103,10 @@ export default function PostPage({ post }: PostProps) {
 
   const [isLiked, setIsLiked] = useState(false);
 
-  const { category } = useContext(ExploreContext);
+  const { category } = useContext(CategoryContext);
 
   const handleLike = async () => {
-    if (!userData) router.push("/api/auth/login");
+    if (!userData) setShowSignIn(true);
     if (!isLiked) {
       try {
         const likeRes = await likePost();
@@ -106,7 +114,7 @@ export default function PostPage({ post }: PostProps) {
         setLikedBy(likedByArray);
         setIsLiked(likedByArray.some((user) => user.id === userData.id));
       } catch (error) {
-        toast.error("Error", { position: "bottom-right" });
+        toast.error("Error", { position: "bottom-left" });
       }
     } else {
       try {
@@ -115,7 +123,7 @@ export default function PostPage({ post }: PostProps) {
         setLikedBy(likedByArray);
         setIsLiked(likedByArray.some((user) => user.id === userData.id));
       } catch (error) {
-        toast.error("Error", { position: "bottom-right" });
+        toast.error("Error", { position: "bottom-left" });
       }
     }
   };
@@ -244,6 +252,7 @@ export default function PostPage({ post }: PostProps) {
             </h1>
           </Waypoint>
           <PostGrid
+            animate
             published
             startLoad={reachedEnd}
             category={category}

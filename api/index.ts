@@ -5,6 +5,7 @@ import compression from "compression";
 import cors from "cors";
 import { typeDefs } from "./typeDefs";
 import { resolvers } from "./resolvers";
+import jwt from "jsonwebtoken";
 import "dotenv/config";
 
 async function startApolloServer(typeDefs, resolvers) {
@@ -17,10 +18,24 @@ async function startApolloServer(typeDefs, resolvers) {
   const server = new ApolloServer({
     typeDefs,
     resolvers,
-    context: ({ req }) => {
-      const userEmail = req.headers.authorization || ""; // TODO: encrypt this
+    context: async ({ req }) => {
+      const accessToken = req.headers.authorization?.split(" ")[1];
+
+      let user;
+
+      if (accessToken) {
+        try {
+          user = jwt.verify(
+            accessToken,
+            process.env.SUPABASE_JWT_SECRET as string
+          );
+        } catch (err) {
+          console.error(err);
+        }
+      }
+
       // Add the user email to the context
-      return { userEmail };
+      return { userEmail: user?.email };
     },
   });
 
@@ -29,8 +44,6 @@ async function startApolloServer(typeDefs, resolvers) {
     app,
     path: "/",
   });
-
-  console.log();
 
   const PORT = process.env.PORT || 4000;
   httpServer.listen({ port: PORT }, () => {

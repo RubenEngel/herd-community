@@ -1,7 +1,7 @@
 import { User } from "../lib/types";
 import AnimatedButton from "./animated-button";
 import { FaUserCircle } from "react-icons/fa";
-import capitalizeFirstLetter from "../lib/capitalizeFirstLetter";
+import capitalizeFirstLetter from "../lib/capitalize-first-letter";
 import {
   Dispatch,
   SetStateAction,
@@ -10,15 +10,20 @@ import {
   useState,
 } from "react";
 import { gql, useMutation, useQuery } from "@apollo/client";
-import { FOLLOW_USER, GET_FOLLOWED, UNFOLLOW_USER } from "../lib/apolloQueries";
+import {
+  FOLLOW_USER,
+  GET_FOLLOWED,
+  UNFOLLOW_USER,
+} from "../lib/apollo-queries";
 import toast from "react-hot-toast";
 import UploadProfileImage from "./upload-profile-image";
-import { UserContext } from "../lib/context";
 import Link from "next/link";
 import router from "next/router";
+import { UserContext } from "./context/auth-provider";
+import { supabase, authHeaders } from "../lib/supabase";
 
 interface UserCardProps {
-  user: Omit<User, "email"> & {
+  user?: Omit<User, "email"> & {
     _count: {
       posts: number;
       followers: number;
@@ -125,9 +130,16 @@ const UserCard = ({
   );
 
   const [isFollowing, setIsFollowing] = useState(false);
-  const [followUser, { loading: followLoading }] = useMutation(FOLLOW_USER);
-  const [unfollowUser, { loading: unfollowLoading }] =
-    useMutation(UNFOLLOW_USER);
+  const [followUser, { loading: followLoading }] = useMutation(FOLLOW_USER, {
+    context: authHeaders(),
+  });
+
+  const [unfollowUser, { loading: unfollowLoading }] = useMutation(
+    UNFOLLOW_USER,
+    {
+      context: { ...authHeaders() },
+    }
+  );
 
   useEffect(() => {
     if (!userData || !user || ownProfile) return;
@@ -160,7 +172,7 @@ const UserCard = ({
           newFollowers.some((follower) => follower.id === userData.id)
         );
       } catch (error) {
-        toast.error("Error", { position: "bottom-right" });
+        toast.error("Error", { position: "bottom-left" });
       }
     } else {
       try {
@@ -171,7 +183,7 @@ const UserCard = ({
           newFollowers.some((follower) => follower.id === userData.id)
         );
       } catch (error) {
-        toast.error("Error", { position: "bottom-right" });
+        toast.error("Error", { position: "bottom-left" });
       }
     }
   };
@@ -208,25 +220,26 @@ const UserCard = ({
         )}
       </div>
       <div className={`text-left ${editable && ""}`}>
-        {linked ? (
-          <AnimatedButton className="block text-left">
-            <Link href={`/users/${user.username}`}>
-              <a href="">
-                <ProfileName
-                  firstName={user.firstName}
-                  lastName={user.lastName}
-                  username={user.username}
-                />
-              </a>
-            </Link>
-          </AnimatedButton>
-        ) : (
-          <ProfileName
-            firstName={user.firstName}
-            lastName={user.lastName}
-            username={user.username}
-          />
-        )}
+        {(user?.firstName || user?.lastName || user?.username) &&
+          (linked ? (
+            <AnimatedButton className="block text-left">
+              <Link href={`/users/${user.username}`}>
+                <a href="">
+                  <ProfileName
+                    firstName={user?.firstName}
+                    lastName={user?.lastName}
+                    username={user?.username}
+                  />
+                </a>
+              </Link>
+            </AnimatedButton>
+          ) : (
+            <ProfileName
+              firstName={user?.firstName}
+              lastName={user?.lastName}
+              username={user?.username}
+            />
+          ))}
         {ownProfile && editable && router.route !== "/my-account" && (
           <AnimatedButton
             variant={"primary"}
