@@ -3,6 +3,7 @@
 //   User as PrismaUser,
 //   Role as PrismaRole,
 //   Category as PrimsaCategory,
+//   Comment as PrismaComment,
 // } from "../../api/node_modules/.prisma/client/index";
 
 // ----------- Enums
@@ -54,6 +55,18 @@ export interface Post {
     likedBy: number;
     comments: number;
   };
+}
+
+export interface Comment {
+  id: number;
+  content: string;
+  authorId: number;
+  createdAt: Date;
+  postId: number;
+  parentCommentId: number;
+  author: User;
+  // childComments: Comment[];
+  // likedBy: User[];
 }
 
 export interface Category {

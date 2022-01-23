@@ -5,16 +5,20 @@ const prisma = new PrismaClient({
 });
 
 async function fn() {
-  const res = await prisma.post.findMany({
+  const res = await prisma.comment.findUnique({
     where: {
-      likedBy: {
-        some: {
-          username: "ruben.engel",
+      id: 17,
+    },
+    select: {
+      author: {
+        select: {
+          email: true,
         },
       },
     },
   });
-  console.log(res);
+
+  console.log(res?.author.email);
 }
 
 fn();

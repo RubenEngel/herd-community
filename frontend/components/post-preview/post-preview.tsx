@@ -66,7 +66,7 @@ export default function PostPreview({
         </div>
         {/* Date and Author */}
         <div className="text-sm flex flex-row justify-between items-center">
-          <Avatar author={author} />
+          <Avatar user={author} />
           <div className="flex">
             {likeCount ? (
               <div className="flex items-center mx-3">

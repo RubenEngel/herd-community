@@ -4,7 +4,7 @@ import router from "next/router";
 import UserCard from "../components/user-card";
 import { User } from "../lib/types";
 import { useMutation } from "@apollo/client";
-import { UPDATE_USER_DETAILS } from "../lib/apollo-queries";
+import { UPDATE_USER_DETAILS } from "../lib/gql-queries";
 import { UserContext } from "../components/context/auth-provider";
 import { authHeaders, supabase } from "../lib/supabase";
 
@@ -16,7 +16,7 @@ const InputBox = (
 ) => (
   <input
     {...props}
-    className="border-2 md:mx-2 border-gray-300 mb-6 p-1 font-serif rounded-lg text-center w-48"
+    className="border-2 md:mx-2 border-gray-300 mb-6 p-1 font-serif rounded-lg text-center"
   />
 );
 
@@ -66,6 +66,12 @@ const MyAccount = () => {
     setEdited(false);
   };
 
+  const handleCancelChanges = () => {
+    setUserData(userData);
+    setEditedData(userData);
+    setEdited(false);
+  };
+
   if (!userAuth) {
     return <h1 className="text-center mt-36">Sign in to view this page</h1>;
   }
@@ -78,10 +84,10 @@ const MyAccount = () => {
           <p className="mb-5 font-serif">({userAuth.email})</p>
         </div>
 
-        <div className="flex flex-col items-center m-6 text-center">
-          {/* Profile Picture */}
-          <UserCard editable={true} linked={false} user={editedData} />
-          {/* User details */}
+        <div className="flex flex-col items-center text-center">
+          <div className="mb-7">
+            <UserCard editable={true} linked={false} user={editedData} />
+          </div>
           <div>
             <div>
               <label>First Name</label>
@@ -117,17 +123,27 @@ const MyAccount = () => {
               </div>
             </div>
           </div>
-          <div className="mt-11">
-            {edited && (
+          {edited && (
+            <div className="my-4">
               <AnimatedButton
                 variant="green-outline"
-                className="green-outline mx-4"
+                className="mx-2"
                 onClick={() => handleSaveChanges()}
                 disabled={loading}
               >
                 Save Changes
               </AnimatedButton>
-            )}
+              <AnimatedButton
+                variant="red-outline"
+                className="mx-2"
+                onClick={() => handleCancelChanges()}
+                disabled={loading}
+              >
+                Cancel
+              </AnimatedButton>
+            </div>
+          )}
+          <div className="mt-6">
             {/* <SelectUsername /> */}
             <AnimatedButton
               variant="red-outline"

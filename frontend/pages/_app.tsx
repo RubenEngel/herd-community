@@ -54,7 +54,7 @@ function MyApp({ Component, pageProps }: AppProps) {
               </Layout>
             )}
           </AnimatePresence>
-          <Toaster />
+          <Toaster position="bottom-left" />
         </CategoryProvider>
       </AuthProvider>
     </ApolloProvider>

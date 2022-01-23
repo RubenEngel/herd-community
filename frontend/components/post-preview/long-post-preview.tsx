@@ -63,7 +63,7 @@ const LongPostPreview = ({
           <div className="flex justify-between">
             {/* Author */}
             <div className="flex flex-row justify-start items-center col-span-3 ">
-              <Avatar author={author} />
+              <Avatar user={author} />
             </div>
             <div>
               {likeCount ? (

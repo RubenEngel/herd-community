@@ -31,20 +31,20 @@ const AnimatedButton = ({
       case "green":
         return "bg-green-600 text-secondary";
       case "primary-outline":
-        return "border-primary border-2 text-primary";
+        return "border-primary border-2 text-primary leading-5";
       case "green-outline":
-        return "border-green-600 border-2 text-green-600";
+        return "border-green-600 border-2 text-green-600 leading-5";
       case "red-outline":
-        return "border-red-600 border-2 text-red-600";
+        return "border-red-600 border-2 text-red-600 leading-5";
     }
   };
 
   return (
     <motion.button
       disabled={disabled}
-      className={`${className} ${buttonBackground()} ${
+      className={`${className} disabled:opacity-30 ${buttonBackground()} ${
         variant &&
-        "font-serif text-md rounded-lg px-6 py-1 hover:shadow-md transition-shadow duration-100 disabled:opacity-30"
+        "font-serif text-md rounded-lg px-6 py-1 hover:shadow-md transition-shadow duration-100"
       }`}
       whileTap={{ scale: 0.95 }}
       whileHover={{ scale: 1.03 }}

@@ -57,7 +57,7 @@ export default function SmallPostPreview({
           </div>
           <div className="flex justify-between text-sm">
             <div className="flex flex-row justify-start items-center col-span-3 ">
-              <Avatar small author={author} />
+              <Avatar small user={author} />
             </div>
             <div className="flex">
               {likeCount ? (

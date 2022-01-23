@@ -1,7 +1,9 @@
 import capitalizeFirstLetter from "./capitalize-first-letter";
 import { User } from "./types";
 
-export const getDisplayName = (author: User) => {
+export const getDisplayName = (
+  author: Pick<User, "firstName" | "lastName">
+) => {
   const firstName = author?.firstName
     ? capitalizeFirstLetter(author.firstName)
     : null;

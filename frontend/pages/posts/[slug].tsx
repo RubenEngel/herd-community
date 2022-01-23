@@ -12,7 +12,7 @@ import {
   LIKE_POST,
   LIKED_BY,
   UNLIKE_POST,
-} from "../../lib/apollo-queries";
+} from "../../lib/gql-queries";
 import { addApolloState, initializeApollo } from "../../lib/apollo-client";
 import { Post } from "../../lib/types";
 import PostGrid from "../../components/post-grid";
@@ -31,6 +31,7 @@ import {
 } from "../../components/context/auth-provider";
 import { CategoryContext } from "../../components/context/category-provider";
 import { authHeaders } from "../../lib/supabase";
+import Comments from "../../components/comments";
 
 interface PostProps {
   post: Post;
@@ -106,7 +107,7 @@ export default function PostPage({ post }: PostProps) {
   const { category } = useContext(CategoryContext);
 
   const handleLike = async () => {
-    if (!userData) setShowSignIn(true);
+    if (!userData) return setShowSignIn(true);
     if (!isLiked) {
       try {
         const likeRes = await likePost();
@@ -114,7 +115,7 @@ export default function PostPage({ post }: PostProps) {
         setLikedBy(likedByArray);
         setIsLiked(likedByArray.some((user) => user.id === userData.id));
       } catch (error) {
-        toast.error("Error", { position: "bottom-left" });
+        toast.error("Error");
       }
     } else {
       try {
@@ -123,7 +124,7 @@ export default function PostPage({ post }: PostProps) {
         setLikedBy(likedByArray);
         setIsLiked(likedByArray.some((user) => user.id === userData.id));
       } catch (error) {
-        toast.error("Error", { position: "bottom-left" });
+        toast.error("Error");
       }
     }
   };
@@ -156,7 +157,7 @@ export default function PostPage({ post }: PostProps) {
     }
   };
 
-  // ---> Scroll progress bar
+  // --- Scroll progress bar
   const [startedReading, setStartedReading] = useState(false);
   const [percentageComplete, setPercentageComplete] = useState(0);
   const [reachedEnd, setReachedEnd] = useState<boolean>(false);
@@ -181,11 +182,11 @@ export default function PostPage({ post }: PostProps) {
       setPercentageComplete((value / intialPageHeight) * 100);
     });
   }, [scrollY, intialPageHeight]);
-  // <---
+  // ---
 
-  // ----- Comments
+  // --- Comments
   const [showComments, setShowComments] = useState(false);
-  // <----
+  // ---
 
   return (
     <>
@@ -203,7 +204,7 @@ export default function PostPage({ post }: PostProps) {
             <AnimatePresence>
               {showComments && (
                 <Modal title="Comments" setModalOpen={setShowComments}>
-                  <h1>Testing</h1>
+                  <Comments postId={post.id} />
                 </Modal>
               )}
             </AnimatePresence>

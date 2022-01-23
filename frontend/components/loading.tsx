@@ -1,7 +1,11 @@
 import React from "react";
 import { motion, Variants } from "framer-motion";
 
-const Loading = ({ color = "primary" }: { color: "primary" | "secondary" }) => {
+const Loading = ({
+  color = "primary",
+}: {
+  color?: "primary" | "secondary";
+}) => {
   const brand = "HERD.";
 
   const variants: Variants = {

@@ -30,10 +30,10 @@ const SignInWithLink = () => {
         setEmailLoading(false);
         setEmailSentTo(email);
         setEmail("");
-        toast.success("Email sent!", { position: "bottom-left" });
+        toast.success("Email sent!");
       }
     } catch (error) {
-      toast.error("Error sending email", { position: "bottom-left" });
+      toast.error("Error sending email");
       setEmailLoading(false);
     }
   };
@@ -47,8 +47,8 @@ const SignInWithLink = () => {
   return (
     <>
       <div>
-        <h3 className="mb-5 uppercase">Sign in with email Link</h3>
-        <div className="flex relative left-4">
+        <h4 className="mb-5 uppercase">Sign in with email Link</h4>
+        <div className="flex">
           <label className="relative text-gray-400 focus-within:text-gray-600 block">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -70,23 +70,27 @@ const SignInWithLink = () => {
               className="form-input border border-gray-900 py-3 px-4 bg-white placeholder-gray-400 text-gray-500 appearance-none w-full block pl-14 focus:outline-none rounded-lg"
             />
           </label>
-          {emailLoading ? (
-            <div className="relative top-3 left-3">
-              <Loading color="secondary" />
-            </div>
-          ) : (
-            <AnimatedButton
-              disabled={!validEmail}
-              onClick={() => handleSendEmail(email)}
-              className="ml-2 p-3 disabled:opacity-50"
-            >
-              <FiSend className="text-3xl" />
-            </AnimatedButton>
-          )}
+          {email &&
+            validEmail &&
+            (emailLoading ? (
+              <div className="relative top-3 left-3">
+                <Loading color="secondary" />
+              </div>
+            ) : (
+              <AnimatedButton
+                disabled={!validEmail}
+                onClick={() => handleSendEmail(email)}
+                className="ml-2 p-3 disabled:opacity-50"
+              >
+                <FiSend className="text-3xl" />
+              </AnimatedButton>
+            ))}
         </div>
       </div>
       <div>
-        {!validEmail && email && <p className="text-red-600">Invalid Email</p>}
+        {!validEmail && email && (
+          <p className="text-red-600 mt-2">Invalid Email</p>
+        )}
         {emailSent && (
           <p className="mt-4">
             Email sent to <span className="text-green-400">{emailSentTo}</span>,

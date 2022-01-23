@@ -169,6 +169,24 @@ export const GET_POSTS_WITH_EXCERPT = gql`
   }
 `;
 
+export const GET_COMMENTS = gql`
+  query Query($postId: Int, $authorId: Int) {
+    comments(postId: $postId, authorId: $authorId) {
+      id
+      postId
+      author {
+        id
+        firstName
+        lastName
+        username
+        imageUrl
+      }
+      content
+      createdAt
+    }
+  }
+`;
+
 export const GET_USER_LIKED_POSTS = gql`
   ${CORE_POST_FIELDS}
   query GetUserLikedPosts(
@@ -239,6 +257,24 @@ export const ADD_POST = gql`
   }
 `;
 
+export const CREATE_COMMENT = gql`
+  mutation CreateComment($content: String!, $postId: Int!) {
+    createComment(content: $content, postId: $postId) {
+      id
+      author {
+        id
+        username
+        firstName
+        lastName
+        imageUrl
+      }
+      createdAt
+      content
+      postId
+    }
+  }
+`;
+
 export const UPDATE_POST = gql`
   mutation UpdatePost(
     $id: Int!
@@ -292,6 +328,14 @@ export const UPDATE_USER_DETAILS = gql`
       firstName
       lastName
       username
+    }
+  }
+`;
+
+export const DELETE_COMMENT = gql`
+  mutation Mutation($deleteCommentId: Int!) {
+    deleteComment(id: $deleteCommentId) {
+      id
     }
   }
 `;

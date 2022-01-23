@@ -1,4 +1,4 @@
-import { ApolloError } from "apollo-server-express";
+import { ApolloError, AuthenticationError } from "apollo-server-express";
 import { PrismaClient } from "@prisma/client";
 import { GraphQLScalarType } from "graphql";
 import cloudinary from "cloudinary/lib/v2";
@@ -14,7 +14,7 @@ const dateScalar = new GraphQLScalarType({
   },
 });
 
-const prisma = new PrismaClient({
+export const prisma = new PrismaClient({
   log: ["info"],
 });
 
@@ -166,6 +166,21 @@ export const resolvers = {
         },
       });
     },
+    comments: async (_, { postId, authorId }) => {
+      try {
+        return await prisma.comment.findMany({
+          where: {
+            postId: postId,
+            authorId: authorId,
+          },
+          include: {
+            author: true,
+          },
+        });
+      } catch (error) {
+        throw new ApolloError(error as string);
+      }
+    },
     userByEmail: async (_, { email }) => {
       return prisma.user.findUnique({
         where: {
@@ -239,6 +254,62 @@ export const resolvers = {
             tags: tags,
             author: { connect: { email: authorEmail } },
             published: false,
+          },
+        });
+      } catch (error) {
+        throw new ApolloError(error as string);
+      }
+    },
+    createComment: async (_, { content, postId }, { userEmail }) => {
+      if (!userEmail) throw new AuthenticationError("You must be logged in");
+      try {
+        return await prisma.comment.create({
+          data: {
+            content: content,
+            post: {
+              connect: {
+                id: postId,
+              },
+            },
+            author: {
+              connect: {
+                email: userEmail,
+              },
+            },
+          },
+          include: {
+            author: true,
+          },
+        });
+      } catch (error) {
+        throw new ApolloError(error as string);
+      }
+    },
+    deleteComment: async (_, { id }, { userEmail }) => {
+      if (!userEmail) throw new AuthenticationError("You must be logged in");
+      try {
+        const res = await prisma.comment.findUnique({
+          where: {
+            id: 17,
+          },
+          select: {
+            author: {
+              select: {
+                email: true,
+              },
+            },
+          },
+        });
+
+        if (res && res?.author.email !== userEmail) {
+          throw new AuthenticationError(
+            "User's email does not match comment's author"
+          );
+        }
+
+        return await prisma.comment.delete({
+          where: {
+            id,
           },
         });
       } catch (error) {

@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import Head from "next/head";
 import { initializeApollo, addApolloState } from "../lib/apollo-client";
-import { GET_POSTS, GET_CATEGORIES } from "../lib/apollo-queries";
+import { GET_POSTS, GET_CATEGORIES } from "../lib/gql-queries";
 import PostPreview from "../components/post-preview/post-preview";
 import SmallPostPreview from "../components/post-preview/small-post-preview";
 import HomeCategory from "../components/post-preview/home-category";

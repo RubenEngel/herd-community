@@ -6,7 +6,7 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { ADD_USER, GET_USER_BY_EMAIL } from "../../lib/apollo-queries";
+import { ADD_USER, GET_USER_BY_EMAIL } from "../../lib/gql-queries";
 import { supabase } from "../../lib/supabase";
 import { User } from "../../lib/types";
 import SignInModal from "../sign-in-modal";
@@ -65,6 +65,8 @@ const SignInProvider = ({ children }) => {
   }, [user]);
 
   const [showSignIn, setShowSignIn] = useState(false);
+
+  // console.log(supabase.auth.session()?.access_token);
 
   return (
     <UserContext.Provider value={{ userAuth: user, userData, setUserData }}>

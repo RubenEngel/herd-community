@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
 import dynamic from "next/dynamic";
 import SubmitIntro from "../components/submit-intro";
-import { GET_CATEGORIES, GET_POST } from "../lib/apollo-queries";
+import { GET_CATEGORIES, GET_POST } from "../lib/gql-queries";
 import { useQuery, useMutation } from "@apollo/client";
 import formatString from "../lib/format-string";
 import formatSlug from "../lib/format-slug";
 import toast from "react-hot-toast";
 import PostBody from "../components/post-content/post-body";
 import PostHeader from "../components/post-content/post-header";
-import { ADD_POST, UPDATE_POST, CHANGE_PUBLISHED } from "../lib/apollo-queries";
+import { ADD_POST, UPDATE_POST, CHANGE_PUBLISHED } from "../lib/gql-queries";
 import Tags from "../components/post-content/tags";
 import { useRouter } from "next/router";
 import { Post } from "../lib/types";
@@ -172,10 +172,10 @@ const EditPost = () => {
   // Handle notifications on submit mutation status
   useEffect(() => {
     if (editError || submitError || publishedError) {
-      toast.error("Error", { position: "bottom-left" });
+      toast.error("Error");
     }
     if (editData || submitData || publishedData) {
-      toast.success("Success", { position: "bottom-left" });
+      toast.success("Success");
       localStorage.setItem("postData", JSON.stringify(emptyPostData));
       router.push(`/posts/${formatSlug(postData.title)}`);
     }

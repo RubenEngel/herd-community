@@ -1,23 +1,24 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
 import { motion } from "framer-motion";
-import { BiLike, BiUpvote } from "react-icons/bi";
+import { BiLike } from "react-icons/bi";
 import { FiShare, FiEdit3 } from "react-icons/fi";
 import { BiCommentDetail } from "react-icons/bi";
 import Link from "next/link";
+import AnimatedButton from "../animated-button";
 
 const InteractionButton = (props) => {
   return (
-    <motion.button
+    <AnimatedButton
       {...props}
-      whileHover={{
-        scale: 1.2,
-        transition: { duration: 0.2 },
-      }}
-      whileTap={{ scale: 1.4 }}
+      // whileHover={{
+      //   scale: 1.2,
+      //   transition: { duration: 0.2 },
+      // }}
+      // whileTap={{ scale: 1.4 }}
       className={`text-3xl p-4 flex flex-col items-center disabled:opacity-30`}
     >
       {props.children}
-    </motion.button>
+    </AnimatedButton>
   );
 };
 

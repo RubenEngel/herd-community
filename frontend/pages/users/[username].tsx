@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Loading from "../../components/loading";
 import { addApolloState, initializeApollo } from "../../lib/apollo-client";
 import capitalizeFirstLetter from "../../lib/capitalize-first-letter";
-import { GET_USER_BY_USERNAME } from "../../lib/apollo-queries";
+import { GET_USER_BY_USERNAME } from "../../lib/gql-queries";
 import { User } from "../../lib/types";
 import AnimatedButton from "../../components/animated-button";
 import ProfilePostList from "../../components/profile-post-list";

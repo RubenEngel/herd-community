@@ -10,11 +10,7 @@ import {
   useState,
 } from "react";
 import { gql, useMutation, useQuery } from "@apollo/client";
-import {
-  FOLLOW_USER,
-  GET_FOLLOWED,
-  UNFOLLOW_USER,
-} from "../lib/apollo-queries";
+import { FOLLOW_USER, GET_FOLLOWED, UNFOLLOW_USER } from "../lib/gql-queries";
 import toast from "react-hot-toast";
 import UploadProfileImage from "./upload-profile-image";
 import Link from "next/link";
@@ -137,7 +133,7 @@ const UserCard = ({
   const [unfollowUser, { loading: unfollowLoading }] = useMutation(
     UNFOLLOW_USER,
     {
-      context: { ...authHeaders() },
+      context: authHeaders(),
     }
   );
 
@@ -172,7 +168,7 @@ const UserCard = ({
           newFollowers.some((follower) => follower.id === userData.id)
         );
       } catch (error) {
-        toast.error("Error", { position: "bottom-left" });
+        toast.error("Error");
       }
     } else {
       try {
@@ -183,18 +179,18 @@ const UserCard = ({
           newFollowers.some((follower) => follower.id === userData.id)
         );
       } catch (error) {
-        toast.error("Error", { position: "bottom-left" });
+        toast.error("Error");
       }
     }
   };
 
   return (
     <div
-      className={`flex justify-center z-10 mx-auto text-left p-5 ${
+      className={`flex justify-center z-10 pt-4 mx-auto text-left ${
         !editable || (router.route === "/my-account" && "items-center")
       }`}
     >
-      <div className="mr-6 relative z-0">
+      <div className="mr-4 relative z-0">
         {linked ? (
           <AnimatedButton>
             <Link href={`/users/${user.username}`}>

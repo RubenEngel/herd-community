@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client";
 import React, { useEffect } from "react";
 import { Waypoint } from "react-waypoint";
-import { GET_POSTS_WITH_EXCERPT } from "../lib/apollo-queries";
+import { GET_POSTS_WITH_EXCERPT } from "../lib/gql-queries";
 import { Post } from "../lib/types";
 import Loading from "./loading";
 import LongPostPreview from "./post-preview/long-post-preview";

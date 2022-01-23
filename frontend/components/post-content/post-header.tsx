@@ -73,7 +73,7 @@ const PostHeader: React.FC<PostHeaderProps> = ({
         className="flex sm:flex-row justify-between mb-6 "
       >
         <div>
-          <Avatar author={author} />
+          <Avatar user={author} />
         </div>
         <div className="flex">
           {likeCount ? (

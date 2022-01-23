@@ -8,7 +8,13 @@ function Admin() {
         <h3 className="uppercase">Unpublished Posts</h3>
       </div>
 
-      <PostGrid published={false} startLoad category={"all"} limit={6} />
+      <PostGrid
+        animate={false}
+        published={false}
+        startLoad
+        category={"all"}
+        limit={6}
+      />
     </>
   );
 }

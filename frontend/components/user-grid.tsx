@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
 import React, { useEffect } from "react";
-import { GET_FOLLOWED, GET_FOLLOWERS } from "../lib/apollo-queries";
+import { GET_FOLLOWED, GET_FOLLOWERS } from "../lib/gql-queries";
 import { User } from "../lib/types";
 import UserCard from "./user-card";
 

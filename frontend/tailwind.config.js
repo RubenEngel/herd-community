@@ -36,6 +36,7 @@ module.exports = {
       },
       height: {
         content: "calc(100% - 120px)",
+        "modal-content": "calc(100% - 60px)",
       },
       minWidth: {
         sm: "24rem",

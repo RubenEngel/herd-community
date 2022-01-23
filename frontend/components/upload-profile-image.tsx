@@ -3,10 +3,7 @@ import { useContext, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import AnimatedButton from "./animated-button";
 import Loading from "./loading";
-import {
-  SIGN_CLOUDINARY_UPLOAD,
-  UPDATE_USER_IMAGE,
-} from "../lib/apollo-queries";
+import { SIGN_CLOUDINARY_UPLOAD, UPDATE_USER_IMAGE } from "../lib/gql-queries";
 import { FiEdit3 } from "react-icons/fi";
 import { FaCheck, FaTimes } from "react-icons/fa";
 import { UserContext } from "./context/auth-provider";
@@ -80,9 +77,9 @@ const UploadProfileImage = ({
         if (response.ok === true) {
           setUploadLoading(false);
           setUploadReady(false);
-          toast.success("Success", { position: "bottom-left" });
+          toast.success("Success");
         } else {
-          return toast.error("Error", { position: "bottom-left" });
+          return toast.error("Error");
         }
         return response.json();
       };
@@ -102,7 +99,7 @@ const UploadProfileImage = ({
       cancelUpload();
       setUploadLoading(false);
       setUploadReady(false);
-      toast.error("Error", { position: "bottom-left" });
+      toast.error("Error");
     }
   };
 

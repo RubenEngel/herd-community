@@ -104,6 +104,7 @@ export const typeDefs = gql`
       likedByUserId: Int
     ): PostQuery
     post(slug: String!): Post
+    comments(postId: Int, authorId: Int): [Comment]
     userByEmail(email: String!): User
     user(username: String, id: Int): User
     categories: [Category]
@@ -117,10 +118,12 @@ export const typeDefs = gql`
       title: String!
       content: String!
       categories: [String]!
-      authorEmail: String
+      authorEmail: String # TODO: Remove this and use context
       featuredImage: String
       tags: [String]
     ): Post
+    createComment(content: String!, postId: Int!): Comment
+    deleteComment(id: Int!): Comment
     updatePost(
       id: Int!
       slug: String
