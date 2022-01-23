@@ -69,13 +69,13 @@ export default function PostPreview({
           <Avatar user={author} />
           <div className="flex">
             {likeCount ? (
-              <div className="flex items-center mx-3">
+              <div className="flex items-center mx-2">
                 <BiLike className="w-4 h-4" />
                 <span className="ml-1 font-serif">{likeCount}</span>
               </div>
             ) : null}
             {commentCount ? (
-              <div className="flex items-center mx-3">
+              <div className="flex items-center mx-2">
                 <BiCommentDetail className="w-4 h-4" />
                 <span className="ml-1 font-serif">{commentCount}</span>
               </div>

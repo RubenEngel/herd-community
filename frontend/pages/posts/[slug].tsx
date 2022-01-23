@@ -213,6 +213,7 @@ export default function PostPage({ post }: PostProps) {
                 <PostInteractions
                   likeLoading={likeLoading || unlikeLoading}
                   likeCount={likedBy?.length}
+                  commentCount={post._count.comments}
                   slug={post.slug}
                   isEditable={isEditable}
                   isLiked={isLiked}

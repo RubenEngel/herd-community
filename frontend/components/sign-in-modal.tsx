@@ -6,6 +6,7 @@ import { AiFillGoogleCircle } from "react-icons/ai";
 import { FiSend } from "react-icons/fi";
 import toast from "react-hot-toast";
 import Loading from "./loading";
+import router from "next/router";
 
 const SignInWithLink = () => {
   // const [showInput, setShowInput] = useState(false);
@@ -24,7 +25,10 @@ const SignInWithLink = () => {
   const handleSendEmail = async (email: string) => {
     setEmailLoading(true);
     try {
-      const res = await supabase.auth.signIn({ email: email });
+      const res = await supabase.auth.signIn(
+        { email: email },
+        { redirectTo: window.location.origin }
+      );
       if (!res.error) {
         setEmailSent(true);
         setEmailLoading(false);
@@ -47,7 +51,7 @@ const SignInWithLink = () => {
   return (
     <>
       <div>
-        <h4 className="mb-5 uppercase">Sign in with email Link</h4>
+        <h4 className="mb-3">Sign in with email link</h4>
         <div className="flex">
           <label className="relative text-gray-400 focus-within:text-gray-600 block">
             <svg
@@ -113,20 +117,26 @@ const SignInModal: React.FC<{
         transition={{ type: "spring", duration: 0.4 }}
         className="flex flex-col items-center text-secondary w-full relative bottom-10 mx-auto p-2 text-center"
       >
-        {/* Sign in with Email Link */}
-        <SignInWithLink />
-        <h3 className="my-10">OR</h3>
         {/* Sign in with Google */}
         <AnimatedButton
-          onClick={() => supabase.auth.signIn({ provider: "google" })}
+          onClick={() => {
+            console.log(window.location.href);
+            supabase.auth.signIn(
+              { provider: "google" },
+              { redirectTo: window.location.origin }
+            );
+          }}
           // variant=""
           className="bg-white flex items-center py-3 px-5 white text-primary rounded-lg"
         >
           <AiFillGoogleCircle className="text-2xl mr-3" />
 
-          <span className="">Sign in with Google</span>
+          <h4>Sign in with Google</h4>
           {/* <BsArrowRight /> */}
         </AnimatedButton>
+        <h3 className="my-10">OR</h3>
+        {/* Sign in with Email Link */}
+        <SignInWithLink />
       </motion.div>
       <button
         onClick={() => setShowSignIn(false)}

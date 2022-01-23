@@ -39,6 +39,7 @@ const PostInteractions: React.FC<{
   isLiked: boolean;
   slug: string;
   likeCount: number;
+  commentCount: number;
   handleLike: () => void;
   likeLoading: boolean;
   handleShare: () => void;
@@ -52,6 +53,7 @@ const PostInteractions: React.FC<{
   likeLoading,
   handleShare,
   likeCount,
+  commentCount,
   isSharable,
   setShowComments,
 }) => {
@@ -83,14 +85,17 @@ const PostInteractions: React.FC<{
           <div className="text-sm block font-serif">{likeCount}</div>
         )}
       </InteractionButton>
+      <InteractionButton onClick={() => setShowComments(true)}>
+        <BiCommentDetail />
+        {commentCount > 0 && (
+          <div className="text-sm block font-serif">{commentCount}</div>
+        )}
+      </InteractionButton>
       {isSharable && (
         <InteractionButton onClick={handleShare}>
           <FiShare />
         </InteractionButton>
       )}
-      <InteractionButton onClick={() => setShowComments(true)}>
-        <BiCommentDetail />
-      </InteractionButton>
     </motion.div>
   );
 };

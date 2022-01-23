@@ -76,18 +76,18 @@ const PostHeader: React.FC<PostHeaderProps> = ({
           <Avatar user={author} />
         </div>
         <div className="flex">
-          {likeCount ? (
-            <div className="flex items-center mx-3">
+          {likeCount > 0 && (
+            <div className="flex items-center">
               <BiLike className="w-5 h-5" />
               <h4 className="ml-1">{likeCount}</h4>
             </div>
-          ) : null}
-          {commentCount ? (
-            <div className="flex items-center mx-3">
+          )}
+          {commentCount > 0 && (
+            <div className="flex items-center ml-4">
               <BiCommentDetail className="w-5 h-5" />
               <h4 className="ml-1">{commentCount}</h4>
             </div>
-          ) : null}
+          )}
         </div>
       </motion.div>
       <motion.div

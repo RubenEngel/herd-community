@@ -12,7 +12,7 @@ import { authHeaders } from "../lib/supabase";
 import { Comment, User } from "../lib/types";
 import AnimatedButton from "./animated-button";
 import Avatar from "./avatar";
-import { UserContext } from "./context/auth-provider";
+import { SignInContext, UserContext } from "./context/auth-provider";
 import Date from "./date";
 import Loading from "./loading";
 
@@ -39,7 +39,7 @@ const CommentComponent = ({
         {/* Header */}
         <div className="flex justify-between items-center">
           <Avatar user={user} />
-          {user.id === userData.id && (
+          {user.id === userData?.id && (
             <AnimatedButton
               disabled={deleteCommentLoading}
               onClick={() => handleDeleteComment(commentId)}
@@ -64,6 +64,7 @@ const CommentComponent = ({
 
 const Comments = ({ postId }: { postId: number }) => {
   const { userAuth } = useContext(UserContext);
+  const setShowSignIn = useContext(SignInContext);
 
   const [comments, setComments] = useState<
     Pick<Comment, "author" | "content" | "createdAt" | "id">[]
@@ -111,6 +112,7 @@ const Comments = ({ postId }: { postId: number }) => {
         createdAt: res.data.createComment.createdAt,
       };
       setComments([...comments, newComment]);
+      setContent("");
       toast.success("Comment Posted", { position: "top-left" });
     } catch (error) {
       console.error(error);
@@ -168,19 +170,30 @@ const Comments = ({ postId }: { postId: number }) => {
           !userAuth && "opacity-30"
         }`}
       >
-        <input
-          type="text"
-          className="rounded-full border-primary border-2 w-full px-4 py-1"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-        />
-        <AnimatedButton
-          disabled={!content || createCommentLoading}
-          onClick={() => handleSubmitComment()}
-          className="p-3"
-        >
-          <BiCommentDetail className="text-3xl" />
-        </AnimatedButton>
+        {userAuth ? (
+          <>
+            <input
+              type="text"
+              className="rounded-full border-primary border-2 w-full px-4 py-1"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+            />
+            <AnimatedButton
+              disabled={!content || createCommentLoading}
+              onClick={() => handleSubmitComment()}
+              className="p-3"
+            >
+              <BiCommentDetail className="text-3xl" />
+            </AnimatedButton>
+          </>
+        ) : (
+          <AnimatedButton
+            onClick={() => setShowSignIn(true)}
+            className="mx-auto"
+          >
+            <h4>Login to Comment</h4>
+          </AnimatedButton>
+        )}
       </div>
     </div>
   );

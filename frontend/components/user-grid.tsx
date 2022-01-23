@@ -20,6 +20,7 @@ const UserGrid = ({ user, type }: FollowedUserProps) => {
   };
   const { data } = useQuery(getQuery(), {
     variables: { username: user?.username },
+    fetchPolicy: "cache-and-network",
   });
 
   return (

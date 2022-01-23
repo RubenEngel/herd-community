@@ -161,7 +161,7 @@ export const resolvers = {
           author: true,
           likedBy: true,
           _count: {
-            select: { likedBy: true },
+            select: { likedBy: true, comments: true },
           },
         },
       });
