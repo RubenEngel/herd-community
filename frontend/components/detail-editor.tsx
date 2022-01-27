@@ -18,18 +18,6 @@ const DetailEditor = () => {
 
   const [isEdited, setIsEdited] = useState(false);
 
-  useEffect(() => {
-    if (
-      editedData.firstName !== userData.firstName ||
-      editedData.lastName !== userData.lastName ||
-      editedData.username !== userData.username
-    ) {
-      setIsEdited(true);
-    } else {
-      setIsEdited(false);
-    }
-  }, [editedData]);
-
   const [updateUserDetails, { loading, error }] = useMutation(
     UPDATE_USER_DETAILS,
     {
@@ -56,7 +44,6 @@ const DetailEditor = () => {
           ...editedData,
         },
       });
-      console.log("updatedDetails", updateDetailsResponse?.data?.updateUser);
       setUserData({ ...userData, ...updateDetailsResponse?.data?.updateUser });
       setIsEdited(false);
       toast.success("Updated");
@@ -73,6 +60,18 @@ const DetailEditor = () => {
     setEditedData(userData);
     setIsEdited(false);
   };
+
+  useEffect(() => {
+    if (
+      editedData.firstName !== userData.firstName ||
+      editedData.lastName !== userData.lastName ||
+      editedData.username !== userData.username
+    ) {
+      setIsEdited(true);
+    } else {
+      setIsEdited(false);
+    }
+  }, [editedData]);
 
   return (
     <>

@@ -27,45 +27,9 @@ export const SignInContext =
 const SignInProvider = ({ children }) => {
   const apolloClient = useApolloClient();
 
-  const [user, setUser] = useState(supabase.auth.user());
+  const [userAuth, setUserAuth] = useState(supabase.auth.user());
 
   const [userData, setUserData] = useState<PrismaUser>(null);
-
-  useEffect(() => {
-    const { data: authListener } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        setUser(session?.user);
-      }
-    );
-    return () => {
-      authListener.unsubscribe();
-    };
-  }, []);
-
-  const findOrCreateUser = async () => {
-    const res = await apolloClient.query({
-      query: GET_USER_BY_EMAIL,
-      variables: { email: user.email },
-    });
-    if (res.data.userByEmail) {
-      setUserData(res.data.userByEmail);
-    } else {
-      await apolloClient.mutate({
-        mutation: ADD_USER,
-        variables: {
-          email: user.email,
-        },
-      });
-    }
-  };
-
-  useEffect(() => {
-    if (!user) {
-      setUserData(null);
-    } else if (user.email) {
-      findOrCreateUser();
-    }
-  }, [user]);
 
   const [showSignIn, setShowSignIn] = useState(false);
 
@@ -73,28 +37,69 @@ const SignInProvider = ({ children }) => {
 
   const [showEditDetails, setShowEditDetails] = useState(false);
 
-  useEffect(() => {
-    if (user && incompleteData) {
-      setTimeout(() => setShowEditDetails(true), 1000);
+  const findOrCreateUser = async () => {
+    const res = await apolloClient.query({
+      query: GET_USER_BY_EMAIL,
+      variables: { email: userAuth.email },
+    });
+    if (res.data.userByEmail) {
+      setUserData(res.data.userByEmail);
+    } else {
+      await apolloClient.mutate({
+        mutation: ADD_USER,
+        variables: {
+          email: userAuth.email,
+        },
+      });
     }
+  };
+
+  useEffect(() => {
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setUserAuth(session?.user);
+      }
+    );
+    return () => {
+      authListener.unsubscribe();
+    };
   }, []);
+
+  useEffect(() => {
+    if (!userAuth) {
+      setUserData(null);
+    } else if (userAuth.email) {
+      findOrCreateUser();
+    }
+  }, [userAuth]);
 
   useEffect(() => {
     if (!userData?.firstName || !userData?.lastName || !userData?.username) {
       setIncompleteData(true);
+      console.log("Incomplete Data");
     } else {
       setIncompleteData(false);
+      console.log("Complete Data");
     }
-  }, [userData]);
+  }, [userAuth, userData]);
+
+  useEffect(() => {
+    if (userAuth && incompleteData) {
+      console.log("show edit data");
+      setTimeout(() => setShowEditDetails(true), 1000);
+    } else {
+      setShowEditDetails(false);
+    }
+  }, [userAuth, incompleteData]);
 
   return (
-    <UserContext.Provider value={{ userAuth: user, userData, setUserData }}>
+    <UserContext.Provider value={{ userAuth: userAuth, userData, setUserData }}>
       <SignInContext.Provider value={setShowSignIn}>
         {children}
         {showSignIn && <SignInModal setShowSignIn={setShowSignIn} />}
         {showEditDetails && (
           <Overlay>
-            <h1 className="text-secondary">
+            <h1 className="text-secondary text-center px-16">
               Complete details to create a profile
             </h1>
             <OverlayDetailEditor />

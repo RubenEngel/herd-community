@@ -16,13 +16,13 @@ const OverlayDetailEditor: React.FC<{}> = () => {
 
   const [editedData, setEditedData] = useState(userData);
 
-  const [edited, setEdited] = useState(false);
+  const [isEdited, setIsEdited] = useState(false);
 
   const [complete, setComplete] = useState(false);
 
   useEffect(() => {
     if (editedData !== userData) {
-      setEdited(true);
+      setIsEdited(true);
     }
     if (editedData?.firstName && editedData?.lastName && editedData?.username) {
       setComplete(true);
@@ -44,18 +44,19 @@ const OverlayDetailEditor: React.FC<{}> = () => {
       [key]: event.target.value,
     });
     if (userData[key] !== event.target.value) {
-      setEdited(true);
+      setIsEdited(true);
     }
   };
+
   const handleSaveChanges = async () => {
     try {
-      const updatedDetails = await updateUserDetails({
+      const updateDetailsResponse = await updateUserDetails({
         variables: {
           ...editedData,
         },
       });
-      setUserData({ ...userData, ...updatedDetails });
-      setEdited(false);
+      setUserData({ ...userData, ...updateDetailsResponse?.data?.updateUser });
+      setIsEdited(false);
       toast.success("Updated");
     } catch (error) {
       toast.error("Couldn't update");
@@ -71,6 +72,7 @@ const OverlayDetailEditor: React.FC<{}> = () => {
           </label>
           <div>
             <InputBox
+              dark
               type="text"
               id="firstName"
               value={editedData?.firstName}
@@ -84,6 +86,7 @@ const OverlayDetailEditor: React.FC<{}> = () => {
           </label>
           <div>
             <InputBox
+              dark
               type="text"
               id="lastName"
               value={editedData?.lastName}
@@ -97,6 +100,7 @@ const OverlayDetailEditor: React.FC<{}> = () => {
           </label>
           <div>
             <InputBox
+              dark
               type="text"
               id="username"
               value={editedData?.username}
@@ -105,7 +109,7 @@ const OverlayDetailEditor: React.FC<{}> = () => {
           </div>
         </InputContainer>
       </div>
-      {edited && complete && (
+      {isEdited && complete && (
         <div className="mt-4">
           <AnimatedButton
             variant="green-outline"

@@ -10,7 +10,7 @@ function SelectUsername() {
   const [tooShort, setTooShort] = useState(true);
   const [status, setStatus] = useState("");
 
-  const { user, userName } = useContext(UserContext);
+  const { user, userData } = useContext(UserContext);
 
   const onChange = (e) => {
     // Force form value typed in form to match correct format
