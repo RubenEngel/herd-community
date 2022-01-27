@@ -3,7 +3,7 @@ const InputBox = (
     React.InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
   > & {
-    dark: boolean;
+    dark?: boolean;
   }
 ) => (
   <input

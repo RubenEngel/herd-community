@@ -3,7 +3,7 @@ import Link from "next/link";
 import PreviewImage from "./preview-image";
 import { motion } from "framer-motion";
 import Date from "../date";
-import { Post, PrismaUser } from "../../lib/types";
+import { PrismaUser } from "../../lib/types";
 import AnimatedButton from "../animated-button";
 import { BiCommentDetail, BiLike } from "react-icons/bi";
 

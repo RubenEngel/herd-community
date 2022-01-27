@@ -86,7 +86,11 @@ const SignInProvider = ({ children }) => {
   useEffect(() => {
     if (userAuth && incompleteData) {
       console.log("show edit data");
-      setTimeout(() => setShowEditDetails(true), 1000);
+      setTimeout(() => {
+        if (!incompleteData) {
+          setShowEditDetails(true);
+        }
+      }, 1000);
     } else {
       setShowEditDetails(false);
     }

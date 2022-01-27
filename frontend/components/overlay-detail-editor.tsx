@@ -7,7 +7,6 @@ import { PrismaUser } from "../lib/types";
 import AnimatedButton from "./animated-button";
 import { UserContext } from "./context/auth-provider";
 import InputBox from "./input-box";
-import UserCard from "./user-card";
 
 const InputContainer = ({ children }) => <div className="my-7">{children}</div>;
 
