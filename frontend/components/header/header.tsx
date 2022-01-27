@@ -18,6 +18,7 @@ import CategoryDropdown from "./category-dropdown";
 import { CategoryContext } from "../context/category-provider";
 import formatString from "../../lib/format-string";
 import { UserContext } from "../context/auth-provider";
+import AnimatedButton from "../animated-button";
 
 export default function Header() {
   const router = useRouter();
@@ -64,18 +65,29 @@ export default function Header() {
           {/* Social Media Links */}
           <div className="flex flex-row justify-center z-20">
             <h3 className="hidden md:block mr-6 text-md">Follow Us</h3>
-            <a href="https://www.facebook.com/HERD.UK/" target="_blank">
-              <FaFacebookF className="mx-1 text-xl " />
-            </a>
-            <a href="https://www.instagram.com/herd.uk/" target="_blank">
-              <FaInstagram className="mx-1 text-xl " />
-            </a>
-            <a href="https://twitter.com/HERD_UK" target="_blank">
-              <FaTwitter className="mx-1 text-xl " />
-            </a>
-            <a href="https://www.linkedin.com/company/herd-uk/" target="_blank">
-              <FaLinkedin className="mx-1 text-xl " />
-            </a>
+            <AnimatedButton className="mx-0.5">
+              <a href="https://www.facebook.com/HERD.UK/" target="_blank">
+                <FaFacebookF className="mx-1 text-xl " />
+              </a>
+            </AnimatedButton>
+            <AnimatedButton className="mx-0.5">
+              <a href="https://www.instagram.com/herd.uk/" target="_blank">
+                <FaInstagram className="mx-1 text-xl " />
+              </a>
+            </AnimatedButton>
+            <AnimatedButton className="mx-0.5">
+              <a href="https://twitter.com/HERD_UK" target="_blank">
+                <FaTwitter className="mx-1 text-xl " />
+              </a>
+            </AnimatedButton>
+            <AnimatedButton className="mx-0.5">
+              <a
+                href="https://www.linkedin.com/company/herd-uk/"
+                target="_blank"
+              >
+                <FaLinkedin className="mx-1 text-xl " />
+              </a>
+            </AnimatedButton>
           </div>
           {/* Date and Time */}
           <div>

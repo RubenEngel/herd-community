@@ -3,14 +3,14 @@ import Link from "next/link";
 import PreviewImage from "./preview-image";
 import { motion } from "framer-motion";
 import Date from "../date";
-import { Post, User } from "../../lib/types";
+import { Post, PrismaUser } from "../../lib/types";
 import AnimatedButton from "../animated-button";
 import { BiCommentDetail, BiLike } from "react-icons/bi";
 
 interface SmallPostPreviewProps {
   title: string;
   featuredImage: string;
-  author: User;
+  author: PrismaUser;
   slug: string;
   createdAt: Date;
   likeCount?: number;
@@ -56,18 +56,18 @@ export default function SmallPostPreview({
             <Date date={createdAt}></Date>
           </div>
           <div className="flex justify-between text-sm">
-            <div className="flex flex-row justify-start items-center col-span-3 ">
+            <div className="flex flex-row justify-start items-center col-span-3">
               <Avatar small user={author} />
             </div>
             <div className="flex">
               {likeCount ? (
-                <div className="flex items-center mx-1">
+                <div className="flex items-center">
                   <BiLike className="w-4 h-4" />
                   <span className="ml-1 font-serif">{likeCount}</span>
                 </div>
               ) : null}
               {commentCount ? (
-                <div className="flex items-center mx-1">
+                <div className="flex items-center ml-3">
                   <BiCommentDetail className="w-4 h-4" />
                   <span className="ml-1 font-serif ">{commentCount}</span>
                 </div>

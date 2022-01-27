@@ -70,6 +70,7 @@ const Modal = ({
         {/* Close button */}
         <AnimatedButton
           onClick={() => setModalOpen(false)}
+          animateOpacity={1}
           className="bg-white h-10 w-10 rounded-full flex justify-center items-center mx-auto relative bottom-3"
         >
           <BsArrowDown className="h-6 w-6" />

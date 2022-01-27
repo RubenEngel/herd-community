@@ -15,7 +15,7 @@ export enum Role {
 
 // ----------- Types
 
-export interface User {
+export interface PrismaUser {
   id: number;
   email: string;
   role: Role;
@@ -23,8 +23,8 @@ export interface User {
   firstName: string | null;
   lastName: string | null;
   imageUrl: string | null;
-  followers: User[];
-  following: User[];
+  followers: PrismaUser[];
+  following: PrismaUser[];
   _count: {
     posts: number | null;
     followers: number | null;
@@ -48,9 +48,9 @@ export interface Post {
   wordCount: number;
   authorEmail: string | null;
   tags: string[];
-  author: User;
+  author: PrismaUser;
   categories: Category[];
-  likedBy: User[];
+  likedBy: PrismaUser[];
   _count: {
     likedBy: number;
     comments: number;
@@ -64,7 +64,7 @@ export interface Comment {
   createdAt: Date;
   postId: number;
   parentCommentId: number;
-  author: User;
+  author: PrismaUser;
   // childComments: Comment[];
   // likedBy: User[];
 }

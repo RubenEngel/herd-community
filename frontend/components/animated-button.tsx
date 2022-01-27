@@ -15,12 +15,16 @@ const AnimatedButton = ({
   onClick,
   className,
   disabled,
+  animateScale = 0.98,
+  animateOpacity = 0.9,
 }: {
   children: React.ReactNode;
   variant?: ButtonVariants;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   className?: string;
   disabled?: boolean;
+  animateScale?: number;
+  animateOpacity?: number;
 }) => {
   const buttonBackground = () => {
     switch (variant) {
@@ -44,10 +48,10 @@ const AnimatedButton = ({
       disabled={disabled}
       className={`${className} disabled:opacity-30 ${buttonBackground()} ${
         variant &&
-        "font-serif text-md rounded-lg px-6 py-1 hover:shadow-md transition-shadow duration-100"
+        "font-serif text-md rounded-lg px-6 py-1 hover:shadow-md transition-shadow duration-150"
       }`}
-      whileTap={{ scale: 0.95 }}
-      whileHover={{ scale: 1.03 }}
+      whileTap={{ scale: animateScale, opacity: animateOpacity }} // scale: 0.98
+      whileHover={{ scale: 1.02 }}
       transition={{ type: "spring", duration: 0.3 }}
       onClick={onClick}
     >

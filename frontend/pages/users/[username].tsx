@@ -5,7 +5,7 @@ import Loading from "../../components/loading";
 import { addApolloState, initializeApollo } from "../../lib/apollo-client";
 import capitalizeFirstLetter from "../../lib/capitalize-first-letter";
 import { GET_USER_BY_USERNAME } from "../../lib/gql-queries";
-import { User } from "../../lib/types";
+import { PrismaUser } from "../../lib/types";
 import AnimatedButton from "../../components/animated-button";
 import ProfilePostList from "../../components/profile-post-list";
 import { AnimatePresence } from "framer-motion";
@@ -16,8 +16,8 @@ import UserCard from "../../components/user-card";
 import UserGrid from "../../components/user-grid";
 
 interface UserPageProps {
-  user: Omit<User, "email"> & {
-    followers: User[];
+  user?: Omit<PrismaUser, "email"> & {
+    followers: PrismaUser[];
     _count: {
       posts: number;
       followers: number;
@@ -74,7 +74,7 @@ const UserPage = ({ user }: UserPageProps) => {
   const router = useRouter();
 
   const [followedBy, setFollowedBy] = useState<{ id: number }[]>(
-    user.followers
+    user?.followers
   );
 
   // ---- modal open state

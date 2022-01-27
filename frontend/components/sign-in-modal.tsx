@@ -7,6 +7,54 @@ import { FiSend } from "react-icons/fi";
 import toast from "react-hot-toast";
 import Loading from "./loading";
 import router from "next/router";
+import Overlay from "./overlay";
+
+const SignInModal: React.FC<{
+  setShowSignIn: Dispatch<SetStateAction<boolean>>;
+}> = ({ setShowSignIn }) => {
+  return (
+    <Overlay>
+      <motion.div
+        initial={{ y: 200, scale: 0.5, opacity: 0 }}
+        animate={{ y: 0, scale: 1, opacity: 1 }}
+        transition={{ type: "spring", duration: 0.4 }}
+        className="flex flex-col items-center text-secondary w-full relative bottom-10 mx-auto p-2 text-center"
+      >
+        {/* Sign in with Google */}
+        <AnimatedButton
+          onClick={() => {
+            console.log(window.location.href);
+            supabase.auth.signIn(
+              { provider: "google" },
+              { redirectTo: window.location.origin }
+            );
+          }}
+          // variant=""
+          className="bg-primary flex items-center py-3 px-5 white text-secondary border-2 rounded-md"
+        >
+          <AiFillGoogleCircle className="text-2xl mr-3" />
+
+          <h4>Sign in with Google</h4>
+          {/* <BsArrowRight /> */}
+        </AnimatedButton>
+        <div className="my-10 flex items-center">
+          <div className="h-px w-28 bg-white"></div>
+          <h4 className="mx-4 text-sm">OR</h4>
+          <div className="h-px w-28 bg-white"></div>
+        </div>
+
+        {/* Sign in with Email Link */}
+        <SignInWithLink />
+      </motion.div>
+      <AnimatedButton
+        onClick={() => setShowSignIn(false)}
+        className="fixed bottom-10 left-1/2 transform -translate-x-1/2 uppercase"
+      >
+        <h3 className="text-white">Not now</h3>
+      </AnimatedButton>
+    </Overlay>
+  );
+};
 
 const SignInWithLink = () => {
   // const [showInput, setShowInput] = useState(false);
@@ -51,9 +99,9 @@ const SignInWithLink = () => {
   return (
     <>
       <div>
-        <h4 className="mb-3">Sign in with email link</h4>
+        <p className="mb-2 font-serif text-sm">Sign in with email link</p>
         <div className="flex">
-          <label className="relative text-gray-400 focus-within:text-gray-600 block">
+          <label className="relative text-secondary focus-within:text-gray-600 block">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="pointer-events-none w-8 h-8 absolute top-1/2 transform -translate-y-1/2 left-3"
@@ -71,80 +119,40 @@ const SignInWithLink = () => {
               name="email"
               id="email"
               placeholder="Email"
-              className="form-input border border-gray-900 py-3 px-4 bg-white placeholder-gray-400 text-gray-500 appearance-none w-full block pl-14 focus:outline-none rounded-lg"
+              className="form-input border border-secondary py-3 px-4 bg-primary placeholder-secondary text-gray-500 appearance-none w-56 block pl-14 focus:outline-none rounded-md"
             />
           </label>
-          {email &&
-            validEmail &&
-            (emailLoading ? (
-              <div className="relative top-3 left-3">
-                <Loading color="secondary" />
-              </div>
-            ) : (
-              <AnimatedButton
-                disabled={!validEmail}
-                onClick={() => handleSendEmail(email)}
-                className="ml-2 p-3 disabled:opacity-50"
-              >
-                <FiSend className="text-3xl" />
-              </AnimatedButton>
-            ))}
+          {email && validEmail && (
+            <div className="relative">
+              {emailLoading ? (
+                <div className="absolute -right-13 top-3 left-3">
+                  <Loading color="secondary" />
+                </div>
+              ) : (
+                <AnimatedButton
+                  disabled={!validEmail}
+                  onClick={() => handleSendEmail(email)}
+                  className="ml-2 p-3 absolute -right-11 top-1 disabled:opacity-50"
+                >
+                  <FiSend className="text-2xl" />
+                </AnimatedButton>
+              )}
+            </div>
+          )}
         </div>
       </div>
       <div>
         {!validEmail && email && (
-          <p className="text-red-600 mt-2">Invalid Email</p>
+          <p className="text-red-600 mt-2 text-sm font-serif">Invalid Email</p>
         )}
         {emailSent && (
-          <p className="mt-4">
+          <p className="mt-4 font-serif text-sm">
             Email sent to <span className="text-green-400">{emailSentTo}</span>,
             click the link to sign in.
           </p>
         )}
       </div>
     </>
-  );
-};
-
-const SignInModal: React.FC<{
-  setShowSignIn: Dispatch<SetStateAction<boolean>>;
-}> = ({ setShowSignIn }) => {
-  return (
-    <div className="fixed flex flex-col h-screen w-screen justify-center left-0 bottom-0 bg-primary z-20">
-      <motion.div
-        initial={{ y: 200, scale: 0.5, opacity: 0 }}
-        animate={{ y: 0, scale: 1, opacity: 1 }}
-        transition={{ type: "spring", duration: 0.4 }}
-        className="flex flex-col items-center text-secondary w-full relative bottom-10 mx-auto p-2 text-center"
-      >
-        {/* Sign in with Google */}
-        <AnimatedButton
-          onClick={() => {
-            console.log(window.location.href);
-            supabase.auth.signIn(
-              { provider: "google" },
-              { redirectTo: window.location.origin }
-            );
-          }}
-          // variant=""
-          className="bg-white flex items-center py-3 px-5 white text-primary rounded-lg"
-        >
-          <AiFillGoogleCircle className="text-2xl mr-3" />
-
-          <h4>Sign in with Google</h4>
-          {/* <BsArrowRight /> */}
-        </AnimatedButton>
-        <h3 className="my-10">OR</h3>
-        {/* Sign in with Email Link */}
-        <SignInWithLink />
-      </motion.div>
-      <button
-        onClick={() => setShowSignIn(false)}
-        className="fixed bottom-10 left-1/2 transform -translate-x-1/2 uppercase"
-      >
-        <h3 className="text-white">Not now</h3>
-      </button>
-    </div>
   );
 };
 

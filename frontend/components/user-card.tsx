@@ -1,4 +1,4 @@
-import { User } from "../lib/types";
+import { PrismaUser } from "../lib/types";
 import AnimatedButton from "./animated-button";
 import { FaUserCircle } from "react-icons/fa";
 import capitalizeFirstLetter from "../lib/capitalize-first-letter";
@@ -19,7 +19,7 @@ import { UserContext } from "./context/auth-provider";
 import { supabase, authHeaders } from "../lib/supabase";
 
 interface UserCardProps {
-  user?: Omit<User, "email"> & {
+  user?: Omit<PrismaUser, "email"> & {
     _count: {
       posts: number;
       followers: number;

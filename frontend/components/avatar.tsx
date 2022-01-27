@@ -1,5 +1,5 @@
 import { FaUserCircle } from "react-icons/fa";
-import { User } from "../lib/types";
+import { PrismaUser } from "../lib/types";
 import AnimatedButton from "./animated-button";
 import Link from "next/link";
 import { getDisplayName } from "../lib/get-display-name";
@@ -8,7 +8,7 @@ const Avatar = ({
   user,
   small = false,
 }: {
-  user: Pick<User, "username" | "firstName" | "lastName" | "imageUrl">;
+  user: Pick<PrismaUser, "username" | "firstName" | "lastName" | "imageUrl">;
   small?: boolean;
 }) => {
   return (

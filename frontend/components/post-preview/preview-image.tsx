@@ -31,7 +31,7 @@ const PreviewImage = ({
   return (
     <div className="sm:mx-0">
       {slug ? (
-        <AnimatedButton>
+        <AnimatedButton animateScale={1}>
           <Link scroll={false} as={`/posts/${slug}`} href="/posts/[slug]">
             <a aria-label={title}>{image}</a>
           </Link>

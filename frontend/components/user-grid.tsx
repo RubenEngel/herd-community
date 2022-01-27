@@ -1,11 +1,11 @@
 import { useQuery } from "@apollo/client";
 import React, { useEffect } from "react";
 import { GET_FOLLOWED, GET_FOLLOWERS } from "../lib/gql-queries";
-import { User } from "../lib/types";
+import { PrismaUser } from "../lib/types";
 import UserCard from "./user-card";
 
 interface FollowedUserProps {
-  user: Omit<User, "email">;
+  user: Omit<PrismaUser, "email">;
   type: "followers" | "following";
 }
 
@@ -20,7 +20,7 @@ const UserGrid = ({ user, type }: FollowedUserProps) => {
   };
   const { data } = useQuery(getQuery(), {
     variables: { username: user?.username },
-    fetchPolicy: "cache-and-network",
+    // fetchPolicy: "no-cache",
   });
 
   return (

@@ -1,4 +1,5 @@
 import { useApolloClient } from "@apollo/client";
+import { User } from "@supabase/supabase-js";
 import React, {
   createContext,
   Dispatch,
@@ -8,14 +9,16 @@ import React, {
 } from "react";
 import { ADD_USER, GET_USER_BY_EMAIL } from "../../lib/gql-queries";
 import { supabase } from "../../lib/supabase";
-import { User } from "../../lib/types";
+import { PrismaUser } from "../../lib/types";
+import Overlay from "../overlay";
+import OverlayDetailEditor from "../overlay-detail-editor";
 import SignInModal from "../sign-in-modal";
 
 // User data accesible anywhere
 export const UserContext = createContext<{
-  userAuth: any;
-  userData: User;
-  setUserData: React.Dispatch<React.SetStateAction<User>>;
+  userAuth: User;
+  userData: PrismaUser;
+  setUserData: React.Dispatch<React.SetStateAction<PrismaUser>>;
 }>(null);
 
 export const SignInContext =
@@ -26,7 +29,7 @@ const SignInProvider = ({ children }) => {
 
   const [user, setUser] = useState(supabase.auth.user());
 
-  const [userData, setUserData] = useState<User>(null);
+  const [userData, setUserData] = useState<PrismaUser>(null);
 
   useEffect(() => {
     const { data: authListener } = supabase.auth.onAuthStateChange(
@@ -66,13 +69,37 @@ const SignInProvider = ({ children }) => {
 
   const [showSignIn, setShowSignIn] = useState(false);
 
-  // console.log(supabase.auth.session()?.access_token);
+  const [incompleteData, setIncompleteData] = useState(false);
+
+  const [showEditDetails, setShowEditDetails] = useState(false);
+
+  useEffect(() => {
+    if (user && incompleteData) {
+      setTimeout(() => setShowEditDetails(true), 1000);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!userData?.firstName || !userData?.lastName || !userData?.username) {
+      setIncompleteData(true);
+    } else {
+      setIncompleteData(false);
+    }
+  }, [userData]);
 
   return (
     <UserContext.Provider value={{ userAuth: user, userData, setUserData }}>
       <SignInContext.Provider value={setShowSignIn}>
         {children}
         {showSignIn && <SignInModal setShowSignIn={setShowSignIn} />}
+        {showEditDetails && (
+          <Overlay>
+            <h1 className="text-secondary">
+              Complete details to create a profile
+            </h1>
+            <OverlayDetailEditor />
+          </Overlay>
+        )}
       </SignInContext.Provider>
     </UserContext.Provider>
   );

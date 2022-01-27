@@ -1,8 +1,8 @@
 import capitalizeFirstLetter from "./capitalize-first-letter";
-import { User } from "./types";
+import { PrismaUser } from "./types";
 
 export const getDisplayName = (
-  author: Pick<User, "firstName" | "lastName">
+  author: Pick<PrismaUser, "firstName" | "lastName">
 ) => {
   const firstName = author?.firstName
     ? capitalizeFirstLetter(author.firstName)

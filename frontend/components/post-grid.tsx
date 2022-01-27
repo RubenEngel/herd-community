@@ -38,7 +38,11 @@ export default function PostGrid({
   );
 
   useEffect(() => {
-    getPosts();
+    let mounted = true;
+    if (mounted) getPosts();
+    return () => {
+      mounted = false;
+    };
   }, [category]);
 
   return !data ? (

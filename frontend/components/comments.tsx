@@ -9,7 +9,7 @@ import {
   GET_COMMENTS,
 } from "../lib/gql-queries";
 import { authHeaders } from "../lib/supabase";
-import { Comment, User } from "../lib/types";
+import { Comment, PrismaUser } from "../lib/types";
 import AnimatedButton from "./animated-button";
 import Avatar from "./avatar";
 import { SignInContext, UserContext } from "./context/auth-provider";
@@ -25,7 +25,10 @@ const CommentComponent = ({
   deleteCommentLoading,
 }: {
   commentId: number;
-  user: Pick<User, "id" | "username" | "firstName" | "lastName" | "imageUrl">;
+  user: Pick<
+    PrismaUser,
+    "id" | "username" | "firstName" | "lastName" | "imageUrl"
+  >;
   content: string;
   date: string | Date;
   handleDeleteComment: (commentId) => void;
@@ -143,7 +146,11 @@ const Comments = ({ postId }: { postId: number }) => {
   return (
     <div className="relative h-modal-content">
       <div className="overflow-y-scroll h-full pb-20">
-        {commentsLoading && <Loading />}
+        {commentsLoading && (
+          <div className="flex-col h-full">
+            <Loading />
+          </div>
+        )}
         {comments?.map((comment, index) => {
           const commentAuthor = comment.author;
           return (
@@ -166,7 +173,7 @@ const Comments = ({ postId }: { postId: number }) => {
         })}
       </div>
       <div
-        className={`flex bg-secondary items-center absolute bottom-0 left-0 w-full py-4 pl-2 ${
+        className={`flex bg-secondary items-center absolute bottom-2 left-0 w-full py-4 pl-2 ${
           !userAuth && "opacity-30"
         }`}
       >
@@ -174,7 +181,7 @@ const Comments = ({ postId }: { postId: number }) => {
           <>
             <input
               type="text"
-              className="rounded-full border-primary border-2 w-full px-4 py-1"
+              className="rounded-md border-primary border-2 w-full px-4 py-2"
               value={content}
               onChange={(e) => setContent(e.target.value)}
             />
@@ -189,9 +196,9 @@ const Comments = ({ postId }: { postId: number }) => {
         ) : (
           <AnimatedButton
             onClick={() => setShowSignIn(true)}
-            className="mx-auto"
+            className="mx-auto mb-6"
           >
-            <h4>Login to Comment</h4>
+            <h2>Login to Comment</h2>
           </AnimatedButton>
         )}
       </div>
