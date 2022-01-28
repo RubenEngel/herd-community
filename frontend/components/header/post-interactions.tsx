@@ -10,12 +10,7 @@ const InteractionButton = (props) => {
   return (
     <AnimatedButton
       {...props}
-      // whileHover={{
-      //   scale: 1.2,
-      //   transition: { duration: 0.2 },
-      // }}
-      // whileTap={{ scale: 1.4 }}
-      className={`text-3xl p-4 flex flex-col items-center disabled:opacity-30`}
+      className={`text-3xl p-4 flex flex-col items-center`}
     >
       {props.children}
     </AnimatedButton>

@@ -15,8 +15,7 @@ const AnimatedButton = ({
   onClick,
   className,
   disabled,
-  animateScale = 0.98,
-  animateOpacity = 0.9,
+  animateScale = 0.97,
 }: {
   children: React.ReactNode;
   variant?: ButtonVariants;
@@ -50,7 +49,7 @@ const AnimatedButton = ({
         variant &&
         "font-serif text-md rounded-lg px-6 py-1 hover:shadow-md transition-shadow duration-150"
       }`}
-      whileTap={{ scale: animateScale, opacity: animateOpacity }} // scale: 0.98
+      whileTap={{ scale: animateScale }}
       whileHover={{ scale: 1.02 }}
       transition={{ type: "spring", duration: 0.3 }}
       onClick={onClick}

@@ -1,4 +1,5 @@
 import cn from "classnames";
+import { motion } from "framer-motion";
 import Link from "next/link";
 import AnimatedButton from "../animated-button";
 
@@ -31,11 +32,15 @@ const PreviewImage = ({
   return (
     <div className="sm:mx-0">
       {slug ? (
-        <AnimatedButton animateScale={1}>
+        <motion.button
+          whileTap={{ opacity: 0.85 }}
+          whileHover={{ scale: 1.01 }}
+          transition={{ type: "spring", duration: 0.3 }}
+        >
           <Link scroll={false} as={`/posts/${slug}`} href="/posts/[slug]">
             <a aria-label={title}>{image}</a>
           </Link>
-        </AnimatedButton>
+        </motion.button>
       ) : (
         image
       )}
