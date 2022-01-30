@@ -32,6 +32,7 @@ import {
 import { CategoryContext } from "../../components/context/category-provider";
 import { authHeaders } from "../../lib/supabase";
 import Comments from "../../components/comments";
+import LikedByUserGrid from "../../components/user-grid/liked-by-user-grid";
 
 interface PostProps {
   post: Post;
@@ -44,11 +45,12 @@ export default function PostPage({ post }: PostProps) {
     return <ErrorPage statusCode={404} />;
   }
 
+  // --- context
   const setShowSignIn = useContext(SignInContext);
-
+  const { category } = useContext(CategoryContext);
   const { userData } = useContext(UserContext);
 
-  // Check if user can edit post, own post or ADMIN account
+  // --- check if user can edit post, own post or ADMIN account
   const [isEditable, setIsEditable] = useState(false);
 
   useEffect(() => {
@@ -60,7 +62,7 @@ export default function PostPage({ post }: PostProps) {
     }
   }, [userData]);
 
-  // ----- Post liking function and state
+  // ----- post liking function and state
   const [likePost, { loading: likeLoading }] = useMutation(LIKE_POST, {
     variables: {
       id: post?.id,
@@ -103,8 +105,6 @@ export default function PostPage({ post }: PostProps) {
   }, [likedByData, userData]);
 
   const [isLiked, setIsLiked] = useState(false);
-
-  const { category } = useContext(CategoryContext);
 
   const handleLike = async () => {
     if (!userData) return setShowSignIn(true);
@@ -184,8 +184,10 @@ export default function PostPage({ post }: PostProps) {
   }, [scrollY, intialPageHeight]);
   // ---
 
-  // --- Comments
+  // --- Socials
   const [showComments, setShowComments] = useState(false);
+  const [showLikedBy, setShowLikedBy] = useState(false);
+
   // ---
 
   return (
@@ -203,8 +205,21 @@ export default function PostPage({ post }: PostProps) {
             </Head>
             <AnimatePresence>
               {showComments && (
-                <Modal title="Comments" setModalOpen={setShowComments}>
+                <Modal
+                  key="comments-modal"
+                  title="Comments"
+                  setModalOpen={setShowComments}
+                >
                   <Comments postId={post.id} />
+                </Modal>
+              )}
+              {showLikedBy && (
+                <Modal
+                  key={"liked-by-modal"}
+                  title="Liked By"
+                  setModalOpen={setShowLikedBy}
+                >
+                  <LikedByUserGrid postId={post.id} />
                 </Modal>
               )}
             </AnimatePresence>
@@ -234,6 +249,8 @@ export default function PostPage({ post }: PostProps) {
               likeCount={likedBy ? likedBy.length : post._count.likedBy}
               commentCount={post._count.comments}
               likedByDataLoading={likedByDataLoading}
+              setShowComments={setShowComments}
+              setShowLikedBy={setShowLikedBy}
             />
             {startedReading && percentageComplete < 100 && (
               <ProgressBar percentageComplete={percentageComplete} />

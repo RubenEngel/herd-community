@@ -6,27 +6,39 @@ import { authHeaders } from "../lib/supabase";
 import { PrismaUser } from "../lib/types";
 import AnimatedButton from "./animated-button";
 import { UserContext } from "./context/auth-provider";
-import InputBox from "./input-box";
+import InputBox, { InputBoxVariant } from "./input-box";
 
 const InputContainer = ({ children }) => <div className="my-7">{children}</div>;
 
 const OverlayDetailEditor: React.FC<{}> = () => {
   const { userData, setUserData } = useContext(UserContext);
 
-  const [editedData, setEditedData] = useState(userData);
+  const [editedData, setEditedData] = useState({
+    firstName: userData?.firstName || "",
+    lastName: userData?.lastName || "",
+    username: userData?.username || "",
+  });
 
   const [isEdited, setIsEdited] = useState(false);
 
-  const [complete, setComplete] = useState(false);
+  const [isComplete, setIsComplete] = useState(
+    Boolean(editedData.firstName && editedData.lastName && editedData.username)
+  );
 
   useEffect(() => {
-    if (editedData !== userData) {
+    if (
+      editedData.firstName !== userData.firstName ||
+      editedData.lastName !== userData.lastName ||
+      editedData.username !== userData.username
+    ) {
       setIsEdited(true);
+    } else {
+      setIsEdited(false);
     }
     if (editedData?.firstName && editedData?.lastName && editedData?.username) {
-      setComplete(true);
+      setIsComplete(true);
     } else {
-      setComplete(false);
+      setIsComplete(false);
     }
   }, [editedData]);
 
@@ -36,7 +48,7 @@ const OverlayDetailEditor: React.FC<{}> = () => {
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement>,
-    key: keyof PrismaUser
+    key: keyof Pick<PrismaUser, "firstName" | "lastName" | "username">
   ) => {
     setEditedData({
       ...editedData,
@@ -71,7 +83,7 @@ const OverlayDetailEditor: React.FC<{}> = () => {
           </label>
           <div>
             <InputBox
-              dark
+              variant={InputBoxVariant.dark}
               type="text"
               id="firstName"
               value={editedData?.firstName}
@@ -85,7 +97,7 @@ const OverlayDetailEditor: React.FC<{}> = () => {
           </label>
           <div>
             <InputBox
-              dark
+              variant={InputBoxVariant.dark}
               type="text"
               id="lastName"
               value={editedData?.lastName}
@@ -99,7 +111,7 @@ const OverlayDetailEditor: React.FC<{}> = () => {
           </label>
           <div>
             <InputBox
-              dark
+              variant={InputBoxVariant.dark}
               type="text"
               id="username"
               value={editedData?.username}
@@ -108,7 +120,7 @@ const OverlayDetailEditor: React.FC<{}> = () => {
           </div>
         </InputContainer>
       </div>
-      {isEdited && complete && (
+      {isEdited && isComplete && (
         <div className="mt-4">
           <AnimatedButton
             variant="green-outline"

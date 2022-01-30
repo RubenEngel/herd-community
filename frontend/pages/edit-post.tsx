@@ -236,20 +236,12 @@ const EditPost = () => {
     );
   };
 
-  // if (!userAuth) {
-  //   return (
-  //     <div className="h-75-screen flex flex-col justify-center items-center uppercase">
-  //       <h3>Sign in to edit posts</h3>
-  //     </div>
-  //   );
-  // }
-
   // Main component
   return (
     <div className="max-w-screen-sm mx-auto">
-      <h1 className="text-3xl text-center mb-6 text-bold uppercase">
-        Post Editor
-      </h1>
+      <div className="mb-6 flex mx-auto justify-center bg-primary w-full text-secondary items-center rounded-xl p-1 lg:p-2 font-bold">
+        <h1 className="text-lg text-center text-bold uppercase">Post Editor</h1>
+      </div>
       <AnimatePresence
         onExitComplete={() => window.scrollTo(0, 0)}
         exitBeforeEnter

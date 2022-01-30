@@ -66,16 +66,16 @@ const LongPostPreview = ({
               <Avatar user={author} />
             </div>
             <div className="flex">
-              {likeCount ? (
-                <div className="flex items-center mx-2">
-                  <BiLike className="w-5 h-5" />
-                  <h4 className="ml-1">{likeCount}</h4>
-                </div>
-              ) : null}
               {commentCount ? (
                 <div className="flex items-center mx-2">
                   <BiCommentDetail className="w-5 h-5" />
                   <h4 className="ml-1">{commentCount}</h4>
+                </div>
+              ) : null}
+              {likeCount ? (
+                <div className="flex items-center mx-2">
+                  <BiLike className="w-5 h-5" />
+                  <h4 className="ml-1">{likeCount}</h4>
                 </div>
               ) : null}
             </div>

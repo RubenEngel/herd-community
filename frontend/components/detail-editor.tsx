@@ -6,7 +6,7 @@ import { authHeaders } from "../lib/supabase";
 import { PrismaUser } from "../lib/types";
 import AnimatedButton from "./animated-button";
 import { UserContext } from "./context/auth-provider";
-import InputBox from "./input-box";
+import InputBox, { InputBoxVariant } from "./input-box";
 import UserCard from "./user-card";
 
 const InputContainer = ({ children }) => <div className="my-3">{children}</div>;
@@ -14,16 +14,38 @@ const InputContainer = ({ children }) => <div className="my-3">{children}</div>;
 const DetailEditor = () => {
   const { userData, setUserData } = useContext(UserContext);
 
-  const [editedData, setEditedData] = useState(userData);
+  const [editedData, setEditedData] = useState({
+    firstName: userData?.firstName || "",
+    lastName: userData?.lastName || "",
+    username: userData?.username || "",
+  });
 
   const [isEdited, setIsEdited] = useState(false);
 
-  const [updateUserDetails, { loading, error }] = useMutation(
-    UPDATE_USER_DETAILS,
-    {
-      context: authHeaders(),
-    }
+  const [isComplete, setIsComplete] = useState(
+    Boolean(editedData.firstName && editedData.lastName && editedData.username)
   );
+
+  const [updateUserDetails, { loading }] = useMutation(UPDATE_USER_DETAILS, {
+    context: authHeaders(),
+  });
+
+  useEffect(() => {
+    if (
+      editedData.firstName !== userData.firstName ||
+      editedData.lastName !== userData.lastName ||
+      editedData.username !== userData.username
+    ) {
+      setIsEdited(true);
+    } else {
+      setIsEdited(false);
+    }
+    if (editedData.firstName && editedData.lastName && editedData.username) {
+      setIsComplete(true);
+    } else {
+      setIsComplete(false);
+    }
+  }, [editedData]);
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -61,28 +83,21 @@ const DetailEditor = () => {
     setIsEdited(false);
   };
 
-  useEffect(() => {
-    if (
-      editedData.firstName !== userData.firstName ||
-      editedData.lastName !== userData.lastName ||
-      editedData.username !== userData.username
-    ) {
-      setIsEdited(true);
-    } else {
-      setIsEdited(false);
-    }
-  }, [editedData]);
-
   return (
     <>
       <div className="mb-3">
-        <UserCard editable={true} linked={false} user={editedData} />
+        <UserCard
+          editable={true}
+          linked={false}
+          user={{ ...userData, ...editedData }}
+        />
       </div>
       <div className="flex flex-col justify-center items-center mb-8">
         <InputContainer>
           <label className="font-serif text-sm pl-2">First Name</label>
           <div>
             <InputBox
+              variant={InputBoxVariant.light}
               type="text"
               id="firstName"
               value={editedData?.firstName}
@@ -94,6 +109,7 @@ const DetailEditor = () => {
           <label className="font-serif text-sm pl-2">Last Name</label>
           <div>
             <InputBox
+              variant={InputBoxVariant.light}
               type="text"
               id="lastName"
               value={editedData?.lastName}
@@ -105,6 +121,7 @@ const DetailEditor = () => {
           <label className="font-serif text-sm pl-2">Username</label>
           <div>
             <InputBox
+              variant={InputBoxVariant.light}
               type="text"
               id="username"
               value={editedData?.username}
@@ -115,14 +132,16 @@ const DetailEditor = () => {
       </div>
       {isEdited && (
         <div>
-          <AnimatedButton
-            variant="green-outline"
-            className="mx-2"
-            onClick={() => handleSaveChanges()}
-            disabled={loading}
-          >
-            Save Changes
-          </AnimatedButton>
+          {isComplete && (
+            <AnimatedButton
+              variant="green-outline"
+              className="mx-2"
+              onClick={() => handleSaveChanges()}
+              disabled={loading}
+            >
+              Save Changes
+            </AnimatedButton>
+          )}
           <AnimatedButton
             variant="red-outline"
             className="mx-2"

@@ -13,7 +13,7 @@ import Modal from "../../components/modal";
 import PostGrid from "../../components/post-grid";
 import LikedPostGrid from "../../components/liked-post-grid";
 import UserCard from "../../components/user-card";
-import UserGrid from "../../components/user-grid";
+import UserGrid from "../../components/user-grid/follows-user-grid";
 
 interface UserPageProps {
   user?: Omit<PrismaUser, "email"> & {
@@ -40,10 +40,10 @@ const ProfileStat = ({
   return (
     <AnimatedButton
       onClick={onClick}
-      className="mx-2 px-2 py-1 text-center rounded-xl whitespace-nowrap"
+      className="mx-2 md:mx-3 px-2 py-1 text-center rounded-xl whitespace-nowrap"
     >
-      <h4 className="">{title}</h4>
       <h4>{count}</h4>
+      <h4 className="text-xs md:text-sm">{title}</h4>
     </AnimatedButton>
   );
 };
@@ -127,7 +127,6 @@ const UserPage = ({ user }: UserPageProps) => {
               </Modal>
             )}
           </AnimatePresence>
-
           {/* User Card */}
           <UserCard
             linked={false}
@@ -136,7 +135,7 @@ const UserPage = ({ user }: UserPageProps) => {
             setFollowedBy={setFollowedBy}
           />
           {/* Profile stats */}
-          <div className="flex mt-10 md:justify-center overflow-auto md:overflow-hidden">
+          <div className="flex mt-10 justify-center overflow-auto md:overflow-hidden">
             <ProfileStat
               onClick={() => {
                 setModalContent("posts");

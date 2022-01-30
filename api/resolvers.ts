@@ -229,7 +229,7 @@ export const resolvers = {
     createUser: async (_, { email }) => {
       return await prisma.user.create({
         data: {
-          email: email.toLowerCase(),
+          email: email.trim().toLowerCase(),
         },
       });
     },

@@ -45,7 +45,7 @@ export const GET_USER_BY_USERNAME = gql`
   }
 `;
 
-export const GET_FOLLOWED = gql`
+export const GET_FOLLOWING = gql`
   query GetFollowedUsers($username: String) {
     user(username: $username) {
       following {

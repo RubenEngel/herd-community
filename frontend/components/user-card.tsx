@@ -10,7 +10,7 @@ import {
   useState,
 } from "react";
 import { gql, useMutation, useQuery } from "@apollo/client";
-import { FOLLOW_USER, GET_FOLLOWED, UNFOLLOW_USER } from "../lib/gql-queries";
+import { FOLLOW_USER, GET_FOLLOWING, UNFOLLOW_USER } from "../lib/gql-queries";
 import toast from "react-hot-toast";
 import UploadProfileImage from "./upload-profile-image";
 import Link from "next/link";
@@ -117,7 +117,7 @@ const UserCard = ({
   // ---- Follow user
 
   const { data: followerData, loading: followerDataLoading } = useQuery(
-    GET_FOLLOWED,
+    GET_FOLLOWING,
     {
       variables: {
         username: userData?.username,

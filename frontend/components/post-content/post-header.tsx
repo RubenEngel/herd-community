@@ -5,9 +5,11 @@ import PostTitle from "./post-title";
 import Categories from "../categories";
 import Tags from "../../components/post-content/tags";
 import { Post } from "../../lib/types";
-import Loading from "../loading";
+// import Loading from "../loading";
 import { motion, Transition, Variants } from "framer-motion";
 import { BiCommentDetail, BiLike } from "react-icons/bi";
+import AnimatedButton from "../animated-button";
+import { Dispatch, SetStateAction } from "react";
 
 interface PostHeaderProps {
   title: Post["title"];
@@ -19,6 +21,8 @@ interface PostHeaderProps {
   likeCount?: number;
   commentCount?: number;
   likedByDataLoading?: boolean;
+  setShowComments?: Dispatch<SetStateAction<boolean>>;
+  setShowLikedBy?: Dispatch<SetStateAction<boolean>>;
 }
 
 const PostHeader: React.FC<PostHeaderProps> = ({
@@ -30,6 +34,8 @@ const PostHeader: React.FC<PostHeaderProps> = ({
   tags,
   likeCount,
   commentCount,
+  setShowComments,
+  setShowLikedBy,
 }) => {
   const variants: Variants = {
     hidden: {
@@ -75,18 +81,24 @@ const PostHeader: React.FC<PostHeaderProps> = ({
         <div>
           <Avatar user={author} />
         </div>
-        <div className="flex">
-          {likeCount > 0 && (
-            <div className="flex items-center">
-              <BiLike className="w-5 h-5" />
-              <h4 className="ml-1">{likeCount}</h4>
-            </div>
-          )}
+        <div className="flex items-center">
           {commentCount > 0 && (
-            <div className="flex items-center ml-4">
+            <AnimatedButton
+              onClick={() => setShowComments(true)}
+              className="flex items-center"
+            >
               <BiCommentDetail className="w-5 h-5" />
               <h4 className="ml-1">{commentCount}</h4>
-            </div>
+            </AnimatedButton>
+          )}
+          {likeCount > 0 && (
+            <AnimatedButton
+              onClick={() => setShowLikedBy(true)}
+              className="flex items-center ml-4"
+            >
+              <BiLike className="w-5 h-5" />
+              <h4 className="ml-1">{likeCount}</h4>
+            </AnimatedButton>
           )}
         </div>
       </motion.div>

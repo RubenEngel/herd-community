@@ -1,8 +1,8 @@
 import { useQuery } from "@apollo/client";
-import React, { useEffect } from "react";
-import { GET_FOLLOWED, GET_FOLLOWERS } from "../lib/gql-queries";
-import { PrismaUser } from "../lib/types";
-import UserCard from "./user-card";
+import React from "react";
+import { GET_FOLLOWING, GET_FOLLOWERS } from "../../lib/gql-queries";
+import { PrismaUser } from "../../lib/types";
+import UserCard from "../user-card";
 
 interface FollowedUserProps {
   user: Omit<PrismaUser, "email">;
@@ -13,7 +13,7 @@ const UserGrid = ({ user, type }: FollowedUserProps) => {
   const getQuery = () => {
     switch (type) {
       case "following":
-        return GET_FOLLOWED;
+        return GET_FOLLOWING;
       case "followers":
         return GET_FOLLOWERS;
     }

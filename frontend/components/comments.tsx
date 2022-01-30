@@ -147,7 +147,7 @@ const Comments = ({ postId }: { postId: number }) => {
     <div className="relative h-modal-content">
       <div className="overflow-y-scroll h-full pb-20">
         {commentsLoading && (
-          <div className="flex-col h-full">
+          <div className="flex flex-col justify-center h-full">
             <Loading />
           </div>
         )}
@@ -181,7 +181,7 @@ const Comments = ({ postId }: { postId: number }) => {
           <>
             <input
               type="text"
-              className="rounded-md border-primary border-2 w-full px-4 py-2"
+              className="rounded-xl border-primary border border-opacity-60 w-full px-4 py-2"
               value={content}
               onChange={(e) => setContent(e.target.value)}
             />
@@ -190,7 +190,7 @@ const Comments = ({ postId }: { postId: number }) => {
               onClick={() => handleSubmitComment()}
               className="p-3"
             >
-              <BiCommentDetail className="text-3xl" />
+              <BiCommentDetail className="text-4xl" />
             </AnimatedButton>
           </>
         ) : (

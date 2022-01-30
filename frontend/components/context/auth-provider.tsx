@@ -33,24 +33,23 @@ const SignInProvider = ({ children }) => {
 
   const [showSignIn, setShowSignIn] = useState(false);
 
-  const [incompleteData, setIncompleteData] = useState(false);
-
   const [showEditDetails, setShowEditDetails] = useState(false);
 
   const findOrCreateUser = async () => {
-    const res = await apolloClient.query({
+    const getUserResponse = await apolloClient.query({
       query: GET_USER_BY_EMAIL,
       variables: { email: userAuth.email },
     });
-    if (res.data.userByEmail) {
-      setUserData(res.data.userByEmail);
+    if (getUserResponse.data.userByEmail) {
+      setUserData(getUserResponse.data.userByEmail);
     } else {
-      await apolloClient.mutate({
+      const addUserResponse = await apolloClient.mutate({
         mutation: ADD_USER,
         variables: {
           email: userAuth.email,
         },
       });
+      setUserData(addUserResponse.data.createUser);
     }
   };
 
@@ -74,28 +73,14 @@ const SignInProvider = ({ children }) => {
   }, [userAuth]);
 
   useEffect(() => {
-    if (!userData?.firstName || !userData?.lastName || !userData?.username) {
-      setIncompleteData(true);
-      console.log("Incomplete Data");
-    } else {
-      setIncompleteData(false);
-      console.log("Complete Data");
+    if (!userAuth || !userData) return;
+    if (userAuth && userData) {
+      const isComplete = Boolean(
+        userData?.firstName && userData?.lastName && userData?.username
+      );
+      setShowEditDetails(!isComplete);
     }
   }, [userAuth, userData]);
-
-  useEffect(() => {
-    if (userAuth && incompleteData) {
-      console.log("show edit data");
-      const showDetailEditorTimeout = setTimeout(() => {
-        if (incompleteData) {
-          setShowEditDetails(true);
-        }
-      }, 1000);
-      return clearTimeout(showDetailEditorTimeout);
-    } else {
-      setShowEditDetails(false);
-    }
-  }, [userAuth, incompleteData]);
 
   return (
     <UserContext.Provider value={{ userAuth: userAuth, userData, setUserData }}>
