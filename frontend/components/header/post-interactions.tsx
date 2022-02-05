@@ -10,7 +10,7 @@ const InteractionButton = (props) => {
   return (
     <AnimatedButton
       {...props}
-      className={`text-3xl p-4 flex flex-col items-center`}
+      className={`flex flex-col items-center p-4 text-3xl`}
     >
       {props.children}
     </AnimatedButton>
@@ -18,13 +18,11 @@ const InteractionButton = (props) => {
 };
 
 const hidden = {
-  y: -300,
   opacity: 0,
-  scale: 0.5,
+  scale: 0.9,
 };
 
 const showing = {
-  y: 0,
   opacity: 1,
   scale: 1,
 };
@@ -60,7 +58,7 @@ const PostInteractions: React.FC<{
       transition={{
         duration: 0.3,
       }}
-      className="text-primary fixed bottom-4 right-0 w-20 -mr-6 z-10"
+      className="text-primary fixed bottom-4 right-0 z-10 -mr-6 w-20"
     >
       {isEditable && (
         <Link
@@ -77,13 +75,13 @@ const PostInteractions: React.FC<{
       <InteractionButton disabled={likeLoading} onClick={handleLike}>
         <BiLike className={`${isLiked ? "text-green-600" : "text-primary"}`} />
         {likeCount > 0 && (
-          <div className="text-sm block font-serif">{likeCount}</div>
+          <div className="block font-serif text-sm">{likeCount}</div>
         )}
       </InteractionButton>
       <InteractionButton onClick={() => setShowComments(true)}>
         <BiCommentDetail />
         {commentCount > 0 && (
-          <div className="text-sm block font-serif">{commentCount}</div>
+          <div className="block font-serif text-sm">{commentCount}</div>
         )}
       </InteractionButton>
       {isSharable && (

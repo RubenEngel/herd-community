@@ -1,12 +1,7 @@
-import { motion, PanInfo, Variants } from "framer-motion";
+import { motion, PanInfo, useDragControls, Variants } from "framer-motion";
 import React, { useEffect, useRef } from "react";
 import { BsArrowDown } from "react-icons/bs";
 import AnimatedButton from "./animated-button";
-// import {
-//   disableBodyScroll,
-//   // enableBodyScroll,
-//   clearAllBodyScrollLocks,
-// } from "body-scroll-lock";
 
 const Modal = ({
   setModalOpen,
@@ -22,6 +17,28 @@ const Modal = ({
       setModalOpen(false);
     }
   };
+
+  const MODAL_CONTENT_ID = "modal-content";
+
+  const dragControls = useDragControls();
+
+  const startDrag = React.useCallback(
+    (event: React.PointerEvent<HTMLDivElement>) => {
+      let element: Partial<HTMLElement> = event.target;
+      // this stops the modal being dragged when a drags on input text
+      while (element.parentNode) {
+        const parentElement = element?.parentNode as HTMLElement;
+        if (parentElement.id === MODAL_CONTENT_ID) {
+          return;
+        }
+        element = element.parentNode;
+      }
+      if (dragControls) {
+        dragControls.start(event);
+      }
+    },
+    []
+  );
 
   const variants: Variants = {
     hidden: {
@@ -44,9 +61,20 @@ const Modal = ({
     };
   }, []);
 
+  const handleBackgroundClick = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    const element = event.target as HTMLDivElement;
+    if (element?.id === "modal-background") {
+      setModalOpen(false);
+    }
+  };
+
   return (
     <motion.div
       key={"modal-background"}
+      id="modal-background"
+      onClick={(e) => handleBackgroundClick(e)}
       className="bg-primary fixed left-0 bottom-0 z-20 flex h-screen w-screen items-center justify-center"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -54,19 +82,21 @@ const Modal = ({
       transition={{ ease: "easeInOut", duration: 0.1 }}
     >
       <motion.div
-        key={"modal-content"}
+        key={"modal-card"}
         drag
         dragConstraints={{ top: 0, left: 0, right: 0, bottom: 0 }}
         dragElastic={{ left: 0, right: 0, top: 0, bottom: 0.5 }}
         dragMomentum={false}
         onDragEnd={(_event, info) => onDragEnd(info)}
+        dragListener={false}
+        dragControls={dragControls}
+        onPointerDown={(e) => startDrag(e)}
         className="h-content absolute bottom-0 w-full max-w-4xl justify-center rounded-t-3xl bg-white pb-12 text-center"
         variants={variants}
         initial={"hidden"}
         animate={"show"}
         exit={"hidden"}
         transition={{ type: "spring", bounce: 0, duration: 0.4 }}
-        // ref={modalRef}
       >
         {/* Close button */}
         <AnimatedButton
@@ -78,7 +108,10 @@ const Modal = ({
         </AnimatedButton>
         <h4 className="-m-3 mb-1">{title}</h4>
         <hr />
-        <div className="mt-1 h-full overflow-auto px-3 text-left">
+        <div
+          id={MODAL_CONTENT_ID}
+          className="mt-1 h-full overflow-auto px-3 text-left"
+        >
           {children}
         </div>
       </motion.div>

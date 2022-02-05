@@ -9,6 +9,8 @@ const ProgressBar = ({
   return (
     <div className="w-screen">
       <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
         style={{
           background: "#50C878",
           position: "fixed",

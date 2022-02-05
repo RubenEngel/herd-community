@@ -145,7 +145,7 @@ const Comments = ({ postId }: { postId: number }) => {
 
   return (
     <div className="relative h-full">
-      <div className="h-modal-content overflow-y-scroll pb-8">
+      <div className="overflow-y-scroll pb-8">
         {commentsLoading && (
           <div className="flex h-full flex-col justify-center">
             <Loading />

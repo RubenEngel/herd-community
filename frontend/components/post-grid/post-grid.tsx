@@ -34,6 +34,7 @@ export default function PostGrid({
         likedByUserId: likedByUserId,
       },
       notifyOnNetworkStatusChange: true,
+      fetchPolicy: "cache-and-network",
     }
   );
 
