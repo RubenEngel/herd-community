@@ -25,7 +25,6 @@ const Modal = ({
   const startDrag = React.useCallback(
     (event: React.PointerEvent<HTMLDivElement>) => {
       let element: Partial<HTMLElement> = event.target;
-      // this stops the modal being dragged when a drags on input text
       while (element.parentNode) {
         const parentElement = element?.parentNode as HTMLElement;
         if (parentElement.id === MODAL_CONTENT_ID) {
