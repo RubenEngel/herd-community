@@ -40,7 +40,7 @@ const CommentComponent = ({
     <>
       <div className="p-3">
         {/* Header */}
-        <div className="flex justify-between items-center">
+        <div className="flex items-center justify-between">
           <Avatar user={user} />
           {user.id === userData?.id && (
             <AnimatedButton
@@ -89,7 +89,6 @@ const Comments = ({ postId }: { postId: number }) => {
 
   useEffect(() => {
     if (!commentsData) return;
-    console.log(commentsData);
     setComments(commentsData.comments);
   }, [commentsData]);
 
@@ -104,7 +103,6 @@ const Comments = ({ postId }: { postId: number }) => {
       const res = await createComment({
         variables: { content: content, postId: postId },
       });
-      console.log(res);
       const newComment: Pick<
         Comment,
         "author" | "content" | "createdAt" | "id"
@@ -134,9 +132,12 @@ const Comments = ({ postId }: { postId: number }) => {
       const res = await deleteComment({
         variables: { deleteCommentId: commentId },
       });
-      console.log(res.data.deleteComment);
-      toast.success("Comment Deleted", { position: "top-left" });
-      setComments([...comments.filter((comment) => comment.id !== commentId)]);
+      if (res.data) {
+        toast.success("Comment Deleted", { position: "top-left" });
+        setComments([
+          ...comments.filter((comment) => comment.id !== commentId),
+        ]);
+      }
     } catch (error) {
       console.error(error);
       toast.error("Error", { position: "top-left" });
@@ -144,10 +145,10 @@ const Comments = ({ postId }: { postId: number }) => {
   };
 
   return (
-    <div className="relative h-modal-content">
-      <div className="overflow-y-scroll h-full pb-20">
+    <div className="h-modal-content relative">
+      <div className="h-full overflow-y-scroll pb-20">
         {commentsLoading && (
-          <div className="flex flex-col justify-center h-full">
+          <div className="flex h-full flex-col justify-center">
             <Loading />
           </div>
         )}
@@ -173,7 +174,7 @@ const Comments = ({ postId }: { postId: number }) => {
         })}
       </div>
       <div
-        className={`flex bg-secondary items-center absolute bottom-2 left-0 w-full py-4 pl-2 ${
+        className={`bg-secondary absolute bottom-2 left-0 flex w-full items-center py-4 pl-2 ${
           !userAuth && "opacity-30"
         }`}
       >
@@ -181,7 +182,7 @@ const Comments = ({ postId }: { postId: number }) => {
           <>
             <input
               type="text"
-              className="rounded-xl border-primary border border-opacity-60 w-full px-4 py-2"
+              className="border-primary w-full rounded-xl border border-opacity-60 px-4 py-2"
               value={content}
               onChange={(e) => setContent(e.target.value)}
             />

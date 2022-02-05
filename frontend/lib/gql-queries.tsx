@@ -10,6 +10,12 @@ const CORE_USER_FIELDS = gql`
     lastName
     username
     imageUrl
+    followers {
+      id
+    }
+    following {
+      id
+    }
   }
 `;
 
@@ -28,10 +34,7 @@ export const GET_USER_BY_USERNAME = gql`
   query GetUserByUsername($username: String!) {
     user(username: $username) {
       ...CoreUserFields
-      followers {
-        id
-      }
-      following {
+      posts {
         id
       }
       _count {
@@ -46,7 +49,7 @@ export const GET_USER_BY_USERNAME = gql`
 `;
 
 export const GET_FOLLOWING = gql`
-  query GetFollowedUsers($username: String) {
+  query GetFollowing($username: String) {
     user(username: $username) {
       following {
         id
@@ -60,7 +63,7 @@ export const GET_FOLLOWING = gql`
 `;
 
 export const GET_FOLLOWERS = gql`
-  query GetFollowedUsers($username: String) {
+  query GetFollowers($username: String) {
     user(username: $username) {
       followers {
         id

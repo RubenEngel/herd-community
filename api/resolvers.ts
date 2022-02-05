@@ -186,6 +186,10 @@ export const resolvers = {
         where: {
           email: email,
         },
+        include: {
+          followers: true,
+          following: true,
+        },
       });
     },
     user: async (_, { username, id }) => {
@@ -195,7 +199,11 @@ export const resolvers = {
           id: id,
         },
         include: {
-          posts: true,
+          posts: {
+            where: {
+              published: true,
+            },
+          },
           followers: true,
           following: true,
           likedPosts: true,

@@ -26,10 +26,10 @@ export default function HomeCategory({
           <motion.button
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
-            className="flex mx-auto max-w-md justify-center bg-primary w-full text-secondary items-center rounded-xl p-1 lg:p-2 font-bold"
+            className="bg-primary text-secondary mx-auto flex w-full items-center justify-center rounded-xl p-1 font-bold lg:p-2"
             onClick={(e) => setCategory(e.currentTarget.textContent)}
           >
-            <h1 className="text-lg mr-4 uppercase">
+            <h1 className="mr-4 text-lg uppercase">
               {categoryName.split("_").join(" ")}
             </h1>
             <AiFillCaretRight />

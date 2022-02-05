@@ -14,8 +14,8 @@ import {
   UNLIKE_POST,
 } from "../../lib/gql-queries";
 import { addApolloState, initializeApollo } from "../../lib/apollo-client";
-import { Post } from "../../lib/types";
-import PostGrid from "../../components/post-grid";
+import { Post, Role } from "../../lib/types";
+import PostGrid from "../../components/post-grid/post-grid";
 import { useViewportScroll, AnimatePresence } from "framer-motion";
 import { Waypoint } from "react-waypoint";
 import formatString from "../../lib/format-string";
@@ -32,7 +32,7 @@ import {
 import { CategoryContext } from "../../components/context/category-provider";
 import { authHeaders } from "../../lib/supabase";
 import Comments from "../../components/comments";
-import LikedByUserGrid from "../../components/user-grid/liked-by-user-grid";
+import LikedByUserList from "../../components/users/liked-by-user-list";
 
 interface PostProps {
   post: Post;
@@ -57,12 +57,13 @@ export default function PostPage({ post }: PostProps) {
     if (userData?.email && userData.email === post.author?.email) {
       setIsEditable(true);
     }
-    if (String(userData?.role) === "ADMIN") {
+    // TODO: use enum
+    if (String(userData?.role) === Role.ADMIN) {
       setIsEditable(true);
     }
   }, [userData]);
 
-  // ----- post liking function and state
+  // ----- post liking functions and state
   const [likePost, { loading: likeLoading }] = useMutation(LIKE_POST, {
     variables: {
       id: post?.id,
@@ -81,7 +82,7 @@ export default function PostPage({ post }: PostProps) {
     LIKED_BY,
     {
       variables: {
-        id: post?.id,
+        id: post.id,
       },
     }
   );
@@ -96,11 +97,12 @@ export default function PostPage({ post }: PostProps) {
   const [likedBy, setLikedBy] = useState<LikedBy>();
 
   useEffect(() => {
-    if (!userData) return;
     if (likedByData) {
       const likedByArray: LikedBy = likedByData.likedBy.likedBy;
       setLikedBy(likedByArray);
-      setIsLiked(likedByArray.some((user) => user.id === userData.id));
+      if (userData) {
+        setIsLiked(likedByArray.some((user) => user.id === userData.id));
+      }
     }
   }, [likedByData, userData]);
 
@@ -193,7 +195,7 @@ export default function PostPage({ post }: PostProps) {
   return (
     <>
       {router.isFallback ? (
-        <div className="h-full flex flex-col justify-center">
+        <div className="flex h-full flex-col justify-center">
           <Loading />
         </div>
       ) : (
@@ -219,7 +221,7 @@ export default function PostPage({ post }: PostProps) {
                   title="Liked By"
                   setModalOpen={setShowLikedBy}
                 >
-                  <LikedByUserGrid postId={post.id} />
+                  <LikedByUserList postId={post.id} />
                 </Modal>
               )}
             </AnimatePresence>
@@ -266,7 +268,7 @@ export default function PostPage({ post }: PostProps) {
               setReachedEnd(true);
             }}
           >
-            <h1 className="text-4xl text-center mb-8 uppercase">
+            <h1 className="mb-8 text-center text-4xl uppercase">
               More Posts from {formatString(category, "_")}
             </h1>
           </Waypoint>

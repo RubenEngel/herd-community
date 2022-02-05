@@ -5,10 +5,8 @@ import {
   InMemoryCache,
   NormalizedCacheObject,
 } from "@apollo/client";
-import { setContext } from "@apollo/client/link/context";
 import merge from "deepmerge";
 import isEqual from "lodash/isEqual";
-import { supabase } from "./supabase";
 
 export const APOLLO_STATE_PROP_NAME = "__APOLLO_STATE__";
 

@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import React from "react";
 import { CategoryContext } from "../components/context/category-provider";
-import PostGrid from "../components/post-grid";
+import PostGrid from "../components/post-grid/post-grid";
 
 export default function Explore() {
   const { category } = React.useContext(CategoryContext);

@@ -57,7 +57,7 @@ interface EditorProps {
 const Editor = ({ postData, setPostData }: EditorProps) => {
   return (
     <>
-      <div className={`max-w-3xl mx-auto ${styles.content}`}>
+      <div className={`mx-auto max-w-3xl ${styles.content}`}>
         <CKEditor
           editor={CustomEditor}
           config={editorConfiguration}
@@ -65,9 +65,6 @@ const Editor = ({ postData, setPostData }: EditorProps) => {
           onChange={(_, editor) => {
             const data = editor.getData();
             setPostData({ ...postData, content: data });
-          }}
-          onReady={(editor) => {
-            console.log("Editor is ready to use!", editor);
           }}
         />
       </div>

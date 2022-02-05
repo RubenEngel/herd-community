@@ -1,9 +1,10 @@
 import { motion } from "framer-motion";
-import { useRouter } from "next/router";
 import React, { Dispatch, SetStateAction, useEffect } from "react";
 
-const Intro: React.FC<{ setFirstLoad?: Dispatch<SetStateAction<boolean>> }> = ({
+const Intro = ({
   setFirstLoad,
+}: {
+  setFirstLoad?: Dispatch<SetStateAction<boolean>>;
 }) => {
   useEffect(() => {
     setTimeout(() => {
@@ -15,13 +16,13 @@ const Intro: React.FC<{ setFirstLoad?: Dispatch<SetStateAction<boolean>> }> = ({
     <motion.div
       exit={{ scale: 0 }}
       initial={false}
-      className="w-screen h-75-screen flex flex-col justify-center items-center"
+      className="h-75-screen flex w-screen flex-col items-center justify-center"
     >
       <motion.h1
         initial={{ y: 100, scale: 0 }}
         animate={{ y: 0, scale: 1 }}
         transition={{ type: "spring", duration: 0.8 }}
-        className="text-7xl flex"
+        className="flex text-7xl"
       >
         {"HERD.".split("").map((letter, index) => (
           <motion.div

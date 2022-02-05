@@ -10,14 +10,16 @@ import AnimatedButton from "../../components/animated-button";
 import ProfilePostList from "../../components/profile-post-list";
 import { AnimatePresence } from "framer-motion";
 import Modal from "../../components/modal";
-import PostGrid from "../../components/post-grid";
-import LikedPostGrid from "../../components/liked-post-grid";
+import PostGrid from "../../components/post-grid/post-grid";
+import LikedPostGrid from "../../components/post-grid/liked-post-grid";
 import UserCard from "../../components/user-card";
-import UserGrid from "../../components/user-grid/follows-user-grid";
+import FollowersUserList from "../../components/users/followers-user-list";
+import FollowingUserList from "../../components/users/following-user-list";
 
 interface UserPageProps {
   user?: Omit<PrismaUser, "email"> & {
     followers: PrismaUser[];
+    posts: { id: number }[];
     _count: {
       posts: number;
       followers: number;
@@ -40,7 +42,7 @@ const ProfileStat = ({
   return (
     <AnimatedButton
       onClick={onClick}
-      className="mx-2 md:mx-3 px-2 py-1 text-center rounded-xl whitespace-nowrap"
+      className="mx-2 whitespace-nowrap rounded-xl px-2 py-1 text-center md:mx-3"
     >
       <h4>{count}</h4>
       <h4 className="text-xs md:text-sm">{title}</h4>
@@ -73,6 +75,7 @@ const getModalTitle = (content: ModalContent, userFirstName: string) => {
 const UserPage = ({ user }: UserPageProps) => {
   const router = useRouter();
 
+  // this can be changed by the user so store it as state
   const [followedBy, setFollowedBy] = useState<{ id: number }[]>(
     user?.followers
   );
@@ -94,9 +97,9 @@ const UserPage = ({ user }: UserPageProps) => {
           />
         );
       case "followers":
-        return <UserGrid type={"followers"} user={user} />;
+        return <FollowersUserList username={user.username} />;
       case "following":
-        return <UserGrid type={"following"} user={user} />;
+        return <FollowingUserList username={user.username} />;
       case "likedPosts":
         return (
           <LikedPostGrid limit={6} published={true} likedByUserId={user.id} />
@@ -106,12 +109,12 @@ const UserPage = ({ user }: UserPageProps) => {
     }
   };
 
-  if (!user) return <h1 className="text-center mt-44">User doesn't exist</h1>;
+  if (!user) return <h1 className="mt-44 text-center">User doesn't exist</h1>;
 
   return (
     <>
       {router.isFallback ? (
-        <div className="h-full flex flex-col justify-center">
+        <div className="flex h-full flex-col justify-center">
           <Loading />
         </div>
       ) : (
@@ -135,14 +138,14 @@ const UserPage = ({ user }: UserPageProps) => {
             setFollowedBy={setFollowedBy}
           />
           {/* Profile stats */}
-          <div className="flex mt-10 justify-center overflow-auto md:overflow-hidden">
+          <div className="mt-10 flex justify-center overflow-auto md:overflow-hidden">
             <ProfileStat
               onClick={() => {
                 setModalContent("posts");
                 setModalOpen(true);
               }}
               title="Posts"
-              count={user._count.posts}
+              count={user.posts?.length}
             />
             <ProfileStat
               onClick={() => {
@@ -150,7 +153,7 @@ const UserPage = ({ user }: UserPageProps) => {
                 setModalOpen(true);
               }}
               title="Followers"
-              count={followedBy.length}
+              count={followedBy?.length}
             />
             <ProfileStat
               onClick={() => {

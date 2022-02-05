@@ -18,7 +18,7 @@ const SignInModal: React.FC<{
         initial={{ y: 200, scale: 0.5, opacity: 0 }}
         animate={{ y: 0, scale: 1, opacity: 1 }}
         transition={{ type: "spring", duration: 0.4 }}
-        className="flex flex-col items-center text-secondary w-full relative bottom-10 mx-auto p-2 text-center"
+        className="text-secondary relative bottom-10 mx-auto flex w-full flex-col items-center p-2 text-center"
       >
         {/* Sign in with Google */}
         <AnimatedButton
@@ -30,9 +30,9 @@ const SignInModal: React.FC<{
             );
           }}
           // variant=""
-          className="bg-primary flex items-center py-3 px-5 white text-secondary border-2 rounded-md"
+          className="bg-primary white text-secondary flex items-center rounded-md border-2 py-3 px-5"
         >
-          <AiFillGoogleCircle className="text-2xl mr-3" />
+          <AiFillGoogleCircle className="mr-3 text-2xl" />
 
           <h4>Sign in with Google</h4>
           {/* <BsArrowRight /> */}
@@ -48,7 +48,7 @@ const SignInModal: React.FC<{
       </motion.div>
       <AnimatedButton
         onClick={() => setShowSignIn(false)}
-        className="fixed bottom-10 left-1/2 transform -translate-x-1/2 uppercase"
+        className="fixed bottom-10 left-1/2 mx-auto -ml-24 w-48 uppercase"
       >
         <h3 className="text-white">Not now</h3>
       </AnimatedButton>
@@ -92,7 +92,6 @@ const SignInWithLink = () => {
 
   useEffect(() => {
     const isValid = emailRegEx.test(email);
-    console.log(isValid);
     setValidEmail(isValid);
   }, [email]);
 
@@ -101,10 +100,10 @@ const SignInWithLink = () => {
       <div>
         <p className="mb-2 font-serif text-sm">Sign in with email link</p>
         <div className="flex">
-          <label className="relative text-secondary focus-within:text-gray-600 block">
+          <label className="text-secondary relative block focus-within:text-gray-600">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="pointer-events-none w-8 h-8 absolute top-1/2 transform -translate-y-1/2 left-3"
+              className="pointer-events-none absolute top-1/2 left-3 h-8 w-8 -translate-y-1/2 transform"
               viewBox="0 0 20 20"
               fill="currentColor"
             >
@@ -119,20 +118,20 @@ const SignInWithLink = () => {
               name="email"
               id="email"
               placeholder="Email"
-              className="form-input border border-secondary py-3 px-4 bg-primary placeholder-secondary text-gray-500 appearance-none w-56 block pl-14 focus:outline-none rounded-md"
+              className="form-input border-secondary bg-primary placeholder-secondary block w-56 appearance-none rounded-md border py-3 px-4 pl-14 text-gray-500 focus:outline-none"
             />
           </label>
           {email && validEmail && (
             <div className="relative">
               {emailLoading ? (
-                <div className="absolute -right-13 top-3 left-3">
+                <div className="-right-13 absolute top-3 left-3">
                   <Loading color="secondary" />
                 </div>
               ) : (
                 <AnimatedButton
                   disabled={!validEmail}
                   onClick={() => handleSendEmail(email)}
-                  className="ml-2 p-3 absolute -right-11 top-1 disabled:opacity-50"
+                  className="absolute -right-11 top-1 ml-2 p-3 disabled:opacity-50"
                 >
                   <FiSend className="text-2xl" />
                 </AnimatedButton>
@@ -143,7 +142,7 @@ const SignInWithLink = () => {
       </div>
       <div>
         {!validEmail && email && (
-          <p className="text-red-600 mt-2 text-sm font-serif">Invalid Email</p>
+          <p className="mt-2 font-serif text-sm text-red-600">Invalid Email</p>
         )}
         {emailSent && (
           <p className="mt-4 font-serif text-sm">

@@ -1,5 +1,3 @@
-import { useApolloClient } from "@apollo/client";
-import { User } from "@supabase/supabase-js";
 import React, {
   createContext,
   Dispatch,
@@ -7,6 +5,12 @@ import React, {
   useEffect,
   useState,
 } from "react";
+import {
+  QueryLazyOptions,
+  useApolloClient,
+  useLazyQuery,
+} from "@apollo/client";
+import { User } from "@supabase/supabase-js";
 import { ADD_USER, GET_USER_BY_EMAIL } from "../../lib/gql-queries";
 import { supabase } from "../../lib/supabase";
 import { PrismaUser } from "../../lib/types";
@@ -19,6 +23,7 @@ export const UserContext = createContext<{
   userAuth: User;
   userData: PrismaUser;
   setUserData: React.Dispatch<React.SetStateAction<PrismaUser>>;
+  updateUserData: () => Promise<void>;
 }>(null);
 
 export const SignInContext =
@@ -34,6 +39,19 @@ const SignInProvider = ({ children }) => {
   const [showSignIn, setShowSignIn] = useState(false);
 
   const [showEditDetails, setShowEditDetails] = useState(false);
+
+  const updateUserData = async () => {
+    const getUserResponse = await apolloClient.query({
+      query: GET_USER_BY_EMAIL,
+      variables: { email: userAuth.email },
+      fetchPolicy: "network-only",
+    });
+    if (getUserResponse.data.userByEmail) {
+      setUserData(getUserResponse.data.userByEmail);
+    } else {
+      console.log("no data from update");
+    }
+  };
 
   const findOrCreateUser = async () => {
     const getUserResponse = await apolloClient.query({
@@ -83,13 +101,15 @@ const SignInProvider = ({ children }) => {
   }, [userAuth, userData]);
 
   return (
-    <UserContext.Provider value={{ userAuth: userAuth, userData, setUserData }}>
+    <UserContext.Provider
+      value={{ userAuth, userData, setUserData, updateUserData }}
+    >
       <SignInContext.Provider value={setShowSignIn}>
         {children}
         {showSignIn && <SignInModal setShowSignIn={setShowSignIn} />}
         {showEditDetails && (
           <Overlay>
-            <h1 className="text-secondary text-center px-16">
+            <h1 className="text-secondary px-16 text-center">
               Complete details to create a profile
             </h1>
             <OverlayDetailEditor />
