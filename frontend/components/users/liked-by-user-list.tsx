@@ -9,10 +9,15 @@ const LikedByUserList = ({ postId }: { postId: number }) => {
     variables: {
       id: postId,
     },
+    fetchPolicy: "cache-and-network",
   });
 
   if (loading) {
-    return <Loading />;
+    return (
+      <div className="h-modal-content flex w-full items-center justify-center">
+        <Loading />
+      </div>
+    );
   }
 
   return (

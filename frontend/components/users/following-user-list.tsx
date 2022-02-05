@@ -23,7 +23,11 @@ const FollowingUserList = ({
   }, [error]);
 
   if (loading) {
-    return <Loading />;
+    return (
+      <div className="h-modal-content flex w-full items-center justify-center">
+        <Loading />;
+      </div>
+    );
   }
 
   return <UserList users={data?.user?.following} />;
