@@ -5,14 +5,14 @@ import { UPDATE_USER_DETAILS } from "../lib/gql-queries";
 import { authHeaders } from "../lib/supabase";
 import { PrismaUser } from "../lib/types";
 import AnimatedButton from "./animated-button";
-import { UserContext } from "./context/auth-provider";
+import { AuthContext } from "./context/auth-provider";
 import InputBox, { InputBoxVariant } from "./input-box";
 import UserCard from "./user-card";
 
 const InputContainer = ({ children }) => <div className="my-3">{children}</div>;
 
 const DetailEditor = () => {
-  const { userData, setUserData } = useContext(UserContext);
+  const { userData, setUserData } = useContext(AuthContext);
 
   const [editedData, setEditedData] = useState({
     firstName: userData?.firstName || "",
@@ -92,9 +92,9 @@ const DetailEditor = () => {
           user={{ ...userData, ...editedData }}
         />
       </div>
-      <div className="flex flex-col justify-center items-center mb-8">
+      <div className="mb-8 flex flex-col items-center justify-center">
         <InputContainer>
-          <label className="font-serif text-sm pl-2">First Name</label>
+          <label className="pl-2 font-serif text-sm">First Name</label>
           <div>
             <InputBox
               variant={InputBoxVariant.light}
@@ -106,7 +106,7 @@ const DetailEditor = () => {
           </div>
         </InputContainer>
         <InputContainer>
-          <label className="font-serif text-sm pl-2">Last Name</label>
+          <label className="pl-2 font-serif text-sm">Last Name</label>
           <div>
             <InputBox
               variant={InputBoxVariant.light}
@@ -118,7 +118,7 @@ const DetailEditor = () => {
           </div>
         </InputContainer>
         <InputContainer>
-          <label className="font-serif text-sm pl-2">Username</label>
+          <label className="pl-2 font-serif text-sm">Username</label>
           <div>
             <InputBox
               variant={InputBoxVariant.light}

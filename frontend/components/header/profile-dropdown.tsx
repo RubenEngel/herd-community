@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { UserContext } from "../context/auth-provider";
+import { AuthContext } from "../context/auth-provider";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import NavItem from "../nav-item";
@@ -11,15 +11,13 @@ import {
 import { SignInContext } from "../context/auth-provider";
 
 const ProfileDropdown = ({ setIsOpen }) => {
-  const { userAuth, userData } = useContext(UserContext);
-
-  const setShowSignIn = useContext(SignInContext);
+  const { userAuth, userData, setShowSignIn } = useContext(AuthContext);
 
   return (
     <>
       <motion.div
         className={
-          "bg-primary absolute w-screen right-0 -z-10 overflow-hidden mt-2"
+          "bg-primary absolute right-0 -z-10 mt-2 w-screen overflow-hidden"
         }
         variants={menuVariants}
         animate="show"
@@ -28,7 +26,7 @@ const ProfileDropdown = ({ setIsOpen }) => {
         transition={transition}
       >
         <motion.nav
-          className={"text-white p-3 text-right -z-10 max-w-6xl m-auto"}
+          className={"-z-10 m-auto max-w-6xl p-3 text-right text-white"}
           animate="show"
           initial="hidden"
           transition={{

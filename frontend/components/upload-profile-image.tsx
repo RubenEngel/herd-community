@@ -6,7 +6,7 @@ import Loading from "./loading";
 import { SIGN_CLOUDINARY_UPLOAD, UPDATE_USER_IMAGE } from "../lib/gql-queries";
 import { FiEdit3 } from "react-icons/fi";
 import { FaCheck, FaTimes } from "react-icons/fa";
-import { UserContext } from "./context/auth-provider";
+import { AuthContext } from "./context/auth-provider";
 import { authHeaders } from "../lib/supabase";
 
 const cloudinaryUploadUrl = process.env.CLOUDINARY_UPLOAD_URL;
@@ -34,7 +34,7 @@ const UploadProfileImage = ({
   const [uploadReady, setUploadReady] = useState(false);
   const [uploadLoading, setUploadLoading] = useState(false);
 
-  const { userData, setUserData } = useContext(UserContext);
+  const { userData, setUserData } = useContext(AuthContext);
 
   const previewFile = (file) => {
     const reader = new FileReader();
@@ -112,7 +112,7 @@ const UploadProfileImage = ({
       {!uploadReady ? (
         <>
           <AnimatedButton
-            className="bg-primary text-secondary p-3 text-2xl rounded-full cursor-pointer shadow-lg"
+            className="bg-primary text-secondary cursor-pointer rounded-full p-3 text-2xl shadow-lg"
             onClick={() => startUploadRef.current.click()}
           >
             <FiEdit3 />
@@ -126,10 +126,10 @@ const UploadProfileImage = ({
           />
         </>
       ) : (
-        <div className="flex relative left-2">
+        <div className="relative left-2 flex">
           <AnimatedButton
             onClick={() => onSubmit()}
-            className="bg-green-600 text-secondary p-3 rounded-full"
+            className="text-secondary rounded-full bg-green-600 p-3"
           >
             <FaCheck />
           </AnimatedButton>
@@ -138,7 +138,7 @@ const UploadProfileImage = ({
               cancelUpload();
               setUploadReady(false);
             }}
-            className="bg-red-600 text-secondary p-3 rounded-full"
+            className="text-secondary rounded-full bg-red-600 p-3"
           >
             <FaTimes />
           </AnimatedButton>

@@ -14,7 +14,7 @@ import { useRouter } from "next/router";
 import { Post } from "../lib/types";
 import { AnimatePresence, motion } from "framer-motion";
 import AnimatedButton from "../components/animated-button";
-import { UserContext } from "../components/context/auth-provider";
+import { AuthContext } from "../components/context/auth-provider";
 import { authHeaders } from "../lib/supabase";
 
 // TODO: Check if user admin again
@@ -26,7 +26,7 @@ const Editor = dynamic(() => import("../components/ck-editor"), {
 const SubmitHeading = ({ children }) => <h2 className="mb-2">{children}</h2>;
 
 const InputBox = (props) => (
-  <input {...props} className="border-2 border-gray-300 mb-8 p-2 text-lg" />
+  <input {...props} className="mb-8 border-2 border-gray-300 p-2 text-lg" />
 );
 
 export interface SubmitPostData {
@@ -59,7 +59,7 @@ const EditPost = () => {
   );
 
   // Context
-  const { userAuth, userData } = useContext(UserContext);
+  const { userAuth, userData } = useContext(AuthContext);
   // State
   const [ready, setReady] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
@@ -224,7 +224,7 @@ const EditPost = () => {
     };
     return (
       <AnimatedButton
-        className={`px-3 py-1 mr-4 mb-3 text-md rounded-full uppercase ${
+        className={`text-md mr-4 mb-3 rounded-full px-3 py-1 uppercase ${
           postData.categories?.includes(categoryName)
             ? "bg-green-500 text-white"
             : "bg-gray-400 text-gray-600"
@@ -238,9 +238,9 @@ const EditPost = () => {
 
   // Main component
   return (
-    <div className="max-w-screen-sm mx-auto">
-      <div className="mb-6 flex mx-auto justify-center bg-primary w-full text-secondary items-center rounded-xl p-1 lg:p-2 font-bold">
-        <h1 className="text-lg text-center text-bold uppercase">Post Editor</h1>
+    <div className="mx-auto max-w-screen-sm">
+      <div className="bg-primary text-secondary mx-auto mb-10 flex w-full items-center justify-center rounded-xl p-1 font-bold lg:p-2">
+        <h1 className="text-bold text-center text-lg uppercase">Post Editor</h1>
       </div>
       <AnimatePresence
         onExitComplete={() => window.scrollTo(0, 0)}
@@ -268,7 +268,7 @@ const EditPost = () => {
             />
             {/* Categories */}
             <SubmitHeading>Select Categories</SubmitHeading>
-            <div className="flex mb-6 flex-wrap">
+            <div className="mb-6 flex flex-wrap">
               {allCategories?.map((categoryName, index) => (
                 <CategorySelect
                   key={categoryName + index}
@@ -289,14 +289,14 @@ const EditPost = () => {
                       tags: postData.tags.filter((tag) => tag !== tagName),
                     })
                   }
-                  className="cursor-pointer py-1 px-3 mr-2 mb-3 text-md rounded-full text-white bg-green-500 hover:bg-red-500 hover:text-gray-100"
+                  className="text-md mr-2 mb-3 cursor-pointer rounded-full bg-green-500 py-1 px-3 text-white hover:bg-red-500 hover:text-gray-100"
                 >
                   {tagName}
                 </AnimatedButton>
               ))}
             </div>
             {/* Add Tags */}
-            <div className="flex flex-row items-center mb-8 mt-3">
+            <div className="mb-8 mt-3 flex flex-row items-center">
               <input
                 type="string"
                 className="border-2 border-gray-300 p-1 text-lg"
@@ -304,7 +304,7 @@ const EditPost = () => {
                 onChange={(e) => setTag(e.target.value)}
               />
               <AnimatedButton
-                className="ml-2 px-3 py-1 text-white bg-green-500 rounded-lg uppercase text-sm"
+                className="ml-2 rounded-lg bg-green-500 px-3 py-1 text-sm uppercase text-white"
                 onClick={() => {
                   setPostData({
                     ...postData,
@@ -327,7 +327,7 @@ const EditPost = () => {
             />
             {postData.featuredImage && (
               <img
-                className="mb-10 mx-auto"
+                className="mx-auto mb-10"
                 height={300}
                 width={300}
                 src={postData.featuredImage}
@@ -338,7 +338,7 @@ const EditPost = () => {
               <Editor postData={postData} setPostData={setPostData} />
             </div>
             {/* Mutation and preview buttons */}
-            <div className="flex flex-row flex-wrap mb-6 mx-auto justify-center">
+            <div className="mx-auto mb-6 flex flex-row flex-wrap justify-center">
               {existingPostData?.post?.published && (
                 <AnimatedButton
                   disabled={!isEditable}

@@ -1,10 +1,10 @@
 import router from "next/router";
 import React, { useContext } from "react";
 import AnimatedButton from "./animated-button";
-import { SignInContext, UserContext } from "./context/auth-provider";
+import { SignInContext, AuthContext } from "./context/auth-provider";
 
 const StepHeading = ({ children }) => (
-  <h2 className="text-md font-bold mb-2 mt-5">{children}</h2>
+  <h2 className="text-md mb-2 mt-5 font-bold">{children}</h2>
 );
 
 interface SubmitIntroProps {
@@ -12,10 +12,7 @@ interface SubmitIntroProps {
 }
 
 const SubmitIntro = ({ setReady }: SubmitIntroProps) => {
-  const { userAuth } = useContext(UserContext);
-  const setShowSignIn = useContext(SignInContext);
-
-  // const setShowSignIn = useContext(SignInContext);
+  const { userAuth, setShowSignIn } = useContext(AuthContext);
 
   return (
     <>
@@ -63,7 +60,7 @@ const SubmitIntro = ({ setReady }: SubmitIntroProps) => {
       </p>
       <div className="text-center">
         <AnimatedButton
-          variant="primary"
+          variant="primary-outline"
           onClick={() => {
             if (userAuth) {
               setReady(true);
@@ -71,7 +68,7 @@ const SubmitIntro = ({ setReady }: SubmitIntroProps) => {
               setShowSignIn(true);
             }
           }}
-          className="mt-10 px-8 py-4 mb-5 uppercase"
+          className="mt-10 mb-5 px-8 py-3 uppercase"
         >
           <h4>I'm ready to write!</h4>
         </AnimatedButton>

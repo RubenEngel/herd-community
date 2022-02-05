@@ -9,9 +9,11 @@ import Loading from "./loading";
 import router from "next/router";
 import Overlay from "./overlay";
 
-const SignInModal: React.FC<{
+const SignInModal = ({
+  setShowSignIn,
+}: {
   setShowSignIn: Dispatch<SetStateAction<boolean>>;
-}> = ({ setShowSignIn }) => {
+}) => {
   return (
     <Overlay>
       <motion.div

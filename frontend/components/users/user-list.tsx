@@ -4,23 +4,29 @@ import AnimatedButton from "../animated-button";
 import Link from "next/link";
 import { FaUserCircle } from "react-icons/fa";
 import capitalize from "../../lib/capitalize-first-letter";
-import { UserContext } from "../context/auth-provider";
+import { SignInContext, AuthContext } from "../context/auth-provider";
 import toast from "react-hot-toast";
 import { authHeaders } from "../../lib/supabase";
 import { useMutation } from "@apollo/client";
 import { FOLLOW_USER, UNFOLLOW_USER } from "../../lib/gql-queries";
 
 const UserRow = ({ user }: { user: PrismaUser }) => {
-  const { userData, updateUserData } = useContext(UserContext);
+  const { userData, userAuth, updateUserData, setShowSignIn } =
+    useContext(AuthContext);
 
   const [isFollowing, setIsFollowing] = useState(
-    userData?.following.some((followedUser) => followedUser.id === user.id)
+    userData?.following?.some((followedUser) => followedUser.id === user.id) ||
+      false
   );
 
   useEffect(() => {
-    setIsFollowing(
-      userData?.following.some((followedUser) => followedUser.id === user.id)
-    );
+    if (userData) {
+      setIsFollowing(
+        userData.following?.some(
+          (followedUser) => followedUser.id === user.id
+        ) || false
+      );
+    }
   }, [userData]);
 
   const [followUser, { loading: followLoading }] = useMutation(FOLLOW_USER, {
@@ -44,12 +50,15 @@ const UserRow = ({ user }: { user: PrismaUser }) => {
           throw new Error("couldn't follow");
         }
         const newFollowers = res.data.followUser.followers;
+        if (!newFollowers) {
+          throw new Error("no follower mutation data");
+        }
         setIsFollowing(
           newFollowers.some((follower) => follower.id === userData.id)
         );
         updateUserData();
       } catch (error) {
-        toast.error("Error");
+        toast.error("Error following");
       }
     } else {
       try {
@@ -58,12 +67,15 @@ const UserRow = ({ user }: { user: PrismaUser }) => {
           throw new Error("couldn't unfollow");
         }
         const newFollowers = res.data.unfollowUser.followers;
+        if (!newFollowers) {
+          throw new Error("no follower mutation data");
+        }
         setIsFollowing(
           newFollowers.some((follower) => follower.id === userData.id)
         );
         updateUserData();
       } catch (error) {
-        toast.error("Error");
+        toast.error("Error unfollowing");
       }
     }
   };
@@ -95,10 +107,16 @@ const UserRow = ({ user }: { user: PrismaUser }) => {
           </a>
         </Link>
       </AnimatedButton>
-      {userData.id !== user.id && (
+      {userData?.id !== user.id && (
         <AnimatedButton
           disabled={followLoading || unfollowLoading}
-          onClick={() => handleFollow()}
+          onClick={() => {
+            if (userAuth && userData) {
+              handleFollow();
+            } else {
+              setShowSignIn(true);
+            }
+          }}
           variant={isFollowing ? "green" : "green-outline"}
         >
           {isFollowing ? "Following" : "Follow"}

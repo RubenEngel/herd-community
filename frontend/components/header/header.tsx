@@ -17,7 +17,7 @@ import ProfileDropdown from "./profile-dropdown";
 import CategoryDropdown from "./category-dropdown";
 import { CategoryContext } from "../context/category-provider";
 import formatString from "../../lib/format-string";
-import { UserContext } from "../context/auth-provider";
+import { AuthContext } from "../context/auth-provider";
 import AnimatedButton from "../animated-button";
 
 export default function Header() {
@@ -48,7 +48,7 @@ export default function Header() {
     }
   }, [router]);
 
-  const { userData } = useContext(UserContext);
+  const { userData } = useContext(AuthContext);
 
   // const { user } = useUser();
   const { category } = useContext(CategoryContext);
@@ -60,11 +60,11 @@ export default function Header() {
   return (
     <>
       {/* Date and social icons */}
-      <div className="bg-primary text-secondary text-center uppercase font-light py-2 px-4 z-20 md:px-16">
-        <div className="flex justify-between items-center max-w-6xl m-auto transition-all">
+      <div className="bg-primary text-secondary z-20 py-2 px-4 text-center font-light uppercase md:px-16">
+        <div className="m-auto flex max-w-6xl items-center justify-between transition-all">
           {/* Social Media Links */}
-          <div className="flex flex-row justify-center z-20">
-            <h3 className="hidden md:block mr-6 text-md">Follow Us</h3>
+          <div className="z-20 flex flex-row justify-center">
+            <h3 className="text-md mr-6 hidden md:block">Follow Us</h3>
             <AnimatedButton className="mx-0.5">
               <a href="https://www.facebook.com/HERD.UK/" target="_blank">
                 <FaFacebookF className="mx-1 text-xl " />
@@ -104,8 +104,8 @@ export default function Header() {
       </div>
 
       {/* Main section of header */}
-      <div className="sticky top-0 text-secondary bg-primary px-6 py-2 z-20 shadow-xl">
-        <div className="flex justify-between items-center max-w-6xl m-auto">
+      <div className="text-secondary bg-primary sticky top-0 z-20 px-6 py-2 shadow-xl">
+        <div className="m-auto flex max-w-6xl items-center justify-between">
           {/* Menu dropdwon button */}
           <motion.div whileTap={{ scale: 0.8 }} whileHover={{ scale: 1.1 }}>
             <button
@@ -125,7 +125,7 @@ export default function Header() {
             whileTap={{ scale: 0.9 }}
             whileHover={{ scale: 1.1 }}
           >
-            <h1 className="text-6xl font-bold leading-tight text-center">
+            <h1 className="text-center text-6xl font-bold leading-tight">
               <Link scroll={false} href="/">
                 <a>HERD.</a>
               </Link>
@@ -143,7 +143,7 @@ export default function Header() {
             >
               {userData?.imageUrl ? (
                 <img
-                  className="object-cover rounded-full w-10 h-10"
+                  className="h-10 w-10 rounded-full object-cover"
                   src={userData.imageUrl}
                 />
               ) : (
@@ -172,9 +172,9 @@ export default function Header() {
                   setProfileNavbarOpen(false);
                   setMenuNavbarOpen(false);
                 }}
-                className="flex flex-row items-center mx-auto focus:outline-none font-serif"
+                className="mx-auto flex flex-row items-center font-serif focus:outline-none"
               >
-                <p className="uppercase nav-item">
+                <p className="nav-item uppercase">
                   Browsing {formatString(category, "_")}
                 </p>
                 <RiArrowDropDownFill className="text-3xl" />

@@ -15,7 +15,7 @@ import toast from "react-hot-toast";
 import UploadProfileImage from "./upload-profile-image";
 import Link from "next/link";
 import router from "next/router";
-import { SignInContext, UserContext } from "./context/auth-provider";
+import { SignInContext, AuthContext } from "./context/auth-provider";
 import { authHeaders } from "../lib/supabase";
 
 interface UserCardProps {
@@ -104,9 +104,8 @@ const UserCard = ({
   linked,
 }: UserCardProps) => {
   // current logged in user's data
-  const { userAuth, userData, updateUserData } = useContext(UserContext);
-
-  const setShowSignIn = useContext(SignInContext);
+  const { userAuth, userData, updateUserData, setShowSignIn } =
+    useContext(AuthContext);
 
   const [ownProfile, setOwnProfile] = useState(false);
 
@@ -134,9 +133,11 @@ const UserCard = ({
     if (userData?.username === user?.username) {
       setOwnProfile(true);
     }
-    if (userData.following) {
+    if (userData) {
       setIsFollowing(
-        userData.following?.some((followedUser) => followedUser.id === user.id)
+        userData.following?.some(
+          (followedUser) => followedUser.id === user.id
+        ) || false
       );
     }
   }, [userData]);

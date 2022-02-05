@@ -27,7 +27,7 @@ import toast from "react-hot-toast";
 import Modal from "../../components/modal";
 import {
   SignInContext,
-  UserContext,
+  AuthContext,
 } from "../../components/context/auth-provider";
 import { CategoryContext } from "../../components/context/category-provider";
 import { authHeaders } from "../../lib/supabase";
@@ -46,9 +46,8 @@ export default function PostPage({ post }: PostProps) {
   }
 
   // --- context
-  const setShowSignIn = useContext(SignInContext);
   const { category } = useContext(CategoryContext);
-  const { userData } = useContext(UserContext);
+  const { userData, setShowSignIn } = useContext(AuthContext);
 
   // --- check if user can edit post, own post or ADMIN account
   const [isEditable, setIsEditable] = useState(false);
@@ -66,14 +65,14 @@ export default function PostPage({ post }: PostProps) {
   // ----- post liking functions and state
   const [likePost, { loading: likeLoading }] = useMutation(LIKE_POST, {
     variables: {
-      id: post?.id,
+      id: post.id,
     },
     context: authHeaders(),
   });
 
   const [unlikePost, { loading: unlikeLoading }] = useMutation(UNLIKE_POST, {
     variables: {
-      id: post?.id,
+      id: post.id,
     },
     context: authHeaders(),
   });
@@ -101,7 +100,9 @@ export default function PostPage({ post }: PostProps) {
       const likedByArray: LikedBy = likedByData.likedBy.likedBy;
       setLikedBy(likedByArray);
       if (userData) {
-        setIsLiked(likedByArray.some((user) => user.id === userData.id));
+        setIsLiked(
+          likedByArray?.some((user) => user.id === userData.id) || false
+        );
       }
     }
   }, [likedByData, userData]);

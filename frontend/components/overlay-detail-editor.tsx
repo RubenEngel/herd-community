@@ -5,13 +5,13 @@ import { UPDATE_USER_DETAILS } from "../lib/gql-queries";
 import { authHeaders } from "../lib/supabase";
 import { PrismaUser } from "../lib/types";
 import AnimatedButton from "./animated-button";
-import { UserContext } from "./context/auth-provider";
+import { AuthContext } from "./context/auth-provider";
 import InputBox, { InputBoxVariant } from "./input-box";
 
 const InputContainer = ({ children }) => <div className="my-7">{children}</div>;
 
 const OverlayDetailEditor: React.FC<{}> = () => {
-  const { userData, setUserData } = useContext(UserContext);
+  const { userData, setUserData } = useContext(AuthContext);
 
   const [editedData, setEditedData] = useState({
     firstName: userData?.firstName || "",
@@ -78,7 +78,7 @@ const OverlayDetailEditor: React.FC<{}> = () => {
     <>
       <div>
         <InputContainer>
-          <label className="text-secondary font-serif text-sm pl-2">
+          <label className="text-secondary pl-2 font-serif text-sm">
             First Name
           </label>
           <div>
@@ -92,7 +92,7 @@ const OverlayDetailEditor: React.FC<{}> = () => {
           </div>
         </InputContainer>
         <InputContainer>
-          <label className="text-secondary font-serif text-sm pl-2">
+          <label className="text-secondary pl-2 font-serif text-sm">
             Last Name
           </label>
           <div>
@@ -106,7 +106,7 @@ const OverlayDetailEditor: React.FC<{}> = () => {
           </div>
         </InputContainer>
         <InputContainer>
-          <label className="text-secondary font-serif text-sm pl-2">
+          <label className="text-secondary pl-2 font-serif text-sm">
             Username
           </label>
           <div>

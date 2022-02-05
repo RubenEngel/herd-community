@@ -19,11 +19,12 @@ import OverlayDetailEditor from "../overlay-detail-editor";
 import SignInModal from "../sign-in-modal";
 
 // User data accesible anywhere
-export const UserContext = createContext<{
-  userAuth: User;
-  userData: PrismaUser;
+export const AuthContext = createContext<{
+  userAuth: User | null;
+  userData: PrismaUser | null;
   setUserData: React.Dispatch<React.SetStateAction<PrismaUser>>;
   updateUserData: () => Promise<void>;
+  setShowSignIn: Dispatch<SetStateAction<boolean>>;
 }>(null);
 
 export const SignInContext =
@@ -34,7 +35,7 @@ const SignInProvider = ({ children }) => {
 
   const [userAuth, setUserAuth] = useState(supabase.auth.user());
 
-  const [userData, setUserData] = useState<PrismaUser>(null);
+  const [userData, setUserData] = useState<PrismaUser | null>(null);
 
   const [showSignIn, setShowSignIn] = useState(false);
 
@@ -101,22 +102,20 @@ const SignInProvider = ({ children }) => {
   }, [userAuth, userData]);
 
   return (
-    <UserContext.Provider
-      value={{ userAuth, userData, setUserData, updateUserData }}
+    <AuthContext.Provider
+      value={{ userAuth, userData, setUserData, updateUserData, setShowSignIn }}
     >
-      <SignInContext.Provider value={setShowSignIn}>
-        {children}
-        {showSignIn && <SignInModal setShowSignIn={setShowSignIn} />}
-        {showEditDetails && (
-          <Overlay>
-            <h1 className="text-secondary px-16 text-center">
-              Complete details to create a profile
-            </h1>
-            <OverlayDetailEditor />
-          </Overlay>
-        )}
-      </SignInContext.Provider>
-    </UserContext.Provider>
+      {children}
+      {showSignIn && <SignInModal setShowSignIn={setShowSignIn} />}
+      {showEditDetails && (
+        <Overlay>
+          <h1 className="text-secondary px-16 text-center">
+            Complete details to create a profile
+          </h1>
+          <OverlayDetailEditor />
+        </Overlay>
+      )}
+    </AuthContext.Provider>
   );
 };
 

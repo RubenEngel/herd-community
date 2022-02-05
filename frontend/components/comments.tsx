@@ -12,7 +12,7 @@ import { authHeaders } from "../lib/supabase";
 import { Comment, PrismaUser } from "../lib/types";
 import AnimatedButton from "./animated-button";
 import Avatar from "./avatar";
-import { SignInContext, UserContext } from "./context/auth-provider";
+import { SignInContext, AuthContext } from "./context/auth-provider";
 import Date from "./date";
 import Loading from "./loading";
 
@@ -34,7 +34,7 @@ const CommentComponent = ({
   handleDeleteComment: (commentId) => void;
   deleteCommentLoading: boolean;
 }) => {
-  const { userData } = useContext(UserContext);
+  const { userData } = useContext(AuthContext);
 
   return (
     <>
@@ -66,8 +66,7 @@ const CommentComponent = ({
 };
 
 const Comments = ({ postId }: { postId: number }) => {
-  const { userAuth } = useContext(UserContext);
-  const setShowSignIn = useContext(SignInContext);
+  const { userAuth, setShowSignIn } = useContext(AuthContext);
 
   const [comments, setComments] = useState<
     Pick<Comment, "author" | "content" | "createdAt" | "id">[]
