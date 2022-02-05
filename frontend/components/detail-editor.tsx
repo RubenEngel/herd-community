@@ -97,7 +97,7 @@ const DetailEditor = () => {
           <label className="pl-2 font-serif text-sm">First Name</label>
           <div>
             <InputBox
-              variant={InputBoxVariant.light}
+              variant={InputBoxVariant.shadow}
               type="text"
               id="firstName"
               value={editedData?.firstName}
@@ -109,7 +109,7 @@ const DetailEditor = () => {
           <label className="pl-2 font-serif text-sm">Last Name</label>
           <div>
             <InputBox
-              variant={InputBoxVariant.light}
+              variant={InputBoxVariant.shadow}
               type="text"
               id="lastName"
               value={editedData?.lastName}
@@ -121,7 +121,7 @@ const DetailEditor = () => {
           <label className="pl-2 font-serif text-sm">Username</label>
           <div>
             <InputBox
-              variant={InputBoxVariant.light}
+              variant={InputBoxVariant.shadow}
               type="text"
               id="username"
               value={editedData?.username}

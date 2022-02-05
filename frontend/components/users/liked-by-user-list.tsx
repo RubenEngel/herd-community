@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import React, { useEffect } from "react";
+import React from "react";
 import { LIKED_BY } from "../../lib/gql-queries";
 import Loading from "../loading";
 import UserList from "./user-list";
@@ -14,7 +14,7 @@ const LikedByUserList = ({ postId }: { postId: number }) => {
 
   if (loading) {
     return (
-      <div className="h-modal-content flex w-full items-center justify-center">
+      <div className="relative bottom-10 flex h-full w-full items-center justify-center text-2xl">
         <Loading />
       </div>
     );

@@ -16,6 +16,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import AnimatedButton from "../components/animated-button";
 import { AuthContext } from "../components/context/auth-provider";
 import { authHeaders } from "../lib/supabase";
+import InputBox, { InputBoxVariant } from "../components/input-box";
 
 // TODO: Check if user admin again
 
@@ -25,9 +26,9 @@ const Editor = dynamic(() => import("../components/ck-editor"), {
 
 const SubmitHeading = ({ children }) => <h2 className="mb-2">{children}</h2>;
 
-const InputBox = (props) => (
-  <input {...props} className="mb-8 border-2 border-gray-300 p-2 text-lg" />
-);
+// const InputBox = (props) => (
+//   <input {...props} className="mb-8 border-2 border-gray-300 p-2 text-lg" />
+// );
 
 export interface SubmitPostData {
   title: string;
@@ -224,10 +225,10 @@ const EditPost = () => {
     };
     return (
       <AnimatedButton
-        className={`text-md mr-4 mb-3 rounded-full px-3 py-1 uppercase ${
+        className={`mr-4 mb-3 rounded-full px-3 py-1 font-serif ${
           postData.categories?.includes(categoryName)
             ? "bg-green-500 text-white"
-            : "bg-gray-400 text-gray-600"
+            : "bg-gray-300 bg-opacity-40 text-gray-600"
         } `}
         onClick={handleChange}
       >
@@ -260,11 +261,13 @@ const EditPost = () => {
             {/* Title */}
             <SubmitHeading>Title</SubmitHeading>
             <InputBox
+              variant={InputBoxVariant.shadow}
               value={postData.title}
               onChange={(e) =>
                 setPostData({ ...postData, title: e.target.value })
               }
               type="string"
+              className="mb-8 w-full"
             />
             {/* Categories */}
             <SubmitHeading>Select Categories</SubmitHeading>
@@ -289,7 +292,7 @@ const EditPost = () => {
                       tags: postData.tags.filter((tag) => tag !== tagName),
                     })
                   }
-                  className="text-md mr-2 mb-3 cursor-pointer rounded-full bg-green-500 py-1 px-3 text-white hover:bg-red-500 hover:text-gray-100"
+                  className="mr-2 mb-3 cursor-pointer rounded-full bg-green-500 py-1 px-3 font-serif text-white hover:bg-red-500 hover:text-gray-100"
                 >
                   {tagName}
                 </AnimatedButton>
@@ -297,20 +300,24 @@ const EditPost = () => {
             </div>
             {/* Add Tags */}
             <div className="mb-8 mt-3 flex flex-row items-center">
-              <input
+              <InputBox
+                variant={InputBoxVariant.shadow}
                 type="string"
-                className="border-2 border-gray-300 p-1 text-lg"
+                className="w-full"
                 value={tag}
                 onChange={(e) => setTag(e.target.value)}
               />
               <AnimatedButton
-                className="ml-2 rounded-lg bg-green-500 px-3 py-1 text-sm uppercase text-white"
+                variant="green-outline"
+                className="ml-4 h-full text-sm uppercase"
                 onClick={() => {
-                  setPostData({
-                    ...postData,
-                    tags: [...postData.tags, formatString(tag, " ")],
-                  });
-                  setTag("");
+                  if (tag) {
+                    setPostData({
+                      ...postData,
+                      tags: [...postData.tags, formatString(tag, " ")],
+                    });
+                    setTag("");
+                  }
                 }}
               >
                 Add tag
@@ -319,11 +326,13 @@ const EditPost = () => {
             {/* Image */}
             <SubmitHeading>Featured Image URL</SubmitHeading>
             <InputBox
+              variant={InputBoxVariant.shadow}
               value={postData.featuredImage}
               onChange={(e) =>
                 setPostData({ ...postData, featuredImage: e.target.value })
               }
               type="url"
+              className="mb-8"
             />
             {postData.featuredImage && (
               <img

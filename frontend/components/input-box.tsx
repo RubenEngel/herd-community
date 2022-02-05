@@ -1,6 +1,7 @@
 export enum InputBoxVariant {
   dark = "dark",
   light = "light",
+  shadow = "shadow",
 }
 
 const InputBox = (
@@ -14,10 +15,16 @@ const InputBox = (
   <input
     {...props}
     className={`${
-      props.variant === InputBoxVariant.dark
-        ? "bg-primary placeholder-secondary text-secondary border-secondary"
-        : "bg-sceondary placeholder-gray-600 text-primary border-primary"
-    } border py-2 px-4 text-lg font-serif w-56 block focus:outline-none rounded-md`}
+      props.variant === InputBoxVariant.dark &&
+      "bg-primary placeholder-secondary text-secondary border-secondary"
+    }
+        ${
+          props.variant === InputBoxVariant.light &&
+          "bg-sceondary text-primary border-primary placeholder-gray-600"
+        }
+        ${props.variant === InputBoxVariant.shadow && "border shadow-inner"} ${
+      props.className
+    } block w-56 rounded-md border py-2 px-4 font-serif text-lg focus:outline-none`}
   />
 );
 

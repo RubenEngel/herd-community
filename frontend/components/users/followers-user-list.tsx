@@ -24,8 +24,11 @@ const FollowersUserList = ({
 
   if (loading) {
     return (
-      <div className="h-modal-content flex w-full items-center justify-center">
-        <Loading />;
+      <div
+        className="h-modal-content relative
+      bottom-10 flex w-full items-center justify-center text-2xl"
+      >
+        <Loading />
       </div>
     );
   }

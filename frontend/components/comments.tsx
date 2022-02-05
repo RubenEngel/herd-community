@@ -173,15 +173,13 @@ const Comments = ({ postId }: { postId: number }) => {
         })}
       </div>
       <div
-        className={`bg-secondary absolute bottom-2 left-0 flex w-full items-center py-4 pl-2 ${
-          !userAuth && "opacity-30"
-        }`}
+        className={`absolute bottom-2 left-0 flex w-full items-center bg-white py-4 pl-2`}
       >
         {userAuth ? (
           <>
             <input
               type="text"
-              className="border-primary w-full rounded-xl border border-opacity-60 px-4 py-2"
+              className="w-full rounded-xl border-2 px-4 py-2 shadow-inner"
               value={content}
               onChange={(e) => setContent(e.target.value)}
             />

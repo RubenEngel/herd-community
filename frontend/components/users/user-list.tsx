@@ -4,7 +4,7 @@ import AnimatedButton from "../animated-button";
 import Link from "next/link";
 import { FaUserCircle } from "react-icons/fa";
 import capitalize from "../../lib/capitalize-first-letter";
-import { SignInContext, AuthContext } from "../context/auth-provider";
+import { AuthContext } from "../context/auth-provider";
 import toast from "react-hot-toast";
 import { authHeaders } from "../../lib/supabase";
 import { useMutation } from "@apollo/client";
@@ -85,7 +85,7 @@ const UserRow = ({ user }: { user: PrismaUser }) => {
       <AnimatedButton>
         <Link href={`/users/${user.username}`}>
           <a className="flex" href="">
-            <div className="mr-4">
+            <div className="mr-3">
               {user.imageUrl ? (
                 <img
                   className="h-14 w-14 rounded-full object-cover"
@@ -96,7 +96,7 @@ const UserRow = ({ user }: { user: PrismaUser }) => {
                 <FaUserCircle className="h-14 w-14 rounded-full" />
               )}
             </div>
-            <div className="text-left">
+            <div className="mr-3 text-left text-sm">
               <h3>
                 {user.lastName
                   ? `${capitalize(user.firstName)} ${capitalize(user.lastName)}`
