@@ -7,7 +7,8 @@ datasource db {
 }
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
 }
 
 model User {
@@ -30,6 +31,7 @@ model Post {
   id            Int        @id @default(autoincrement())
   slug          String     @unique
   published     Boolean    @default(false)
+  submitted     Boolean    @default(false)
   viewCount     Int        @default(0)
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
@@ -59,7 +61,7 @@ model Comment {
   authorId        Int
   likedBy         User[]    @relation("UserLikesComment")
   createdAt       DateTime  @default(now())
-  post            Post      @relation("PostHasComment", fields: [postId], references: [id])
+  post            Post      @relation("PostHasComment", fields: [postId], references: [id], onDelete: Cascade)
   postId          Int
   parentComment   Comment?  @relation("CommentParentsComment", fields: [parentCommentId], references: [id])
   parentCommentId Int?

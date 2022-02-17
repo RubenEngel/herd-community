@@ -14,7 +14,7 @@ const MenuDropdown: React.FC<{
   return (
     <motion.div
       className={
-        " bg-primary absolute opacity-75 w-screen left-0 -z-10 overflow-hidden mt-2 "
+        " bg-primary absolute left-0 -z-10 mt-2 w-screen overflow-hidden opacity-75 "
       }
       variants={menuVariants}
       initial="hidden"
@@ -23,7 +23,7 @@ const MenuDropdown: React.FC<{
       transition={transition}
     >
       <motion.nav
-        className={"text-white p-3 -z-10 max-w-6xl m-auto"}
+        className={"-z-10 m-auto max-w-6xl p-3 text-white"}
         animate="show"
         initial="hidden"
         transition={{
@@ -39,9 +39,9 @@ const MenuDropdown: React.FC<{
           <NavItem variants={itemVariants} onClick={() => setIsOpen(false)}>
             <Link href="/about-us">About Us</Link>
           </NavItem>
-          {/* <NavItem onClick={() => setIsOpen(false)}>
+          <NavItem onClick={() => setIsOpen(false)}>
             <Link href="/search">Search</Link>
-          </NavItem> */}
+          </NavItem>
           <NavItem variants={itemVariants} onClick={() => setIsOpen(false)}>
             <Link href="/explore">Explore</Link>
           </NavItem>

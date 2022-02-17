@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import AnimatedButton from "../components/animated-button";
 import router from "next/router";
 import { AuthContext } from "../components/context/auth-provider";

@@ -48,6 +48,21 @@ export const GET_USER_BY_USERNAME = gql`
   }
 `;
 
+export const SEARCH_USERS = gql`
+  query SearchUsers($searchTerm: String!) {
+    searchUsers(searchTerm: $searchTerm) {
+      users {
+        id
+        firstName
+        lastName
+        username
+        imageUrl
+      }
+      _count
+    }
+  }
+`;
+
 export const GET_FOLLOWING = gql`
   query GetFollowing($username: String) {
     user(username: $username) {
@@ -113,6 +128,22 @@ const CORE_POST_FIELDS = gql`
   }
 `;
 
+export const SEARCH_POSTS = gql`
+  ${CORE_POST_FIELDS}
+  query SearchPosts($searchTerm: String!, $limit: Int!, $startAfter: Int) {
+    searchPosts(
+      searchTerm: $searchTerm
+      limit: $limit
+      startAfter: $startAfter
+    ) {
+      posts {
+        ...CorePostFields
+      }
+      _count
+    }
+  }
+`;
+
 export const GET_POST = gql`
   ${CORE_POST_FIELDS}
   query GetPost($slug: String!) {
@@ -131,6 +162,7 @@ export const GET_POSTS = gql`
     $limit: Int
     $startAfter: Int
     $authorId: Int
+    $searchTerm: String
   ) {
     posts(
       published: $published
@@ -138,6 +170,7 @@ export const GET_POSTS = gql`
       limit: $limit
       startAfter: $startAfter
       authorId: $authorId
+      searchTerm: $searchTerm
     ) {
       posts {
         ...CorePostFields

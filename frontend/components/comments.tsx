@@ -145,7 +145,7 @@ const Comments = ({ postId }: { postId: number }) => {
 
   return (
     <div className="relative h-full">
-      <div className="h-full overflow-y-scroll pb-24">
+      <div className="h-full overflow-y-scroll pb-28">
         {commentsLoading && (
           <div className="flex h-full flex-col justify-center">
             <Loading />
@@ -173,13 +173,13 @@ const Comments = ({ postId }: { postId: number }) => {
         })}
       </div>
       <div
-        className={`absolute bottom-2 left-0 flex w-full items-center bg-white py-4 pl-2`}
+        className={`absolute bottom-5 left-0 flex w-full items-center bg-white py-4 pl-2`}
       >
         {userAuth ? (
           <>
             <input
               type="text"
-              className="w-full rounded-xl border-2 px-4 py-2 shadow-inner"
+              className="w-full rounded-xl border px-4 py-2 shadow-inner"
               value={content}
               onChange={(e) => setContent(e.target.value)}
             />

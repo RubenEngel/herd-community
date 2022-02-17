@@ -10,7 +10,7 @@ import AnimatedButton from "../../components/animated-button";
 import ProfilePostList from "../../components/profile-post-list";
 import { AnimatePresence } from "framer-motion";
 import Modal from "../../components/modal";
-import PostGrid from "../../components/post-grid/post-grid";
+import ExplorePostGrid from "../../components/post-grid/explore-post-grid";
 import LikedPostGrid from "../../components/post-grid/liked-post-grid";
 import UserCard from "../../components/user-card";
 import FollowersUserList from "../../components/users/followers-user-list";
@@ -89,7 +89,7 @@ const UserPage = ({ user }: UserPageProps) => {
     switch (content) {
       case "posts":
         return (
-          <PostGrid
+          <ExplorePostGrid
             animate={false}
             limit={6}
             published={true}

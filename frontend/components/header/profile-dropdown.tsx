@@ -8,7 +8,6 @@ import {
   transition,
   itemVariants,
 } from "../../lib/dropdown-variants";
-import { SignInContext } from "../context/auth-provider";
 
 const ProfileDropdown = ({ setIsOpen }) => {
   const { userAuth, userData, setShowSignIn } = useContext(AuthContext);
@@ -53,7 +52,7 @@ const ProfileDropdown = ({ setIsOpen }) => {
                     variants={itemVariants}
                     onClick={() => setIsOpen(false)}
                   >
-                    <Link scroll={false} href="/admin">
+                    <Link scroll={false} href="/admin/posts">
                       Admin
                     </Link>
                   </NavItem>

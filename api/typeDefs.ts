@@ -43,6 +43,7 @@ export const typeDefs = gql`
     id: Int
     slug: String
     published: Boolean
+    submitted: Boolean
     createdAt: DateTime
     updatedAt: DateTime
     title: String
@@ -94,6 +95,16 @@ export const typeDefs = gql`
     _count: Int
   }
 
+  type PostSearch {
+    posts: [Post]
+    _count: Int
+  }
+
+  type UserSearch {
+    users: [User]
+    _count: Int
+  }
+
   type Query {
     posts(
       published: Boolean
@@ -102,8 +113,10 @@ export const typeDefs = gql`
       startAfter: Int
       authorId: Int
       likedByUserId: Int
+      searchTerm: String
     ): PostQuery
     post(slug: String!): Post
+    searchUsers(searchTerm: String!): UserSearch
     comments(postId: Int, authorId: Int): [Comment]
     userByEmail(email: String!): User
     user(username: String, id: Int): User
@@ -140,6 +153,7 @@ export const typeDefs = gql`
       imageUrl: String
     ): User
     changePublished(id: Int!, published: Boolean!): Post
+    changeSubmitted(id: Int!, submitted: Boolean!): Post
     likePost(id: Int): Post
     unlikePost(id: Int): Post
     followUser(userId: Int): User

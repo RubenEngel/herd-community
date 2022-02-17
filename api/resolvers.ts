@@ -67,11 +67,18 @@ const signUploadForm = async () => {
 
 export const resolvers = {
   DateTime: dateScalar,
-
   Query: {
     posts: async (
       _,
-      { published, category, limit, startAfter, authorId, likedByUserId }
+      {
+        published,
+        category,
+        limit,
+        startAfter,
+        authorId,
+        likedByUserId,
+        searchTerm,
+      }
     ) => {
       try {
         if (category?.toLowerCase() === "all") category = null;
@@ -115,11 +122,40 @@ export const resolvers = {
           };
         }
 
+        if (searchTerm) {
+          const searchTermArray = searchTerm.split(" ");
+          const prismaSearchString = searchTermArray
+            .map((term, index) => {
+              if (index > 0) {
+                return ` & ${term}`;
+              } else {
+                return term;
+              }
+            })
+            .join("");
+          variables = {
+            ...variables,
+            where: {
+              ...variables.where,
+              OR: {
+                content: {
+                  search: prismaSearchString,
+                  mode: "insensitive",
+                },
+                title: {
+                  search: prismaSearchString,
+                  mode: "insensitive",
+                },
+              },
+            },
+          };
+        }
+
         const [posts, postCount] = await prisma.$transaction([
           prisma.post.findMany({
             ...cursorParams,
-            take: limit,
             ...variables,
+            take: limit,
             select: {
               id: true,
               title: true,
@@ -148,7 +184,7 @@ export const resolvers = {
 
         return { posts, _count: postCount };
       } catch (error) {
-        throw new ApolloError(error as string);
+        console.error(error);
       }
     },
     post: async (_, { slug }) => {
@@ -166,7 +202,10 @@ export const resolvers = {
         },
       });
     },
-    comments: async (_, { postId, authorId }) => {
+    comments: async (
+      _,
+      { postId, authorId }: { postId: number; authorId: number }
+    ) => {
       try {
         return await prisma.comment.findMany({
           where: {
@@ -178,68 +217,167 @@ export const resolvers = {
           },
         });
       } catch (error) {
-        throw new ApolloError(error as string);
+        console.error(error);
+      }
+    },
+    searchUsers: async (_, { searchTerm }: { searchTerm: string }) => {
+      const searchTermArray = searchTerm.split(" ");
+      try {
+        const [users, userCount] = await prisma.$transaction([
+          prisma.user.findMany({
+            where: {
+              OR: [
+                {
+                  AND: [
+                    ...searchTermArray.map((term) => ({
+                      firstName: {
+                        contains: term,
+                      },
+                    })),
+                  ],
+                },
+                {
+                  AND: [
+                    ...searchTermArray.map((term) => ({
+                      lastName: {
+                        contains: term,
+                      },
+                    })),
+                  ],
+                },
+                {
+                  AND: [
+                    ...searchTermArray.map((term) => ({
+                      username: {
+                        contains: term,
+                      },
+                    })),
+                  ],
+                },
+              ],
+            },
+          }),
+          prisma.user.count({
+            where: {
+              OR: [
+                {
+                  AND: [
+                    ...searchTermArray.map((term) => ({
+                      firstName: {
+                        contains: term,
+                      },
+                    })),
+                  ],
+                },
+                {
+                  AND: [
+                    ...searchTermArray.map((term) => ({
+                      lastName: {
+                        contains: term,
+                      },
+                    })),
+                  ],
+                },
+                {
+                  AND: [
+                    ...searchTermArray.map((term) => ({
+                      username: {
+                        contains: term,
+                      },
+                    })),
+                  ],
+                },
+              ],
+            },
+          }),
+        ]);
+        return {
+          users: users,
+          _count: userCount,
+        };
+      } catch (error) {
+        console.error(error);
       }
     },
     userByEmail: async (_, { email }) => {
-      return prisma.user.findUnique({
-        where: {
-          email: email,
-        },
-        include: {
-          followers: true,
-          following: true,
-        },
-      });
+      try {
+        return await prisma.user.findUnique({
+          where: {
+            email: email,
+          },
+          include: {
+            followers: true,
+            following: true,
+          },
+        });
+      } catch (error) {
+        console.error(error);
+      }
     },
     user: async (_, { username, id }) => {
-      return prisma.user.findUnique({
-        where: {
-          username: username,
-          id: id,
-        },
-        include: {
-          posts: {
-            where: {
-              published: true,
+      try {
+        return await prisma.user.findUnique({
+          where: {
+            username: username,
+            id: id,
+          },
+          include: {
+            posts: {
+              where: {
+                published: true,
+              },
+            },
+            followers: true,
+            following: true,
+            likedPosts: true,
+            _count: {
+              select: {
+                posts: true,
+                followers: true,
+                following: true,
+                likedPosts: true,
+                comments: true,
+              },
             },
           },
-          followers: true,
-          following: true,
-          likedPosts: true,
-          _count: {
-            select: {
-              posts: true,
-              followers: true,
-              following: true,
-              likedPosts: true,
-              comments: true,
-            },
-          },
-        },
-      });
+        });
+      } catch (error) {
+        console.error(error);
+      }
     },
     categories: async () => {
-      return prisma.category.findMany();
+      try {
+        return await prisma.category.findMany();
+      } catch (error) {
+        console.error(error);
+      }
     },
     likedBy: async (_, { id }) => {
-      return prisma.post.findUnique({
-        where: {
-          id: id,
-        },
-        select: {
-          likedBy: true,
-        },
-      });
+      try {
+        return await prisma.post.findUnique({
+          where: {
+            id: id,
+          },
+          select: {
+            likedBy: true,
+          },
+        });
+      } catch (error) {
+        console.error(error);
+      }
     },
   },
   Mutation: {
     createUser: async (_, { email }) => {
-      return await prisma.user.create({
-        data: {
-          email: email.trim().toLowerCase(),
-        },
-      });
+      try {
+        return await prisma.user.create({
+          data: {
+            email: email.trim().toLowerCase(),
+          },
+        });
+      } catch (error) {
+        console.error(error);
+      }
     },
     createDraft: async (
       _,
@@ -265,11 +403,11 @@ export const resolvers = {
           },
         });
       } catch (error) {
-        throw new ApolloError(error as string);
+        console.error(error);
       }
     },
     createComment: async (_, { content, postId }, { userEmail }) => {
-      if (!userEmail) throw new AuthenticationError("You must be logged in");
+      if (!userEmail) throw new AuthenticationError("User must be logged in");
       try {
         return await prisma.comment.create({
           data: {
@@ -290,11 +428,11 @@ export const resolvers = {
           },
         });
       } catch (error) {
-        throw new ApolloError(error as string);
+        console.error(error);
       }
     },
     deleteComment: async (_, { id }, { userEmail }) => {
-      if (!userEmail) throw new AuthenticationError("You must be logged in");
+      if (!userEmail) throw new AuthenticationError("User must be logged in");
       try {
         const res = await prisma.comment.findUnique({
           where: {
@@ -321,7 +459,7 @@ export const resolvers = {
           },
         });
       } catch (error) {
-        throw new ApolloError(error as string);
+        console.error(error);
       }
     },
     updatePost: async (
@@ -347,7 +485,7 @@ export const resolvers = {
           },
         });
       } catch (error) {
-        throw new ApolloError(error as string);
+        console.error(error);
       }
     },
     updateUser: async (
@@ -368,7 +506,7 @@ export const resolvers = {
           },
         });
       } catch (error) {
-        throw new ApolloError(error as string);
+        console.error(error);
       }
     },
     changePublished: async (_, { id, published }) => {
@@ -382,7 +520,21 @@ export const resolvers = {
           },
         });
       } catch (error) {
-        throw new ApolloError(error as string);
+        console.error(error);
+      }
+    },
+    changeSubmitted: async (_, { id, submitted }) => {
+      try {
+        return await prisma.post.update({
+          where: {
+            id,
+          },
+          data: {
+            submitted,
+          },
+        });
+      } catch (error) {
+        console.error(error);
       }
     },
     likePost: async (_, { id }, { userEmail }) => {
@@ -404,7 +556,7 @@ export const resolvers = {
           },
         });
       } catch (error) {
-        throw new ApolloError(error as string);
+        console.error(error);
       }
     },
     unlikePost: async (_, { id }, { userEmail }) => {
@@ -426,7 +578,7 @@ export const resolvers = {
           },
         });
       } catch (error) {
-        throw new ApolloError(error as string);
+        console.error(error);
       }
     },
     followUser: async (_, { userId }, { userEmail }) => {
@@ -447,7 +599,7 @@ export const resolvers = {
           },
         });
       } catch (error) {
-        throw new ApolloError(error as string);
+        console.error(error);
       }
     },
     unfollowUser: async (_, { userId }, { userEmail }) => {
@@ -468,7 +620,7 @@ export const resolvers = {
           },
         });
       } catch (error) {
-        throw new ApolloError(error as string);
+        console.error(error);
       }
     },
     signUpload: async (_, __, { userEmail }) => {
@@ -478,7 +630,7 @@ export const resolvers = {
         const signedDataRes = await signUploadForm();
         return signedDataRes;
       } catch (error) {
-        throw new ApolloError(error as string);
+        console.error(error);
       }
     },
   },

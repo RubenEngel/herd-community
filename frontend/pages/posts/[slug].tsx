@@ -15,7 +15,7 @@ import {
 } from "../../lib/gql-queries";
 import { addApolloState, initializeApollo } from "../../lib/apollo-client";
 import { Post, Role } from "../../lib/types";
-import PostGrid from "../../components/post-grid/post-grid";
+import ExplorePostGrid from "../../components/post-grid/explore-post-grid";
 import { useViewportScroll, AnimatePresence } from "framer-motion";
 import { Waypoint } from "react-waypoint";
 import formatString from "../../lib/format-string";
@@ -25,10 +25,7 @@ import ProgressBar from "../../components/progress-bar";
 import UserCard from "../../components/user-card";
 import toast from "react-hot-toast";
 import Modal from "../../components/modal";
-import {
-  SignInContext,
-  AuthContext,
-} from "../../components/context/auth-provider";
+import { AuthContext } from "../../components/context/auth-provider";
 import { CategoryContext } from "../../components/context/category-provider";
 import { authHeaders } from "../../lib/supabase";
 import Comments from "../../components/comments";
@@ -273,8 +270,7 @@ export default function PostPage({ post }: PostProps) {
               More Posts from {formatString(category, "_")}
             </h1>
           </Waypoint>
-          <PostGrid
-            animate
+          <ExplorePostGrid
             published
             startLoad={reachedEnd}
             category={category}

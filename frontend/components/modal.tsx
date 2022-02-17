@@ -90,7 +90,7 @@ const Modal = ({
         dragListener={false}
         dragControls={dragControls}
         onPointerDown={(e) => startDrag(e)}
-        className="h-content absolute bottom-0 w-full max-w-4xl justify-center rounded-t-3xl bg-white pb-12 text-center"
+        className="absolute bottom-0 h-3/4 w-full max-w-4xl justify-center rounded-t-3xl bg-white pb-12 text-center"
         variants={variants}
         initial={"hidden"}
         animate={"show"}

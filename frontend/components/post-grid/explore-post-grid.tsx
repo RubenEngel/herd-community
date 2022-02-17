@@ -1,12 +1,15 @@
 import { useLazyQuery } from "@apollo/client";
 import { useEffect, useMemo } from "react";
-import { GET_USER_LIKED_POSTS } from "../../lib/gql-queries";
+import { GET_POSTS } from "../../lib/gql-queries";
 import Loading from "../loading";
 import PostGrid from "./post-grid";
 
-export default function LikedPostGrid({
+export default function ExplorePostGrid({
+  published,
   startLoad = true,
   category,
+  limit,
+  authorId,
   likedByUserId,
 }: {
   limit: number;
@@ -17,18 +20,27 @@ export default function LikedPostGrid({
   likedByUserId?: number;
 }) {
   const [getPosts, { loading, error, data, fetchMore }] = useLazyQuery(
-    GET_USER_LIKED_POSTS,
+    GET_POSTS,
     {
       variables: {
+        published: published,
+        limit: limit,
+        category: category,
+        startAfter: null,
+        authorId: authorId,
         likedByUserId: likedByUserId,
-        limit: 9,
       },
       notifyOnNetworkStatusChange: true,
+      fetchPolicy: "cache-and-network",
     }
   );
 
   useEffect(() => {
-    getPosts();
+    let mounted = true;
+    if (mounted) getPosts();
+    return () => {
+      mounted = false;
+    };
   }, [category]);
 
   const posts = useMemo(() => data?.posts?.posts, [data]);
@@ -39,6 +51,7 @@ export default function LikedPostGrid({
     </div>
   ) : (
     <PostGrid
+      animateY="50%"
       error={error}
       onWaypointEnter={() =>
         fetchMore({

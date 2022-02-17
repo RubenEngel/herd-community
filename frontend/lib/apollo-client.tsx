@@ -23,7 +23,13 @@ function createApolloClient() {
         Query: {
           fields: {
             posts: {
-              keyArgs: ["category", "published", "authorId", "likedByUserId"],
+              keyArgs: [
+                "category",
+                "published",
+                "authorId",
+                "likedByUserId",
+                "searchTerm",
+              ],
               merge(
                 existing: {
                   posts: { __ref: string }[];
