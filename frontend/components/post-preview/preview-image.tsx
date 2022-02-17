@@ -1,7 +1,6 @@
 import cn from "classnames";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import AnimatedButton from "../animated-button";
 
 interface PreviewImageProps {
   title: string;
@@ -25,7 +24,7 @@ const PreviewImage = ({
       width={width}
       height={height}
       className={cn("shadow-small m-auto object-cover", {
-        "hover:shadow-medium transition-shadow duration-200 rounded-lg": slug,
+        "hover:shadow-medium rounded-lg transition-shadow duration-200": slug,
       })}
     />
   );

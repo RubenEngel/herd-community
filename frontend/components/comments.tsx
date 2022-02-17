@@ -12,7 +12,7 @@ import { authHeaders } from "../lib/supabase";
 import { Comment, PrismaUser } from "../lib/types";
 import AnimatedButton from "./animated-button";
 import Avatar from "./avatar";
-import { SignInContext, AuthContext } from "./context/auth-provider";
+import { AuthContext } from "./context/auth-provider";
 import Date from "./date";
 import Loading from "./loading";
 

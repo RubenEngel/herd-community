@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useContext } from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import NavItem from "../nav-item";

@@ -6,7 +6,6 @@ import { AiFillGoogleCircle } from "react-icons/ai";
 import { FiSend } from "react-icons/fi";
 import toast from "react-hot-toast";
 import Loading from "./loading";
-import router from "next/router";
 import Overlay from "./overlay";
 
 const SignInModal = ({

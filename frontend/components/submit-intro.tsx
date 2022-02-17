@@ -1,7 +1,6 @@
-import router from "next/router";
 import React, { useContext } from "react";
 import AnimatedButton from "./animated-button";
-import { SignInContext, AuthContext } from "./context/auth-provider";
+import { AuthContext } from "./context/auth-provider";
 
 const StepHeading = ({ children }) => (
   <h2 className="text-md mb-2 mt-5 font-bold">{children}</h2>

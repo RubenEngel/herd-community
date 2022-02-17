@@ -15,7 +15,7 @@ import toast from "react-hot-toast";
 import UploadProfileImage from "./upload-profile-image";
 import Link from "next/link";
 import router from "next/router";
-import { SignInContext, AuthContext } from "./context/auth-provider";
+import { AuthContext } from "./context/auth-provider";
 import { authHeaders } from "../lib/supabase";
 
 interface UserCardProps {

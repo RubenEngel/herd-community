@@ -1,5 +1,5 @@
 import { motion, PanInfo, useDragControls, Variants } from "framer-motion";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { BsArrowDown } from "react-icons/bs";
 import AnimatedButton from "./animated-button";
 

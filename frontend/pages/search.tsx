@@ -17,7 +17,6 @@ enum SearchFor {
 function Search() {
   const [inputValue, setInputValue] = useState("");
   const [searchFor, setSearchFor] = useState<SearchFor>(SearchFor.posts);
-  const [searchAttempted, setSearchAttempted] = useState(false);
 
   // --- USER SEARCH
   const [
@@ -60,7 +59,6 @@ function Search() {
     if (inputValue.length < 3) {
       return toast("Search term too short");
     }
-    setSearchAttempted(true);
     if (searchFor === SearchFor.users) {
       searchUsers({
         variables: {
@@ -81,7 +79,6 @@ function Search() {
 
   const handleChangeSearchFor = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchFor(e.target.value as SearchFor);
-    setSearchAttempted(false);
   };
 
   const posts: Post[] | undefined = useMemo(

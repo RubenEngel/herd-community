@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import { motion } from "framer-motion";
 import { BiLike } from "react-icons/bi";
 import { FiShare, FiEdit3 } from "react-icons/fi";

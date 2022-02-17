@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import React, { useEffect } from "react";
+import React from "react";
 import { Waypoint } from "react-waypoint";
 import { GET_POSTS_WITH_EXCERPT } from "../lib/gql-queries";
 import { Post } from "../lib/types";

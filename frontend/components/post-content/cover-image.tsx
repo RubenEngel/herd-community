@@ -1,5 +1,4 @@
 import cn from "classnames";
-import { motion } from "framer-motion";
 import Link from "next/link";
 
 export default function CoverImage({
@@ -15,7 +14,7 @@ export default function CoverImage({
     <img
       src={coverImage}
       className={cn("shadow-small m-auto", {
-        "hover:shadow-medium transition-shadow duration-200 rounded-xl": slug,
+        "hover:shadow-medium rounded-xl transition-shadow duration-200": slug,
       })}
     />
   );

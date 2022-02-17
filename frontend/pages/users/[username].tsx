@@ -89,12 +89,7 @@ const UserPage = ({ user }: UserPageProps) => {
     switch (content) {
       case "posts":
         return (
-          <ExplorePostGrid
-            animate={false}
-            limit={6}
-            published={true}
-            authorId={user.id}
-          />
+          <ExplorePostGrid limit={6} published={true} authorId={user.id} />
         );
       case "followers":
         return <FollowersUserList username={user.username} />;

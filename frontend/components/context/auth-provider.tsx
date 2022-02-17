@@ -5,11 +5,7 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import {
-  QueryLazyOptions,
-  useApolloClient,
-  useLazyQuery,
-} from "@apollo/client";
+import { useApolloClient } from "@apollo/client";
 import { User } from "@supabase/supabase-js";
 import { ADD_USER, GET_USER_BY_EMAIL } from "../../lib/gql-queries";
 import { supabase } from "../../lib/supabase";
