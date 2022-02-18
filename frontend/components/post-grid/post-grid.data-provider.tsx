@@ -4,14 +4,16 @@ import { GET_POSTS } from "../../lib/gql-queries";
 import Loading from "../loading";
 import PostGrid from "./post-grid";
 
-export default function ExplorePostGrid({
+export default function PostGridDataProvider({
   published,
   startLoad = true,
   category,
   limit,
   authorId,
   likedByUserId,
+  animate,
 }: {
+  animate?: boolean;
   limit: number;
   published: boolean;
   startLoad?: boolean;
@@ -51,7 +53,7 @@ export default function ExplorePostGrid({
     </div>
   ) : (
     <PostGrid
-      animateY="50%"
+      animateY={animate ? "50%" : undefined}
       error={error}
       onWaypointEnter={() =>
         fetchMore({

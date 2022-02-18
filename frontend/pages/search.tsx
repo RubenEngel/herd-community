@@ -161,7 +161,7 @@ function Search() {
             <>
               {userSearchData && searchFor === SearchFor.users && (
                 <small className="ml-4 mb-4">
-                  {userSearchData.searchUsers._count} results
+                  {userSearchData.searchUsers?._count} results
                 </small>
               )}
               <UserList users={userSearchData.searchUsers.users} />
@@ -181,7 +181,7 @@ function Search() {
           {postSearchData && posts && (
             <>
               <small className="ml-4 mb-4">
-                {postSearchData.posts._count} results
+                {postSearchData.posts?._count} results
               </small>
               <PostGrid
                 error={postSearchError}

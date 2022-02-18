@@ -15,7 +15,7 @@ import {
 } from "../../lib/gql-queries";
 import { addApolloState, initializeApollo } from "../../lib/apollo-client";
 import { Post, Role } from "../../lib/types";
-import ExplorePostGrid from "../../components/post-grid/explore-post-grid";
+import PostGridDataProvider from "../../components/post-grid/post-grid.data-provider";
 import { useViewportScroll, AnimatePresence } from "framer-motion";
 import { Waypoint } from "react-waypoint";
 import formatString from "../../lib/format-string";
@@ -270,7 +270,8 @@ export default function PostPage({ post }: PostProps) {
               More Posts from {formatString(category, "_")}
             </h1>
           </Waypoint>
-          <ExplorePostGrid
+          <PostGridDataProvider
+            animate
             published
             startLoad={reachedEnd}
             category={category}

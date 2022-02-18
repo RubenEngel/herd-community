@@ -21,7 +21,7 @@ export default function HomeCategory({
 
   return (
     <div>
-      <div className="px-4">
+      <div className="px-4 md:px-6 lg:px-10">
         <Link scroll={false} href="/explore">
           <motion.button
             whileHover={{ scale: 1.03 }}

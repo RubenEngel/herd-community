@@ -221,14 +221,21 @@ export const resolvers = {
       }
     },
     searchUsers: async (_, { searchTerm }: { searchTerm: string }) => {
-      const searchTermArray = searchTerm.split(" ");
+      const searchTermArray = searchTerm.toLocaleLowerCase().split(" ");
+      console.log(
+        ...searchTermArray.map((term) => ({
+          firstName: {
+            contains: term,
+          },
+        }))
+      );
       try {
         const [users, userCount] = await prisma.$transaction([
           prisma.user.findMany({
             where: {
               OR: [
                 {
-                  AND: [
+                  OR: [
                     ...searchTermArray.map((term) => ({
                       firstName: {
                         contains: term,
@@ -237,7 +244,7 @@ export const resolvers = {
                   ],
                 },
                 {
-                  AND: [
+                  OR: [
                     ...searchTermArray.map((term) => ({
                       lastName: {
                         contains: term,
@@ -246,7 +253,7 @@ export const resolvers = {
                   ],
                 },
                 {
-                  AND: [
+                  OR: [
                     ...searchTermArray.map((term) => ({
                       username: {
                         contains: term,
@@ -261,7 +268,7 @@ export const resolvers = {
             where: {
               OR: [
                 {
-                  AND: [
+                  OR: [
                     ...searchTermArray.map((term) => ({
                       firstName: {
                         contains: term,
@@ -270,7 +277,7 @@ export const resolvers = {
                   ],
                 },
                 {
-                  AND: [
+                  OR: [
                     ...searchTermArray.map((term) => ({
                       lastName: {
                         contains: term,
@@ -279,7 +286,7 @@ export const resolvers = {
                   ],
                 },
                 {
-                  AND: [
+                  OR: [
                     ...searchTermArray.map((term) => ({
                       username: {
                         contains: term,
