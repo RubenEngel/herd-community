@@ -12,7 +12,7 @@ export const useApolloToast = (data, loading, error) => {
       } else if (error.message.includes("username")) {
         toast.error("Username already in use");
       } else {
-        toast.error(error.message);
+        toast.error("Error");
       }
     }
     if (data) {

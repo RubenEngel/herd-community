@@ -1,7 +1,7 @@
-import { PrismaUser } from "../lib/types";
-import AnimatedButton from "./animated-button";
+import { PrismaUser } from "../../lib/types";
+import AnimatedButton from "../animated-button";
 import { FaUserCircle } from "react-icons/fa";
-import capitalizeFirstLetter from "../lib/capitalize-first-letter";
+import capitalizeFirstLetter from "../../lib/capitalize-first-letter";
 import {
   Dispatch,
   SetStateAction,
@@ -10,13 +10,13 @@ import {
   useState,
 } from "react";
 import { useMutation } from "@apollo/client";
-import { FOLLOW_USER, UNFOLLOW_USER } from "../lib/gql-queries";
+import { FOLLOW_USER, UNFOLLOW_USER } from "../../lib/gql-queries";
 import toast from "react-hot-toast";
-import UploadProfileImage from "./upload-profile-image";
+import UploadProfileImage from "../upload-profile-image";
 import Link from "next/link";
 import router from "next/router";
-import { AuthContext } from "./context/auth-provider";
-import { authHeaders } from "../lib/supabase";
+import { AuthContext } from "../context/auth-provider";
+import { authHeaders } from "../../lib/supabase";
 
 interface UserCardProps {
   user?: Omit<PrismaUser, "email"> & {

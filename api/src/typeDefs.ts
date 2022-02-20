@@ -81,6 +81,7 @@ export const typeDefs = gql`
     post: Post
     postId: Int
     parentComment: Comment
+    parentCommentId: Int
     childComments: [Comment]
   }
 
@@ -90,14 +91,19 @@ export const typeDefs = gql`
     EDITOR
   }
 
-  type PostQuery {
+  type PostQueryResult {
     posts: [Post]
     _count: Int
   }
 
-  type UserSearch {
+  type UserSearchResult {
     users: [User]
     _count: Int
+  }
+
+  type LikeMutationResult {
+    id: Int
+    likedBy: [User]
   }
 
   type Query {
@@ -110,14 +116,16 @@ export const typeDefs = gql`
       authorId: Int
       likedByUserId: Int
       searchTerm: String
-    ): PostQuery
+    ): PostQueryResult
     post(slug: String!): Post
-    searchUsers(searchTerm: String!): UserSearch
+    postLikedBy(id: Int): [User]
+    searchUsers(searchTerm: String!): UserSearchResult
     comments(postId: Int, authorId: Int): [Comment]
+    commentLikedBy(id: Int!): [User] # only likedBy array returned on object
+    commentReplies(id: Int!): [Comment]
     userByEmail(email: String!): User
     user(username: String, id: Int): User
     categories: [Category]
-    likedBy(id: Int): Post
   }
 
   type Mutation {
@@ -131,7 +139,7 @@ export const typeDefs = gql`
       tags: [String]
       submitted: Boolean
     ): Post
-    createComment(content: String!, postId: Int!): Comment
+    createComment(content: String!, postId: Int!, parentCommentId: Int): Comment
     deleteComment(id: Int!): Comment
     updatePost(
       id: Int!
@@ -150,10 +158,12 @@ export const typeDefs = gql`
     ): User
     changePublished(id: Int!, published: Boolean!): Post
     changeSubmitted(id: Int!, submitted: Boolean!): Post
-    likePost(id: Int): Post
-    unlikePost(id: Int): Post
-    followUser(userId: Int): User
-    unfollowUser(userId: Int): User
+    likePost(id: Int!): LikeMutationResult
+    unlikePost(id: Int!): LikeMutationResult
+    likeComment(id: Int!): LikeMutationResult
+    unlikeComment(id: Int!): LikeMutationResult
+    followUser(userId: Int!): User
+    unfollowUser(userId: Int!): User
     signUpload: SignedUploadResponse
   }
 `;

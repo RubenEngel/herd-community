@@ -66,8 +66,8 @@ export interface Comment {
   postId: number;
   parentCommentId: number;
   author: PrismaUser;
-  // childComments: Comment[];
-  // likedBy: User[];
+  likedBy: PrismaUser[];
+  childComments: Comment[];
 }
 
 export interface Category {

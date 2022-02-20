@@ -42,14 +42,14 @@ const getExcerpt = (content: string) => {
   }
 };
 
-const checkAuth = async (userEmail: string) => {
-  const user = await prisma.user.findUnique({ where: { email: userEmail } });
-  if (user) {
-    return true;
-  } else {
-    return false;
-  }
-};
+// const getUser = async (userEmail: string) => {
+//   const user = await prisma.user.findUnique({ where: { email: userEmail } });
+//   if (user) {
+//     return user;
+//   } else {
+//     return false;
+//   }
+// };
 
 const signUploadForm = async () => {
   const timestamp = Math.round(new Date().getTime() / 1000);
@@ -67,6 +67,7 @@ const signUploadForm = async () => {
 
 export const resolvers = {
   DateTime: dateScalar,
+  // ----------------- Queries ----------------- //
   Query: {
     posts: async (
       _,
@@ -208,9 +209,28 @@ export const resolvers = {
         where: {
           postId: postId,
           authorId: authorId,
+          parentCommentId: null,
         },
         include: {
           author: true,
+          likedBy: true,
+          // allow nested comments to go 2 levels deep
+          childComments: {
+            include: {
+              childComments: {
+                include: {
+                  childComments: true,
+                  author: true,
+                },
+              },
+              author: true,
+            },
+          },
+          _count: {
+            select: {
+              childComments: true,
+            },
+          },
         },
       });
     },
@@ -378,8 +398,8 @@ export const resolvers = {
     categories: async () => {
       return await prisma.category.findMany();
     },
-    likedBy: async (_, { id }) => {
-      return await prisma.post.findUnique({
+    postLikedBy: async (_, { id }) => {
+      const res = await prisma.post.findUnique({
         where: {
           id: id,
         },
@@ -387,9 +407,33 @@ export const resolvers = {
           likedBy: true,
         },
       });
+      return res?.likedBy;
+    },
+    commentLikedBy: async (_, { id }) => {
+      const res = await prisma.comment.findUnique({
+        where: {
+          id: id,
+        },
+        select: {
+          likedBy: true,
+        },
+      });
+      return res?.likedBy;
+    },
+    commentReplies: async (_, { id }) => {
+      return await prisma.comment.findMany({
+        where: {
+          parentCommentId: id,
+        },
+        include: {
+          author: true,
+        },
+      });
     },
   },
+  // ----------------- Mutations ----------------- //
   Mutation: {
+    // ---> USERS
     // TODO: User context instead
     createUser: async (_, { email }) => {
       try {
@@ -401,107 +445,6 @@ export const resolvers = {
       } catch (error) {
         console.error(error);
       }
-    },
-    createDraft: async (
-      _,
-      { slug, title, featuredImage, content, categories, tags, submitted },
-      { userEmail }
-    ) => {
-      if (!userEmail) throw new AuthenticationError("User must be logged in");
-      return await prisma.post.create({
-        data: {
-          slug: slug,
-          title: title,
-          featuredImage: featuredImage,
-          content: content,
-          excerpt: getExcerpt(content),
-          wordCount: getWordCount(content),
-          categories: {
-            connect: categories?.map((categoryName) => ({
-              name: categoryName.toLowerCase().split(" ").join("_"),
-            })),
-          },
-          tags: tags,
-          author: { connect: { email: userEmail } },
-          submitted: submitted,
-          published: false,
-        },
-      });
-    },
-    createComment: async (_, { content, postId }, { userEmail }) => {
-      if (!userEmail) throw new AuthenticationError("User must be logged in");
-      return await prisma.comment.create({
-        data: {
-          content: content,
-          post: {
-            connect: {
-              id: postId,
-            },
-          },
-          author: {
-            connect: {
-              email: userEmail,
-            },
-          },
-        },
-        include: {
-          author: true,
-        },
-      });
-    },
-    deleteComment: async (_, { id }, { userEmail }) => {
-      if (!userEmail) throw new AuthenticationError("User must be logged in");
-      const res = await prisma.comment.findUnique({
-        where: {
-          id: 17,
-        },
-        select: {
-          author: {
-            select: {
-              email: true,
-            },
-          },
-        },
-      });
-
-      if (res && res?.author.email !== userEmail) {
-        throw new AuthenticationError(
-          "User's email does not match comment's author"
-        );
-      }
-
-      return await prisma.comment.delete({
-        where: {
-          id,
-        },
-      });
-    },
-    updatePost: async (
-      _,
-      { id, slug, title, featuredImage, content, categories, tags },
-      { userEmail }
-    ) => {
-      if (!userEmail) throw new AuthenticationError("User must be logged in");
-      return await prisma.post.update({
-        where: {
-          id: id,
-        },
-        data: {
-          slug: slug,
-          title: title,
-          featuredImage: featuredImage,
-          content: content,
-          excerpt: content ? getExcerpt(content) : undefined,
-          wordCount: content ? getWordCount(content) : undefined,
-          categories: {
-            set: categories.map((category) => ({ name: category })),
-          },
-          tags: tags,
-        },
-        include: {
-          categories: true,
-        },
-      });
     },
     updateUser: async (
       _,
@@ -521,67 +464,7 @@ export const resolvers = {
         },
       });
     },
-    changePublished: async (_, { id, published }, { userEmail }) => {
-      // TODO: check if user is admin
-      if (!userEmail) throw new AuthenticationError("User must be logged in");
-      return await prisma.post.update({
-        where: {
-          id,
-        },
-        data: {
-          published,
-        },
-      });
-    },
-    changeSubmitted: async (_, { id, submitted }, { userEmail }) => {
-      if (!userEmail) throw new AuthenticationError("User must be logged in");
-      return await prisma.post.update({
-        where: {
-          id,
-        },
-        data: {
-          submitted,
-        },
-      });
-    },
-    likePost: async (_, { id }, { userEmail }) => {
-      if (!userEmail) throw new AuthenticationError("User must be logged in");
-      return await prisma.post.update({
-        where: {
-          id,
-        },
-        include: {
-          likedBy: true,
-          _count: {
-            select: { likedBy: true },
-          },
-        },
-        data: {
-          likedBy: {
-            connect: { email: userEmail },
-          },
-        },
-      });
-    },
-    unlikePost: async (_, { id }, { userEmail }) => {
-      if (!userEmail) throw new AuthenticationError("User must be logged in");
-      return await prisma.post.update({
-        where: {
-          id,
-        },
-        include: {
-          likedBy: true,
-          _count: {
-            select: { likedBy: true },
-          },
-        },
-        data: {
-          likedBy: {
-            disconnect: { email: userEmail },
-          },
-        },
-      });
-    },
+
     followUser: async (_, { userId }, { userEmail }) => {
       if (!userEmail) throw new AuthenticationError("User must be logged in");
       return await prisma.user.update({
@@ -618,10 +501,245 @@ export const resolvers = {
         },
       });
     },
+    // ---> POSTS
+    createDraft: async (
+      _,
+      { slug, title, featuredImage, content, categories, tags, submitted },
+      { userEmail }
+    ) => {
+      if (!userEmail) throw new AuthenticationError("User must be logged in");
+      return await prisma.post.create({
+        data: {
+          slug: slug,
+          title: title,
+          featuredImage: featuredImage,
+          content: content,
+          excerpt: getExcerpt(content),
+          wordCount: getWordCount(content),
+          categories: {
+            connect: categories?.map((categoryName) => ({
+              name: categoryName.toLowerCase().split(" ").join("_"),
+            })),
+          },
+          tags: tags,
+          author: { connect: { email: userEmail } },
+          submitted: submitted,
+          published: false,
+        },
+      });
+    },
+    updatePost: async (
+      _,
+      { id, slug, title, featuredImage, content, categories, tags },
+      { userEmail }
+    ) => {
+      if (!userEmail) throw new AuthenticationError("User must be logged in");
+      return await prisma.post.update({
+        where: {
+          id: id,
+        },
+        data: {
+          slug: slug,
+          title: title,
+          featuredImage: featuredImage,
+          content: content,
+          excerpt: content ? getExcerpt(content) : undefined,
+          wordCount: content ? getWordCount(content) : undefined,
+          categories: {
+            set: categories.map((category) => ({ name: category })),
+          },
+          tags: tags,
+        },
+        include: {
+          categories: true,
+        },
+      });
+    },
+    changePublished: async (_, { id, published }, { userEmail }) => {
+      // TODO: check if user is admin
+      if (!userEmail) throw new AuthenticationError("User must be logged in");
+      return await prisma.post.update({
+        where: {
+          id,
+        },
+        data: {
+          published,
+        },
+      });
+    },
+    changeSubmitted: async (_, { id, submitted }, { userEmail }) => {
+      if (!userEmail) throw new AuthenticationError("User must be logged in");
+      return await prisma.post.update({
+        where: {
+          id,
+        },
+        data: {
+          submitted,
+        },
+      });
+    },
+    likePost: async (_, { id }, { userEmail }) => {
+      if (!userEmail) throw new AuthenticationError("User must be logged in");
+      const res = await prisma.post.update({
+        where: {
+          id,
+        },
+        include: {
+          likedBy: true,
+        },
+        data: {
+          likedBy: {
+            connect: { email: userEmail },
+          },
+        },
+      });
+      return {
+        id: res.id,
+        likedBy: res.likedBy,
+      };
+    },
+    unlikePost: async (_, { id }, { userEmail }) => {
+      if (!userEmail) throw new AuthenticationError("User must be logged in");
+      const res = await prisma.post.update({
+        where: {
+          id,
+        },
+        include: {
+          likedBy: true,
+        },
+        data: {
+          likedBy: {
+            disconnect: { email: userEmail },
+          },
+        },
+      });
+      return {
+        id: res.id,
+        likedBy: res.likedBy,
+      };
+    },
+    // ---> COMMENTS
+    createComment: async (
+      _,
+      { content, postId, parentCommentId },
+      { userEmail }
+    ) => {
+      if (!userEmail) throw new AuthenticationError("User must be logged in");
+
+      let connectToParentComment: any = {};
+      if (parentCommentId) {
+        connectToParentComment = {
+          parentComment: {
+            connect: {
+              id: parentCommentId,
+            },
+          },
+        };
+      }
+
+      return await prisma.comment.create({
+        data: {
+          content: content,
+          post: {
+            connect: {
+              id: postId,
+            },
+          },
+          author: {
+            connect: {
+              email: userEmail,
+            },
+          },
+          ...connectToParentComment,
+        },
+        include: {
+          author: true,
+          parentComment: {
+            include: {
+              parentComment: true,
+            },
+          },
+        },
+      });
+    },
+    deleteComment: async (_, { id }, { userEmail }) => {
+      if (!userEmail) throw new AuthenticationError("User must be logged in");
+      const res = await prisma.comment.findUnique({
+        where: {
+          id: 17,
+        },
+        select: {
+          author: {
+            select: {
+              email: true,
+              role: true,
+            },
+          },
+        },
+      });
+
+      if (
+        res &&
+        res?.author.role !== "ADMIN" &&
+        res?.author.email !== userEmail
+      ) {
+        throw new AuthenticationError(
+          "Not authenticated to delete this comment"
+        );
+      }
+
+      return await prisma.comment.delete({
+        where: {
+          id,
+        },
+      });
+    },
+    likeComment: async (_, { id }, { userEmail }) => {
+      if (!userEmail) throw new AuthenticationError("User must be logged in");
+      const res = await prisma.comment.update({
+        where: {
+          id: id,
+        },
+        data: {
+          likedBy: {
+            connect: {
+              email: userEmail,
+            },
+          },
+        },
+        include: {
+          likedBy: true,
+        },
+      });
+      return {
+        id: res.id,
+        likedBy: res.likedBy,
+      };
+    },
+    unlikeComment: async (_, { id }, { userEmail }) => {
+      if (!userEmail) throw new AuthenticationError("User must be logged in");
+      const res = await prisma.comment.update({
+        where: {
+          id: id,
+        },
+        data: {
+          likedBy: {
+            disconnect: {
+              email: userEmail,
+            },
+          },
+        },
+        include: {
+          likedBy: true,
+        },
+      });
+      return {
+        id: res.id,
+        likedBy: res.likedBy,
+      };
+    },
     signUpload: async (_, __, { userEmail }) => {
       if (!userEmail) throw new AuthenticationError("User must be logged in");
-      const isSignedIn = await checkAuth(userEmail);
-      if (!isSignedIn) return;
       const signedDataRes = await signUploadForm();
       return signedDataRes;
     },

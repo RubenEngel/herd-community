@@ -10,7 +10,7 @@ import {
   GET_POST,
   GET_ALL_POST_SLUGS,
   LIKE_POST,
-  LIKED_BY,
+  POST_LIKED_BY,
   UNLIKE_POST,
 } from "../../lib/gql-queries";
 import { addApolloState, initializeApollo } from "../../lib/apollo-client";
@@ -22,13 +22,13 @@ import formatString from "../../lib/format-string";
 import PostInteractions from "../../components/header/post-interactions";
 import { useMutation, useQuery } from "@apollo/client";
 import ProgressBar from "../../components/progress-bar";
-import UserCard from "../../components/user-card";
+import UserCard from "../../components/users/user-card";
 import toast from "react-hot-toast";
 import Modal from "../../components/modal";
 import { AuthContext } from "../../components/context/auth-provider";
 import { CategoryContext } from "../../components/context/category-provider";
 import { authHeaders } from "../../lib/supabase";
-import Comments from "../../components/comments";
+import Comments from "../../components/comments/comment-list";
 import LikedByUserList from "../../components/users/liked-by-user-list";
 
 interface PostProps {
@@ -75,7 +75,7 @@ export default function PostPage({ post }: PostProps) {
   });
 
   const { data: likedByData, loading: likedByDataLoading } = useQuery(
-    LIKED_BY,
+    POST_LIKED_BY,
     {
       variables: {
         id: post.id,
@@ -88,13 +88,15 @@ export default function PostPage({ post }: PostProps) {
     lastName: string;
     id: number;
     username: string;
+    imageUrl: string;
   }[];
 
   const [likedBy, setLikedBy] = useState<LikedBy>();
 
   useEffect(() => {
     if (likedByData) {
-      const likedByArray: LikedBy = likedByData.likedBy.likedBy;
+      console.log(likedByData);
+      const likedByArray: LikedBy = likedByData.postLikedBy;
       setLikedBy(likedByArray);
       if (userData) {
         setIsLiked(
@@ -110,8 +112,8 @@ export default function PostPage({ post }: PostProps) {
     if (!userData) return setShowSignIn(true);
     if (!isLiked) {
       try {
-        const likeRes = await likePost();
-        const likedByArray: LikedBy = likeRes.data.likePost.likedBy;
+        const res = await likePost();
+        const likedByArray: LikedBy = res.data.likePost.likedBy;
         setLikedBy(likedByArray);
         setIsLiked(likedByArray.some((user) => user.id === userData.id));
       } catch (error) {
@@ -207,7 +209,9 @@ export default function PostPage({ post }: PostProps) {
               {showComments && (
                 <Modal
                   key="comments-modal"
-                  title="Comments"
+                  title={`Comments ${
+                    post._count.comments ? "(" + post._count.comments + ")" : ""
+                  }`}
                   setModalOpen={setShowComments}
                 >
                   <Comments postId={post.id} />
@@ -216,7 +220,9 @@ export default function PostPage({ post }: PostProps) {
               {showLikedBy && (
                 <Modal
                   key={"liked-by-modal"}
-                  title="Liked By"
+                  title={`Liked By ${
+                    likedBy?.length ? "(" + likedBy?.length + ")" : ""
+                  }`}
                   setModalOpen={setShowLikedBy}
                 >
                   <LikedByUserList postId={post.id} />

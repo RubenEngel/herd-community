@@ -415,26 +415,26 @@ const EditPost = () => {
                   <h4>Save Draft</h4>
                 </AnimatedButton>
               )}
-              {!existingPostData?.post.submitted &&
-              !existingPostData?.post.published ? (
-                <AnimatedButton
-                  disabled={!dataComplete}
-                  variant="green"
-                  className="mx-2 my-2"
-                  onClick={() => handleSubmit()}
-                >
-                  <h4>Submit</h4>
-                </AnimatedButton>
-              ) : (
-                <AnimatedButton
-                  disabled={!dataComplete}
-                  variant="red"
-                  className="mx-2 my-2"
-                  onClick={() => handleUnsubmit()}
-                >
-                  <h4>Unsubmit</h4>
-                </AnimatedButton>
-              )}
+              {!existingPostData?.post.published &&
+                (!existingPostData?.post.submitted ? (
+                  <AnimatedButton
+                    disabled={!dataComplete}
+                    variant="green"
+                    className="mx-2 my-2"
+                    onClick={() => handleSubmit()}
+                  >
+                    <h4>Submit</h4>
+                  </AnimatedButton>
+                ) : (
+                  <AnimatedButton
+                    disabled={!dataComplete}
+                    variant="red"
+                    className="mx-2 my-2"
+                    onClick={() => handleUnsubmit()}
+                  >
+                    <h4>Unsubmit</h4>
+                  </AnimatedButton>
+                ))}
               {String(userData?.role) === "ADMIN" &&
               existingPostData?.post?.published ? (
                 <AnimatedButton

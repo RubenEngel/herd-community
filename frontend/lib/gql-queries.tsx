@@ -208,20 +208,35 @@ export const GET_POSTS_WITH_EXCERPT = gql`
   }
 `;
 
-export const GET_COMMENTS = gql`
-  query Query($postId: Int, $authorId: Int) {
-    comments(postId: $postId, authorId: $authorId) {
+const CORE_COMMENT_FIELDS = gql`
+  fragment CoreCommentFields on Comment {
+    id
+    postId
+    author {
       id
-      postId
-      author {
-        id
-        firstName
-        lastName
-        username
-        imageUrl
+      firstName
+      lastName
+      username
+      imageUrl
+    }
+    content
+    createdAt
+    parentCommentId
+  }
+`;
+
+export const GET_COMMENTS_FOR_POST = gql`
+  ${CORE_COMMENT_FIELDS}
+  query Query($postId: Int) {
+    # can also query by author
+    comments(postId: $postId) {
+      ...CoreCommentFields
+      childComments {
+        ...CoreCommentFields
+        childComments {
+          ...CoreCommentFields
+        }
       }
-      content
-      createdAt
     }
   }
 `;
@@ -256,15 +271,25 @@ export const GET_CATEGORIES = gql`
   }
 `;
 
-export const LIKED_BY = gql`
-  query LikedBy($id: Int) {
-    likedBy(id: $id) {
-      likedBy {
-        id
-        firstName
-        lastName
-        username
-      }
+export const POST_LIKED_BY = gql`
+  query PostLikedBy($id: Int) {
+    postLikedBy(id: $id) {
+      id
+      firstName
+      lastName
+      username
+    }
+  }
+`;
+
+export const COMMENT_LIKED_BY = gql`
+  query CommentLikedBy($id: Int!) {
+    commentLikedBy(id: $id) {
+      id
+      username
+      imageUrl
+      firstName
+      lastName
     }
   }
 `;
@@ -297,19 +322,24 @@ export const CREATE_DRAFT = gql`
 `;
 
 export const CREATE_COMMENT = gql`
-  mutation CreateComment($content: String!, $postId: Int!) {
-    createComment(content: $content, postId: $postId) {
-      id
-      author {
+  ${CORE_COMMENT_FIELDS}
+  mutation CreateComment(
+    $content: String!
+    $postId: Int!
+    $parentCommentId: Int
+  ) {
+    createComment(
+      content: $content
+      postId: $postId
+      parentCommentId: $parentCommentId
+    ) {
+      ...CoreCommentFields
+      parentComment {
         id
-        username
-        firstName
-        lastName
-        imageUrl
+        parentComment {
+          id
+        }
       }
-      createdAt
-      content
-      postId
     }
   }
 `;
@@ -371,14 +401,6 @@ export const UPDATE_USER_DETAILS = gql`
   }
 `;
 
-export const DELETE_COMMENT = gql`
-  mutation Mutation($deleteCommentId: Int!) {
-    deleteComment(id: $deleteCommentId) {
-      id
-    }
-  }
-`;
-
 export const SIGN_CLOUDINARY_UPLOAD = gql`
   mutation {
     signUpload {
@@ -402,7 +424,7 @@ export const ADD_USER = gql`
 `;
 
 export const FOLLOW_USER = gql`
-  mutation FollowUser($userId: Int) {
+  mutation FollowUser($userId: Int!) {
     followUser(userId: $userId) {
       followers {
         id
@@ -412,7 +434,7 @@ export const FOLLOW_USER = gql`
 `;
 
 export const UNFOLLOW_USER = gql`
-  mutation UnfollowUser($userId: Int) {
+  mutation UnfollowUser($userId: Int!) {
     unfollowUser(userId: $userId) {
       followers {
         id
@@ -432,7 +454,7 @@ export const CHANGE_PUBLISHED = gql`
 `;
 
 export const CHANGE_SUBMITTED = gql`
-  mutation Mutation($id: Int!, $submitted: Boolean!) {
+  mutation ChangeSubmitted($id: Int!, $submitted: Boolean!) {
     changeSubmitted(id: $id, submitted: $submitted) {
       id
       slug
@@ -444,11 +466,9 @@ export const CHANGE_SUBMITTED = gql`
 export const LIKE_POST = gql`
   mutation LikePost($id: Int!) {
     likePost(id: $id) {
+      id
       likedBy {
         id
-      }
-      _count {
-        likedBy
       }
     }
   }
@@ -457,12 +477,48 @@ export const LIKE_POST = gql`
 export const UNLIKE_POST = gql`
   mutation UnlikePost($id: Int!) {
     unlikePost(id: $id) {
+      id
       likedBy {
         id
       }
-      _count {
-        likedBy
+    }
+  }
+`;
+
+export const LIKE_COMMENT = gql`
+  mutation LikeComment($likeCommentId: Int!) {
+    likeComment(id: $likeCommentId) {
+      id
+      likedBy {
+        id
+        username
+        firstName
+        lastName
+        imageUrl
       }
+    }
+  }
+`;
+
+export const UNLIKE_COMMENT = gql`
+  mutation UnlikeComment($unlikeCommentId: Int!) {
+    unlikeComment(id: $unlikeCommentId) {
+      id
+      likedBy {
+        id
+        username
+        firstName
+        lastName
+        imageUrl
+      }
+    }
+  }
+`;
+
+export const DELETE_COMMENT = gql`
+  mutation DeleteComment($deleteCommentId: Int!) {
+    deleteComment(id: $deleteCommentId) {
+      id
     }
   }
 `;

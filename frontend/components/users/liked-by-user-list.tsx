@@ -1,11 +1,11 @@
 import { useQuery } from "@apollo/client";
 import React from "react";
-import { LIKED_BY } from "../../lib/gql-queries";
+import { POST_LIKED_BY } from "../../lib/gql-queries";
 import Loading from "../loading";
 import UserList from "./user-list";
 
 const LikedByUserList = ({ postId }: { postId: number }) => {
-  const { data: likedByData, loading } = useQuery(LIKED_BY, {
+  const { data: likedByData, loading } = useQuery(POST_LIKED_BY, {
     variables: {
       id: postId,
     },
@@ -22,7 +22,7 @@ const LikedByUserList = ({ postId }: { postId: number }) => {
 
   return (
     <>
-      <UserList users={likedByData?.likedBy?.likedBy} />
+      <UserList users={likedByData?.postLikedBy} />
     </>
   );
 };

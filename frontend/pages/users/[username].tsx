@@ -12,7 +12,7 @@ import { AnimatePresence } from "framer-motion";
 import Modal from "../../components/modal";
 import PostGridDataProvider from "../../components/post-grid/post-grid.data-provider";
 import LikedPostGrid from "../../components/post-grid/liked-post-grid";
-import UserCard from "../../components/user-card";
+import UserCard from "../../components/users/user-card";
 import FollowersUserList from "../../components/users/followers-user-list";
 import FollowingUserList from "../../components/users/following-user-list";
 
