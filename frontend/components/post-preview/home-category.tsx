@@ -26,6 +26,10 @@ export default function HomeCategory({
           <motion.button
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
+            transition={{
+              type: "spring",
+              bounce: 0,
+            }}
             className="bg-primary text-secondary mx-auto flex w-full items-center justify-center rounded-xl p-1 font-bold lg:p-2"
             onClick={(e) => setCategory(e.currentTarget.textContent)}
           >

@@ -106,6 +106,7 @@ const CORE_POST_FIELDS = gql`
     id
     slug
     published
+    submitted
     title
     createdAt
     featuredImage
@@ -158,6 +159,7 @@ export const GET_POSTS = gql`
   ${CORE_POST_FIELDS}
   query GetPosts(
     $published: Boolean
+    $submitted: Boolean
     $category: String
     $limit: Int
     $startAfter: Int
@@ -166,6 +168,7 @@ export const GET_POSTS = gql`
   ) {
     posts(
       published: $published
+      submitted: $submitted
       category: $category
       limit: $limit
       startAfter: $startAfter
@@ -268,24 +271,24 @@ export const LIKED_BY = gql`
 
 // --------------- Mutations
 
-export const ADD_POST = gql`
+export const CREATE_DRAFT = gql`
   mutation CreateDraft(
-    $authorEmail: String
     $slug: String!
     $title: String!
     $content: String!
     $tags: [String]
     $categories: [String]!
     $featuredImage: String
+    $submitted: Boolean
   ) {
     createDraft(
       slug: $slug
       title: $title
       content: $content
       tags: $tags
-      authorEmail: $authorEmail
       categories: $categories
       featuredImage: $featuredImage
+      submitted: $submitted
     ) {
       id
       slug
@@ -422,7 +425,18 @@ export const CHANGE_PUBLISHED = gql`
   mutation ChangePublished($id: Int!, $published: Boolean!) {
     changePublished(id: $id, published: $published) {
       id
+      slug
       published
+    }
+  }
+`;
+
+export const CHANGE_SUBMITTED = gql`
+  mutation Mutation($id: Int!, $submitted: Boolean!) {
+    changeSubmitted(id: $id, submitted: $submitted) {
+      id
+      slug
+      submitted
     }
   }
 `;

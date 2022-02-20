@@ -2,6 +2,7 @@ import { useMutation } from "@apollo/client";
 import { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { UPDATE_USER_DETAILS } from "../lib/gql-queries";
+import { useApolloToast } from "../lib/hooks/use-apollo-toast";
 import { authHeaders } from "../lib/supabase";
 import { PrismaUser } from "../lib/types";
 import AnimatedButton from "./animated-button";
@@ -42,9 +43,14 @@ const OverlayDetailEditor: React.FC<{}> = () => {
     }
   }, [editedData]);
 
-  const [updateUserDetails, { loading }] = useMutation(UPDATE_USER_DETAILS, {
-    context: authHeaders(),
-  });
+  const [updateUserDetails, { data, loading, error }] = useMutation(
+    UPDATE_USER_DETAILS,
+    {
+      context: authHeaders(),
+    }
+  );
+
+  useApolloToast(data, loading, error);
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -60,18 +66,13 @@ const OverlayDetailEditor: React.FC<{}> = () => {
   };
 
   const handleSaveChanges = async () => {
-    try {
-      const updateDetailsResponse = await updateUserDetails({
-        variables: {
-          ...editedData,
-        },
-      });
-      setUserData({ ...userData, ...updateDetailsResponse?.data?.updateUser });
-      setIsEdited(false);
-      toast.success("Updated");
-    } catch (error) {
-      toast.error("Couldn't update");
-    }
+    const updateDetailsResponse = await updateUserDetails({
+      variables: {
+        ...editedData,
+      },
+    });
+    setUserData({ ...userData, ...updateDetailsResponse?.data?.updateUser });
+    setIsEdited(false);
   };
 
   return (

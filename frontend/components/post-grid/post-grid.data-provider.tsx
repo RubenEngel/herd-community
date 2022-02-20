@@ -5,27 +5,30 @@ import Loading from "../loading";
 import PostGrid from "./post-grid";
 
 export default function PostGridDataProvider({
+  animate,
+  authorId,
+  category,
+  likedByUserId,
+  limit,
   published,
   startLoad = true,
-  category,
-  limit,
-  authorId,
-  likedByUserId,
-  animate,
+  submitted,
 }: {
   animate?: boolean;
+  authorId?: number;
+  category?: string;
+  likedByUserId?: number;
   limit: number;
   published: boolean;
   startLoad?: boolean;
-  category?: string;
-  authorId?: number;
-  likedByUserId?: number;
+  submitted?: boolean;
 }) {
   const [getPosts, { loading, error, data, fetchMore }] = useLazyQuery(
     GET_POSTS,
     {
       variables: {
         published: published,
+        submitted: submitted,
         limit: limit,
         category: category,
         startAfter: null,

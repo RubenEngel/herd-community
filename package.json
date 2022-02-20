@@ -10,8 +10,7 @@
     "deploy:api": "git subtree push --prefix api heroku master",
     "deploy:app": "vercel --prod",
     "playground": "cd api/lib && ts-node playground.ts",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "codegen": "graphql-codegen --config codegen.yml"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",

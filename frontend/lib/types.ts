@@ -38,6 +38,7 @@ export interface Post {
   id: number;
   slug: string;
   published: boolean;
+  submitted: boolean;
   viewCount: number;
   createdAt: Date;
   updatedAt: Date;

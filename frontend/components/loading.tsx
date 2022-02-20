@@ -23,7 +23,7 @@ const Loading = ({
     <div
       className={`${
         color === "primary" ? "text-primary" : "text-secondary"
-      } text-center flex justify-center`}
+      } flex justify-center text-center`}
     >
       {brand.split("").map((letter, i) => (
         <motion.span

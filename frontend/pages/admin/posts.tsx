@@ -1,9 +1,10 @@
 import React, { useContext } from "react";
 import { AuthContext } from "../../components/context/auth-provider";
+import HeadingBar from "../../components/heading-bar";
 import PostGridDataProvider from "../../components/post-grid/post-grid.data-provider";
 import { Role } from "../../lib/types";
 
-function Admin() {
+function AdminPosts() {
   const { userData } = useContext(AuthContext);
 
   if (userData.role !== Role.ADMIN) {
@@ -16,11 +17,10 @@ function Admin() {
 
   return (
     <>
-      <div className="bg-primary text-secondary mb-6 rounded-xl p-1 text-center font-bold lg:mt-6 lg:p-2 lg:px-56">
-        <h3 className="uppercase">Unpublished Posts</h3>
-      </div>
+      <HeadingBar>Submitted Posts</HeadingBar>
       <PostGridDataProvider
         published={false}
+        submitted={true}
         startLoad
         category={"all"}
         limit={6}
@@ -29,4 +29,4 @@ function Admin() {
   );
 }
 
-export default Admin;
+export default AdminPosts;

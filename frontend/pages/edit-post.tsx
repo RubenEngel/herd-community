@@ -1,14 +1,17 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useMemo } from "react";
 import dynamic from "next/dynamic";
 import SubmitIntro from "../components/submit-intro";
-import { GET_CATEGORIES, GET_POST } from "../lib/gql-queries";
+import { CHANGE_SUBMITTED, GET_CATEGORIES, GET_POST } from "../lib/gql-queries";
 import { useQuery, useMutation } from "@apollo/client";
 import formatString from "../lib/format-string";
 import formatSlug from "../lib/format-slug";
-import toast from "react-hot-toast";
 import PostBody from "../components/post-content/post-body";
 import PostHeader from "../components/post-content/post-header";
-import { ADD_POST, UPDATE_POST, CHANGE_PUBLISHED } from "../lib/gql-queries";
+import {
+  CREATE_DRAFT,
+  UPDATE_POST,
+  CHANGE_PUBLISHED,
+} from "../lib/gql-queries";
 import Tags from "../components/post-content/tags";
 import { useRouter } from "next/router";
 import { Post } from "../lib/types";
@@ -17,6 +20,8 @@ import AnimatedButton from "../components/animated-button";
 import { AuthContext } from "../components/context/auth-provider";
 import { authHeaders } from "../lib/supabase";
 import InputBox, { InputBoxVariant } from "../components/input-box";
+import { useApolloToast } from "../lib/hooks/use-apollo-toast";
+import HeadingBar from "../components/heading-bar";
 
 // TODO: Check if user admin again
 
@@ -25,10 +30,6 @@ const Editor = dynamic(() => import("../components/ck-editor"), {
 });
 
 const SubmitHeading = ({ children }) => <h2 className="mb-2">{children}</h2>;
-
-// const InputBox = (props) => (
-//   <input {...props} className="mb-8 border-2 border-gray-300 p-2 text-lg" />
-// );
 
 export interface SubmitPostData {
   title: string;
@@ -50,17 +51,14 @@ const EditPost = () => {
   const router = useRouter();
 
   // Get exisitng post data to edit
-  const { loading: existingPostDataLoading, data: existingPostData } = useQuery(
-    GET_POST,
-    {
-      variables: {
-        slug: router.query?.slug,
-      },
-    }
-  );
+  const { data: existingPostData } = useQuery(GET_POST, {
+    variables: {
+      slug: router.query?.slug,
+    },
+  });
 
   // Context
-  const { userAuth, userData } = useContext(AuthContext);
+  const { userData } = useContext(AuthContext);
   // State
   const [ready, setReady] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
@@ -103,7 +101,7 @@ const EditPost = () => {
     }
   }, [userData]);
 
-  // If exisitng post data is not loaded into initial state, update state data when data comes in
+  // If existing post data is not loaded into initial state, update state data when data comes in
   useEffect(() => {
     if (existingPostData) {
       const dbPostData: Post = existingPostData.post;
@@ -116,32 +114,46 @@ const EditPost = () => {
       });
       setEditPostId(dbPostData.id);
     }
-  }, [existingPostDataLoading]);
+  }, [existingPostData]);
 
-  // ---------- Post submission
+  // ---------- New draft create
   const [
-    submitPost,
-    { data: submitData, error: submitError, loading: submitLoading },
-  ] = useMutation(ADD_POST, {
+    createDraft,
+    {
+      data: createDraftData,
+      error: createDraftError,
+      loading: createDraftLoading,
+    },
+  ] = useMutation(CREATE_DRAFT, {
     context: authHeaders(),
   });
 
-  // When submit is pressed, use mutation
-  const handleSubmit = () => {
-    submitPost({
+  useApolloToast(createDraftData, createDraftLoading, createDraftError);
+
+  const handleCreateDraft = () => {
+    createDraft({
       variables: {
         ...postData,
         slug: formatSlug(postData.title),
-        authorEmail: userAuth.email,
       },
     });
   };
+
+  useEffect(() => {
+    if (createDraftData) {
+      const slug = createDraftData?.createDraft?.slug;
+      localStorage.setItem("postData", JSON.stringify(emptyPostData));
+      router.push({ pathname: "/edit-post", query: `slug=${slug}` });
+    }
+  }, [createDraftData]);
 
   // ----------- Post editing
   const [editPost, { data: editData, error: editError, loading: editLoading }] =
     useMutation(UPDATE_POST, {
       context: authHeaders(),
     });
+
+  useApolloToast(editData, editLoading, editError);
 
   const handleEdit = () => {
     editPost({
@@ -161,6 +173,8 @@ const EditPost = () => {
     context: authHeaders(),
   });
 
+  useApolloToast(publishedData, publishedLoading, publishedError);
+
   const handleChangePublished = (status: boolean) => {
     changePublished({
       variables: {
@@ -170,17 +184,43 @@ const EditPost = () => {
     });
   };
 
-  // Handle notifications on submit mutation status
-  useEffect(() => {
-    if (editError || submitError || publishedError) {
-      toast.error("Error");
+  // Handle change of submitted status
+  const [
+    changeSubmitted,
+    { data: submittedData, loading: submittedLoading, error: submittedError },
+  ] = useMutation(CHANGE_SUBMITTED, {
+    context: authHeaders(),
+  });
+
+  useApolloToast(submittedData, submittedLoading, submittedError);
+
+  const handleSubmit = () => {
+    if (existingPostData) {
+      changeSubmitted({
+        variables: {
+          id: Number(editPostId),
+          submitted: true,
+        },
+      });
+    } else {
+      createDraft({
+        variables: {
+          ...postData,
+          slug: formatSlug(postData.title),
+          submitted: true,
+        },
+      });
     }
-    if (editData || submitData || publishedData) {
-      toast.success("Success");
-      localStorage.setItem("postData", JSON.stringify(emptyPostData));
-      router.push(`/posts/${formatSlug(postData.title)}`);
-    }
-  }, [editLoading, submitLoading, publishedLoading]);
+  };
+
+  const handleUnsubmit = () => {
+    changeSubmitted({
+      variables: {
+        id: Number(editPostId),
+        submitted: false,
+      },
+    });
+  };
 
   // Store progress in local storage
   useEffect(() => {
@@ -203,8 +243,9 @@ const EditPost = () => {
 
   let allCategories: string[];
 
-  if (categoryData)
+  if (categoryData) {
     allCategories = categoryData.categories?.map((category) => category.name);
+  }
 
   // Add / remove categories component
   const CategorySelect = ({ categoryName }: { categoryName: string }) => {
@@ -240,9 +281,7 @@ const EditPost = () => {
   // Main component
   return (
     <div className="mx-auto max-w-screen-sm">
-      <div className="bg-primary text-secondary mx-auto mb-10 flex w-full items-center justify-center rounded-xl p-1 font-bold lg:p-2">
-        <h1 className="text-bold text-center text-lg uppercase">Post Editor</h1>
-      </div>
+      <HeadingBar>Post Editor</HeadingBar>
       <AnimatePresence
         onExitComplete={() => window.scrollTo(0, 0)}
         exitBeforeEnter
@@ -286,7 +325,7 @@ const EditPost = () => {
               {postData.tags?.map((tagName, index) => (
                 <AnimatedButton
                   key={tagName + index}
-                  onClick={(e) =>
+                  onClick={() =>
                     setPostData({
                       ...postData,
                       tags: postData.tags.filter((tag) => tag !== tagName),
@@ -332,7 +371,7 @@ const EditPost = () => {
                 setPostData({ ...postData, featuredImage: e.target.value })
               }
               type="url"
-              className="mb-8"
+              className="mb-8 w-full"
             />
             {postData.featuredImage && (
               <img
@@ -348,29 +387,6 @@ const EditPost = () => {
             </div>
             {/* Mutation and preview buttons */}
             <div className="mx-auto mb-6 flex flex-row flex-wrap justify-center">
-              {existingPostData?.post?.published && (
-                <AnimatedButton
-                  disabled={!isEditable}
-                  variant="red-outline"
-                  className="mx-2 my-2"
-                  onClick={() => handleChangePublished(false)}
-                >
-                  <h4>Unpublish</h4>
-                </AnimatedButton>
-              )}
-              {String(userData?.role) === "ADMIN" &&
-                existingPostData?.post.published === false && (
-                  <AnimatedButton
-                    disabled={!isEditable}
-                    variant="green-outline"
-                    className="mx-2 my-2"
-                    onClick={() => {
-                      handleChangePublished(true);
-                    }}
-                  >
-                    <h4>Publish</h4>
-                  </AnimatedButton>
-                )}
               {/* Preview */}
               <AnimatedButton
                 disabled={!isEditable}
@@ -380,28 +396,66 @@ const EditPost = () => {
               >
                 <h4>{showPreview ? "Hide preview" : "Show preview"}</h4>
               </AnimatedButton>
-              {/* <AnimatedButton>
-                <h4>Save</h4>
-              </AnimatedButton> */}
-              <AnimatedButton
-                onClick={() => {
-                  if (router.query.slug) {
-                    handleEdit();
-                  } else {
-                    handleSubmit();
-                  }
-                }}
-                disabled={!dataComplete || !isEditable}
-                variant="green"
-                className="mx-2 my-2"
-              >
-                <h4>
-                  {router.query.slug ? "Submit Edits" : "Submit Post"}
-                  <p className="text-xs uppercase">
-                    {!dataComplete && "(Incomplete Fields)"}
-                  </p>
-                </h4>
-              </AnimatedButton>
+              {existingPostData ? (
+                <AnimatedButton
+                  disabled={!dataComplete || !isEditable}
+                  variant="green-outline"
+                  className="mx-2 my-2"
+                  onClick={() => handleEdit()}
+                >
+                  <h4>Save Edits</h4>
+                </AnimatedButton>
+              ) : (
+                <AnimatedButton
+                  disabled={!dataComplete}
+                  variant="green-outline"
+                  className="mx-2 my-2"
+                  onClick={() => handleCreateDraft()}
+                >
+                  <h4>Save Draft</h4>
+                </AnimatedButton>
+              )}
+              {!existingPostData?.post.submitted &&
+              !existingPostData?.post.published ? (
+                <AnimatedButton
+                  disabled={!dataComplete}
+                  variant="green"
+                  className="mx-2 my-2"
+                  onClick={() => handleSubmit()}
+                >
+                  <h4>Submit</h4>
+                </AnimatedButton>
+              ) : (
+                <AnimatedButton
+                  disabled={!dataComplete}
+                  variant="red"
+                  className="mx-2 my-2"
+                  onClick={() => handleUnsubmit()}
+                >
+                  <h4>Unsubmit</h4>
+                </AnimatedButton>
+              )}
+              {String(userData?.role) === "ADMIN" &&
+              existingPostData?.post?.published ? (
+                <AnimatedButton
+                  variant="red"
+                  className="mx-2 my-2"
+                  onClick={() => handleChangePublished(false)}
+                >
+                  <h4>Unpublish</h4>
+                </AnimatedButton>
+              ) : (
+                <AnimatedButton
+                  disabled={!dataComplete}
+                  variant="green"
+                  className="mx-2 my-2"
+                  onClick={() => {
+                    handleChangePublished(true);
+                  }}
+                >
+                  <h4>Publish</h4>
+                </AnimatedButton>
+              )}
             </div>
 
             {showPreview && (

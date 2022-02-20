@@ -47,11 +47,11 @@ const AnimatedButton = ({
       disabled={disabled}
       className={`${className} disabled:opacity-30 ${buttonBackground()} ${
         variant &&
-        "font-serif text-md rounded-lg px-6 py-1 hover:shadow-md transition-shadow duration-150"
+        "text-md rounded-lg px-6 py-1 font-serif transition-shadow duration-150 hover:shadow-md"
       }`}
       whileTap={{ scale: animateScale }}
       whileHover={{ scale: 1.02 }}
-      transition={{ type: "spring", duration: 0.3 }}
+      transition={{ type: "spring", bounce: 0 }}
       onClick={onClick}
     >
       {children}

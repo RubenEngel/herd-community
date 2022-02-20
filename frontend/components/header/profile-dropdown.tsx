@@ -77,6 +77,14 @@ const ProfileDropdown = ({ setIsOpen }) => {
                   variants={itemVariants}
                   onClick={() => setIsOpen(false)}
                 >
+                  <Link scroll={false} href="/drafts">
+                    Drafts
+                  </Link>
+                </NavItem>
+                <NavItem
+                  variants={itemVariants}
+                  onClick={() => setIsOpen(false)}
+                >
                   <Link scroll={false} href="/my-account">
                     Account
                   </Link>

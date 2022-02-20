@@ -145,7 +145,7 @@ const Comments = ({ postId }: { postId: number }) => {
 
   return (
     <div className="relative h-full">
-      <div className="h-full overflow-y-scroll pb-28">
+      <div className="h-full overflow-y-scroll pb-32">
         {commentsLoading && (
           <div className="flex h-full flex-col justify-center">
             <Loading />
@@ -173,7 +173,7 @@ const Comments = ({ postId }: { postId: number }) => {
         })}
       </div>
       <div
-        className={`absolute bottom-5 left-0 flex w-full items-center bg-white py-4 pl-2`}
+        className={`absolute bottom-0 left-0 flex w-full items-center bg-white pt-4 pb-10 pl-2`}
       >
         {userAuth ? (
           <>

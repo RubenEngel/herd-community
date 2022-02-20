@@ -95,11 +95,6 @@ export const typeDefs = gql`
     _count: Int
   }
 
-  type PostSearch {
-    posts: [Post]
-    _count: Int
-  }
-
   type UserSearch {
     users: [User]
     _count: Int
@@ -108,6 +103,7 @@ export const typeDefs = gql`
   type Query {
     posts(
       published: Boolean
+      submitted: Boolean
       category: String
       limit: Int
       startAfter: Int
@@ -131,9 +127,9 @@ export const typeDefs = gql`
       title: String!
       content: String!
       categories: [String]!
-      authorEmail: String # TODO: Remove this and use context
       featuredImage: String
       tags: [String]
+      submitted: Boolean
     ): Post
     createComment(content: String!, postId: Int!): Comment
     deleteComment(id: Int!): Comment

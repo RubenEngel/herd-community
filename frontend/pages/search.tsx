@@ -93,15 +93,20 @@ function Search() {
 
   return (
     <div>
-      <div className="mx-auto flex max-w-2xl items-center">
+      <div className="mx-auto flex max-w-2xl items-center pt-2">
         <div className="z-10">
           <BsSearch className="ml-3 text-xl" />
         </div>
         <input
           type="text"
-          className="-ml-9 mr-4 w-full rounded-lg border p-2 pl-11"
+          className="shadow-inner-custom -ml-9 mr-4 w-full rounded-lg border p-2 pl-11"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key.toLowerCase() === "enter") {
+              handleSearch();
+            }
+          }}
         />
         <AnimatedButton variant="primary-outline" onClick={handleSearch}>
           Search

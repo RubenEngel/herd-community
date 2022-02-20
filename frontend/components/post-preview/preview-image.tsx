@@ -33,8 +33,8 @@ const PreviewImage = ({
       {slug ? (
         <motion.button
           whileTap={{ opacity: 0.85 }}
-          whileHover={{ scale: 1.01 }}
-          transition={{ type: "spring", duration: 0.3 }}
+          whileHover={{ scale: 1.02 }}
+          transition={{ type: "spring", bounce: 0 }}
         >
           <Link scroll={false} as={`/posts/${slug}`} href="/posts/[slug]">
             <a aria-label={title}>{image}</a>
