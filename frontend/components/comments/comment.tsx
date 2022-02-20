@@ -1,9 +1,4 @@
-import {
-  ApolloQueryResult,
-  useApolloClient,
-  useMutation,
-  useQuery,
-} from "@apollo/client";
+import { ApolloQueryResult, useMutation, useQuery } from "@apollo/client";
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import {
@@ -149,7 +144,7 @@ const Comment = ({
       }
     } else {
       try {
-        const res = await unlikeComment();
+        await unlikeComment();
         await refetchLikes();
         setHasLiked(likedBy.some((user) => user.id === userData.id));
       } catch (error) {

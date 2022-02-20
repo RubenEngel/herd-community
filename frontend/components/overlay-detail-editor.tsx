@@ -1,6 +1,5 @@
 import { useMutation } from "@apollo/client";
 import { useContext, useEffect, useState } from "react";
-import toast from "react-hot-toast";
 import { UPDATE_USER_DETAILS } from "../lib/gql-queries";
 import { useApolloToast } from "../lib/hooks/use-apollo-toast";
 import { authHeaders } from "../lib/supabase";

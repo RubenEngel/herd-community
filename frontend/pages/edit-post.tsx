@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useMemo } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import dynamic from "next/dynamic";
 import SubmitIntro from "../components/submit-intro";
 import { CHANGE_SUBMITTED, GET_CATEGORIES, GET_POST } from "../lib/gql-queries";

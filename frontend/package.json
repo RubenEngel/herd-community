@@ -25,6 +25,7 @@
     "react-hot-toast": "^2.1.0",
     "react-icons": "^4.1.0",
     "react-waypoint": "^9.0.3",
+    "sharp": "^0.30.1",
     "tailwindcss": "^2.2.7",
     "typescript": "^4.3.5"
   },
