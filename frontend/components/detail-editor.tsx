@@ -9,7 +9,9 @@ import { AuthContext } from "./context/auth-provider";
 import InputBox, { InputBoxVariant } from "./input-box";
 import UserCard from "./users/user-card";
 
-const InputContainer = ({ children }) => <div className="my-3">{children}</div>;
+const DetailHeading = ({ children }) => <h3 className="mb-2">{children}</h3>;
+
+const InputContainer = ({ children }) => <div className="my-6">{children}</div>;
 
 const DetailEditor = () => {
   const { userData, setUserData } = useContext(AuthContext);
@@ -92,38 +94,41 @@ const DetailEditor = () => {
           user={{ ...userData, ...editedData }}
         />
       </div>
-      <div className="mb-8 flex flex-col items-center justify-center">
+      <div className="mx-auto flex max-w-2xl flex-col px-6">
         <InputContainer>
-          <label className="pl-2 font-serif text-sm">First Name</label>
+          <DetailHeading>First Name</DetailHeading>
           <div>
             <InputBox
               variant={InputBoxVariant.shadow}
               type="text"
               id="firstName"
+              className="w-full"
               value={editedData?.firstName}
               onChange={(e) => handleChange(e, "firstName")}
             />
           </div>
         </InputContainer>
         <InputContainer>
-          <label className="pl-2 font-serif text-sm">Last Name</label>
+          <DetailHeading>Last Name</DetailHeading>
           <div>
             <InputBox
               variant={InputBoxVariant.shadow}
               type="text"
               id="lastName"
+              className="w-full"
               value={editedData?.lastName}
               onChange={(e) => handleChange(e, "lastName")}
             />
           </div>
         </InputContainer>
         <InputContainer>
-          <label className="pl-2 font-serif text-sm">Username</label>
+          <DetailHeading>Username</DetailHeading>
           <div>
             <InputBox
               variant={InputBoxVariant.shadow}
               type="text"
               id="username"
+              className="w-full"
               value={editedData?.username}
               onChange={(e) => handleChange(e, "username")}
             />
@@ -131,7 +136,7 @@ const DetailEditor = () => {
         </InputContainer>
       </div>
       {isEdited && (
-        <div>
+        <div className="mt-8 flex justify-center">
           {isComplete && (
             <AnimatedButton
               variant="green-outline"

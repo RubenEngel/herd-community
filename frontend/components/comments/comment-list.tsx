@@ -12,7 +12,7 @@ import { AiFillCloseCircle } from "react-icons/ai";
 import { useApolloToast } from "../../lib/hooks/use-apollo-toast";
 
 const Comments = ({ postId }: { postId: number }) => {
-  const { userAuth, setShowSignIn } = useContext(AuthContext);
+  const { userAuth, setShowSignIn, userData } = useContext(AuthContext);
 
   const [comments, setComments] = useState<IComment[]>([]);
 
@@ -48,7 +48,10 @@ const Comments = ({ postId }: { postId: number }) => {
     },
   ] = useMutation(CREATE_COMMENT, { context: authHeaders() });
 
-  useApolloToast(createCommentData, createCommentLoading, createCommentError);
+  useApolloToast(createCommentData, createCommentLoading, createCommentError, {
+    success: "Posted",
+    position: "top-center",
+  });
 
   const [replyingTo, setReplyingTo] = useState<{
     commentId: number;
@@ -80,7 +83,7 @@ const Comments = ({ postId }: { postId: number }) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const focusInput = React.useCallback(() => {
-    inputRef.current.focus();
+    inputRef?.current?.focus();
   }, [inputRef]);
 
   const handleReplyTo = ({
@@ -93,8 +96,12 @@ const Comments = ({ postId }: { postId: number }) => {
     >;
     commentId: number;
   }) => {
-    setReplyingTo({ author, commentId });
-    focusInput();
+    if (userData) {
+      setReplyingTo({ author, commentId });
+      focusInput();
+    } else {
+      setShowSignIn(true);
+    }
   };
 
   return (
@@ -132,7 +139,7 @@ const Comments = ({ postId }: { postId: number }) => {
         })}
       </div>
       <div
-        className={` absolute bottom-0 left-0 w-full items-center bg-white pt-4 pb-10 pl-2`}
+        className={`absolute bottom-0 left-0 w-full items-center bg-white pt-2 pb-10 pl-2`}
       >
         {replyingTo && (
           <small className="mb-2 -mt-2 flex items-center">
@@ -150,11 +157,11 @@ const Comments = ({ postId }: { postId: number }) => {
           </small>
         )}
         {userAuth ? (
-          <div className="flex">
+          <div className="flex h-12">
             <input
               ref={inputRef}
               type="text"
-              className="w-full rounded-xl border px-4 py-2 shadow-inner"
+              className="w-full rounded-xl border px-4 shadow-inner"
               value={content}
               onChange={(e) => setContent(e.target.value)}
               onKeyDown={(e) => {
@@ -174,9 +181,9 @@ const Comments = ({ postId }: { postId: number }) => {
         ) : (
           <AnimatedButton
             onClick={() => setShowSignIn(true)}
-            className="mx-auto mb-6"
+            className="mx-auto mb-6 w-full"
           >
-            <h2>Login to Comment</h2>
+            <h1 className="text-2xl">Login to Comment</h1>
           </AnimatedButton>
         )}
       </div>

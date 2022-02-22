@@ -61,7 +61,7 @@ const Comment = ({
     commentId: number;
   }) => void;
 }) => {
-  const { userData } = useContext(AuthContext);
+  const { userData, setShowSignIn } = useContext(AuthContext);
 
   // ---> DELETE COMMENTS
   const [
@@ -78,7 +78,10 @@ const Comment = ({
     },
   });
 
-  useApolloToast(deleteCommentData, deleteCommentLoading, deleteCommentError);
+  useApolloToast(deleteCommentData, deleteCommentLoading, deleteCommentError, {
+    success: "Deleted",
+    position: "top-center",
+  });
 
   const handleDeleteComment = async (commentId: number) => {
     try {
@@ -93,22 +96,19 @@ const Comment = ({
 
   // ---> COMMENT LIKES
   // queries
-  const { data: likedByData, refetch: refetchLikes } = useQuery(
-    COMMENT_LIKED_BY,
-    {
-      variables: {
-        id: commentId,
-      },
-      notifyOnNetworkStatusChange: true,
-      fetchPolicy: "cache-and-network",
-    }
-  );
+  const { data: likedByData } = useQuery(COMMENT_LIKED_BY, {
+    variables: {
+      id: commentId,
+    },
+    notifyOnNetworkStatusChange: true,
+    fetchPolicy: "cache-and-network",
+  });
   const [hasLiked, setHasLiked] = useState(false);
   const likedBy = useMemo(() => likedByData?.commentLikedBy, [likedByData]);
   useEffect(() => {
     if (likedByData) {
       setHasLiked(
-        likedByData?.commentLikedBy?.some((user) => user.id === userData.id)
+        likedByData?.commentLikedBy?.some((user) => user.id === userData?.id)
       );
     }
   }, [likedByData]);
@@ -120,6 +120,14 @@ const Comment = ({
       variables: {
         likeCommentId: commentId,
       },
+      refetchQueries: () => [
+        {
+          query: COMMENT_LIKED_BY,
+          variables: {
+            id: commentId,
+          },
+        },
+      ],
       context: authHeaders(),
     }
   );
@@ -129,24 +137,32 @@ const Comment = ({
       variables: {
         unlikeCommentId: commentId,
       },
+      refetchQueries: () => [
+        {
+          query: COMMENT_LIKED_BY,
+          variables: {
+            id: commentId,
+          },
+        },
+      ],
       context: authHeaders(),
     }
   );
 
   const handleLikePress = async () => {
+    if (!userData) {
+      setShowSignIn(true);
+      return;
+    }
     if (!hasLiked) {
       try {
         await likeComment();
-        await refetchLikes();
-        setHasLiked(likedBy.some((user) => user.id === userData.id));
       } catch (error) {
         toast.error("Error");
       }
     } else {
       try {
         await unlikeComment();
-        await refetchLikes();
-        setHasLiked(likedBy.some((user) => user.id === userData.id));
       } catch (error) {
         toast.error("Error");
       }
@@ -164,7 +180,7 @@ const Comment = ({
         {/* Header */}
         <div className="flex items-center justify-between">
           <Avatar user={author} />
-          {(userData.role === Role.ADMIN || author.id === userData?.id) && (
+          {(userData?.role === Role.ADMIN || author.id === userData?.id) && (
             <AnimatedButton
               disabled={deleteCommentLoading}
               onClick={() => handleDeleteComment(commentId)}

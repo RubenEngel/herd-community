@@ -24,7 +24,7 @@ const InputBox = (
         }
         ${props.variant === InputBoxVariant.shadow && "border shadow-inner"} ${
       props.className
-    } block w-56 rounded-md border py-2 px-4 font-serif text-lg focus:outline-none`}
+    } block rounded-md border py-2 px-4 font-serif text-lg`}
   />
 );
 

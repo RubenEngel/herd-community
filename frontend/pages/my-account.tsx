@@ -21,26 +21,22 @@ const MyAccount = () => {
   return (
     <>
       <>
-        <div className="text-center">
+        <div className="mb-5 text-center">
           <h1 className="mb-3 text-2xl uppercase">My Account</h1>
-          <p className="mb-5 font-serif">({userAuth.email})</p>
+          <p className="mb-2 font-serif">({userAuth.email})</p>
+          <AnimatedButton
+            // variant="red-outline"
+            className="mx-4 font-serif text-red-600"
+            onClick={() => {
+              supabase.auth.signOut();
+            }}
+          >
+            Sign Out
+          </AnimatedButton>
         </div>
-        <div className="mx-auto flex flex-col items-center justify-center">
-          <DetailEditor />
-        </div>
+        <DetailEditor />
         <div className="flex flex-col items-center text-center">
-          <div className="mt-14 mb-10">
-            {/* <SelectUsername /> */}
-            <AnimatedButton
-              variant="red-outline"
-              className="mx-4"
-              onClick={() => {
-                supabase.auth.signOut();
-              }}
-            >
-              Sign Out
-            </AnimatedButton>
-          </div>
+          <div className="mt-14 mb-10">{/* <SelectUsername /> */}</div>
         </div>
       </>
     </>

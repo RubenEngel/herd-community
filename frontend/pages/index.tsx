@@ -60,10 +60,10 @@ const Home = ({ categoryPosts }: IndexProps) => {
               animate="show"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.9 }}
-              className="flex max-w-screen-md justify-center mx-auto bg-primary w-full text-secondary items-center rounded-xl p-1 lg:p-2 font-bold"
+              className="bg-primary text-secondary mx-auto flex w-full max-w-screen-md items-center justify-center rounded-xl p-1 font-bold lg:p-2"
               onClick={() => setCategory("all")}
             >
-              <h1 className="text-lg uppercase mr-4 text-center">
+              <h1 className="mr-4 text-center text-lg uppercase">
                 Latest Stories
               </h1>
               <AiFillCaretRight />
@@ -72,7 +72,7 @@ const Home = ({ categoryPosts }: IndexProps) => {
         </div>
 
         {/* ------------------ Desktop Latest Posts ------------- */}
-        <div className="hidden md:grid md:grid-cols-3 max-w-6xl mx-auto">
+        <div className="mx-auto hidden max-w-6xl md:grid md:grid-cols-3">
           {desktopLatestPosts.map((post, index) => (
             <motion.div
               key={index}
@@ -148,7 +148,7 @@ const Home = ({ categoryPosts }: IndexProps) => {
         </div>
 
         {/* ----------- Categories after latest posts ------------- */}
-        <div className="grid md:grid-cols-2 max-w-6xl mx-auto">
+        <div className="mx-auto grid max-w-6xl md:grid-cols-2">
           {Object.keys(categoryPosts)
             .filter((categoryName) => categoryName !== "all")
             .map((category, index) => {
@@ -210,6 +210,6 @@ export const getStaticProps: GetStaticProps = async () => {
     props: {
       categoryPosts,
     },
-    revalidate: 1,
+    revalidate: 30,
   });
 };
