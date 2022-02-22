@@ -1,5 +1,5 @@
 import { FaUserCircle } from "react-icons/fa";
-import { PrismaUser } from "../lib/types";
+import { User } from "../lib/generated/graphql-types";
 import AnimatedButton from "./animated-button";
 import Link from "next/link";
 import { getDisplayName } from "../lib/get-display-name";
@@ -8,7 +8,7 @@ const Avatar = ({
   user,
   small = false,
 }: {
-  user: Pick<PrismaUser, "username" | "firstName" | "lastName" | "imageUrl">;
+  user: Pick<User, "username" | "firstName" | "lastName" | "imageUrl">;
   small?: boolean;
 }) => {
   return (
@@ -22,15 +22,15 @@ const Avatar = ({
                   {user.imageUrl ? (
                     <img
                       src={user.imageUrl}
-                      className={`rounded-full ${
+                      className={`rounded-full object-cover ${
                         small ? "mr-1 h-6 w-6" : "mr-2 h-7 w-7"
                       }`}
                       alt={getDisplayName(user)}
                     />
                   ) : (
                     <FaUserCircle
-                      className={`rounded-full ${
-                        small ? "mr-1 h-5 w-5" : "mr-2 h-6 w-6"
+                      className={`mr-1 rounded-full ${
+                        small ? "h-4 w-4" : "h-5 w-5"
                       }`}
                     />
                   )}

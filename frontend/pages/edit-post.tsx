@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
 import dynamic from "next/dynamic";
 import SubmitIntro from "../components/submit-intro";
-import { CHANGE_SUBMITTED, GET_CATEGORIES, GET_POST } from "../lib/gql-queries";
-import { useQuery, useMutation } from "@apollo/client";
+import { CHANGE_SUBMITTED } from "../lib/graphql/queries-and-mutations";
+import { useMutation } from "@apollo/client";
 import formatString from "../lib/format-string";
 import formatSlug from "../lib/format-slug";
 import PostBody from "../components/post-content/post-body";
@@ -11,10 +11,10 @@ import {
   CREATE_DRAFT,
   UPDATE_POST,
   CHANGE_PUBLISHED,
-} from "../lib/gql-queries";
+} from "../lib/graphql/queries-and-mutations";
 import Tags from "../components/post-content/tags";
 import { useRouter } from "next/router";
-import { Post } from "../lib/types";
+import { Post } from "../lib/generated/graphql-types";
 import { AnimatePresence, motion } from "framer-motion";
 import AnimatedButton from "../components/animated-button";
 import { AuthContext } from "../components/context/auth-provider";
@@ -22,6 +22,10 @@ import { authHeaders } from "../lib/supabase";
 import InputBox, { InputBoxVariant } from "../components/input-box";
 import { useApolloToast } from "../lib/hooks/use-apollo-toast";
 import HeadingBar from "../components/heading-bar";
+import {
+  useGetCategoriesQuery,
+  useGetPostQuery,
+} from "../lib/generated/graphql-types";
 
 // TODO: Check if user admin again
 
@@ -51,9 +55,9 @@ const EditPost = () => {
   const router = useRouter();
 
   // Get exisitng post data to edit
-  const { data: existingPostData } = useQuery(GET_POST, {
+  const { data: existingPostData } = useGetPostQuery({
     variables: {
-      slug: router.query?.slug,
+      slug: router.query?.slug as string,
     },
   });
 
@@ -91,10 +95,7 @@ const EditPost = () => {
 
   const [isEditable, setIsEditable] = useState(false);
   useEffect(() => {
-    if (
-      userData?.email &&
-      userData.email === existingPostData?.post?.author?.email
-    ) {
+    if (userData?.id && userData.id === existingPostData?.post?.author?.id) {
       setIsEditable(true);
     } else if (String(userData?.role) === "ADMIN") {
       setIsEditable(true);
@@ -239,7 +240,7 @@ const EditPost = () => {
   }, [postData]);
 
   // Get all categories that exist
-  const { data: categoryData } = useQuery(GET_CATEGORIES);
+  const { data: categoryData } = useGetCategoriesQuery();
 
   let allCategories: string[];
 

@@ -1,6 +1,6 @@
 import { useLazyQuery } from "@apollo/client";
 import { useEffect, useMemo } from "react";
-import { GET_POSTS } from "../../lib/gql-queries";
+import { GET_POSTS } from "../../lib/graphql/queries-and-mutations";
 import Loading from "../loading";
 import PostGrid from "./post-grid";
 

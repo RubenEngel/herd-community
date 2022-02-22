@@ -103,7 +103,7 @@ export const typeDefs = gql`
 
   type LikeMutationResult {
     id: Int
-    likedBy: [User]
+    likedBy: [User!]
   }
 
   type Query {

@@ -6,8 +6,8 @@ import AnimatedButton from "../components/animated-button";
 import Loading from "../components/loading";
 import PostGrid from "../components/post-grid/post-grid";
 import UserList from "../components/users/user-list";
-import { GET_POSTS, SEARCH_USERS } from "../lib/gql-queries";
-import { Post } from "../lib/types";
+import { GET_POSTS, SEARCH_USERS } from "../lib/graphql/queries-and-mutations";
+import { Post } from "../lib/generated/graphql-types";
 
 enum SearchFor {
   posts = "posts",

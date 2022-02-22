@@ -9,18 +9,22 @@ import Loading from "../../components/loading";
 import {
   GET_POST,
   GET_ALL_POST_SLUGS,
-  LIKE_POST,
   POST_LIKED_BY,
-  UNLIKE_POST,
-} from "../../lib/gql-queries";
+} from "../../lib/graphql/queries-and-mutations";
 import { addApolloState, initializeApollo } from "../../lib/apollo-client";
-import { Post, Role } from "../../lib/types";
+import {
+  Post,
+  PostLikedByQueryVariables,
+  Role,
+  useLikePostMutation,
+  usePostLikedByQuery,
+  useUnlikePostMutation,
+} from "../../lib/generated/graphql-types";
 import PostGridDataProvider from "../../components/post-grid/post-grid.data-provider";
 import { useViewportScroll, AnimatePresence } from "framer-motion";
 import { Waypoint } from "react-waypoint";
 import formatString from "../../lib/format-string";
 import PostInteractions from "../../components/header/post-interactions";
-import { useMutation, useQuery } from "@apollo/client";
 import ProgressBar from "../../components/progress-bar";
 import UserCard from "../../components/users/user-card";
 import toast from "react-hot-toast";
@@ -31,11 +35,7 @@ import { authHeaders } from "../../lib/supabase";
 import Comments from "../../components/comments/comment-list";
 import LikedByUserList from "../../components/users/liked-by-user-list";
 
-interface PostProps {
-  post: Post;
-}
-
-export default function PostPage({ post }: PostProps) {
+export default function PostPage({ post }: { post: Post }) {
   const router = useRouter();
 
   if (!router.isFallback && !post?.slug) {
@@ -54,50 +54,53 @@ export default function PostPage({ post }: PostProps) {
       setIsEditable(true);
     }
     // TODO: use enum
-    if (String(userData?.role) === Role.ADMIN) {
+    if (String(userData?.role) === Role.Admin) {
       setIsEditable(true);
     }
   }, [userData]);
 
   // ----- post liking functions and state
-  const [likePost, { loading: likeLoading }] = useMutation(LIKE_POST, {
+  const [likePost, { loading: likeLoading }] = useLikePostMutation({
     variables: {
       id: post.id,
     },
+    refetchQueries: () => [
+      {
+        query: POST_LIKED_BY,
+        variables: {
+          id: post.id,
+        } as PostLikedByQueryVariables,
+      },
+    ],
     context: authHeaders(),
   });
 
-  const [unlikePost, { loading: unlikeLoading }] = useMutation(UNLIKE_POST, {
+  const [unlikePost, { loading: unlikeLoading }] = useUnlikePostMutation({
     variables: {
       id: post.id,
     },
+    refetchQueries: () => [
+      {
+        query: POST_LIKED_BY,
+        variables: {
+          id: post.id,
+        } as PostLikedByQueryVariables,
+      },
+    ],
     context: authHeaders(),
   });
 
-  const { data: likedByData, loading: likedByDataLoading } = useQuery(
-    POST_LIKED_BY,
-    {
+  const { data: likedByData, loading: likedByDataLoading } =
+    usePostLikedByQuery({
       variables: {
         id: post.id,
       },
-    }
-  );
-
-  type LikedBy = {
-    firstName: string;
-    lastName: string;
-    id: number;
-    username: string;
-    imageUrl: string;
-  }[];
-
-  const [likedBy, setLikedBy] = useState<LikedBy>();
+    });
 
   useEffect(() => {
     if (likedByData) {
       console.log(likedByData);
-      const likedByArray: LikedBy = likedByData.postLikedBy;
-      setLikedBy(likedByArray);
+      const likedByArray = likedByData.postLikedBy;
       if (userData) {
         setIsLiked(
           likedByArray?.some((user) => user.id === userData.id) || false
@@ -113,18 +116,16 @@ export default function PostPage({ post }: PostProps) {
     if (!isLiked) {
       try {
         const res = await likePost();
-        const likedByArray: LikedBy = res.data.likePost.likedBy;
-        setLikedBy(likedByArray);
-        setIsLiked(likedByArray.some((user) => user.id === userData.id));
+        const newLikedByArray = res.data.likePost.likedBy;
+        setIsLiked(newLikedByArray.some((user) => user.id === userData.id));
       } catch (error) {
         toast.error("Error");
       }
     } else {
       try {
         const unlikeRes = await unlikePost();
-        const likedByArray: LikedBy = unlikeRes.data.unlikePost.likedBy;
-        setLikedBy(likedByArray);
-        setIsLiked(likedByArray.some((user) => user.id === userData.id));
+        const newLikedByArray = unlikeRes.data.unlikePost.likedBy;
+        setIsLiked(newLikedByArray.some((user) => user.id === userData.id));
       } catch (error) {
         toast.error("Error");
       }
@@ -221,7 +222,9 @@ export default function PostPage({ post }: PostProps) {
                 <Modal
                   key={"liked-by-modal"}
                   title={`Liked By ${
-                    likedBy?.length ? "(" + likedBy?.length + ")" : ""
+                    likedByData?.postLikedBy.length
+                      ? "(" + likedByData?.postLikedBy.length + ")"
+                      : ""
                   }`}
                   setModalOpen={setShowLikedBy}
                 >
@@ -233,7 +236,7 @@ export default function PostPage({ post }: PostProps) {
               {startedReading && percentageComplete < 100 && (
                 <PostInteractions
                   likeLoading={likeLoading || unlikeLoading}
-                  likeCount={likedBy?.length}
+                  likeCount={likedByData?.postLikedBy.length}
                   commentCount={post._count.comments}
                   slug={post.slug}
                   isEditable={isEditable}
@@ -252,7 +255,11 @@ export default function PostPage({ post }: PostProps) {
               author={post.author}
               categories={post.categories}
               tags={post.tags}
-              likeCount={likedBy ? likedBy.length : post._count.likedBy}
+              likeCount={
+                likedByData?.postLikedBy.length
+                  ? likedByData?.postLikedBy.length
+                  : post._count.likedBy
+              }
               commentCount={post._count.comments}
               likedByDataLoading={likedByDataLoading}
               setShowComments={setShowComments}

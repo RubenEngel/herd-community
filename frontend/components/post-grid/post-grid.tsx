@@ -1,7 +1,7 @@
 import { ApolloError } from "@apollo/client";
 import React from "react";
 import { Waypoint } from "react-waypoint";
-import { Post } from "../../lib/types";
+import { Post } from "../../lib/generated/graphql-types";
 import Loading from "../loading";
 import PostPreview from "../post-preview/post-preview";
 

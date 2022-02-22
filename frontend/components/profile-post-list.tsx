@@ -1,8 +1,6 @@
-import { useQuery } from "@apollo/client";
 import React from "react";
 import { Waypoint } from "react-waypoint";
-import { GET_POSTS_WITH_EXCERPT } from "../lib/gql-queries";
-import { Post } from "../lib/types";
+import { useGetPostsWithExcerptQuery } from "../lib/generated/graphql-types";
 import Loading from "./loading";
 import LongPostPreview from "./post-preview/long-post-preview";
 
@@ -17,15 +15,7 @@ const ProfilePostList = ({
   category?: string;
   authorId?: number;
 }) => {
-  const {
-    data,
-    loading,
-    fetchMore,
-  }: {
-    data: { posts: { posts: Post[]; _count: number } };
-    loading: boolean;
-    fetchMore: any;
-  } = useQuery(GET_POSTS_WITH_EXCERPT, {
+  const { data, loading, fetchMore } = useGetPostsWithExcerptQuery({
     variables: {
       published: published,
       authorId: authorId,

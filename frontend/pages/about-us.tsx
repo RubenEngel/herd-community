@@ -4,7 +4,7 @@ const SectionWrapper = ({ children }) => {
 
 export default function AboutUs() {
   return (
-    <div className="text-center md:text-left px-10">
+    <div className="px-10 text-center md:text-left">
       <SectionWrapper>
         <h1>About Us</h1>
         <p>
@@ -42,8 +42,8 @@ export default function AboutUs() {
           what you could say to inspire and influence others and we’ll help you
           craft and deliver that story you’ve always wanted to tell.
         </p>
-        <strong className="">#JoinTheHerd</strong>
       </SectionWrapper>
+      <strong className="">#JoinTheHerd</strong>
     </div>
   );
 }

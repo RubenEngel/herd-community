@@ -3,14 +3,14 @@ import Link from "next/link";
 import PreviewImage from "./preview-image";
 import { motion } from "framer-motion";
 import Date from "../date";
-import { PrismaUser } from "../../lib/types";
+import { User } from "../../lib/generated/graphql-types";
 import AnimatedButton from "../animated-button";
 import { BiCommentDetail, BiLike } from "react-icons/bi";
 
 interface SmallPostPreviewProps {
   title: string;
   featuredImage: string;
-  author: PrismaUser;
+  author: User;
   slug: string;
   createdAt: Date;
   likeCount?: number;
@@ -31,11 +31,11 @@ export default function SmallPostPreview({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ bounce: 0, duration: 0.5 }}
-      className="rounded-lg my-6"
+      className="my-6 rounded-lg"
     >
       <div className="grid grid-cols-6 gap-2">
         {/* Image */}
-        <div className="mr-2 col-span-2">
+        <div className="col-span-2 mr-2">
           <PreviewImage
             title={title}
             coverImage={featuredImage}
@@ -46,7 +46,7 @@ export default function SmallPostPreview({
         </div>
         <div className="col-span-4">
           {/* Title */}
-          <AnimatedButton className="text-left text-base lg:text-lg mb-2 leading-snug font-serif text-ellipsis">
+          <AnimatedButton className="mb-2 text-ellipsis text-left font-serif text-base leading-snug lg:text-lg">
             <Link scroll={false} as={`/posts/${slug}`} href="/posts/[slug]">
               <a className="">{title}</a>
             </Link>
@@ -56,19 +56,19 @@ export default function SmallPostPreview({
             <Date date={createdAt}></Date>
           </div>
           <div className="flex justify-between text-sm">
-            <div className="flex flex-row justify-start items-center col-span-3">
+            <div className="col-span-3 flex flex-row items-center justify-start">
               <Avatar small user={author} />
             </div>
             <div className="flex">
               {commentCount ? (
                 <div className="flex items-center">
-                  <BiCommentDetail className="w-4 h-4" />
+                  <BiCommentDetail className="h-4 w-4" />
                   <span className="ml-1 font-serif ">{commentCount}</span>
                 </div>
               ) : null}
               {likeCount ? (
-                <div className="flex items-center ml-3">
-                  <BiLike className="w-4 h-4" />
+                <div className="ml-3 flex items-center">
+                  <BiLike className="h-4 w-4" />
                   <span className="ml-1 font-serif">{likeCount}</span>
                 </div>
               ) : null}

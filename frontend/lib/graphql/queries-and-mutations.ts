@@ -129,22 +129,6 @@ const CORE_POST_FIELDS = gql`
   }
 `;
 
-export const SEARCH_POSTS = gql`
-  ${CORE_POST_FIELDS}
-  query SearchPosts($searchTerm: String!, $limit: Int!, $startAfter: Int) {
-    searchPosts(
-      searchTerm: $searchTerm
-      limit: $limit
-      startAfter: $startAfter
-    ) {
-      posts {
-        ...CorePostFields
-      }
-      _count
-    }
-  }
-`;
-
 export const GET_POST = gql`
   ${CORE_POST_FIELDS}
   query GetPost($slug: String!) {
@@ -185,7 +169,7 @@ export const GET_POSTS = gql`
 
 export const GET_POSTS_WITH_EXCERPT = gql`
   ${CORE_POST_FIELDS}
-  query GetPosts(
+  query GetPostsWithExcerpt(
     $published: Boolean
     $category: String
     $limit: Int
@@ -227,7 +211,7 @@ const CORE_COMMENT_FIELDS = gql`
 
 export const GET_COMMENTS_FOR_POST = gql`
   ${CORE_COMMENT_FIELDS}
-  query Query($postId: Int) {
+  query GetCommentsForPost($postId: Int) {
     # can also query by author
     comments(postId: $postId) {
       ...CoreCommentFields
@@ -402,7 +386,7 @@ export const UPDATE_USER_DETAILS = gql`
 `;
 
 export const SIGN_CLOUDINARY_UPLOAD = gql`
-  mutation {
+  mutation SignCloudinaryUpload {
     signUpload {
       timestamp
       signature
@@ -410,7 +394,7 @@ export const SIGN_CLOUDINARY_UPLOAD = gql`
   }
 `;
 
-export const ADD_USER = gql`
+export const CREATE_USER = gql`
   mutation CreateUser($email: String) {
     createUser(email: $email) {
       id

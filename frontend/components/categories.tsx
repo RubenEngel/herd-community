@@ -1,7 +1,7 @@
 import { CategoryContext } from "./context/category-provider";
 import { useContext } from "react";
 import Link from "next/link";
-import { Category } from "../lib/types";
+import { Category } from "../lib/generated/graphql-types";
 import capitalizeFirstLetter from "../lib/capitalize-first-letter";
 import AnimatedButton from "./animated-button";
 
@@ -9,11 +9,11 @@ export default function Categories({ categories }: { categories: Category[] }) {
   const { setCategory } = useContext(CategoryContext);
 
   return (
-    <div className="flex flex-row flex-wrap no-wrap">
+    <div className="no-wrap flex flex-row flex-wrap">
       {categories?.map((category, index) => (
         <AnimatedButton
           key={category.name}
-          className="font-serif text-sm border mr-2 mb-2 bg-primary px-2 rounded-xl text-secondary leading-6"
+          className="bg-primary text-secondary mr-2 mb-2 rounded-xl border px-2 font-serif text-sm leading-6"
         >
           <Link scroll={false} href={"/explore"}>
             <a onClick={() => setCategory(category.name)}>

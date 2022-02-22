@@ -1,8 +1,8 @@
 import capitalizeFirstLetter from "./capitalize-first-letter";
-import { PrismaUser } from "./types";
+import { User } from "../lib/generated/graphql-types";
 
 export const getDisplayName = (
-  author: Pick<PrismaUser, "firstName" | "lastName">
+  author: Pick<User, "firstName" | "lastName">
 ) => {
   const firstName = author?.firstName
     ? capitalizeFirstLetter(author.firstName)

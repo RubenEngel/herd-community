@@ -1,20 +1,22 @@
-import { useMutation, useQuery } from "@apollo/client";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import { useMutation } from "@apollo/client";
+import React, { useContext, useMemo, useRef, useState } from "react";
 import { BiCommentDetail } from "react-icons/bi";
-import { CREATE_COMMENT, GET_COMMENTS_FOR_POST } from "../../lib/gql-queries";
+import {
+  CREATE_COMMENT,
+  GET_COMMENTS_FOR_POST,
+} from "../../lib/graphql/queries-and-mutations";
 import { authHeaders } from "../../lib/supabase";
 import AnimatedButton from "../animated-button";
 import { AuthContext } from "../context/auth-provider";
 import Loading from "../loading";
 import Comment from "./comment";
-import { Comment as IComment, PrismaUser } from "../../lib/types";
+import { Comment as IComment, User } from "../../lib/generated/graphql-types";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { useApolloToast } from "../../lib/hooks/use-apollo-toast";
+import { useGetCommentsForPostQuery } from "../../lib/generated/graphql-types";
 
 const Comments = ({ postId }: { postId: number }) => {
   const { userAuth, setShowSignIn, userData } = useContext(AuthContext);
-
-  const [comments, setComments] = useState<IComment[]>([]);
 
   const [content, setContent] = useState("");
 
@@ -22,19 +24,16 @@ const Comments = ({ postId }: { postId: number }) => {
   const {
     data: commentsData,
     loading: commentsLoading,
-    // error: commentsError,
-    refetch: refetchComments,
-  } = useQuery(GET_COMMENTS_FOR_POST, {
+    error: commentsError,
+  } = useGetCommentsForPostQuery({
     variables: {
       postId: postId,
     },
-    fetchPolicy: "cache-and-network",
-    notifyOnNetworkStatusChange: true,
   });
 
-  useEffect(() => {
+  const commentsArr: IComment[] = useMemo<IComment[]>(() => {
     if (commentsData) {
-      setComments(commentsData.comments);
+      return commentsData.comments;
     }
   }, [commentsData]);
 
@@ -46,7 +45,17 @@ const Comments = ({ postId }: { postId: number }) => {
       loading: createCommentLoading,
       error: createCommentError,
     },
-  ] = useMutation(CREATE_COMMENT, { context: authHeaders() });
+  ] = useMutation(CREATE_COMMENT, {
+    refetchQueries: () => [
+      {
+        query: GET_COMMENTS_FOR_POST,
+        variables: {
+          postId: postId,
+        },
+      },
+    ],
+    context: authHeaders(),
+  });
 
   useApolloToast(createCommentData, createCommentLoading, createCommentError, {
     success: "Posted",
@@ -56,23 +65,20 @@ const Comments = ({ postId }: { postId: number }) => {
   const [replyingTo, setReplyingTo] = useState<{
     commentId: number;
     author: Pick<
-      PrismaUser,
+      User,
       "id" | "username" | "firstName" | "lastName" | "imageUrl"
     >;
   } | null>(null);
 
   const handleSubmitComment = async () => {
     try {
-      const res = await createComment({
+      await createComment({
         variables: {
           content: content,
           postId: postId,
           parentCommentId: replyingTo?.commentId,
         },
       });
-      // const newComment: CommentType = res.data.createComment;
-      // setComments([...comments, newComment]);
-      if (res.data) refetchComments();
       setContent("");
       setReplyingTo(null);
     } catch (error) {
@@ -91,7 +97,7 @@ const Comments = ({ postId }: { postId: number }) => {
     commentId,
   }: {
     author: Pick<
-      PrismaUser,
+      User,
       "id" | "username" | "firstName" | "lastName" | "imageUrl"
     >;
     commentId: number;
@@ -112,7 +118,12 @@ const Comments = ({ postId }: { postId: number }) => {
             <Loading />
           </div>
         )}
-        {comments?.map((comment, index) => {
+        {commentsError && (
+          <div className="flex h-full flex-col items-center justify-center">
+            <h3>Error loading comments</h3>
+          </div>
+        )}
+        {commentsArr?.map((comment, index) => {
           const commentAuthor = comment.author;
 
           return (
@@ -131,8 +142,7 @@ const Comments = ({ postId }: { postId: number }) => {
                 }}
                 content={comment.content}
                 date={comment.createdAt}
-                setComments={setComments}
-                refetchComments={refetchComments}
+                postId={postId}
               />
             </div>
           );

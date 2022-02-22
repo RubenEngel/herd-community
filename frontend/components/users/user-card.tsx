@@ -1,4 +1,3 @@
-import { PrismaUser } from "../../lib/types";
 import AnimatedButton from "../animated-button";
 import { FaUserCircle } from "react-icons/fa";
 import capitalizeFirstLetter from "../../lib/capitalize-first-letter";
@@ -9,35 +8,19 @@ import {
   useEffect,
   useState,
 } from "react";
-import { useMutation } from "@apollo/client";
-import { FOLLOW_USER, UNFOLLOW_USER } from "../../lib/gql-queries";
+import { GET_FOLLOWERS } from "../../lib/graphql/queries-and-mutations";
 import toast from "react-hot-toast";
 import UploadProfileImage from "../upload-profile-image";
 import Link from "next/link";
 import router from "next/router";
 import { AuthContext } from "../context/auth-provider";
 import { authHeaders } from "../../lib/supabase";
-
-interface UserCardProps {
-  user?: Omit<PrismaUser, "email"> & {
-    _count: {
-      posts: number;
-      followers: number;
-      following: number;
-      likedPosts: number;
-      comments: number;
-    };
-  };
-  editable: boolean;
-  linked: boolean;
-  setFollowedBy?: React.Dispatch<
-    React.SetStateAction<
-      {
-        id: number;
-      }[]
-    >
-  >;
-}
+import {
+  GetFollowersQueryVariables,
+  useFollowUserMutation,
+  User,
+  useUnfollowUserMutation,
+} from "../../lib/generated/graphql-types";
 
 const ProfileImage = ({
   profileImageUrl,
@@ -99,13 +82,15 @@ const ProfileName = ({
 
 const UserCard = ({
   user,
-  setFollowedBy,
   editable = false,
   linked,
-}: UserCardProps) => {
+}: {
+  user?: Omit<User, "email">;
+  editable: boolean;
+  linked: boolean;
+}) => {
   // current logged in user's data
-  const { userAuth, userData, updateUserData, setShowSignIn } =
-    useContext(AuthContext);
+  const { userData, updateUserData, setShowSignIn } = useContext(AuthContext);
 
   const [ownProfile, setOwnProfile] = useState(false);
 
@@ -117,19 +102,31 @@ const UserCard = ({
 
   // ---- Follow user
   const [isFollowing, setIsFollowing] = useState(false);
-  const [followUser, { loading: followLoading }] = useMutation(FOLLOW_USER, {
+
+  const [followUser, { loading: followLoading }] = useFollowUserMutation({
     context: authHeaders(),
+    refetchQueries: () => [
+      {
+        query: GET_FOLLOWERS,
+        variables: { username: user.username } as GetFollowersQueryVariables,
+      },
+    ],
   });
 
-  const [unfollowUser, { loading: unfollowLoading }] = useMutation(
-    UNFOLLOW_USER,
-    {
-      context: authHeaders(),
-    }
-  );
+  const [unfollowUser, { loading: unfollowLoading }] = useUnfollowUserMutation({
+    context: authHeaders(),
+    refetchQueries: () => [
+      {
+        query: GET_FOLLOWERS,
+        variables: { username: user.username } as GetFollowersQueryVariables,
+      },
+    ],
+  });
 
   useEffect(() => {
-    if (!userData || !user || ownProfile) return;
+    if (!userData || !user || ownProfile) {
+      return;
+    }
     if (userData?.username === user?.username) {
       setOwnProfile(true);
     }
@@ -143,13 +140,16 @@ const UserCard = ({
   }, [userData]);
 
   const handleFollow = async () => {
+    if (!userData) {
+      setShowSignIn(true);
+      return;
+    }
     if (!isFollowing) {
       try {
         const res = await followUser({
           variables: { userId: user.id },
         });
         const newFollowers = res.data.followUser.followers;
-        setFollowedBy?.(newFollowers);
         setIsFollowing(
           newFollowers.some((follower) => follower.id === userData.id)
         );
@@ -161,7 +161,6 @@ const UserCard = ({
       try {
         const res = await unfollowUser({ variables: { userId: user.id } });
         const newFollowers = res.data.unfollowUser.followers;
-        setFollowedBy?.(newFollowers);
         setIsFollowing(
           newFollowers.some((follower) => follower.id === userData.id)
         );
@@ -239,11 +238,7 @@ const UserCard = ({
             className="mt-3 mr-2"
             disabled={followLoading || unfollowLoading}
             onClick={() => {
-              if (userAuth && userData) {
-                handleFollow();
-              } else {
-                setShowSignIn(true);
-              }
+              handleFollow();
             }}
           >
             {isFollowing ? "Following" : "Follow"}

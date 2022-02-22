@@ -1,14 +1,17 @@
 import { useContext } from "react";
 import Head from "next/head";
 import { initializeApollo, addApolloState } from "../lib/apollo-client";
-import { GET_POSTS, GET_CATEGORIES } from "../lib/gql-queries";
+import {
+  GET_POSTS,
+  GET_CATEGORIES,
+} from "../lib/graphql/queries-and-mutations";
 import PostPreview from "../components/post-preview/post-preview";
 import SmallPostPreview from "../components/post-preview/small-post-preview";
 import HomeCategory from "../components/post-preview/home-category";
 import { AiFillCaretRight } from "react-icons/ai";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Category, Post } from "../lib/types";
+import { Category, Post } from "../lib/generated/graphql-types";
 import type { GetStaticProps } from "next";
 import { CategoryContext } from "../components/context/category-provider";
 // import { useUser } from "@auth0/nextjs-auth0";

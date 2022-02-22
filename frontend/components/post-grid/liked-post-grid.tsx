@@ -1,6 +1,5 @@
-import { useLazyQuery } from "@apollo/client";
-import { useEffect, useMemo } from "react";
-import { GET_USER_LIKED_POSTS } from "../../lib/gql-queries";
+import { useMemo } from "react";
+import { useGetUserLikedPostsQuery } from "../../lib/generated/graphql-types";
 import Loading from "../loading";
 import PostGrid from "./post-grid";
 
@@ -16,20 +15,13 @@ export default function LikedPostGrid({
   authorId?: number;
   likedByUserId?: number;
 }) {
-  const [getPosts, { loading, error, data, fetchMore }] = useLazyQuery(
-    GET_USER_LIKED_POSTS,
-    {
-      variables: {
-        likedByUserId: likedByUserId,
-        limit: 9,
-      },
-      notifyOnNetworkStatusChange: true,
-    }
-  );
-
-  useEffect(() => {
-    getPosts();
-  }, [category]);
+  const { loading, error, data, fetchMore } = useGetUserLikedPostsQuery({
+    variables: {
+      likedByUserId: likedByUserId,
+      limit: 9,
+    },
+    notifyOnNetworkStatusChange: true,
+  });
 
   const posts = useMemo(() => data?.posts?.posts, [data]);
 

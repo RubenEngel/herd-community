@@ -1,9 +1,9 @@
 import { useMutation } from "@apollo/client";
 import { useContext, useEffect, useState } from "react";
-import { UPDATE_USER_DETAILS } from "../lib/gql-queries";
+import { UPDATE_USER_DETAILS } from "../lib/graphql/queries-and-mutations";
 import { useApolloToast } from "../lib/hooks/use-apollo-toast";
 import { authHeaders } from "../lib/supabase";
-import { PrismaUser } from "../lib/types";
+import { User } from "../lib/generated/graphql-types";
 import AnimatedButton from "./animated-button";
 import { AuthContext } from "./context/auth-provider";
 import InputBox, { InputBoxVariant } from "./input-box";
@@ -53,7 +53,7 @@ const OverlayDetailEditor: React.FC<{}> = () => {
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement>,
-    key: keyof Pick<PrismaUser, "firstName" | "lastName" | "username">
+    key: keyof Pick<User, "firstName" | "lastName" | "username">
   ) => {
     setEditedData({
       ...editedData,

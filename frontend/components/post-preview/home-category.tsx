@@ -3,7 +3,7 @@ import Link from "next/link";
 import { AiFillCaretRight } from "react-icons/ai";
 import PostPreview from "./post-preview";
 import SmallPostPreview from "./small-post-preview";
-import { Post } from "../../lib/types";
+import { Post } from "../../lib/generated/graphql-types";
 import { motion } from "framer-motion";
 import { CategoryContext } from "../context/category-provider";
 

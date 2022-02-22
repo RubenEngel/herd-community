@@ -1,9 +1,9 @@
 import { useMutation } from "@apollo/client";
 import { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { UPDATE_USER_DETAILS } from "../lib/gql-queries";
+import { UPDATE_USER_DETAILS } from "../lib/graphql/queries-and-mutations";
 import { authHeaders } from "../lib/supabase";
-import { PrismaUser } from "../lib/types";
+import { User } from "../lib/generated/graphql-types";
 import AnimatedButton from "./animated-button";
 import { AuthContext } from "./context/auth-provider";
 import InputBox, { InputBoxVariant } from "./input-box";
@@ -16,7 +16,9 @@ const InputContainer = ({ children }) => <div className="my-6">{children}</div>;
 const DetailEditor = () => {
   const { userData, setUserData } = useContext(AuthContext);
 
-  const [editedData, setEditedData] = useState({
+  const [editedData, setEditedData] = useState<
+    Pick<User, "firstName" | "lastName" | "username">
+  >({
     firstName: userData?.firstName || "",
     lastName: userData?.lastName || "",
     username: userData?.username || "",
@@ -51,7 +53,7 @@ const DetailEditor = () => {
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement>,
-    key: keyof PrismaUser
+    key: keyof User
   ) => {
     setEditedData({
       ...editedData,

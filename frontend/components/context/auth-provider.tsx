@@ -6,19 +6,23 @@ import React, {
   useState,
 } from "react";
 import { useApolloClient } from "@apollo/client";
-import { User } from "@supabase/supabase-js";
-import { ADD_USER, GET_USER_BY_EMAIL } from "../../lib/gql-queries";
+import { User as SupabaseUser } from "@supabase/supabase-js";
+import {
+  CREATE_USER,
+  GET_USER_BY_EMAIL,
+} from "../../lib/graphql/queries-and-mutations";
 import { supabase } from "../../lib/supabase";
-import { PrismaUser } from "../../lib/types";
+import { User } from "../../lib/generated/graphql-types";
 import Overlay from "../overlay";
 import OverlayDetailEditor from "../overlay-detail-editor";
 import SignInModal from "../sign-in-modal";
+import { useGetUserByEmailLazyQuery } from "../../lib/generated/graphql-types";
 
 // User data accesible anywhere
 export const AuthContext = createContext<{
-  userAuth: User | null;
-  userData: PrismaUser | null;
-  setUserData: React.Dispatch<React.SetStateAction<PrismaUser>>;
+  userAuth: SupabaseUser | null;
+  userData: User | null;
+  setUserData: React.Dispatch<React.SetStateAction<User>>;
   updateUserData: () => Promise<void>;
   setShowSignIn: Dispatch<SetStateAction<boolean>>;
 }>(null);
@@ -31,17 +35,19 @@ const SignInProvider = ({ children }) => {
 
   const [userAuth, setUserAuth] = useState(supabase.auth.user());
 
-  const [userData, setUserData] = useState<PrismaUser | null>(null);
+  const [userData, setUserData] = useState<User | null>(null);
 
   const [showSignIn, setShowSignIn] = useState(false);
 
   const [showEditDetails, setShowEditDetails] = useState(false);
 
+  const [getUserByEmail] = useGetUserByEmailLazyQuery({
+    fetchPolicy: "network-only",
+  });
+
   const updateUserData = async () => {
-    const getUserResponse = await apolloClient.query({
-      query: GET_USER_BY_EMAIL,
+    const getUserResponse = await getUserByEmail({
       variables: { email: userAuth.email },
-      fetchPolicy: "network-only",
     });
     if (getUserResponse.data.userByEmail) {
       setUserData(getUserResponse.data.userByEmail);
@@ -59,7 +65,7 @@ const SignInProvider = ({ children }) => {
       setUserData(getUserResponse.data.userByEmail);
     } else {
       const addUserResponse = await apolloClient.mutate({
-        mutation: ADD_USER,
+        mutation: CREATE_USER,
         variables: {
           email: userAuth.email,
         },

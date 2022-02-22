@@ -4,7 +4,7 @@ import Link from "next/link";
 import Categories from "../categories";
 import { motion } from "framer-motion";
 import PreviewImage from "./preview-image";
-import { Post } from "../../lib/types";
+import { Post } from "../../lib/generated/graphql-types";
 import AnimatedButton from "../animated-button";
 import { BiCommentDetail, BiLike } from "react-icons/bi";
 
@@ -39,7 +39,7 @@ export default function PostPreview({
           duration: 0.6,
           bounce: 0.1,
         }}
-        className="flex mx-auto my-2 flex-col justify-center rounded-lg"
+        className="mx-auto my-2 flex flex-col justify-center rounded-lg"
       >
         {/* Image */}
         <div className="mb-1">
@@ -56,27 +56,27 @@ export default function PostPreview({
           <Categories categories={categories} />
         </div>
         {/* Title */}
-        <AnimatedButton className="text-lg mb-1 text-left font-serif">
+        <AnimatedButton className="mb-1 text-left font-serif text-lg">
           <Link scroll={false} as={`/posts/${slug}`} href="/posts/[slug]">
             <a aria-label={title}>{title}</a>
           </Link>
         </AnimatedButton>
-        <div className="text-xs mb-3">
+        <div className="mb-3 text-xs">
           <Date date={createdAt} />
         </div>
         {/* Date and Author */}
-        <div className="text-sm flex flex-row justify-between items-center">
+        <div className="flex flex-row items-center justify-between text-sm">
           <Avatar user={author} />
           <div className="flex">
             {commentCount ? (
               <div className="flex items-center">
-                <BiCommentDetail className="w-4 h-4" />
+                <BiCommentDetail className="h-4 w-4" />
                 <span className="ml-1 font-serif">{commentCount}</span>
               </div>
             ) : null}
             {likeCount ? (
-              <div className="flex items-center ml-3">
-                <BiLike className="w-4 h-4" />
+              <div className="ml-3 flex items-center">
+                <BiLike className="h-4 w-4" />
                 <span className="ml-1 font-serif">{likeCount}</span>
               </div>
             ) : null}

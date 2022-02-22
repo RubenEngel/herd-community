@@ -40,6 +40,7 @@ async function startApolloServer(typeDefs, resolvers) {
   });
 
   await server.start();
+
   server.applyMiddleware({
     app,
     path: "/",

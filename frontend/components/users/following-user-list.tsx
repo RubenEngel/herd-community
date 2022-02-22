@@ -1,19 +1,13 @@
 import React, { useEffect } from "react";
-import { useQuery } from "@apollo/client";
-import { GET_FOLLOWING } from "../../lib/gql-queries";
-import { PrismaUser } from "../../lib/types";
+import { User } from "../../lib/generated/graphql-types";
 import UserList from "./user-list";
 import Loading from "../loading";
 import toast from "react-hot-toast";
+import { useGetFollowingQuery } from "../../lib/generated/graphql-types";
 
-const FollowingUserList = ({
-  username,
-}: {
-  username: PrismaUser["username"];
-}) => {
-  const { data, loading, error } = useQuery(GET_FOLLOWING, {
+const FollowingUserList = ({ username }: { username: User["username"] }) => {
+  const { data, loading, error } = useGetFollowingQuery({
     variables: { username: username },
-    fetchPolicy: "cache-and-network",
   });
 
   useEffect(() => {

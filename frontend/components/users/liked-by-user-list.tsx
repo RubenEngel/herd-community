@@ -1,15 +1,13 @@
-import { useQuery } from "@apollo/client";
 import React from "react";
-import { POST_LIKED_BY } from "../../lib/gql-queries";
+import { usePostLikedByQuery } from "../../lib/generated/graphql-types";
 import Loading from "../loading";
 import UserList from "./user-list";
 
 const LikedByUserList = ({ postId }: { postId: number }) => {
-  const { data: likedByData, loading } = useQuery(POST_LIKED_BY, {
+  const { data: likedByData, loading } = usePostLikedByQuery({
     variables: {
       id: postId,
     },
-    fetchPolicy: "cache-and-network",
   });
 
   if (loading) {

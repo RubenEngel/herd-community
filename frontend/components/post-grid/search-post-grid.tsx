@@ -1,6 +1,5 @@
-import { useQuery } from "@apollo/client";
 import React, { useMemo } from "react";
-import { GET_POSTS } from "../../lib/gql-queries";
+import { useGetPostsQuery } from "../../lib/generated/graphql-types";
 import Loading from "../loading";
 import PostGrid from "./post-grid";
 
@@ -11,7 +10,7 @@ const SearchPostGrid = ({
   searchTerm: string;
   searchAttempted: boolean;
 }) => {
-  const { loading, error, data, fetchMore } = useQuery(GET_POSTS, {
+  const { loading, error, data, fetchMore } = useGetPostsQuery({
     variables: {
       published: true,
       limit: 6,

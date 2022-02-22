@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { PrismaUser } from "../../lib/types";
+import { User } from "../../lib/generated/graphql-types";
 import AnimatedButton from "../animated-button";
 import Link from "next/link";
 import { FaUserCircle } from "react-icons/fa";
@@ -8,9 +8,12 @@ import { AuthContext } from "../context/auth-provider";
 import toast from "react-hot-toast";
 import { authHeaders } from "../../lib/supabase";
 import { useMutation } from "@apollo/client";
-import { FOLLOW_USER, UNFOLLOW_USER } from "../../lib/gql-queries";
+import {
+  FOLLOW_USER,
+  UNFOLLOW_USER,
+} from "../../lib/graphql/queries-and-mutations";
 
-const UserRow = ({ user }: { user: PrismaUser }) => {
+const UserRow = ({ user }: { user: User }) => {
   const { userData, userAuth, updateUserData, setShowSignIn } =
     useContext(AuthContext);
 
@@ -126,7 +129,7 @@ const UserRow = ({ user }: { user: PrismaUser }) => {
   );
 };
 
-const UserList = ({ users }: { users: PrismaUser[] | undefined }) => {
+const UserList = ({ users }: { users: User[] | undefined }) => {
   return (
     <div>
       {users?.map((user) => (

@@ -4,8 +4,7 @@ import React, { useState } from "react";
 import Loading from "../../components/loading";
 import { addApolloState, initializeApollo } from "../../lib/apollo-client";
 import capitalizeFirstLetter from "../../lib/capitalize-first-letter";
-import { GET_USER_BY_USERNAME } from "../../lib/gql-queries";
-import { PrismaUser } from "../../lib/types";
+import { GET_USER_BY_USERNAME } from "../../lib/graphql/queries-and-mutations";
 import AnimatedButton from "../../components/animated-button";
 import ProfilePostList from "../../components/profile-post-list";
 import { AnimatePresence } from "framer-motion";
@@ -15,20 +14,7 @@ import LikedPostGrid from "../../components/post-grid/liked-post-grid";
 import UserCard from "../../components/users/user-card";
 import FollowersUserList from "../../components/users/followers-user-list";
 import FollowingUserList from "../../components/users/following-user-list";
-
-interface UserPageProps {
-  user?: Omit<PrismaUser, "email"> & {
-    followers: PrismaUser[];
-    posts: { id: number }[];
-    _count: {
-      posts: number;
-      followers: number;
-      following: number;
-      likedPosts: number;
-      comments: number;
-    };
-  };
-}
+import { useGetFollowersQuery, User } from "../../lib/generated/graphql-types";
 
 const ProfileStat = ({
   title,
@@ -72,13 +58,13 @@ const getModalTitle = (content: ModalContent, userFirstName: string) => {
   }
 };
 
-const UserPage = ({ user }: UserPageProps) => {
+const UserPage = ({ user }: { user?: User }) => {
   const router = useRouter();
 
-  // this can be changed by the user so store it as state
-  const [followedBy, setFollowedBy] = useState<{ id: number }[]>(
-    user?.followers
-  );
+  // let's keep this dynamic as the current user can change the followers number
+  const { data: followersData } = useGetFollowersQuery({
+    variables: { username: user.username },
+  });
 
   // ---- modal open state
   const [modalOpen, setModalOpen] = useState(false);
@@ -126,12 +112,7 @@ const UserPage = ({ user }: UserPageProps) => {
             )}
           </AnimatePresence>
           {/* User Card */}
-          <UserCard
-            linked={false}
-            editable
-            user={user}
-            setFollowedBy={setFollowedBy}
-          />
+          <UserCard linked={false} editable user={user} />
           {/* Profile stats */}
           <div className="mt-10 flex justify-center overflow-auto md:overflow-hidden">
             <ProfileStat
@@ -148,7 +129,7 @@ const UserPage = ({ user }: UserPageProps) => {
                 setModalOpen(true);
               }}
               title="Followers"
-              count={followedBy?.length}
+              count={followersData?.user.followers.length}
             />
             <ProfileStat
               onClick={() => {

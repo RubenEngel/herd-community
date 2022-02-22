@@ -3,7 +3,10 @@ import { useContext, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import AnimatedButton from "./animated-button";
 import Loading from "./loading";
-import { SIGN_CLOUDINARY_UPLOAD, UPDATE_USER_IMAGE } from "../lib/gql-queries";
+import {
+  SIGN_CLOUDINARY_UPLOAD,
+  UPDATE_USER_IMAGE,
+} from "../lib/graphql/queries-and-mutations";
 import { FiEdit3 } from "react-icons/fi";
 import { FaCheck, FaTimes } from "react-icons/fa";
 import { AuthContext } from "./context/auth-provider";

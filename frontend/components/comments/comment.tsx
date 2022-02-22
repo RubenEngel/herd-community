@@ -1,61 +1,52 @@
-import { ApolloQueryResult, useMutation, useQuery } from "@apollo/client";
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import { useMutation } from "@apollo/client";
+import React, { useContext, useMemo, useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import {
   COMMENT_LIKED_BY,
-  DELETE_COMMENT,
+  GET_COMMENTS_FOR_POST,
   LIKE_COMMENT,
   UNLIKE_COMMENT,
-} from "../../lib/gql-queries";
+} from "../../lib/graphql/queries-and-mutations";
 import { authHeaders } from "../../lib/supabase";
-import { PrismaUser, Role } from "../../lib/types";
+import {
+  User,
+  Role,
+  useDeleteCommentMutation,
+  Comment as IComment,
+} from "../../lib/generated/graphql-types";
 import AnimatedButton from "../animated-button";
 import Avatar from "../avatar";
 import { AuthContext } from "../context/auth-provider";
 import Date from "../date";
-import { Comment as IComment } from "../../lib/types";
 import toast from "react-hot-toast";
 import { BiLike } from "react-icons/bi";
 import { BsReply } from "react-icons/bs";
 import { useApolloToast } from "../../lib/hooks/use-apollo-toast";
+import { useCommentLikedByQuery } from "../../lib/generated/graphql-types";
 
 const Comment = ({
   commentId,
   author,
   content,
   date,
-  setComments,
   childComments,
   parentDepthIndex,
   handleReplyTo,
-  refetchComments,
+  postId,
 }: {
-  refetchComments: (
-    variables?: Partial<{
-      postId: number;
-    }>
-  ) => Promise<ApolloQueryResult<any>>;
+  postId: number;
   commentId: number;
   childComments: IComment[];
-  author: Pick<
-    PrismaUser,
-    "id" | "username" | "firstName" | "lastName" | "imageUrl"
-  >;
-  // parentCommentId: number;
+  author: Pick<User, "id" | "username" | "firstName" | "lastName" | "imageUrl">;
   parentDepthIndex: number | null;
   content: string;
   date: string | Date;
-  setComments: React.Dispatch<
-    React.SetStateAction<
-      Pick<IComment, "id" | "content" | "author" | "createdAt">[]
-    >
-  >;
   handleReplyTo: ({
     author,
     commentId,
   }: {
     author: Pick<
-      PrismaUser,
+      User,
       "id" | "username" | "firstName" | "lastName" | "imageUrl"
     >;
     commentId: number;
@@ -71,11 +62,19 @@ const Comment = ({
       loading: deleteCommentLoading,
       error: deleteCommentError,
     },
-  ] = useMutation(DELETE_COMMENT, {
+  ] = useDeleteCommentMutation({
     context: authHeaders(),
     variables: {
       deleteCommentId: commentId,
     },
+    refetchQueries: () => [
+      {
+        query: GET_COMMENTS_FOR_POST,
+        variables: {
+          postId: postId,
+        },
+      },
+    ],
   });
 
   useApolloToast(deleteCommentData, deleteCommentLoading, deleteCommentError, {
@@ -85,10 +84,7 @@ const Comment = ({
 
   const handleDeleteComment = async (commentId: number) => {
     try {
-      const res = await deleteComment();
-      if (res.data) {
-        refetchComments();
-      }
+      await deleteComment();
     } catch (error) {
       console.error(error);
     }
@@ -96,21 +92,20 @@ const Comment = ({
 
   // ---> COMMENT LIKES
   // queries
-  const { data: likedByData } = useQuery(COMMENT_LIKED_BY, {
+  const { data: likedByData } = useCommentLikedByQuery({
     variables: {
       id: commentId,
     },
-    notifyOnNetworkStatusChange: true,
-    fetchPolicy: "cache-and-network",
   });
+
   const [hasLiked, setHasLiked] = useState(false);
-  const likedBy = useMemo(() => likedByData?.commentLikedBy, [likedByData]);
-  useEffect(() => {
-    if (likedByData) {
-      setHasLiked(
-        likedByData?.commentLikedBy?.some((user) => user.id === userData?.id)
-      );
+
+  const likedByArr = useMemo(() => {
+    const likedByArr = likedByData?.commentLikedBy;
+    if (likedByArr) {
+      setHasLiked(likedByArr.some((user) => user.id === userData?.id));
     }
+    return likedByArr;
   }, [likedByData]);
 
   // mutations
@@ -180,7 +175,7 @@ const Comment = ({
         {/* Header */}
         <div className="flex items-center justify-between">
           <Avatar user={author} />
-          {(userData?.role === Role.ADMIN || author.id === userData?.id) && (
+          {(userData?.role === Role.Admin || author.id === userData?.id) && (
             <AnimatedButton
               disabled={deleteCommentLoading}
               onClick={() => handleDeleteComment(commentId)}
@@ -219,8 +214,8 @@ const Comment = ({
               }`}
             >
               <BiLike className="mr-1 text-xl" />
-              {likedBy?.length > 0 && (
-                <span className="font-serif text-sm">{likedBy.length}</span>
+              {likedByArr?.length > 0 && (
+                <span className="font-serif text-sm">{likedByArr.length}</span>
               )}
             </AnimatedButton>
           </div>
@@ -234,7 +229,7 @@ const Comment = ({
                 <div className="absolute top-1 left-3 h-8 w-4 rounded-bl-xl border-l-2 border-b-2" />
                 <div className="ml-8">
                   <Comment
-                    refetchComments={refetchComments}
+                    postId={postId}
                     handleReplyTo={handleReplyTo}
                     parentDepthIndex={depthIndex}
                     commentId={comment.id}
@@ -248,7 +243,7 @@ const Comment = ({
                     }}
                     content={comment.content}
                     date={comment.createdAt}
-                    setComments={setComments}
+                    // setComments={setComments}
                   />
                 </div>
               </div>
