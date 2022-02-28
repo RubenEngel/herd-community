@@ -416,8 +416,8 @@ const EditPost = () => {
                   <h4>Save Draft</h4>
                 </AnimatedButton>
               )}
-              {!existingPostData?.post.published &&
-                (!existingPostData?.post.submitted ? (
+              {!existingPostData?.post?.published &&
+                (!existingPostData?.post?.submitted ? (
                   <AnimatedButton
                     disabled={!dataComplete}
                     variant="green"

@@ -42,11 +42,20 @@ const LongPostPreview = ({
       <div className="grid-cols-6 gap-2 md:grid">
         {/* Image */}
         <div className="mx-au col-span-2 mr-2 mb-4">
-          <PreviewImage title={title} coverImage={featuredImage} slug={slug} />
+          <PreviewImage
+            width={300}
+            height={250}
+            title={title}
+            coverImage={featuredImage}
+            slug={slug}
+          />
         </div>
         <div className="col-span-4">
           {/* Title */}
-          <AnimatedButton className="mb-2 text-left font-serif text-xl leading-snug">
+          <AnimatedButton
+            hoverScale={1.02}
+            className="mb-2 text-left font-serif text-xl leading-snug"
+          >
             <Link scroll={false} as={`/posts/${slug}`} href="/posts/[slug]">
               <a>{title}</a>
             </Link>

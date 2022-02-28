@@ -53,7 +53,6 @@ export default function PostPage({ post }: { post: Post }) {
     if (userData?.email && userData.email === post.author?.email) {
       setIsEditable(true);
     }
-    // TODO: use enum
     if (String(userData?.role) === Role.Admin) {
       setIsEditable(true);
     }
@@ -99,11 +98,10 @@ export default function PostPage({ post }: { post: Post }) {
 
   useEffect(() => {
     if (likedByData) {
-      console.log(likedByData);
-      const likedByArray = likedByData.postLikedBy;
+      const likedByArr = likedByData.postLikedBy;
       if (userData) {
         setIsLiked(
-          likedByArray?.some((user) => user.id === userData.id) || false
+          likedByArr?.some((user) => user.id === userData.id) || false
         );
       }
     }
@@ -288,7 +286,7 @@ export default function PostPage({ post }: { post: Post }) {
             published
             startLoad={reachedEnd}
             category={category}
-            limit={6}
+            limit={12}
           />
         </>
       )}

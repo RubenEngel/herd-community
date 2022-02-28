@@ -3,7 +3,10 @@ import { useContext, useEffect, useState } from "react";
 import { UPDATE_USER_DETAILS } from "../lib/graphql/queries-and-mutations";
 import { useApolloToast } from "../lib/hooks/use-apollo-toast";
 import { authHeaders } from "../lib/supabase";
-import { User } from "../lib/generated/graphql-types";
+import {
+  User,
+  useUpdateUserDetailsMutation,
+} from "../lib/generated/graphql-types";
 import AnimatedButton from "./animated-button";
 import { AuthContext } from "./context/auth-provider";
 import InputBox, { InputBoxVariant } from "./input-box";
@@ -42,12 +45,10 @@ const OverlayDetailEditor: React.FC<{}> = () => {
     }
   }, [editedData]);
 
-  const [updateUserDetails, { data, loading, error }] = useMutation(
-    UPDATE_USER_DETAILS,
-    {
+  const [updateUserDetails, { data, loading, error }] =
+    useUpdateUserDetailsMutation({
       context: authHeaders(),
-    }
-  );
+    });
 
   useApolloToast(data, loading, error);
 
@@ -65,13 +66,19 @@ const OverlayDetailEditor: React.FC<{}> = () => {
   };
 
   const handleSaveChanges = async () => {
-    const updateDetailsResponse = await updateUserDetails({
-      variables: {
-        ...editedData,
-      },
-    });
-    setUserData({ ...userData, ...updateDetailsResponse?.data?.updateUser });
-    setIsEdited(false);
+    try {
+      const updateDetailsResponse = await updateUserDetails({
+        variables: {
+          ...editedData,
+        },
+      });
+      if (updateDetailsResponse.data) {
+        setUserData({ ...userData, ...updateDetailsResponse.data.updateUser });
+        setIsEdited(false);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (

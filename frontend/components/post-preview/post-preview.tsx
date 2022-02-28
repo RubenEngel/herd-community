@@ -47,7 +47,7 @@ export default function PostPreview({
             title={title}
             coverImage={featuredImage}
             slug={slug}
-            width={600}
+            width={500}
             height={400}
           />
         </div>

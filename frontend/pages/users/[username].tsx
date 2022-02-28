@@ -63,7 +63,7 @@ const UserPage = ({ user }: { user?: User }) => {
 
   // let's keep this dynamic as the current user can change the followers number
   const { data: followersData } = useGetFollowersQuery({
-    variables: { username: user.username },
+    variables: { username: user?.username },
   });
 
   // ---- modal open state
@@ -129,7 +129,9 @@ const UserPage = ({ user }: { user?: User }) => {
                 setModalOpen(true);
               }}
               title="Followers"
-              count={followersData?.user.followers.length}
+              count={
+                followersData?.user.followers.length || user.followers.length
+              }
             />
             <ProfileStat
               onClick={() => {

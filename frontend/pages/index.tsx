@@ -63,7 +63,7 @@ const Home = ({ categoryPosts }: IndexProps) => {
               animate="show"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.9 }}
-              className="bg-primary text-secondary mx-auto flex w-full max-w-screen-md items-center justify-center rounded-xl p-1 font-bold lg:p-2"
+              className="bg-primary text-secondary mx-auto mb-5 flex w-full items-center justify-center rounded-xl p-1 font-bold lg:p-2"
               onClick={() => setCategory("all")}
             >
               <h1 className="mr-4 text-center text-lg uppercase">

@@ -48,7 +48,7 @@ export type File = {
 export type LikeMutationResult = {
   __typename?: 'LikeMutationResult';
   id?: Maybe<Scalars['Int']>;
-  likedBy?: Maybe<Array<Maybe<User>>>;
+  likedBy?: Maybe<Array<User>>;
 };
 
 export type Mutation = {
@@ -123,6 +123,12 @@ export type MutationLikeCommentArgs = {
 
 export type MutationLikePostArgs = {
   id: Scalars['Int'];
+};
+
+
+export type MutationSignUploadArgs = {
+  publicId: Scalars['String'];
+  transforms: Scalars['String'];
 };
 
 
@@ -269,8 +275,10 @@ export enum Role {
 
 export type SignedUploadResponse = {
   __typename?: 'SignedUploadResponse';
+  publicId?: Maybe<Scalars['String']>;
   signature?: Maybe<Scalars['String']>;
   timestamp?: Maybe<Scalars['Int']>;
+  transforms?: Maybe<Scalars['String']>;
 };
 
 export type User = {
@@ -470,10 +478,13 @@ export type UpdateUserDetailsMutationVariables = Exact<{
 
 export type UpdateUserDetailsMutation = { __typename?: 'Mutation', updateUser?: { __typename?: 'User', firstName?: string | null, lastName?: string | null, username?: string | null } | null };
 
-export type SignCloudinaryUploadMutationVariables = Exact<{ [key: string]: never; }>;
+export type SignCloudinaryUploadMutationVariables = Exact<{
+  transforms: Scalars['String'];
+  publicId: Scalars['String'];
+}>;
 
 
-export type SignCloudinaryUploadMutation = { __typename?: 'Mutation', signUpload?: { __typename?: 'SignedUploadResponse', timestamp?: number | null, signature?: string | null } | null };
+export type SignCloudinaryUploadMutation = { __typename?: 'Mutation', signUpload?: { __typename?: 'SignedUploadResponse', timestamp?: number | null, signature?: string | null, transforms?: string | null, publicId?: string | null } | null };
 
 export type CreateUserMutationVariables = Exact<{
   email?: InputMaybe<Scalars['String']>;
@@ -517,28 +528,28 @@ export type LikePostMutationVariables = Exact<{
 }>;
 
 
-export type LikePostMutation = { __typename?: 'Mutation', likePost?: { __typename?: 'LikeMutationResult', id?: number | null, likedBy?: Array<{ __typename?: 'User', id?: number | null } | null> | null } | null };
+export type LikePostMutation = { __typename?: 'Mutation', likePost?: { __typename?: 'LikeMutationResult', id?: number | null, likedBy?: Array<{ __typename?: 'User', id?: number | null }> | null } | null };
 
 export type UnlikePostMutationVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type UnlikePostMutation = { __typename?: 'Mutation', unlikePost?: { __typename?: 'LikeMutationResult', id?: number | null, likedBy?: Array<{ __typename?: 'User', id?: number | null } | null> | null } | null };
+export type UnlikePostMutation = { __typename?: 'Mutation', unlikePost?: { __typename?: 'LikeMutationResult', id?: number | null, likedBy?: Array<{ __typename?: 'User', id?: number | null }> | null } | null };
 
 export type LikeCommentMutationVariables = Exact<{
   likeCommentId: Scalars['Int'];
 }>;
 
 
-export type LikeCommentMutation = { __typename?: 'Mutation', likeComment?: { __typename?: 'LikeMutationResult', id?: number | null, likedBy?: Array<{ __typename?: 'User', id?: number | null, username?: string | null, firstName?: string | null, lastName?: string | null, imageUrl?: string | null } | null> | null } | null };
+export type LikeCommentMutation = { __typename?: 'Mutation', likeComment?: { __typename?: 'LikeMutationResult', id?: number | null, likedBy?: Array<{ __typename?: 'User', id?: number | null, username?: string | null, firstName?: string | null, lastName?: string | null, imageUrl?: string | null }> | null } | null };
 
 export type UnlikeCommentMutationVariables = Exact<{
   unlikeCommentId: Scalars['Int'];
 }>;
 
 
-export type UnlikeCommentMutation = { __typename?: 'Mutation', unlikeComment?: { __typename?: 'LikeMutationResult', id?: number | null, likedBy?: Array<{ __typename?: 'User', id?: number | null, username?: string | null, firstName?: string | null, lastName?: string | null, imageUrl?: string | null } | null> | null } | null };
+export type UnlikeCommentMutation = { __typename?: 'Mutation', unlikeComment?: { __typename?: 'LikeMutationResult', id?: number | null, likedBy?: Array<{ __typename?: 'User', id?: number | null, username?: string | null, firstName?: string | null, lastName?: string | null, imageUrl?: string | null }> | null } | null };
 
 export type DeleteCommentMutationVariables = Exact<{
   deleteCommentId: Scalars['Int'];
@@ -1400,10 +1411,12 @@ export type UpdateUserDetailsMutationHookResult = ReturnType<typeof useUpdateUse
 export type UpdateUserDetailsMutationResult = Apollo.MutationResult<UpdateUserDetailsMutation>;
 export type UpdateUserDetailsMutationOptions = Apollo.BaseMutationOptions<UpdateUserDetailsMutation, UpdateUserDetailsMutationVariables>;
 export const SignCloudinaryUploadDocument = gql`
-    mutation SignCloudinaryUpload {
-  signUpload {
+    mutation SignCloudinaryUpload($transforms: String!, $publicId: String!) {
+  signUpload(transforms: $transforms, publicId: $publicId) {
     timestamp
     signature
+    transforms
+    publicId
   }
 }
     `;
@@ -1422,6 +1435,8 @@ export type SignCloudinaryUploadMutationFn = Apollo.MutationFunction<SignCloudin
  * @example
  * const [signCloudinaryUploadMutation, { data, loading, error }] = useSignCloudinaryUploadMutation({
  *   variables: {
+ *      transforms: // value for 'transforms'
+ *      publicId: // value for 'publicId'
  *   },
  * });
  */

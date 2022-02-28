@@ -77,7 +77,7 @@ const PostHeader = ({
         className="mb-6 flex justify-between sm:flex-row "
       >
         <div>
-          <Avatar user={author} />
+          <Avatar user={author} showUsername />
         </div>
         <div className="flex items-center">
           {commentCount > 0 && (

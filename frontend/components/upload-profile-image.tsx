@@ -1,16 +1,15 @@
-import { useMutation } from "@apollo/client";
 import { useContext, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import AnimatedButton from "./animated-button";
 import Loading from "./loading";
-import {
-  SIGN_CLOUDINARY_UPLOAD,
-  UPDATE_USER_IMAGE,
-} from "../lib/graphql/queries-and-mutations";
 import { FiEdit3 } from "react-icons/fi";
 import { FaCheck, FaTimes } from "react-icons/fa";
 import { AuthContext } from "./context/auth-provider";
 import { authHeaders } from "../lib/supabase";
+import {
+  useSignCloudinaryUploadMutation,
+  useUpdateUserImageMutation,
+} from "../lib/generated/graphql-types";
 
 const cloudinaryUploadUrl = process.env.CLOUDINARY_UPLOAD_URL;
 
@@ -24,10 +23,10 @@ const UploadProfileImage = ({
   setProfileImage: React.Dispatch<React.SetStateAction<string>>;
   cancelUpload: () => void;
 }) => {
-  const [signUploadMutation] = useMutation(SIGN_CLOUDINARY_UPLOAD, {
+  const [signUploadMutation] = useSignCloudinaryUploadMutation({
     context: authHeaders(),
   });
-  const [updateProfileImageMutation] = useMutation(UPDATE_USER_IMAGE, {
+  const [updateProfileImageMutation] = useUpdateUserImageMutation({
     context: authHeaders(),
   });
 
@@ -37,7 +36,7 @@ const UploadProfileImage = ({
   const [uploadReady, setUploadReady] = useState(false);
   const [uploadLoading, setUploadLoading] = useState(false);
 
-  const { userData, setUserData } = useContext(AuthContext);
+  const { userData, updateUserData } = useContext(AuthContext);
 
   const previewFile = (file) => {
     const reader = new FileReader();
@@ -65,13 +64,22 @@ const UploadProfileImage = ({
   const onSubmit = async () => {
     try {
       setUploadLoading(true);
-      const signResponse = await signUploadMutation();
-      const { signature, timestamp } = signResponse.data.signUpload;
+      const signResponse = await signUploadMutation({
+        variables: {
+          publicId: String(userData.id),
+          transforms: "c_fill,w_200,h_200,q_auto,f_jpg",
+        },
+      });
+      const { signature, timestamp, transforms, publicId } =
+        signResponse.data.signUpload;
       formData.append("file", image);
       formData.append("api_key", cloudinaryApiKey);
-      formData.append("timestamp", timestamp);
-      formData.append("signature", signature);
+      formData.append("eager", transforms);
       formData.append("folder", "profile_pictures");
+      formData.append("public_id", publicId);
+      formData.append("timestamp", String(timestamp));
+      formData.append("signature", signature);
+
       const uploadFile = async () => {
         const response = await fetch(cloudinaryUploadUrl, {
           method: "POST",
@@ -82,27 +90,27 @@ const UploadProfileImage = ({
           setUploadReady(false);
           toast.success("Success");
         } else {
-          return toast.error("Error");
+          throw new Error("Failed to upload image");
         }
         return response.json();
       };
       const data = await uploadFile();
+      console.log(data);
       const newImageUrlData = await updateProfileImageMutation({
         variables: {
-          imageUrl: data.secure_url,
+          imageUrl: data.eager[0].secure_url,
         },
       });
-      setUserData({
-        ...userData,
-        imageUrl: newImageUrlData.data.updateUser.imageUrl,
-      });
+      if (newImageUrlData) {
+        updateUserData();
+      }
       setUploadLoading(false);
     } catch (error) {
       console.error(error);
       cancelUpload();
       setUploadLoading(false);
       setUploadReady(false);
-      toast.error("Error");
+      toast.error("Failed to upload");
     }
   };
 

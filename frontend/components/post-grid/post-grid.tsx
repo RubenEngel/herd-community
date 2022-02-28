@@ -23,7 +23,7 @@ const PostGrid = ({
   onWaypointEnter: () => void;
 }) => {
   return (
-    <div className="mb-32 grid grid-cols-1 gap-6 px-3 md:grid-cols-2 md:px-4 lg:grid-cols-3">
+    <div className="mb-32 grid grid-cols-1 items-start gap-6 px-3 md:grid-cols-2 md:px-4 lg:grid-cols-3">
       {error && <h1 className="text-center text-4xl">An Error Occurred</h1>}
 
       {startLoad &&

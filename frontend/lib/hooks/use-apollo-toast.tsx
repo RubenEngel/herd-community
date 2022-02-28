@@ -14,28 +14,28 @@ export const useApolloToast = (
 ) => {
   useEffect(() => {
     if (loading) {
-      var toastLoading = toast.loading(options.loading || "Loading...", {
-        position: options.position,
+      var toastLoading = toast.loading(options?.loading || "Loading...", {
+        position: options?.position,
       });
     }
     if (error) {
       if (error.message.includes("slug")) {
         toast.error("Title already in use", {
-          position: options.position,
+          position: options?.position,
         });
       } else if (error.message.includes("username")) {
         toast.error("Username already in use", {
-          position: options.position,
+          position: options?.position,
         });
       } else {
-        toast.error(options.error || "Error", {
-          position: options.position,
+        toast.error(options?.error || "Error", {
+          position: options?.position,
         });
       }
     }
     if (data) {
-      toast.success(options.success || "Success", {
-        position: options.position,
+      toast.success(options?.success || "Success", {
+        position: options?.position,
       });
     }
     return () => toast.dismiss(toastLoading);

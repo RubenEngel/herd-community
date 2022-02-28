@@ -91,12 +91,12 @@ const UserRow = ({ user }: { user: User }) => {
             <div className="mr-3">
               {user.imageUrl ? (
                 <img
-                  className="h-14 w-14 rounded-full object-cover"
+                  className="h-12 w-12 rounded-full object-cover"
                   src={user.imageUrl}
                   alt={user.username}
                 ></img>
               ) : (
-                <FaUserCircle className="h-14 w-14 rounded-full" />
+                <FaUserCircle className="h-12 w-12 rounded-full" />
               )}
             </div>
             <div className="mr-3 text-left text-sm">

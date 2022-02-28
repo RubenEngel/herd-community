@@ -386,10 +386,12 @@ export const UPDATE_USER_DETAILS = gql`
 `;
 
 export const SIGN_CLOUDINARY_UPLOAD = gql`
-  mutation SignCloudinaryUpload {
-    signUpload {
+  mutation SignCloudinaryUpload($transforms: String!, $publicId: String!) {
+    signUpload(transforms: $transforms, publicId: $publicId) {
       timestamp
       signature
+      transforms
+      publicId
     }
   }
 `;

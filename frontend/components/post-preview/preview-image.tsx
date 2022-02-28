@@ -1,13 +1,13 @@
 import cn from "classnames";
 import { motion } from "framer-motion";
 import Link from "next/link";
-
+import Image from "next/image";
 interface PreviewImageProps {
   title: string;
   coverImage: string;
   slug: string;
-  width?: number;
-  height?: number;
+  width: number;
+  height: number;
 }
 
 const PreviewImage = ({
@@ -18,12 +18,14 @@ const PreviewImage = ({
   height,
 }: PreviewImageProps) => {
   const image = (
-    <img
+    <Image
+      // objectFit="cover"
       alt={title}
+      priority
       src={coverImage}
       width={width}
       height={height}
-      className={cn("shadow-small m-auto object-cover", {
+      className={cn("shadow-small object-cover", {
         "hover:shadow-medium rounded-lg transition-shadow duration-200": slug,
       })}
     />

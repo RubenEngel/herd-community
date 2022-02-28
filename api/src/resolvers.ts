@@ -42,27 +42,13 @@ const getExcerpt = (content: string) => {
   }
 };
 
-// const getUser = async (userEmail: string) => {
-//   const user = await prisma.user.findUnique({ where: { email: userEmail } });
-//   if (user) {
-//     return user;
-//   } else {
-//     return false;
-//   }
-// };
-
-const signUploadForm = async () => {
-  const timestamp = Math.round(new Date().getTime() / 1000);
-
-  const signature = await cloudinary.utils.api_sign_request(
-    {
-      timestamp: timestamp,
-      folder: "profile_pictures",
-    },
-    process.env.CLOUDINARY_API_SECRET
-  );
-
-  return { timestamp, signature };
+const getUser = async (userEmail: string) => {
+  const user = await prisma.user.findUnique({ where: { email: userEmail } });
+  if (user) {
+    return user;
+  } else {
+    return false;
+  }
 };
 
 export const resolvers = {
@@ -738,10 +724,22 @@ export const resolvers = {
         likedBy: res.likedBy,
       };
     },
-    signUpload: async (_, __, { userEmail }) => {
+    signUpload: async (_, { publicId, transforms }, { userEmail }) => {
       if (!userEmail) throw new AuthenticationError("User must be logged in");
-      const signedDataRes = await signUploadForm();
-      return signedDataRes;
+
+      const timestamp = Math.round(new Date().getTime() / 1000);
+
+      const signature = await cloudinary.utils.api_sign_request(
+        {
+          timestamp: timestamp,
+          folder: "profile_pictures",
+          eager: transforms,
+          public_id: publicId,
+        },
+        process.env.CLOUDINARY_API_SECRET
+      );
+
+      return { timestamp, signature, transforms, publicId };
     },
   },
 };

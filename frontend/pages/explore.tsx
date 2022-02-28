@@ -11,7 +11,7 @@ export default function Explore() {
       <PostGridDataProvider
         animate
         published={true}
-        limit={6}
+        limit={12}
         category={category}
       />
     </motion.div>

@@ -6,6 +6,8 @@ export const typeDefs = gql`
   type SignedUploadResponse {
     timestamp: Int
     signature: String
+    publicId: String
+    transforms: String
   }
 
   type File {
@@ -164,6 +166,6 @@ export const typeDefs = gql`
     unlikeComment(id: Int!): LikeMutationResult
     followUser(userId: Int!): User
     unfollowUser(userId: Int!): User
-    signUpload: SignedUploadResponse
+    signUpload(publicId: String!, transforms: String!): SignedUploadResponse
   }
 `;

@@ -174,7 +174,7 @@ const Comment = ({
       <div className="pt-5 pb-3 pl-3">
         {/* Header */}
         <div className="flex items-center justify-between">
-          <Avatar user={author} />
+          <Avatar user={author} showUsername />
           {(userData?.role === Role.Admin || author.id === userData?.id) && (
             <AnimatedButton
               disabled={deleteCommentLoading}
