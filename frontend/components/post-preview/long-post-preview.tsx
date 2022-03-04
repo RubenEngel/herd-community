@@ -43,8 +43,8 @@ const LongPostPreview = ({
         {/* Image */}
         <div className="mx-au col-span-2 mr-2 mb-4">
           <PreviewImage
-            width={300}
-            height={250}
+            width={550}
+            height={400}
             title={title}
             coverImage={featuredImage}
             slug={slug}
