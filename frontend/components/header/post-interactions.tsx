@@ -56,6 +56,7 @@ const PostInteractions: React.FC<{
       animate={showing}
       exit={hidden}
       transition={{
+        delay: 0.8,
         duration: 0.3,
       }}
       className="text-primary fixed bottom-4 right-0 z-10 -mr-6 w-20"

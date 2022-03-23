@@ -231,7 +231,7 @@ export default function PostPage({ post }: { post: Post }) {
               )}
             </AnimatePresence>
             <AnimatePresence>
-              {startedReading && percentageComplete < 100 && (
+              {percentageComplete < 100 && (
                 <PostInteractions
                   likeLoading={likeLoading || unlikeLoading}
                   likeCount={likedByData?.postLikedBy.length}

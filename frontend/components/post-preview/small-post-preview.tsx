@@ -41,7 +41,6 @@ export default function SmallPostPreview({
             coverImage={featuredImage}
             slug={slug}
             width={300}
-            height={250}
           />
         </div>
         <div className="col-span-4">

@@ -41,13 +41,13 @@ const LongPostPreview = ({
     >
       <div className="grid-cols-6 gap-2 md:grid">
         {/* Image */}
-        <div className="mx-au col-span-2 mr-2 mb-4">
+        <div className="col-span-2 mr-2 mb-4">
           <PreviewImage
-            width={550}
-            height={400}
+            width={800}
             title={title}
             coverImage={featuredImage}
             slug={slug}
+            twHeight={"md:h-42"}
           />
         </div>
         <div className="col-span-4">

@@ -92,7 +92,7 @@ function Search() {
   );
 
   return (
-    <div>
+    <div className="h-screen">
       <div className="mx-auto flex max-w-2xl items-center pt-2">
         <div className="z-10">
           <BsSearch className="ml-3 text-xl" />
@@ -112,7 +112,7 @@ function Search() {
           Search
         </AnimatedButton>
       </div>
-      <div className="mb-8 mt-6  flex justify-center">
+      <div className="mb-2 mt-6  flex justify-center">
         <div className="mx-6">
           <input
             type="radio"
@@ -169,7 +169,9 @@ function Search() {
                   {userSearchData.searchUsers?._count} results
                 </small>
               )}
-              <UserList users={userSearchData.searchUsers.users} />
+              <div className="h-full overflow-scroll rounded-xl px-7 pt-2 pb-12 shadow-inner">
+                <UserList users={userSearchData.searchUsers.users} />
+              </div>
             </>
           )}
         </>
@@ -188,21 +190,23 @@ function Search() {
               <small className="ml-4 mb-4">
                 {postSearchData.posts?._count} results
               </small>
-              <PostGrid
-                error={postSearchError}
-                loading={postSearchLoading}
-                posts={posts}
-                startLoad={true}
-                totalPostCount={postCount}
-                animateY="50%"
-                onWaypointEnter={() =>
-                  fetchMorePosts({
-                    variables: {
-                      startAfter: posts[posts.length - 1].id,
-                    },
-                  })
-                }
-              />
+              <div className="h-full overflow-scroll rounded-xl p-7 pb-12 shadow-inner">
+                <PostGrid
+                  error={postSearchError}
+                  loading={postSearchLoading}
+                  posts={posts}
+                  startLoad={true}
+                  totalPostCount={postCount}
+                  animateY="50%"
+                  onWaypointEnter={() =>
+                    fetchMorePosts({
+                      variables: {
+                        startAfter: posts[posts.length - 1].id,
+                      },
+                    })
+                  }
+                />
+              </div>
             </>
           )}
         </>

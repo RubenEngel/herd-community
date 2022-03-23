@@ -1,33 +1,29 @@
-import cn from "classnames";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import Image from "next/image";
-interface PreviewImageProps {
-  title: string;
-  coverImage: string;
-  slug: string;
-  width: number;
-  height: number;
-}
 
 const PreviewImage = ({
   title,
   coverImage,
   slug,
   width,
-  height,
-}: PreviewImageProps) => {
+  twHeight,
+}: {
+  title: string;
+  coverImage: string;
+  slug: string;
+  width: number;
+  twHeight?: string;
+}) => {
   const image = (
-    <Image
-      // objectFit="cover"
+    <img
       alt={title}
-      priority
       src={coverImage}
       width={width}
-      height={height}
-      className={cn("shadow-small object-cover", {
-        "hover:shadow-medium rounded-lg transition-shadow duration-200": slug,
-      })}
+      className={`shadow-small object-cover ${twHeight} ${
+        slug
+          ? "hover:shadow-medium rounded-lg transition-shadow duration-200"
+          : ""
+      }`}
     />
   );
   return (

@@ -14,6 +14,7 @@ interface PostPreviewProps extends Partial<Post> {
   animateY?: number | string;
   animateScale?: number;
   animateOpacity?: number;
+  twHeight: string;
 }
 
 export default function PostPreview({
@@ -28,6 +29,7 @@ export default function PostPreview({
   animateY = 0,
   animateScale = 1,
   animateOpacity = 0,
+  twHeight,
 }: PostPreviewProps) {
   return (
     <>
@@ -39,16 +41,16 @@ export default function PostPreview({
           duration: 0.6,
           bounce: 0.1,
         }}
-        className="mx-auto my-2 flex flex-col justify-center rounded-lg"
+        className="mx-auto my-2 flex max-w-lg flex-col justify-center rounded-lg"
       >
         {/* Image */}
-        <div className="mb-1">
+        <div className="mb-1 w-full">
           <PreviewImage
             title={title}
             coverImage={featuredImage}
             slug={slug}
-            width={500}
-            height={400}
+            width={600}
+            twHeight={twHeight}
           />
         </div>
         {/* Categories */}
