@@ -41,11 +41,15 @@ export default function SmallPostPreview({
             coverImage={featuredImage}
             slug={slug}
             width={300}
+            className={"md:h-24 lg:h-28"}
           />
         </div>
         <div className="col-span-4">
           {/* Title */}
-          <AnimatedButton className="mb-2 text-ellipsis text-left font-serif text-base leading-snug lg:text-lg">
+          <AnimatedButton
+            hoverScale={1.02}
+            className="mb-2 text-ellipsis text-left font-serif text-base leading-snug lg:text-lg"
+          >
             <Link scroll={false} as={`/posts/${slug}`} href="/posts/[slug]">
               <a className="">{title}</a>
             </Link>

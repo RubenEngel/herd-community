@@ -282,7 +282,7 @@ const EditPost = () => {
   // Main component
   return (
     <div className="mx-auto max-w-screen-sm">
-      <HeadingBar>Post Editor</HeadingBar>
+      <HeadingBar className="mb-10">Post Editor</HeadingBar>
       <AnimatePresence
         onExitComplete={() => window.scrollTo(0, 0)}
         exitBeforeEnter

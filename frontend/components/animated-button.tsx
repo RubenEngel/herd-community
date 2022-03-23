@@ -15,7 +15,7 @@ const AnimatedButton = ({
   onClick,
   className,
   disabled,
-  tapScale: tapScale = 0.96,
+  tapScale = 0.96,
   hoverScale = 1.05,
 }: {
   children: React.ReactNode;

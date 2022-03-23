@@ -52,6 +52,7 @@ export default function HomeCategory({
           categories={latestPost.categories}
           likeCount={latestPost._count.likedBy}
           commentCount={latestPost._count.comments}
+          imgClass={"md:h-80 lg:h-96"}
         />
 
         {latestStories.map((post) => (

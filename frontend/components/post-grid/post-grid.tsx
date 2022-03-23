@@ -39,7 +39,7 @@ const PostGrid = ({
             animateY={animateY}
             likeCount={post._count?.likedBy}
             commentCount={post._count?.comments}
-            twHeight={"md:h-80 lg:h-64"}
+            imgClass={"md:h-80 lg:h-64"}
           />
         ))}
       {loading && (

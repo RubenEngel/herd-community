@@ -6,20 +6,20 @@ const PreviewImage = ({
   coverImage,
   slug,
   width,
-  twHeight,
+  className,
 }: {
   title: string;
   coverImage: string;
   slug: string;
   width: number;
-  twHeight?: string;
+  className?: string;
 }) => {
   const image = (
     <img
       alt={title}
       src={coverImage}
       width={width}
-      className={`shadow-small object-cover ${twHeight} ${
+      className={`shadow-small object-cover ${className} ${
         slug
           ? "hover:shadow-medium rounded-lg transition-shadow duration-200"
           : ""

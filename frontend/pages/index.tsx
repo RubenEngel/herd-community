@@ -97,7 +97,7 @@ const Home = ({ categoryPosts }: IndexProps) => {
                 categories={post.categories}
                 likeCount={post._count.likedBy}
                 commentCount={post._count.comments}
-                twHeight={"md:h-48 lg:h-64"}
+                imgClass={"md:h-48 lg:h-64"}
               />
             </motion.div>
           ))}
@@ -123,7 +123,7 @@ const Home = ({ categoryPosts }: IndexProps) => {
               categories={latestPost.categories}
               likeCount={latestPost._count.likedBy}
               commentCount={latestPost._count.comments}
-              twHeight={"md:h-48 lg:h-64"}
+              imgClass={"md:h-48 lg:h-64"}
             />
           </motion.div>
 

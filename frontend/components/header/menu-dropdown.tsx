@@ -33,14 +33,11 @@ const MenuDropdown: React.FC<{
         }}
       >
         <ul>
-          <NavItem variants={itemVariants} onClick={() => setIsOpen(false)}>
-            <Link href="/">Home</Link>
+          <NavItem onClick={() => setIsOpen(false)}>
+            <Link href="/search">Search</Link>
           </NavItem>
           <NavItem variants={itemVariants} onClick={() => setIsOpen(false)}>
             <Link href="/about-us">About Us</Link>
-          </NavItem>
-          <NavItem onClick={() => setIsOpen(false)}>
-            <Link href="/search">Search</Link>
           </NavItem>
           <NavItem variants={itemVariants} onClick={() => setIsOpen(false)}>
             <Link href="/explore">Explore</Link>

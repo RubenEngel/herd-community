@@ -14,7 +14,7 @@ interface PostPreviewProps extends Partial<Post> {
   animateY?: number | string;
   animateScale?: number;
   animateOpacity?: number;
-  twHeight: string;
+  imgClass: string;
 }
 
 export default function PostPreview({
@@ -29,7 +29,7 @@ export default function PostPreview({
   animateY = 0,
   animateScale = 1,
   animateOpacity = 0,
-  twHeight,
+  imgClass,
 }: PostPreviewProps) {
   return (
     <>
@@ -50,7 +50,7 @@ export default function PostPreview({
             coverImage={featuredImage}
             slug={slug}
             width={600}
-            twHeight={twHeight}
+            className={imgClass}
           />
         </div>
         {/* Categories */}
@@ -58,7 +58,10 @@ export default function PostPreview({
           <Categories categories={categories} />
         </div>
         {/* Title */}
-        <AnimatedButton className="mb-1 text-left font-serif text-lg">
+        <AnimatedButton
+          hoverScale={1.02}
+          className="mb-1 text-left font-serif text-lg"
+        >
           <Link scroll={false} as={`/posts/${slug}`} href="/posts/[slug]">
             <a aria-label={title}>{title}</a>
           </Link>
