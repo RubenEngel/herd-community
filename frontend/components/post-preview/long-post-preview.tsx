@@ -47,7 +47,7 @@ const LongPostPreview = ({
             title={title}
             coverImage={featuredImage}
             slug={slug}
-            twHeight={"md:h-42"}
+            className={"md:h-42"}
           />
         </div>
         <div className="col-span-4">
